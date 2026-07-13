@@ -1,0 +1,210 @@
+/* ==========================================================================
+   Chime Health — Color Tokens
+   Source: CHIME design/chime-tokens.css (extracted live from Figma file
+   JbShR2Ma0c8lDKfqlMIlyU "Chime", 2026-07-12).
+   Layers: 1 Primitives → 2 Semantic → 3 Theme (accent, 4 modes).
+   Components bind to Semantic/Theme only — never primitives.
+   ========================================================================== */
+
+/* 1. PRIMITIVES */
+:root {
+  /* Brand blue (anchors: 300 Pastel Light Blue · 500 Soft Wellness Blue · 800 Deep Slate Blue) */
+  --color-blue-50:  #EFF3FC;
+  --color-blue-100: #DAE5FA;
+  --color-blue-200: #BDD2F6;
+  --color-blue-300: #94BAF2;
+  --color-blue-400: #7FA0D9;
+  --color-blue-500: #6580BC;
+  --color-blue-600: #5871A5;
+  --color-blue-700: #485E89;
+  --color-blue-800: #324563;
+  --color-blue-900: #26354D;
+  --color-blue-950: #1B263A;
+
+  /* Warm neutrals — cream / ivory / sand */
+  --color-sand-50:  #FFFEFB;
+  --color-sand-100: #F7F3E4;
+  --color-sand-200: #EFE9D3;
+  --color-sand-300: #DCD6C1;
+  --color-sand-400: #C8C3B0;
+  --color-sand-500: #B2AD9C;
+  --color-sand-600: #9B9687;
+  --color-sand-700: #837E70;
+  --color-sand-800: #666256;
+  --color-sand-900: #494539;
+  --color-sand-950: #2B2618;
+
+  /* Neutral grays — slate */
+  --color-slate-50:  #F8FAFC;
+  --color-slate-100: #F1F5F9;
+  --color-slate-200: #E2E8F0;
+  --color-slate-300: #CAD5E2;
+  --color-slate-400: #90A1B9;
+  --color-slate-500: #62748E;
+  --color-slate-600: #45556C;
+  --color-slate-700: #314158;
+  --color-slate-800: #1D293D;
+  --color-slate-900: #0F172B;
+  --color-slate-950: #020618;
+
+  /* State scales */
+  --color-green-50:  #F0FDF4;
+  --color-green-100: #DCFCE7;
+  --color-green-200: #B9F8CF;
+  --color-green-300: #7BF1A8;
+  --color-green-400: #05DF72;
+  --color-green-500: #00C950;
+  --color-green-600: #00A63E;
+  --color-green-700: #008236;
+  --color-green-800: #016630;
+  --color-green-900: #0D542B;
+  --color-green-950: #032E15;
+
+  --color-amber-50:  #FFFBEB;
+  --color-amber-100: #FEF3C6;
+  --color-amber-200: #FEE685;
+  --color-amber-300: #FFD230;
+  --color-amber-400: #FFB900;
+  --color-amber-500: #FE9A00;
+  --color-amber-600: #E17100;
+  --color-amber-700: #BB4D00;
+  --color-amber-800: #973C00;
+  --color-amber-900: #7B3306;
+  --color-amber-950: #461901;
+
+  --color-red-50:  #FEF2F2;
+  --color-red-100: #FFE2E2;
+  --color-red-200: #FFC9C9;
+  --color-red-300: #FFA2A2;
+  --color-red-400: #FF6467;
+  --color-red-500: #FB2C36;
+  --color-red-600: #E7000B;
+  --color-red-700: #C10007;
+  --color-red-800: #9F0712;
+  --color-red-900: #82181A;
+  --color-red-950: #460809;
+
+  /* Info — sky */
+  --color-sky-50:  #F0F9FF;
+  --color-sky-100: #DFF2FE;
+  --color-sky-500: #00A6F4;
+  --color-sky-600: #0084D1;
+  --color-sky-700: #0069A8;
+
+  /* Alternate theme accent scales */
+  --color-sage-100: #EFF3ED;
+  --color-sage-200: #DBE4D7;
+  --color-sage-300: #BCCCB5;
+  --color-sage-500: #7A9472;
+  --color-sage-600: #688160;
+  --color-sage-700: #566C4F;
+  --color-sage-800: #475A41;
+
+  --color-iris-100: #F3F3F9;
+  --color-iris-200: #E4E3F1;
+  --color-iris-300: #D1CFE8;
+  --color-iris-500: #A59FD6;
+  --color-iris-600: #908BBB;
+  --color-iris-700: #7D79A2;
+  --color-iris-800: #6A6689;
+
+  --color-peach-100: #F9F1EF;
+  --color-peach-200: #F2DED9;
+  --color-peach-300: #EAC6BE;
+  --color-peach-500: #D98A6F;
+  --color-peach-600: #BE7961;
+  --color-peach-700: #A56955;
+  --color-peach-800: #8B5948;
+
+  /* Base */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+}
+
+/* 2. SEMANTIC — Light mode. */
+:root {
+  --bg-default:   var(--color-sand-50);
+  --bg-secondary: var(--color-sand-100);
+  --bg-tertiary:  var(--color-sand-200);
+  --bg-elevated:  var(--color-white);
+
+  --text-default:    var(--color-blue-800);
+  --text-secondary:  var(--color-blue-700);
+  --text-muted:      var(--color-slate-500);
+  --text-on-primary: var(--color-white);
+
+  --border-default: var(--color-sand-300);
+  --border-strong:  var(--color-slate-400);
+
+  --primary-default:  var(--color-blue-800);
+  --primary-hover:    var(--color-blue-900);
+  --primary-active:   var(--color-blue-950);
+  --primary-subtle:   var(--color-blue-100);
+  --primary-onSubtle: var(--color-blue-800);
+
+  --focus-ring: var(--color-blue-300);
+
+  --success-default: var(--color-green-600);
+  --success-subtle:  var(--color-green-100);
+  --warning-default: var(--color-amber-600);
+  --warning-subtle:  var(--color-amber-100);
+  --error-default:   var(--color-red-600);
+  --error-subtle:    var(--color-red-100);
+  --info-default:    var(--color-sky-600);
+  --info-subtle:     var(--color-sky-100);
+
+  --secondary-default: var(--color-sand-200);
+  --secondary-hover:   var(--color-sand-300);
+  --secondary-subtle:  var(--color-sand-100);
+
+  --destructive-default: var(--color-red-600);
+  --destructive-hover:   var(--color-red-700);
+  --destructive-subtle:  var(--color-red-100);
+}
+
+/* 3. THEME (accent) — 4 modes; DEFAULT (blue) active in :root.
+   Switch a page or section's accent with data-theme on <html> or a wrapper. */
+:root,
+[data-theme="default"] {
+  --accent-default:     var(--color-blue-500);
+  --accent-strong:      var(--color-blue-700);
+  --accent-hover:       var(--color-blue-600);
+  --accent-active:      var(--color-blue-800);
+  --accent-subtle:      var(--color-blue-100);
+  --accent-subtleHover: var(--color-blue-200);
+  --accent-onSubtle:    var(--color-blue-800);
+  --accent-border:      var(--color-blue-300);
+}
+
+[data-theme="weight-loss"] {
+  --accent-default:     var(--color-sage-500);
+  --accent-strong:      var(--color-sage-700);
+  --accent-hover:       var(--color-sage-600);
+  --accent-active:      var(--color-sage-800);
+  --accent-subtle:      var(--color-sage-100);
+  --accent-subtleHover: var(--color-sage-200);
+  --accent-onSubtle:    var(--color-sage-800);
+  --accent-border:      var(--color-sage-300);
+}
+
+[data-theme="lab"] {
+  --accent-default:     var(--color-iris-500);
+  --accent-strong:      var(--color-iris-700);
+  --accent-hover:       var(--color-iris-600);
+  --accent-active:      var(--color-iris-800);
+  --accent-subtle:      var(--color-iris-100);
+  --accent-subtleHover: var(--color-iris-200);
+  --accent-onSubtle:    var(--color-iris-800);
+  --accent-border:      var(--color-iris-300);
+}
+
+[data-theme="energy-wellness"] {
+  --accent-default:     var(--color-peach-500);
+  --accent-strong:      var(--color-peach-700);
+  --accent-hover:       var(--color-peach-600);
+  --accent-active:      var(--color-peach-800);
+  --accent-subtle:      var(--color-peach-100);
+  --accent-subtleHover: var(--color-peach-200);
+  --accent-onSubtle:    var(--color-peach-800);
+  --accent-border:      var(--color-peach-300);
+}

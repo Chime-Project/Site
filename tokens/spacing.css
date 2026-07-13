@@ -1,0 +1,47 @@
+/* Chime Health — Spacing, Radius, Borders, Layout Tokens */
+:root {
+  /* Spacing (4px scale) */
+  --spacing-0:  0px;
+  --spacing-1:  4px;
+  --spacing-2:  8px;
+  --spacing-3:  12px;
+  --spacing-4:  16px;
+  --spacing-5:  20px;
+  --spacing-6:  24px;
+  --spacing-8:  32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+
+  /* Radius */
+  --radius-xs:  2px;
+  --radius-sm:  4px;
+  --radius-md:  6px;
+  --radius-lg:  8px;
+  --radius-xl:  12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-4xl: 9999px; /* full / pill */
+
+  /* Border widths */
+  --border-0: 0px; /* @kind other */
+  --border-1: 1px; /* @kind other */
+  --border-2: 2px; /* @kind other */
+  --border-4: 4px; /* @kind other */
+
+  /* Breakpoints */
+  --breakpoint-sm:  640px; /* @kind other */
+  --breakpoint-md:  768px; /* @kind other */
+  --breakpoint-lg:  1024px; /* @kind other */
+  --breakpoint-xl:  1280px; /* @kind other */
+  --breakpoint-2xl: 1536px; /* @kind other */
+
+  /* Container max-widths */
+  --container-sm:    640px; /* @kind other */
+  --container-md:    768px; /* @kind other */
+  --container-lg:    1024px; /* @kind other */
+  --container-xl:    1280px; /* @kind other */
+  --container-prose: 680px; /* @kind other */
+}

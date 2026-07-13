@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Homepage</title>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#FFFEFB"></rect><circle cx="50" cy="50" r="20" fill="none" stroke="#324563" stroke-width="3"></circle><circle cx="50" cy="50" r="12" fill="none" stroke="#6580BC" stroke-width="3"></circle><circle cx="50" cy="50" r="5" fill="#94BAF2"></circle></svg></template>
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds_bundle.js"></script>
+<script src="ui_kits/homepage/image-slot.js"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg-default); padding-top: 72px; }
+  a { color: var(--accent-strong); }
+  a:hover { color: var(--accent-default); }
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(-1.2deg); }
+  }
+  @keyframes hero-kenburns {
+    0%, 100% { transform: scale(1); transform-origin: 60% 40%; }
+    50% { transform: scale(1.07); transform-origin: 60% 40%; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-kenburns { animation: hero-kenburns 14s var(--ease-in-out) infinite; }
+  }
+  @keyframes hero-enter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-enter { animation: hero-enter 0.7s var(--ease-out, ease-out) both; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-float { animation: hero-float 6s var(--ease-in-out) infinite; }
+  }
+  /* Desktop-only video offset */
+  @media (min-width: 961px) {
+    .hero-card-video { object-position: calc(50% + 63px) center; }
+  }
+  /* Mobile / tablet constraints */
+  .products-track::-webkit-scrollbar { display: none; }
+  @media (max-width: 960px) {
+    .products-track { grid-auto-columns: calc((100% - 16px) / 1.6) !important; }
+    .products-title { font-size: var(--text-4xl) !important; }
+    .products-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .feel-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .feel-title { font-size: var(--text-4xl) !important; }
+    .feel-content { padding: var(--spacing-6) !important; }
+    .trust-chip { font-size: var(--text-xs) !important; padding: var(--spacing-1) var(--spacing-3) !important; gap: var(--spacing-1) !important; width: 100%; box-sizing: border-box; min-width: 0; }
+    .trust-chip svg { width: 13px !important; height: 13px !important; }
+    .hero-card-video { object-position: left center !important; object-fit: cover !important; width: 100% !important; height: 100% !important; }
+    .hero-card-title { display: none !important; }
+    .hero-card-content { justify-content: flex-end !important; }
+    .hero-main-grid { grid-template-columns: 1fr !important; }
+    .hero-cat-grid { grid-template-columns: 1fr 1fr !important; }
+    .hero-title { font-size: var(--text-5xl) !important; }
+    .nav-links { display: none !important; }
+    .footer-grid { grid-template-columns: 1fr !important; }
+    .hero-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .guide-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .guide-content { padding: var(--spacing-8) var(--spacing-6) !important; }
+  }
+  @media (max-width: 960px) {
+    .wl-title, .labs-title, .hw-title { font-size: var(--text-4xl) !important; }
+    .wl-card-wide, .labs-card-wide, .hw-card-wide { grid-template-columns: 1fr !important; justify-items: center; text-align: center; padding: var(--spacing-6) !important; }
+    .wl-card-pair, .labs-card-pair, .hw-card-pair { grid-template-columns: 1fr !important; }
+    .labs-tier-grid { grid-template-columns: 1fr !important; }
+    .labs-signals-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 560px) {
+    .hero-cat-grid { grid-template-columns: 1fr !important; }
+    .hero-title { font-size: var(--text-4xl) !important; }
+    .hero-section { padding-left: var(--spacing-4) !important; padding-right: var(--spacing-4) !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/Hero.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/FeelSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/ProductsSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/WeightLossSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/WellnessSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/LabsSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/GuideSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx"></script>
+<script type="text/babel">
+function HomePage() {
+  return (
+    <React.Fragment>
+      <ChimeNavbar />
+      <ChimeHero />
+      <ChimeFeelSection />
+      <ChimeProductsSection />
+      <ChimeWeightLossSection />
+      <ChimeWellnessSection />
+      <ChimeLabsSection />
+      <ChimeGuideSection />
+      <ChimeFooter />
+      <ChimeAssessmentModal />
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<HomePage />);
+</script>
+</body>
+</html>
