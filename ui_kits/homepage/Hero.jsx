@@ -115,35 +115,6 @@ function TreatmentPathCard({ slotId, src }) {
         src={HERO_UPLOADS + "/hf_20260712_215808_12876c8b-1eda-48be-9200-1414fa5686e7.mp4"}
         autoPlay muted loop playsInline
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
-      <div className="hero-card-content" style={{
-        position: "absolute", inset: 0, display: "flex", flexDirection: "column",
-        justifyContent: "space-between", alignItems: "flex-start",
-        padding: "var(--spacing-6)",
-      }}>
-        <div className="hero-card-title" style={{
-          color: "var(--color-white)", fontSize: "var(--text-xl)",
-          fontWeight: "var(--font-weight-semibold)", lineHeight: 1.3,
-          textWrap: "balance", maxWidth: "55%",
-          textShadow: "0 1px 12px rgba(27,38,58,0.4)",
-        }}>Explore treatments designed around you</div>
-        <span style={{
-          display: "inline-block", position: "relative", overflow: "hidden",
-          background: "var(--color-white)",
-          color: hover ? "var(--text-on-primary)" : "var(--text-default)", borderRadius: "var(--radius-4xl)",
-          padding: "var(--spacing-3) var(--spacing-5)",
-          fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
-          boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-          transform: hover ? "translateY(-3px) scale(1.04)" : "none",
-          transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out), color 0.35s var(--ease-in-out)",
-        }}>
-          <span style={{
-            position: "absolute", inset: 0, background: "var(--accent-default)",
-            transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
-            transition: "transform 0.35s var(--ease-in-out)",
-          }}></span>
-          <span style={{ position: "relative" }}>Discover Your Health Path</span>
-        </span>
-      </div>
     </a>
   );
 }
