@@ -1,0 +1,15 @@
+/* Chime Health — Base document styles */
+html,
+body {
+  font-family: var(--font-family-base);
+  background: var(--bg-default);
+  color: var(--text-default);
+}
+
+a { color: var(--accent-strong); transition: color var(--transition-base) var(--ease-in-out); }
+a:hover { color: var(--accent-active); }
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

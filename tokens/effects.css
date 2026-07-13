@@ -1,0 +1,48 @@
+/* Chime Health — Effects: opacity, z-index, blur, motion, elevation.
+   NOTE: Elevation shadows are an intentional addition — Figma has effect
+   styles named Elevation/xs–xl that are not exported as variables; these
+   soft, cool-tinted shadows are written to match that naming. */
+:root {
+  /* Opacity */
+  --opacity-0:  0; /* @kind other */
+  --opacity-5:  0.05; /* @kind other */
+  --opacity-10: 0.1; /* @kind other */
+  --opacity-20: 0.2; /* @kind other */
+  --opacity-40: 0.4; /* @kind other */
+  --opacity-60: 0.6; /* @kind other */
+  --opacity-80: 0.8; /* @kind other */
+  --opacity-100: 1; /* @kind other */
+  --opacity-disabled: 0.45; /* @kind other */
+
+  /* Z-index */
+  --z-base:     0; /* @kind other */
+  --z-dropdown: 1000; /* @kind other */
+  --z-sticky:   1100; /* @kind other */
+  --z-overlay:  1300; /* @kind other */
+  --z-modal:    1400; /* @kind other */
+  --z-popover:  1500; /* @kind other */
+  --z-toast:    1700; /* @kind other */
+  --z-tooltip:  1800; /* @kind other */
+
+  /* Blur */
+  --blur-sm: 4px; /* @kind other */
+  --blur-md: 8px; /* @kind other */
+  --blur-lg: 16px; /* @kind other */
+  --blur-xl: 24px; /* @kind other */
+
+  /* Motion — durations */
+  --transition-fast: 120ms; /* @kind other */
+  --transition-base: 200ms; /* @kind other */
+  --transition-slow: 320ms; /* @kind other */
+
+  /* Motion — easing */
+  --ease-in-out: cubic-bezier(0.2, 0, 0, 1); /* @kind other */
+  --ease-in:     cubic-bezier(0.3, 0, 0, 1); /* @kind other */
+
+  /* Elevation (added in code; mirrors Figma effect styles Elevation/xs–xl) */
+  --shadow-xs: 0 1px 2px rgba(50, 69, 99, 0.06);
+  --shadow-sm: 0 1px 3px rgba(50, 69, 99, 0.08), 0 1px 2px rgba(50, 69, 99, 0.04);
+  --shadow-md: 0 4px 8px rgba(50, 69, 99, 0.08), 0 2px 4px rgba(50, 69, 99, 0.04);
+  --shadow-lg: 0 12px 24px rgba(50, 69, 99, 0.10), 0 4px 8px rgba(50, 69, 99, 0.04);
+  --shadow-xl: 0 24px 48px rgba(50, 69, 99, 0.14), 0 8px 16px rgba(50, 69, 99, 0.06);
+}
