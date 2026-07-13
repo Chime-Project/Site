@@ -74,12 +74,6 @@ function ChimeLabsSection() {
 
         {/* Subtitle + CTAs at the bottom of the products shown in the video */}
         <LabsReveal delay={120} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-5)", paddingBottom: "var(--spacing-10)" }}>
-        <p style={{
-          margin: 0, textAlign: "center", maxWidth: "30em",
-          fontSize: "var(--text-xl)", lineHeight: 1.45, fontWeight: 300,
-          color: "var(--color-white)", textWrap: "balance",
-          textShadow: "0 1px 14px rgba(42,40,58,0.5)",
-        }}>Our <span style={{ color: "#2A283A" }}>Labs &amp; Health Insights</span> programs help uncover information that may support conversations around energy, metabolism, recovery, wellness, healthy aging, and overall health.</p>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <LabsButton hero label="Discover Your Health Path" />
         </div>
