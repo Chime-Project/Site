@@ -59,7 +59,7 @@ function ChimeLabsSection() {
       <div style={{
         position: "relative", zIndex: 1,
         maxWidth: "var(--container-xl)", margin: "0 auto",
-        padding: "var(--spacing-12) var(--spacing-8) 0",
+        padding: "var(--spacing-20) var(--spacing-8) 0",
         minHeight: 700,
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between",
       }}>
@@ -84,7 +84,7 @@ function ChimeLabsSection() {
       <div style={{
         position: "relative", zIndex: 1,
         maxWidth: "var(--container-xl)", margin: "0 auto",
-        padding: "0 var(--spacing-8) var(--spacing-10)",
+        padding: "0 var(--spacing-8) var(--spacing-20)",
         display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
       }}>
         {/* Card 1 — signals explorer: rail | detail panel */}
