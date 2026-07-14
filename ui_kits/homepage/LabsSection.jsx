@@ -259,12 +259,19 @@ function LabsSignals() {
 }
 
 function LabsTierCard({ name, markers, upgraded }) {
+  const [hover, setHover] = React.useState(false);
   return (
-    <div style={{
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
       position: "relative", background: "rgba(42,40,58,0.45)",
-      border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--radius-2xl)",
+      border: "1px solid " + (hover ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.08)"), borderRadius: "var(--radius-2xl)",
       padding: "var(--spacing-6)",
       display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
+      transform: hover ? "translateY(-4px)" : "none",
+      boxShadow: hover ? "0 22px 44px rgba(42,40,58,0.5)" : "none",
+      transition: "transform var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out), border-color var(--transition-base) var(--ease-in-out)",
     }}>
       {/* Biomarkers badge */}
       <div style={{
@@ -283,8 +290,13 @@ function LabsTierCard({ name, markers, upgraded }) {
           }}>Upgraded Panel</div>
         ) : null}
       </div>
-      <img src={LABS_UPLOADS + "/tier-img-b82013dc.png"} alt={name + " sample vial"}
-        style={{ width: 180, height: "auto", display: "block", margin: "var(--spacing-4) auto 0", filter: "drop-shadow(0 16px 32px rgba(42,40,58,0.4))" }} />
+      <img src={LABS_UPLOADS + "/vial-solo.png"} alt={name + " sample vial"}
+        style={{
+          width: 180, height: "auto", display: "block", margin: "var(--spacing-4) auto 0",
+          transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",
+          filter: hover ? "drop-shadow(0 24px 42px rgba(42,40,58,0.6))" : "drop-shadow(0 16px 32px rgba(42,40,58,0.4))",
+          transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
+        }} />
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
         <h4 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-medium)", color: "var(--color-white)", lineHeight: 1.25 }}>{name}</h4>
         <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
