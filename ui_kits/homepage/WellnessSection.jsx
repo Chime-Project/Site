@@ -87,15 +87,6 @@ function ChimeWellnessSection() {
           }}>Energy, wellness, and vitality are deeply personal. Whether you’re looking to improve your daily energy, stay focused, support recovery, or simply feel your best, Chime helps you explore a more personalized path forward.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
             <HWButton primary large label="Discover Your Wellness Path" />
-            <a href="#" style={{
-              display: "flex", alignItems: "center", gap: "var(--spacing-4)",
-              background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "var(--radius-full)", padding: "var(--spacing-3) var(--spacing-6)",
-              textDecoration: "none", transition: "all 0.25s ease-out",
-            }} onMouseEnter={(e) => { e.target.style.background = "rgba(255,255,255,0.15)"; e.target.style.borderColor = "rgba(255,255,255,0.3)"; }} onMouseLeave={(e) => { e.target.style.background = "rgba(255,255,255,0.1)"; e.target.style.borderColor = "rgba(255,255,255,0.2)"; }}>
-              <span style={{ fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)" }}>Boost <span style={{ color: "var(--color-white)" }}>energy &amp; wellness</span></span>
-              <span style={{ fontSize: "var(--text-base)", color: "var(--color-white)" }}>›</span>
-            </a>
           </div>
         </div>
         </HWReveal>
@@ -113,44 +104,20 @@ function ChimeWellnessSection() {
         <HWFamiliarCard />
         </HWReveal>
 
-        {/* Cards 2 + 3 */}
-        <div className="hw-card-pair" style={{ display: "grid", gridTemplateColumns: "1fr calc((100% - 3 * 16px) / 4)", gap: "var(--spacing-5)" }}>
-          <HWReveal>
+        {/* Product carousel card (centered) */}
+        <HWReveal delay={140}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{
-            background: "rgba(56,42,10,0.78)", border: "1px solid rgba(56,42,10,0.5)",
-            borderRadius: "var(--radius-3xl)", padding: "var(--spacing-8)",
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-5)",
-          }}>
-            <h3 style={{ margin: 0, fontSize: "var(--text-3xl)", fontWeight: 300, lineHeight: 1.15, color: "var(--color-white)", textAlign: "center", maxWidth: "11em" }}>Feel the difference</h3>
-            <div style={{
-              background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "var(--radius-2xl)", padding: "var(--spacing-6) var(--spacing-8)",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-2)", minWidth: 220,
-            }}>
-              <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.8)" }}>This week</div>
-              <div style={{ fontSize: 72, fontWeight: 300, lineHeight: 1, color: "var(--color-white)" }}>+2.4 h</div>
-              <div style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.85)" }}>of restful sleep, on average</div>
-              <div style={{ width: 140, height: 90, marginTop: "var(--spacing-3)" }}>
-                <image-slot id="hw-progress" shape="rounded" radius="16" placeholder="progress photo" style={{ width: "100%", height: "100%" }}></image-slot>
-              </div>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--spacing-4)", width: "100%", flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, color: "rgba(255,255,255,0.85)", maxWidth: "18em" }}>Track your sleep, energy, and mood — and watch small changes add up.</p>
-              <HWButton small label="See the science" />
-            </div>
-          </div>
-          </HWReveal>
-          <HWReveal delay={140}>
-          <div style={{
-            position: "relative", overflow: "hidden", height: "100%", boxSizing: "border-box",
+            position: "relative", overflow: "hidden", boxSizing: "border-box",
             background: "rgba(56,42,10,0.78)", border: "1px solid rgba(56,42,10,0.5)",
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
+            width: "100%", maxWidth: 360,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
             <ChimeRxCarousel Button={HWButton} accentColor="#E6C465" uploads={HW_UPLOADS} />
           </div>
-          </HWReveal>
         </div>
+        </HWReveal>
 
         <HWReveal delay={100}>
         <p style={{
