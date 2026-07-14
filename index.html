@@ -64,6 +64,9 @@
     .hero-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
     .guide-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
     .guide-content { padding: var(--spacing-8) var(--spacing-6) !important; }
+    .simple-path-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .simple-path-grid { grid-template-columns: 1fr 1fr !important; }
+    .simple-path-title { font-size: var(--text-4xl) !important; }
   }
   @media (max-width: 960px) {
     .wl-title, .labs-title, .hw-title { font-size: var(--text-4xl) !important; }
@@ -76,6 +79,8 @@
     .hero-cat-grid { grid-template-columns: 1fr !important; }
     .hero-title { font-size: var(--text-4xl) !important; }
     .hero-section { padding-left: var(--spacing-4) !important; padding-right: var(--spacing-4) !important; }
+    .simple-path-grid { grid-template-columns: 1fr !important; }
+    .simple-path-section { padding-left: var(--spacing-4) !important; padding-right: var(--spacing-4) !important; }
   }
 </style>
 </head>
@@ -84,6 +89,7 @@
 <script type="text/babel" src="ui_kits/homepage/Navbar.jsx"></script>
 <script type="text/babel" src="ui_kits/homepage/Hero.jsx"></script>
 <script type="text/babel" src="ui_kits/homepage/FeelSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx"></script>
 <script type="text/babel" src="ui_kits/homepage/ProductsSection.jsx"></script>
 <script type="text/babel" src="ui_kits/homepage/WeightLossSection.jsx"></script>
 <script type="text/babel" src="ui_kits/homepage/WellnessSection.jsx"></script>
@@ -102,6 +108,7 @@ function HomePage() {
       <ChimeWeightLossSection />
       <ChimeWellnessSection />
       <ChimeLabsSection />
+      <ChimeSimplePathSection />
       <ChimeGuideSection />
       <ChimeFooter />
       <ChimeAssessmentModal />
