@@ -101,10 +101,10 @@ function ChimeWellnessSection() {
       }}>
         {/* Card 1 (reduced width) + product carousel — same line */}
         <div className="hw-card-pair" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "var(--spacing-5)", alignItems: "stretch" }}>
-          <HWReveal>
+          <HWReveal style={{ height: "100%" }}>
           <HWFamiliarCard />
           </HWReveal>
-          <HWReveal delay={140}>
+          <HWReveal delay={140} style={{ height: "100%" }}>
           <div style={{
             position: "relative", overflow: "hidden", height: "100%", boxSizing: "border-box",
             background: "rgba(56,42,10,0.78)", border: "1px solid rgba(56,42,10,0.5)",
@@ -116,12 +116,6 @@ function ChimeWellnessSection() {
           </HWReveal>
         </div>
 
-        <HWReveal delay={100}>
-        <p style={{
-          margin: "var(--spacing-2) auto 0", maxWidth: "52em", textAlign: "center",
-          fontSize: "var(--text-xs)", lineHeight: 1.6, color: "rgba(255,255,255,0.8)",
-        }}>Not available in all 50 states. Eligibility determination and prescription required for all treatments. Individual results vary. <a href="#" style={{ color: "var(--color-white)" }}>Read more</a></p>
-        </HWReveal>
       </div>
     </section>
   );
@@ -139,6 +133,7 @@ function HWFamiliarCard() {
   return (
     <div className="hw-card-wide" style={{
       position: "relative",
+      height: "100%", boxSizing: "border-box",
       background: "rgba(56,42,10,0.78)",
       border: "1px solid rgba(56,42,10,0.5)",
       borderRadius: "var(--radius-3xl)",
@@ -181,6 +176,7 @@ function HWFamiliarCard() {
         </p>
         <HWButton primary small label="Discover Your Wellness Path" />
       </div>
+      <p style={{ margin: 0, marginTop: "auto", maxWidth: "44em", textAlign: "center", fontSize: "var(--text-xs)", lineHeight: 1.6, color: "rgba(255,255,255,0.7)" }}>Not available in all 50 states. Eligibility determination and prescription required for all treatments. Individual results vary. <a href="#" style={{ color: "var(--color-white)" }}>Read more</a></p>
     </div>
   );
 }
