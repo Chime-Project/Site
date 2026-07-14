@@ -144,32 +144,10 @@ function ChimeWellnessSection() {
           <div style={{
             position: "relative", overflow: "hidden", height: "100%", boxSizing: "border-box",
             background: "rgba(56,42,10,0.78)", border: "1px solid rgba(56,42,10,0.5)",
-            borderRadius: "var(--radius-3xl)", padding: "var(--spacing-8)", minHeight: 420,
+            borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
-            <div style={{
-              position: "relative", borderRadius: "var(--radius-2xl)", overflow: "hidden",
-              flex: 1, minHeight: 200,
-            }}>
-              <image-slot id="hw-product-b12" shape="rect" fit="contain" placeholder="Drop product photo"
-                style={{ position: "absolute", inset: "6%", transform: "rotate(-15deg)" }}></image-slot>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)", alignItems: "center", textAlign: "center" }}>
-              <h3 style={{ margin: 0, fontSize: "var(--text-2xl)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)", lineHeight: 1.2 }}>Vitamin B12 Injection</h3>
-              <div style={{ fontSize: "var(--text-sm)", display: "flex", alignItems: "baseline", justifyContent: "center", gap: "var(--spacing-2)", flexWrap: "wrap" }}>
-                <span style={{ color: "rgba(255,255,255,0.85)", fontWeight: "var(--font-weight-medium)" }}>Energy &amp; Wellness</span>
-                <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.35)" }}>·</span>
-                <span style={{ fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)" }}>From $49/mo</span>
-              </div>
-              <div style={{ display: "flex", gap: "var(--spacing-2)", marginTop: "var(--spacing-2)", justifyContent: "center", flexWrap: "nowrap" }}>
-                <HWButton primary tiny label="Get started" />
-                <HWButton tiny label="Learn more" />
-              </div>
-              <a href="#" style={{
-                marginTop: "var(--spacing-1)", fontSize: "var(--text-xs)",
-                color: "rgba(255,255,255,0.85)", textDecoration: "underline", textUnderlineOffset: 2,
-              }}>Important safety information</a>
-            </div>
+            <ChimeRxCarousel Button={HWButton} accentColor="#E6C465" uploads={HW_UPLOADS} />
           </div>
           </HWReveal>
         </div>
