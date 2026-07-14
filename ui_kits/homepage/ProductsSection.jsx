@@ -182,16 +182,16 @@ function ProductCard({ p, planIdx }) {
         position: "relative", borderRadius: "var(--radius-3xl)", overflow: "hidden",
         background: "linear-gradient(160deg, #FFFFFF 0%, #D6ECFF 60%, #BDD2F6 100%)",
         aspectRatio: "1 / 1.05",
-        boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-xs)",
+        boxShadow: hover ? "var(--shadow-lg)" : "var(--shadow-xs)",
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
         <image-slot id={p.id} shape="rect" fit="contain" placeholder="Drop product photo"
           src={PRODUCTS_UPLOADS + "/vial-solo.png"}
           style={{
-            position: "absolute", inset: "10%",
-            transform: hover ? "scale(1.06) rotate(-2deg)" : "none",
-            transition: "transform var(--transition-base) var(--ease-in-out)",
-            filter: future ? "grayscale(0.35) opacity(0.75)" : "none",
+            position: "absolute", inset: "4%",
+            transform: hover ? "scale(1.14) rotate(-3deg) translateY(-6px)" : "none",
+            transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
+            filter: future ? "grayscale(0.35) opacity(0.75)" : (hover ? "drop-shadow(0 16px 22px rgba(50,69,99,0.30))" : "none"),
           }}></image-slot>
         <div style={{
           position: "absolute", top: "var(--spacing-4)", left: "var(--spacing-4)", right: "var(--spacing-4)",
