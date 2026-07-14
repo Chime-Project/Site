@@ -66,8 +66,10 @@ function ProductHeroCard({ slotId, brand, product, price, src }) {
         boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-xs)",
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
-      <image-slot id={slotId} shape="rect" fit="cover" placeholder="Drop product photo" class="hero-float" src={src}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", willChange: "transform" }}></image-slot>
+      <video
+        src={HERO_UPLOADS + "/hf_20260714_000537_2158f109-c991-447a-aa60-3fad001a4fa4.mp4"}
+        autoPlay muted loop playsInline
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
       <div style={{ position: "absolute", top: "var(--spacing-5)", right: "var(--spacing-6)", pointerEvents: "none" }}>
         <span style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--font-weight-bold)", letterSpacing: "0.02em" }}>
           <span style={{ color: "var(--accent-default)" }}>{brand}</span>{" "}
