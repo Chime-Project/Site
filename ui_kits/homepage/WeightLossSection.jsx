@@ -150,7 +150,7 @@ function ChimeWeightLossSection() {
       <div style={{
         position: "relative", zIndex: 1,
         maxWidth: "var(--container-xl)", margin: "0 auto",
-        padding: "var(--spacing-12) var(--spacing-8) 0",
+        padding: "var(--spacing-20) var(--spacing-8) 0",
         display: "flex", flexDirection: "column", alignItems: "center",
       }}>
         <WLReveal style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -187,7 +187,7 @@ function ChimeWeightLossSection() {
       <div style={{
         position: "relative", zIndex: 1,
         maxWidth: "var(--container-xl)", margin: "0 auto",
-        padding: "0 var(--spacing-8) var(--spacing-10)",
+        padding: "0 var(--spacing-8) var(--spacing-20)",
         display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
       }}>
         {/* Row 1 — wide card + product card */}
