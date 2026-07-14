@@ -99,25 +99,22 @@ function ChimeWellnessSection() {
         padding: "0 var(--spacing-8) var(--spacing-10)",
         display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
       }}>
-        {/* Card 1 — wide: "Does any of this sound familiar?" tappable chips */}
-        <HWReveal>
-        <HWFamiliarCard />
-        </HWReveal>
-
-        {/* Product carousel card (centered) */}
-        <HWReveal delay={140}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        {/* Card 1 (reduced width) + product carousel — same line */}
+        <div className="hw-card-pair" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "var(--spacing-5)", alignItems: "stretch" }}>
+          <HWReveal>
+          <HWFamiliarCard />
+          </HWReveal>
+          <HWReveal delay={140}>
           <div style={{
-            position: "relative", overflow: "hidden", boxSizing: "border-box",
+            position: "relative", overflow: "hidden", height: "100%", boxSizing: "border-box",
             background: "rgba(56,42,10,0.78)", border: "1px solid rgba(56,42,10,0.5)",
-            borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
-            width: "100%", maxWidth: 360,
+            borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420, width: "100%",
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
             <ChimeRxCarousel Button={HWButton} accentColor="#E6C465" uploads={HW_UPLOADS} />
           </div>
+          </HWReveal>
         </div>
-        </HWReveal>
 
         <HWReveal delay={100}>
         <p style={{
