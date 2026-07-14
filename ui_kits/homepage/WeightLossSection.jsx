@@ -109,9 +109,8 @@ function ChimeRxCarousel({ Button, accentColor, uploads }) {
         ))}
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)", marginTop: "auto" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "auto" }}>
         <Button primary small label="Get started" />
-        <Button small label="Learn more" />
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", gap: 6 }}>
