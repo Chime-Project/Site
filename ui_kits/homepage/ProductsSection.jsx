@@ -186,7 +186,7 @@ function ProductCard({ p, planIdx }) {
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
         <image-slot id={p.id} shape="rect" fit="contain" placeholder="Drop product photo"
-          src={PRODUCTS_UPLOADS + "/ozempic-pen-aa505b46.png"}
+          src={PRODUCTS_UPLOADS + "/vial-solo.png"}
           style={{
             position: "absolute", inset: "10%",
             transform: hover ? "scale(1.06) rotate(-2deg)" : "none",
