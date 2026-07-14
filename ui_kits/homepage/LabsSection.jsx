@@ -292,7 +292,7 @@ function LabsTierCard({ name, markers, upgraded }) {
       </div>
       <img src={LABS_UPLOADS + "/vial-solo.png"} alt={name + " sample vial"}
         style={{
-          width: 180, height: "auto", display: "block", margin: "var(--spacing-4) auto 0",
+          width: 120, height: "auto", display: "block", margin: "var(--spacing-4) auto 0",
           transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",
           filter: hover ? "drop-shadow(0 24px 42px rgba(42,40,58,0.6))" : "drop-shadow(0 16px 32px rgba(42,40,58,0.4))",
           transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
