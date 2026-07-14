@@ -260,6 +260,34 @@ function WLSlider({ label, value, min, max, onChange }) {
   );
 }
 
+// Single source of truth for everything the calculator displays.
+// Assumes goalWeight ≤ startWeight − 5 (enforced by the slider interlocks).
+const WL_PACE_RATES = { steady: 1.0, standard: 1.4, ambitious: 1.8 }; // lb/week
+
+function wlDerive(startWeight, goalWeight, pace) {
+  const totalChange = startWeight - goalWeight;
+  const rate = WL_PACE_RATES[pace];
+  const weeks = Math.ceil(totalChange / rate);
+  const months = Math.round((weeks / 4.345) * 10) / 10;
+
+  // Curve: smoothstep descent to goal, then a flat sustain tail ≈ 20% past it.
+  const horizon = weeks * 1.2;
+  const samples = [];
+  for (let i = 0; i <= 60; i++) {
+    const w = (i / 60) * horizon;
+    const u = Math.min(1, w / weeks);
+    const smooth = 3 * u * u - 2 * u * u * u;
+    samples.push({ w, weight: w <= weeks ? startWeight - totalChange * smooth : goalWeight });
+  }
+
+  // Milestone weeks must be strictly increasing: cap m2 below the final week,
+  // and let m1 fall to week 1 when m2 is already at its floor of 2.
+  const m2 = Math.min(Math.round(weeks / 2), weeks - 1);
+  let m1 = Math.min(4, Math.max(2, Math.round(weeks * 0.22)));
+  if (m1 >= m2) m1 = Math.max(1, m2 - 1);
+  return { totalChange, rate, weeks, months, horizon, samples, milestoneWeeks: [m1, m2, weeks] };
+}
+
 function WLCalculatorCard() {
   const [start, setStart] = React.useState(190);
   const [goal, setGoal] = React.useState(165);
@@ -269,29 +297,24 @@ function WLCalculatorCard() {
     { id: "standard", label: "Standard", rate: 1.4 },
     { id: "ambitious", label: "Ambitious", rate: 1.8 },
   ];
-  const rate = paces.find((p) => p.id === pace).rate;
-  const change = Math.max(0, start - goal);
-  const weeks = change > 0 ? Math.ceil(change / rate) : 0;
-  const months = (weeks / 4.345).toFixed(1);
+  const d = wlDerive(start, goal, pace);
+  const change = d.totalChange;
+  const weeks = d.weeks;
+  const months = d.months.toFixed(1);
 
-  // Curve scales with pace: x-axis is fixed at the slowest (Steady) timeline, so a
-  // faster pace reaches goal sooner — the line ends earlier and stays flat after.
+  // Project the derived samples into the existing SVG coordinate space.
   const W = 560, H = 190, padX = 34, padY = 22;
-  const slowestWeeks = change > 0 ? Math.ceil(change / paces[0].rate) : 0;
-  const frac = slowestWeeks > 0 ? weeks / slowestWeeks : 1; // 1 for Steady, smaller when faster
-  const pts = [];
-  for (let i = 0; i <= 24; i++) {
-    const t = i / 24;
-    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-    pts.push([padX + t * frac * (W - 2 * padX), padY + ease * (H - 2 * padY)]);
-  }
-  const goalX = pts[24][0];
-  let path = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
-  if (frac < 0.999) path += " L" + (W - padX).toFixed(1) + " " + (H - padY).toFixed(1); // maintenance tail
+  const pts = d.samples.map((s) => [
+    padX + (s.w / d.horizon) * (W - 2 * padX),
+    padY + ((start - s.weight) / d.totalChange) * (H - 2 * padY),
+  ]);
+  const goalX = padX + (d.weeks / d.horizon) * (W - 2 * padX);
+  const goalY = H - padY;
+  const path = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
   const milestones = [
-    { wk: "Week 4", title: "First check-in", body: "Review progress & adjust plan" },
-    { wk: "Week " + Math.max(8, Math.round(weeks / 2)), title: "Building momentum", body: "Dose optimization phase" },
-    { wk: "Week " + Math.max(12, weeks), title: "Sustain & thrive", body: "Long-term strategy set" },
+    { wk: "Week " + d.milestoneWeeks[0], title: "First check-in", body: "Review progress & adjust plan" },
+    { wk: "Week " + d.milestoneWeeks[1], title: "Building momentum", body: "Dose optimization phase" },
+    { wk: "Week " + d.milestoneWeeks[2], title: "Sustain & thrive", body: "Long-term strategy set" },
   ];
 
   const panel = {
@@ -314,7 +337,7 @@ function WLCalculatorCard() {
         {/* Controls */}
         <div style={Object.assign({}, panel, { display: "flex", flexDirection: "column", gap: "var(--spacing-5)" })}>
           <WLSlider label="Starting weight" value={start} min={120} max={350} onChange={(v) => { setStart(v); if (goal > v - 5) setGoal(v - 5); }} />
-          <WLSlider label="Goal weight" value={goal} min={100} max={start - 5} onChange={setGoal} />
+          <WLSlider label="Goal weight" value={goal} min={100} max={start - 5} onChange={(v) => setGoal(Math.min(v, start - 5))} />
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
             <span style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.85)" }}>Pace preference</span>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "rgba(38,52,34,0.30)", borderRadius: "var(--radius-lg)", padding: 4 }}>
@@ -366,7 +389,7 @@ function WLCalculatorCard() {
             <text x={padX - 6} y={H - padY + 4} textAnchor="end" fontSize="11" fill="rgba(255,255,255,0.8)">{goal}</text>
             <path d={path} fill="none" stroke="var(--color-sage-300)" strokeWidth="2.5" strokeLinecap="round" style={{ transition: "d 0.4s var(--ease-in-out)" }}></path>
             <circle cx={pts[0][0]} cy={pts[0][1]} r="5" fill="var(--color-sage-300)"></circle>
-            <circle cx={goalX} cy={pts[24][1]} r="5" fill="var(--color-sage-300)" style={{ transition: "cx 0.4s var(--ease-in-out)" }}></circle>
+            <circle cx={goalX} cy={goalY} r="5" fill="var(--color-sage-300)" style={{ transition: "cx 0.4s var(--ease-in-out)" }}></circle>
             <text x={goalX} y={H - padY + 16} textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.85)" style={{ transition: "x 0.4s var(--ease-in-out)" }}>Wk {weeks}</text>
             <text x={padX} y={H - padY + 16} textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.8)">Wk 0</text>
           </svg>
