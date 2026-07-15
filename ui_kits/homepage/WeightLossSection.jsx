@@ -207,12 +207,12 @@ function ChimeWeightLossSection() {
             <h3 style={{ margin: 0, fontSize: "var(--text-3xl)", fontWeight: 300, lineHeight: 1.15, color: "var(--color-white)", maxWidth: "12em" }}>Because No Two Bodies Are The Same</h3>
             <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.5, color: "rgba(255,255,255,0.9)", maxWidth: "26em" }}>Your goals, lifestyle, and health history all play a role in determining the right path forward.</p>
           </div>
-          <div style={{ width: 420, justifySelf: "center", alignSelf: "end" }}>
+          <div className="w-[420px] max-[960px]:w-full max-[960px]:max-w-[420px]" style={{ justifySelf: "center", alignSelf: "end" }}>
             <img src={WL_UPLOADS + "/wieght_loss_md.png"} alt="Video visit with a provider on a phone"
               style={{ width: "100%", height: "auto", display: "block", filter: "drop-shadow(0 20px 40px rgba(17,30,44,0.4))" }} />
           </div>
-          <div style={{ position: "absolute", left: "var(--spacing-10)", bottom: "var(--spacing-8)" }}>
-            <WLButton small label="Discover Your Weight Loss Path" />
+          <div className="min-[961px]:absolute min-[961px]:left-10 min-[961px]:bottom-8 max-[960px]:flex max-[960px]:justify-center">
+            <WLButton small wrap label="Discover Your Weight Loss Path" />
           </div>
         </div>
         </WLReveal>
@@ -332,7 +332,7 @@ function WLCalculatorCard() {
         <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.5, color: "rgba(255,255,255,0.9)", maxWidth: "30em" }}>Adjust targets and preview a timeline. Your clinician personalizes the final plan.</p>
       </div>
 
-      <div className="wl-calc-grid" style={{ display: "grid", gridTemplateColumns: "minmax(260px, 340px) 1fr", gap: "var(--spacing-5)", alignItems: "stretch", flex: 1 }}>
+      <div className="wl-calc-grid grid grid-cols-1 min-[961px]:grid-cols-[minmax(260px,340px)_1fr]" style={{ gap: "var(--spacing-5)", alignItems: "stretch", flex: 1 }}>
         {/* Controls */}
         <div style={Object.assign({}, panel, { display: "flex", flexDirection: "column", gap: "var(--spacing-5)" })}>
           <WLSlider label="Starting weight" value={start} min={120} max={350} onChange={(v) => { setStart(v); if (goal > v - 5) setGoal(v - 5); }} />
@@ -392,7 +392,7 @@ function WLCalculatorCard() {
             <text x={goalX} y={H - padY + 16} textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.85)" style={{ transition: "x 0.4s var(--ease-in-out)" }}>Wk {weeks}</text>
             <text x={padX} y={H - padY + 16} textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.8)">Wk 0</text>
           </svg>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--spacing-3)" }}>
+          <div className="wl-calc-milestones grid grid-cols-1 min-[561px]:grid-cols-3" style={{ gap: "var(--spacing-3)" }}>
             {milestones.map((m) => (
               <div key={m.title} style={{
                 background: "rgba(24,42,63,0.30)", border: "1px solid rgba(255,255,255,0.08)",
@@ -411,7 +411,7 @@ function WLCalculatorCard() {
   );
 }
 
-function WLButton({ label, primary, small, tiny, large }) {
+function WLButton({ label, primary, small, tiny, large, wrap }) {
   const [hover, setHover] = React.useState(false);
   return (
     <a href="#"
@@ -429,7 +429,7 @@ function WLButton({ label, primary, small, tiny, large }) {
         borderRadius: "var(--radius-4xl)",
         padding: tiny ? "var(--spacing-1) var(--spacing-3)" : (small ? "var(--spacing-2) var(--spacing-5)" : (large ? "var(--spacing-4) var(--spacing-10)" : "var(--spacing-3) var(--spacing-7)")),
         fontSize: tiny ? "var(--text-sm)" : (large ? "var(--text-lg)" : "var(--text-base)"), fontWeight: "var(--font-weight-semibold)",
-        textDecoration: "none", whiteSpace: "nowrap",
+        textDecoration: "none", whiteSpace: wrap ? "normal" : "nowrap", textAlign: "center",
         boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
         transform: hover ? "translateY(-3px) scale(1.04)" : "none",
         transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out), color 0.35s var(--ease-in-out)",

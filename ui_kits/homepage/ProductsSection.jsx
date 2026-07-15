@@ -105,7 +105,7 @@ function ChimeProductsSection() {
       <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-3)", flexWrap: "wrap", marginBottom: "var(--spacing-6)" }}>
         <span style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", fontWeight: "var(--font-weight-medium)" }}>Treatment length</span>
         <div role="tablist" aria-label="Treatment length" style={{
-          display: "flex", gap: 2,
+          display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2,
           background: "var(--bg-secondary)", borderRadius: "var(--radius-4xl)",
           padding: 3,
         }}>
