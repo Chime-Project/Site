@@ -100,6 +100,15 @@
   --color-sage-700: #566C4F;
   --color-sage-800: #475A41;
 
+  /* Tide Blue — Weight Loss accent scale (base 500 = #5E93D1) */
+  --color-tide-100: #DFEAF6;
+  --color-tide-200: #C3D7EE;
+  --color-tide-300: #A0C0E4;
+  --color-tide-500: #5E93D1;
+  --color-tide-600: #387BC7;
+  --color-tide-700: #2F67A7;
+  --color-tide-800: #265487;
+
   --color-iris-100: #F3F3F9;
   --color-iris-200: #E4E3F1;
   --color-iris-300: #D1CFE8;
@@ -177,14 +186,14 @@
 }
 
 [data-theme="weight-loss"] {
-  --accent-default:     var(--color-sage-500);
-  --accent-strong:      var(--color-sage-700);
-  --accent-hover:       var(--color-sage-600);
-  --accent-active:      var(--color-sage-800);
-  --accent-subtle:      var(--color-sage-100);
-  --accent-subtleHover: var(--color-sage-200);
-  --accent-onSubtle:    var(--color-sage-800);
-  --accent-border:      var(--color-sage-300);
+  --accent-default:     var(--color-tide-500);
+  --accent-strong:      var(--color-tide-700);
+  --accent-hover:       var(--color-tide-600);
+  --accent-active:      var(--color-tide-800);
+  --accent-subtle:      var(--color-tide-100);
+  --accent-subtleHover: var(--color-tide-200);
+  --accent-onSubtle:    var(--color-tide-800);
+  --accent-border:      var(--color-tide-300);
 }
 
 [data-theme="lab"] {
