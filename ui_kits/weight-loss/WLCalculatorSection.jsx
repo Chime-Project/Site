@@ -1,5 +1,5 @@
 // Chime Health — Weight Loss landing: standalone calculator section
-// Reuses WLCalculatorCard from ui_kits/homepage/WeightLossSection.jsx on a tide band.
+// Renders the shared WLCalculatorCard (ui_kits/shared/WLCalculator.jsx) on a tide band.
 
 function WLCalculatorSection() {
   return (
