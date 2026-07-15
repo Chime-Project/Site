@@ -142,6 +142,11 @@
   --text-muted:      var(--color-slate-500);
   --text-on-primary: var(--color-white);
 
+  /* Aliases used by the Weight Loss UI kit (fg/surface vocabulary) */
+  --fg-default: var(--text-default);
+  --fg-muted:   var(--text-secondary);
+  --bg-surface: var(--bg-elevated);
+
   --border-default: var(--color-sand-300);
   --border-strong:  var(--color-slate-400);
 
