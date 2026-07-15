@@ -1,9 +1,9 @@
 // Chime Health — Homepage UI kit: Weight Loss section
-// Full-bleed band themed with the Weight Loss (sage) palette.
-// bg_scenario.png at top, gradient glued into solid sage; title → model → CTAs → 3 cards.
+// Full-bleed band themed with the Weight Loss (Tide Blue) palette.
+// bg_scenario.png at top, gradient glued into solid tide blue; title → model → CTAs → 3 cards.
 
 const WL_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
-const WL_SOLID = "#7A9472"; // Muted Sage Green (Accent) — main section ground
+const WL_SOLID = "#5E93D1"; // Tide Blue (Accent) — main section ground
 
 // Scroll-reveal wrapper: fades/slides children in when they enter the viewport.
 function WLReveal({ children, delay, style }) {
@@ -141,7 +141,7 @@ function ChimeWeightLossSection() {
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }} />
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(180deg, rgba(122,148,114,0.42) 0%, rgba(122,148,114,0.18) 30%, rgba(122,148,114,0.55) 62%, " + WL_SOLID + " 96%)",
+          background: "linear-gradient(180deg, rgba(94,147,209,0.42) 0%, rgba(94,147,209,0.18) 30%, rgba(94,147,209,0.55) 62%, " + WL_SOLID + " 96%)",
         }}></div>
       </div>
 
@@ -162,14 +162,14 @@ function ChimeWeightLossSection() {
           margin: 0, textAlign: "center", maxWidth: "13em",
           fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.08,
           color: "var(--color-white)", textWrap: "balance",
-          textShadow: "0 1px 18px rgba(24,38,31,0.45)",
+          textShadow: "0 1px 18px rgba(17,30,44,0.45)",
         }}>Lasting weight loss, built around your body</h2>
         </WLReveal>
 
         <WLReveal delay={120} style={{ width: "100%" }}>
         <div style={{ position: "relative", marginTop: "var(--spacing-6)", display: "flex", justifyContent: "center", width: "100%" }}>
           <img className="wl-model" src={WL_UPLOADS + "/model_weight.png"} alt="Woman carrying a yoga mat"
-            style={{ width: "min(480px, 74vw)", height: "auto", display: "block", filter: "drop-shadow(0 24px 48px rgba(24,38,31,0.45))" }} />
+            style={{ width: "min(480px, 74vw)", height: "auto", display: "block", filter: "drop-shadow(0 24px 48px rgba(17,30,44,0.45))" }} />
           {/* CTAs overlapping the bottom of the model */}
           <div style={{
             position: "absolute", bottom: "var(--spacing-8)", left: 0, right: 0,
@@ -195,7 +195,7 @@ function ChimeWeightLossSection() {
         <div className="wl-card-wide" style={{
           position: "relative",
           height: "100%", boxSizing: "border-box",
-          background: "rgba(38,52,34,0.35)",
+          background: "rgba(24,42,63,0.35)",
           border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: "var(--radius-3xl)",
           display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center",
@@ -209,7 +209,7 @@ function ChimeWeightLossSection() {
           </div>
           <div style={{ width: 420, justifySelf: "center", alignSelf: "end" }}>
             <img src={WL_UPLOADS + "/wieght_loss_md.png"} alt="Video visit with a provider on a phone"
-              style={{ width: "100%", height: "auto", display: "block", filter: "drop-shadow(0 20px 40px rgba(24,38,31,0.4))" }} />
+              style={{ width: "100%", height: "auto", display: "block", filter: "drop-shadow(0 20px 40px rgba(17,30,44,0.4))" }} />
           </div>
           <div style={{ position: "absolute", left: "var(--spacing-10)", bottom: "var(--spacing-8)" }}>
             <WLButton small label="Discover Your Weight Loss Path" />
@@ -220,11 +220,11 @@ function ChimeWeightLossSection() {
           <WLReveal delay={140}>
           <div style={{
             position: "relative", overflow: "hidden", height: "100%", boxSizing: "border-box",
-            background: "rgba(38,52,34,0.35)", border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(24,42,63,0.35)", border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
-            <ChimeRxCarousel Button={WLButton} accentColor="#CDE9BC" uploads={WL_UPLOADS} />
+            <ChimeRxCarousel Button={WLButton} accentColor="#C3D7EE" uploads={WL_UPLOADS} />
           </div>
           </WLReveal>
         </div>
@@ -238,7 +238,7 @@ function ChimeWeightLossSection() {
         <p style={{
           margin: "var(--spacing-2) auto 0", maxWidth: "52em", textAlign: "center",
           fontSize: "var(--text-xs)", lineHeight: 1.6, color: "rgba(255,255,255,0.8)",
-        }}>Not available in all 50 states. Eligibility determination and prescription required for all treatments. Individual results vary. Weight loss estimates reflect an average and are not a guarantee. <a href="#" style={{ color: "var(--color-sage-200)" }}>Read more</a></p>
+        }}>Not available in all 50 states. Eligibility determination and prescription required for all treatments. Individual results vary. Weight loss estimates reflect an average and are not a guarantee. <a href="#" style={{ color: "var(--color-tide-200)" }}>Read more</a></p>
         </WLReveal>
       </div>
     </section>
@@ -254,7 +254,7 @@ function WLSlider({ label, value, min, max, onChange }) {
       </div>
       <input type="range" min={min} max={max} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        style={{ width: "100%", accentColor: "var(--color-sage-300)", cursor: "pointer" }} />
+        style={{ width: "100%", accentColor: "var(--color-tide-300)", cursor: "pointer" }} />
     </div>
   );
 }
@@ -317,13 +317,13 @@ function WLCalculatorCard() {
   ];
 
   const panel = {
-    background: "rgba(24,38,31,0.55)", border: "1px solid rgba(255,255,255,0.08)",
+    background: "rgba(17,30,44,0.55)", border: "1px solid rgba(255,255,255,0.08)",
     borderRadius: "var(--radius-2xl)", padding: "var(--spacing-6)",
   };
 
   return (
     <div style={{
-      background: "rgba(38,52,34,0.35)", border: "1px solid rgba(255,255,255,0.08)",
+      background: "rgba(24,42,63,0.35)", border: "1px solid rgba(255,255,255,0.08)",
       borderRadius: "var(--radius-3xl)", padding: "var(--spacing-8)", height: "100%", boxSizing: "border-box",
       display: "flex", flexDirection: "column", gap: "var(--spacing-6)",
     }}>
@@ -339,13 +339,13 @@ function WLCalculatorCard() {
           <WLSlider label="Goal weight" value={goal} min={100} max={start - 5} onChange={(v) => setGoal(Math.min(v, start - 5))} />
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
             <span style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.85)" }}>Pace preference</span>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "rgba(38,52,34,0.30)", borderRadius: "var(--radius-lg)", padding: 4 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "rgba(24,42,63,0.30)", borderRadius: "var(--radius-lg)", padding: 4 }}>
               {paces.map((p) => (
                 <button key={p.id} onClick={() => setPace(p.id)} style={{
                   border: "none", cursor: "pointer", borderRadius: "var(--radius-md)",
                   padding: "var(--spacing-2) var(--spacing-1)", textAlign: "center",
-                  background: pace === p.id ? "var(--color-sage-300)" : "transparent",
-                  color: pace === p.id ? "#26341F" : "rgba(255,255,255,0.85)",
+                  background: pace === p.id ? "var(--color-tide-300)" : "transparent",
+                  color: pace === p.id ? "#12263B" : "rgba(255,255,255,0.85)",
                   fontFamily: "inherit", transition: "background 0.25s var(--ease-in-out), color 0.25s var(--ease-in-out)",
                 }}>
                   <div style={{ fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)" }}>{p.label}</div>
@@ -355,17 +355,17 @@ function WLCalculatorCard() {
             </div>
           </div>
           <div style={{
-            background: "var(--color-sage-300)", borderRadius: "var(--radius-xl)",
+            background: "var(--color-tide-300)", borderRadius: "var(--radius-xl)",
             padding: "var(--spacing-4) var(--spacing-5)",
             display: "grid", gridTemplateColumns: "1fr auto", gap: "var(--spacing-4)", alignItems: "center",
           }}>
             <div>
-              <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.1em", textTransform: "uppercase", color: "#26341F", opacity: 0.7 }}>Estimated timeline</div>
-              <div style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-medium)", color: "#26341F", fontVariantNumeric: "tabular-nums" }}>{weeks} wk (~{months} mo)</div>
+              <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.1em", textTransform: "uppercase", color: "#12263B", opacity: 0.7 }}>Estimated timeline</div>
+              <div style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-medium)", color: "#12263B", fontVariantNumeric: "tabular-nums" }}>{weeks} wk (~{months} mo)</div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.1em", textTransform: "uppercase", color: "#26341F", opacity: 0.7 }}>Total change</div>
-              <div style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-medium)", color: "#26341F", fontVariantNumeric: "tabular-nums" }}>−{change} lb</div>
+              <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.1em", textTransform: "uppercase", color: "#12263B", opacity: 0.7 }}>Total change</div>
+              <div style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-medium)", color: "#12263B", fontVariantNumeric: "tabular-nums" }}>−{change} lb</div>
             </div>
           </div>
           <p style={{ margin: 0, fontSize: "var(--text-xs)", lineHeight: 1.5, color: "rgba(255,255,255,0.8)" }}>Projections are not guarantees. Your clinician determines eligibility, dosing, and timelines based on your individual profile.</p>
@@ -386,16 +386,16 @@ function WLCalculatorCard() {
             <line x1={padX} y1={H - padY} x2={W - padX} y2={H - padY} stroke="rgba(255,255,255,0.12)" strokeDasharray="3 4"></line>
             <text x={padX - 6} y={padY + 4} textAnchor="end" fontSize="11" fill="rgba(255,255,255,0.8)">{start}</text>
             <text x={padX - 6} y={H - padY + 4} textAnchor="end" fontSize="11" fill="rgba(255,255,255,0.8)">{goal}</text>
-            <path d={path} fill="none" stroke="var(--color-sage-300)" strokeWidth="2.5" strokeLinecap="round" style={{ transition: "d 0.4s var(--ease-in-out)" }}></path>
-            <circle cx={pts[0][0]} cy={pts[0][1]} r="5" fill="var(--color-sage-300)"></circle>
-            <circle cx={goalX} cy={goalY} r="5" fill="var(--color-sage-300)" style={{ transition: "cx 0.4s var(--ease-in-out)" }}></circle>
+            <path d={path} fill="none" stroke="var(--color-tide-300)" strokeWidth="2.5" strokeLinecap="round" style={{ transition: "d 0.4s var(--ease-in-out)" }}></path>
+            <circle cx={pts[0][0]} cy={pts[0][1]} r="5" fill="var(--color-tide-300)"></circle>
+            <circle cx={goalX} cy={goalY} r="5" fill="var(--color-tide-300)" style={{ transition: "cx 0.4s var(--ease-in-out)" }}></circle>
             <text x={goalX} y={H - padY + 16} textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.85)" style={{ transition: "x 0.4s var(--ease-in-out)" }}>Wk {weeks}</text>
             <text x={padX} y={H - padY + 16} textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.8)">Wk 0</text>
           </svg>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--spacing-3)" }}>
             {milestones.map((m) => (
               <div key={m.title} style={{
-                background: "rgba(38,52,34,0.30)", border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(24,42,63,0.30)", border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: "var(--radius-xl)", padding: "var(--spacing-4)",
                 display: "flex", flexDirection: "column", gap: "var(--spacing-1)",
               }}>
@@ -422,7 +422,7 @@ function WLButton({ label, primary, small, tiny, large }) {
         display: "inline-block", position: "relative", overflow: "hidden",
         background: primary ? "var(--color-white)" : "rgba(255,255,255,0.18)",
         color: primary
-          ? (hover ? "var(--text-on-primary)" : "#26341F")
+          ? (hover ? "var(--text-on-primary)" : "#12263B")
           : "var(--color-white)",
         backdropFilter: primary ? "none" : "blur(8px)",
         border: primary ? "1px solid transparent" : "1px solid rgba(255,255,255,0.25)",
