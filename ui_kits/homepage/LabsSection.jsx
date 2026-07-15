@@ -42,7 +42,6 @@ function ChimeLabsSection() {
       position: "relative", overflow: "hidden",
       background: LABS_SOLID,
       fontFamily: "var(--font-family-base)",
-      marginTop: "var(--spacing-12)",
     }}>
       {/* Background video treatment, glued to the solid color with a gradient */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 860, pointerEvents: "none" }}>

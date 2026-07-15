@@ -134,7 +134,6 @@ function ChimeWeightLossSection() {
       position: "relative", overflow: "hidden",
       background: WL_SOLID,
       fontFamily: "var(--font-family-base)",
-      marginTop: "var(--spacing-12)",
     }}>
       {/* Background scenario image, glued to the solid color with a gradient */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 860, pointerEvents: "none" }}>
