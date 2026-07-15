@@ -6,13 +6,29 @@ const NAV_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
 function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs"] }) {
   const { Button } = window.ChimeHealthDesignSystem_b350cf;
   const [scrolled, setScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const headerRef = React.useRef(null);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  // Mobile menu: close on outside tap or when the viewport grows back to desktop.
+  React.useEffect(() => {
+    if (!menuOpen) return;
+    const onDocDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) setMenuOpen(false); };
+    const onResize = () => { if (window.innerWidth >= 961) setMenuOpen(false); };
+    document.addEventListener("mousedown", onDocDown);
+    document.addEventListener("touchstart", onDocDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.removeEventListener("mousedown", onDocDown);
+      document.removeEventListener("touchstart", onDocDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [menuOpen]);
   return (
-    <header style={{
+    <header ref={headerRef} style={{
       position: "fixed", zIndex: "var(--z-sticky)",
       top: scrolled ? "var(--spacing-3)" : 0,
       left: "50%", transform: "translateX(-50%)",
@@ -41,7 +57,27 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
         <div className="nav-links" style={{ display: "flex", gap: "var(--spacing-2)", justifySelf: "center" }}>
           {links.map((label) => <NavLink key={label} label={label} onDark={scrolled} />)}
         </div>
-        <div style={{ justifySelf: "end" }}>
+        <div style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "var(--spacing-2)" }}>
+          <button
+            type="button"
+            className="min-[961px]:hidden flex flex-col justify-center gap-1"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+            style={{
+              width: 40, height: 40, padding: 9, boxSizing: "border-box",
+              background: "transparent", border: "none", cursor: "pointer", borderRadius: "var(--radius-md)",
+            }}>
+            {[0, 1, 2].map((i) => (
+              <span key={i} aria-hidden="true" style={{
+                display: "block", height: 2, width: "100%", borderRadius: 2,
+                background: scrolled ? "var(--color-white)" : "var(--text-secondary)",
+                transition: "transform 0.25s var(--ease-in-out), opacity 0.2s var(--ease-in-out), background var(--transition-base) var(--ease-in-out)",
+                transform: menuOpen ? (i === 0 ? "translateY(6px) rotate(45deg)" : i === 2 ? "translateY(-6px) rotate(-45deg)" : "none") : "none",
+                opacity: menuOpen && i === 1 ? 0 : 1,
+              }} />
+            ))}
+          </button>
           <Button variant="outline" size="sm" style={{
             borderRadius: "var(--radius-4xl)", padding: "0 var(--spacing-4)",
             color: scrolled ? "var(--color-white)" : undefined,
@@ -51,6 +87,27 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
           }}>Log in</Button>
         </div>
       </nav>
+      {menuOpen ? (
+        <div style={{
+          position: "absolute", top: "100%", left: 0, right: 0,
+          marginTop: scrolled ? "var(--spacing-1)" : 0,
+          background: scrolled ? "rgba(50, 69, 99, 0.98)" : "rgba(255, 254, 251, 0.98)",
+          backdropFilter: "blur(var(--blur-md))", WebkitBackdropFilter: "blur(var(--blur-md))",
+          borderRadius: scrolled ? "var(--radius-2xl)" : "0 0 var(--radius-2xl) var(--radius-2xl)",
+          borderTop: scrolled ? "none" : "1px solid var(--border-default)",
+          boxShadow: "var(--shadow-lg)",
+          padding: "var(--spacing-3)",
+          display: "flex", flexDirection: "column", gap: "var(--spacing-1)",
+        }}>
+          {links.map((label) => (
+            <a key={label} href="#" onClick={() => setMenuOpen(false)} style={{
+              textDecoration: "none", fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
+              color: scrolled ? "var(--color-white)" : "var(--text-default)",
+              padding: "var(--spacing-3) var(--spacing-4)", borderRadius: "var(--radius-lg)",
+            }}>{label}</a>
+          ))}
+        </div>
+      ) : null}
     </header>
   );
 }
