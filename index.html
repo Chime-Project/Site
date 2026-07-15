@@ -61,6 +61,11 @@
     .hero-cat-grid { grid-template-columns: 1fr 1fr !important; }
     .hero-title { font-size: var(--text-5xl) !important; }
     .nav-links { display: none !important; }
+    /* Mobile nav: hamburger left, logo right — nothing else */
+    .nav-bar { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+    .nav-actions { order: -1; }
+    .nav-logo { order: 2; margin-left: 0 !important; }
+    .nav-login { display: none !important; }
     .footer-grid { grid-template-columns: 1fr !important; }
     .hero-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
     .guide-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
