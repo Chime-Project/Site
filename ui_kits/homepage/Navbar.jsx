@@ -3,7 +3,13 @@
 
 const NAV_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
 
-function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs"] }) {
+// Map nav labels to their destination pages. Labels without an entry fall back to "#".
+const NAV_HREFS = window.CHIME_NAV_HREFS || {
+  "Weight Loss": "weight-loss.html",
+};
+const navHref = (label) => NAV_HREFS[label] || "#";
+
+function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs"], homeHref = "homepage.html" }) {
   const { Button } = window.ChimeHealthDesignSystem_b350cf;
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -50,14 +56,14 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
         transition: "height var(--transition-base) var(--ease-in-out), padding var(--transition-base) var(--ease-in-out)",
         fontFamily: "var(--font-family-base)",
       }}>
-        <a href="#" aria-label="Chime Health home" style={{ display: "inline-flex", alignItems: "center", justifySelf: "start", position: "relative", marginLeft: "var(--spacing-4)" }}>
+        <a href={homeHref} aria-label="Chime Health home" className="nav-logo" style={{ display: "inline-flex", alignItems: "center", justifySelf: "start", position: "relative", marginLeft: "var(--spacing-4)" }}>
           <img src={NAV_ASSETS + "/logo-slate.png"} alt="Chime Health" style={{ height: 44, width: "auto", display: "block", opacity: scrolled ? 0 : 1, transition: "opacity var(--transition-base) var(--ease-in-out)" }} />
           <img src={NAV_ASSETS + "/logo-white.png"} alt="" aria-hidden="true" style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", height: 44, width: "auto", display: "block", opacity: scrolled ? 1 : 0, transition: "opacity var(--transition-base) var(--ease-in-out)" }} />
         </a>
         <div className="nav-links" style={{ display: "flex", gap: "var(--spacing-2)", justifySelf: "center" }}>
-          {links.map((label) => <NavLink key={label} label={label} onDark={scrolled} />)}
+          {links.map((label) => <NavLink key={label} label={label} href={navHref(label)} onDark={scrolled} />)}
         </div>
-        <div style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "var(--spacing-2)" }}>
+        <div className="nav-actions" style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "var(--spacing-2)" }}>
           <button
             type="button"
             className="min-[961px]:hidden flex flex-col justify-center gap-1"
@@ -78,7 +84,7 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
               }} />
             ))}
           </button>
-          <Button variant="outline" size="sm" style={{
+          <Button variant="outline" size="sm" className="nav-login" style={{
             borderRadius: "var(--radius-4xl)", padding: "0 var(--spacing-4)",
             color: scrolled ? "var(--color-white)" : undefined,
             borderColor: scrolled ? "rgba(255,255,255,0.4)" : undefined,
@@ -100,7 +106,7 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
           display: "flex", flexDirection: "column", gap: "var(--spacing-1)",
         }}>
           {links.map((label) => (
-            <a key={label} href="#" onClick={() => setMenuOpen(false)} style={{
+            <a key={label} href={navHref(label)} onClick={() => setMenuOpen(false)} style={{
               textDecoration: "none", fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
               color: scrolled ? "var(--color-white)" : "var(--text-default)",
               padding: "var(--spacing-3) var(--spacing-4)", borderRadius: "var(--radius-lg)",
@@ -112,11 +118,11 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
   );
 }
 
-function NavLink({ label, onDark }) {
+function NavLink({ label, href = "#", onDark }) {
   const [hover, setHover] = React.useState(false);
   return (
     <a
-      href="#"
+      href={href}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

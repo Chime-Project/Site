@@ -123,6 +123,7 @@ function WLTimelineSection() {
 
       {/* Panel */}
       <div style={{ position: "relative", maxWidth: 1152, margin: "0 auto", padding: "0 var(--spacing-6) var(--spacing-12)" }}>
+        <WLReveal>
         <div className="wlt-panel" style={{
           background: "var(--color-white)", borderRadius: "var(--radius-2xl)",
           boxShadow: "var(--shadow-md)",
@@ -152,6 +153,7 @@ function WLTimelineSection() {
             <ChimeRxCarousel Button={WLTButton} accentColor="var(--color-tide-200)" uploads={WLT_UPLOADS} />
           </div>
         </div>
+        </WLReveal>
       </div>
     </section>
   );

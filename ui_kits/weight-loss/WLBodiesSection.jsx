@@ -45,7 +45,7 @@ function WLBodiesSection() {
       fontFamily: "var(--font-family-base)", background: "var(--bg-default)",
       padding: "calc(var(--spacing-12) * 2) var(--spacing-6)",
     }}>
-      <div className="wlb-grid" style={{
+      <WLReveal className="wlb-grid" style={{
         maxWidth: 1280, margin: "0 auto",
         display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-12)",
         alignItems: "center",
@@ -94,7 +94,7 @@ function WLBodiesSection() {
           }}>You’re Not Doing This Alone™</p>
           <WLBodiesCTA label="Explore The Chime Membership"></WLBodiesCTA>
         </div>
-      </div>
+      </WLReveal>
     </section>
   );
 }

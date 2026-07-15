@@ -6,7 +6,7 @@ const WL_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 const WL_SOLID = "#5E93D1"; // Tide Blue (Accent) — main section ground
 
 // Scroll-reveal wrapper: fades/slides children in when they enter the viewport.
-function WLReveal({ children, delay, style }) {
+function WLReveal({ children, delay, style, className }) {
   const ref = React.useRef(null);
   const reduced = React.useMemo(function () {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -23,7 +23,7 @@ function WLReveal({ children, delay, style }) {
     return function () { io.disconnect(); };
   }, [reduced]);
   return (
-    <div ref={ref} style={Object.assign({
+    <div ref={ref} className={className} style={Object.assign({
       opacity: shown ? 1 : 0,
       transform: shown ? "none" : "translateY(28px)",
       transition: "opacity 0.8s var(--ease-out, ease-out), transform 0.8s var(--ease-out, ease-out)",
