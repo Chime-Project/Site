@@ -5,32 +5,12 @@
 const WL_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 const WL_SOLID = "#5E93D1"; // Tide Blue (Accent) — main section ground
 
-// Scroll-reveal wrapper: fades/slides children in when they enter the viewport.
+// Scroll-reveal wrapper: fades/slides children in as they enter the viewport.
+// Now a pure-CSS scroll-driven animation (see `.reveal` in the page <style>) —
+// no IntersectionObserver or React state. `delay` is accepted for API
+// compatibility; staggering now comes from each element's own scroll position.
 function WLReveal({ children, delay, style }) {
-  const ref = React.useRef(null);
-  const reduced = React.useMemo(function () {
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-  const [shown, setShown] = React.useState(reduced);
-  React.useEffect(function () {
-    if (reduced) return;
-    const el = ref.current;
-    if (!el || !("IntersectionObserver" in window)) { setShown(true); return; }
-    const io = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { setShown(true); io.disconnect(); }
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    io.observe(el);
-    return function () { io.disconnect(); };
-  }, [reduced]);
-  return (
-    <div ref={ref} style={Object.assign({
-      opacity: shown ? 1 : 0,
-      transform: shown ? "none" : "translateY(28px)",
-      transition: "opacity 0.8s var(--ease-out, ease-out), transform 0.8s var(--ease-out, ease-out)",
-      transitionDelay: (delay || 0) + "ms",
-      willChange: "opacity, transform",
-    }, style || {})}>{children}</div>
-  );
+  return <div className="reveal" style={style}>{children}</div>;
 }
 
 function RxArrow({ dir, onClick }) {
@@ -131,7 +111,7 @@ function ChimeRxCarousel({ Button, accentColor, uploads }) {
 function ChimeWeightLossSection() {
   return (
     <section id="weight-loss-section" data-screen-label="Weight Loss" data-theme="weight-loss" style={{
-      position: "relative", overflow: "hidden",
+      position: "relative", overflow: "clip",
       background: WL_SOLID,
       fontFamily: "var(--font-family-base)",
     }}>
@@ -207,11 +187,11 @@ function ChimeWeightLossSection() {
             <h3 style={{ margin: 0, fontSize: "var(--text-3xl)", fontWeight: 300, lineHeight: 1.15, color: "var(--color-white)", maxWidth: "12em" }}>Because No Two Bodies Are The Same</h3>
             <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.5, color: "rgba(255,255,255,0.9)", maxWidth: "26em" }}>Your goals, lifestyle, and health history all play a role in determining the right path forward.</p>
           </div>
-          <div className="w-[420px] max-[960px]:w-full max-[960px]:max-w-[420px]" style={{ justifySelf: "center", alignSelf: "end" }}>
+          <div className="w-wl-model max-nav:w-full max-nav:max-w-wl-model" style={{ justifySelf: "center", alignSelf: "end" }}>
             <img src={WL_UPLOADS + "/wieght_loss_md.png"} alt="Video visit with a provider on a phone"
               style={{ width: "100%", height: "auto", display: "block", filter: "drop-shadow(0 20px 40px rgba(17,30,44,0.4))" }} />
           </div>
-          <div className="min-[961px]:absolute min-[961px]:left-10 min-[961px]:bottom-8 max-[960px]:flex max-[960px]:justify-center">
+          <div className="nav:absolute nav:start-10 nav:bottom-8 max-nav:flex max-nav:justify-center">
             <WLButton small wrap label="Discover Your Weight Loss Path" />
           </div>
         </div>

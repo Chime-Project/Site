@@ -85,7 +85,7 @@
           error:   { DEFAULT: 'var(--error-default)',   subtle: 'var(--error-subtle)' },
           info:    { DEFAULT: 'var(--info-default)',    subtle: 'var(--info-subtle)' },
 
-          /* Theme accent — swaps with data-theme="default|weight-loss|lab|energy-wellness" */
+          /* Theme accent — swaps with data-theme="default|weight-loss|lab|wellness" */
           accent: {
             DEFAULT: 'var(--accent-default)',
             strong: 'var(--accent-strong)',
@@ -165,6 +165,20 @@
 
         opacity: {
           disabled: '0.45',
+        },
+
+        /* Chime desktop breakpoint as a named token (merged with Tailwind's
+           defaults) so utilities never need arbitrary min-[…]/max-[…] values.
+           `nav` = the 960/961 desktop threshold used across the site. */
+        screens: {
+          'nav': '961px',
+        },
+        /* Named width for the Weight Loss model column. */
+        width: {
+          'wl-model': '420px',
+        },
+        maxWidth: {
+          'wl-model': '420px',
         },
       },
     },

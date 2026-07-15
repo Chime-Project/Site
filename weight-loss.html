@@ -24,9 +24,34 @@
     .nav-links { display: none !important; }
     .nav-bar { display: flex !important; justify-content: space-between !important; align-items: center !important; }
     .nav-actions { order: -1; }
-    .nav-logo { order: 2; margin-left: 0 !important; }
+    .nav-logo { order: 2; margin-inline-start: 0 !important; }
     .nav-login { display: none !important; }
     .footer-grid { grid-template-columns: 1fr !important; }
+  }
+  /* Nav: hide hamburger + stale-open mobile menu on desktop (no JS resize listener). */
+  @media (min-width: 961px) {
+    .nav-hamburger { display: none !important; }
+    .nav-mobile-menu { display: none !important; }
+  }
+  /* Weight Loss calculator grids — columns owned here (not Tailwind utilities)
+     so they don't depend on Play-CDN utility ordering. */
+  .wl-calc-grid { grid-template-columns: 1fr; }
+  .wl-calc-milestones { grid-template-columns: 1fr; }
+  @media (min-width: 561px) { .wl-calc-milestones { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 961px) { .wl-calc-grid { grid-template-columns: minmax(260px, 340px) 1fr; } }
+  /* Section scroll-reveal — pure CSS scroll-driven animation (replaces the
+     per-section IntersectionObserver). Unsupported browsers rest at the end
+     state (visible), so content is never stuck hidden. */
+  @keyframes chime-reveal {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: chime-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 22%;
+    }
   }
 
   /* ---- Weight Loss sections ---- */
@@ -38,10 +63,10 @@
     .wlb-grid { grid-template-columns: 1fr !important; }
     .wlt-panel { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; padding: var(--spacing-8) var(--spacing-6) !important; }
     .wl-calc-grid { grid-template-columns: 1fr !important; }
-    .path-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .path-section { padding-inline: var(--spacing-5) !important; }
     .path-title { font-size: var(--text-4xl) !important; }
     .path-grid { grid-template-columns: 1fr 1fr !important; }
-    .guide-section { padding-left: var(--spacing-5) !important; padding-right: var(--spacing-5) !important; }
+    .guide-section { padding-inline: var(--spacing-5) !important; }
     .guide-content { padding: var(--spacing-8) var(--spacing-6) !important; }
   }
   @media (max-width: 560px) {
