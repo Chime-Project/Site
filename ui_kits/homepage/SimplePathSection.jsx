@@ -1,32 +1,10 @@
 // Chime Health — Homepage UI kit: "A Simple Path Forward" section
 // Header row + 4-step card grid. Each card carries a giant numeral bleeding off the bottom edge.
 
-// Scroll-reveal wrapper: fades/slides children in when they enter the viewport.
+// Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
+// `delay` accepted for API compatibility.
 function SimplePathReveal({ children, delay, style }) {
-  const ref = React.useRef(null);
-  const reduced = React.useMemo(function () {
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-  const [shown, setShown] = React.useState(reduced);
-  React.useEffect(function () {
-    if (reduced) return;
-    const el = ref.current;
-    if (!el || !("IntersectionObserver" in window)) { setShown(true); return; }
-    const io = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { setShown(true); io.disconnect(); }
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    io.observe(el);
-    return function () { io.disconnect(); };
-  }, [reduced]);
-  return (
-    <div ref={ref} style={Object.assign({
-      opacity: shown ? 1 : 0,
-      transform: shown ? "none" : "translateY(28px)",
-      transition: "opacity 0.8s var(--ease-out, ease-out), transform 0.8s var(--ease-out, ease-out)",
-      transitionDelay: (delay || 0) + "ms",
-      willChange: "opacity, transform",
-    }, style || {})}>{children}</div>
-  );
+  return <div className="reveal" style={style}>{children}</div>;
 }
 
 const SIMPLE_PATH_STEPS = [

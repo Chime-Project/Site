@@ -103,7 +103,7 @@ function WLCalculatorCard() {
         <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.5, color: "rgba(255,255,255,0.9)", maxWidth: "30em" }}>Adjust targets and preview a timeline. Your clinician personalizes the final plan.</p>
       </div>
 
-      <div className="wl-calc-grid grid grid-cols-1 min-[961px]:grid-cols-[minmax(260px,340px)_1fr]" style={{ gap: "var(--spacing-5)", alignItems: "stretch", flex: 1 }}>
+      <div className="wl-calc-grid grid" style={{ gap: "var(--spacing-5)", alignItems: "stretch", flex: 1 }}>
         {/* Controls */}
         <div style={Object.assign({}, panel, { display: "flex", flexDirection: "column", gap: "var(--spacing-5)" })}>
           <WLSlider label="Starting weight" value={start} min={120} max={350} onChange={(v) => { setStart(v); if (goal > v - 5) setGoal(v - 5); }} />
@@ -163,7 +163,7 @@ function WLCalculatorCard() {
             <text x={goalX} y={H - padY + 16} textAnchor="middle" fontSize={fs} fill="rgba(255,255,255,0.85)" style={{ transition: "x 0.4s var(--ease-in-out)" }}>Wk {weeks}</text>
             <text x={padX} y={H - padY + 16} textAnchor="middle" fontSize={fs} fill="rgba(255,255,255,0.8)">Wk 0</text>
           </svg>
-          <div className="wl-calc-milestones grid grid-cols-1 min-[561px]:grid-cols-3" style={{ gap: "var(--spacing-3)" }}>
+          <div className="wl-calc-milestones grid" style={{ gap: "var(--spacing-3)" }}>
             {milestones.map((m) => (
               <div key={m.title} style={{
                 background: "rgba(24,42,63,0.30)", border: "1px solid rgba(255,255,255,0.08)",

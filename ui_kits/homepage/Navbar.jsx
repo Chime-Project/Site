@@ -19,18 +19,17 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  // Mobile menu: close on outside tap or when the viewport grows back to desktop.
+  // Mobile menu: close on an outside tap. Growing back to desktop no longer
+  // needs a JS resize listener — CSS (.nav-hamburger / .nav-mobile-menu at
+  // min-width:961px) hides both the toggle and the menu on desktop.
   React.useEffect(() => {
     if (!menuOpen) return;
     const onDocDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) setMenuOpen(false); };
-    const onResize = () => { if (window.innerWidth >= 961) setMenuOpen(false); };
     document.addEventListener("mousedown", onDocDown);
     document.addEventListener("touchstart", onDocDown);
-    window.addEventListener("resize", onResize);
     return () => {
       document.removeEventListener("mousedown", onDocDown);
       document.removeEventListener("touchstart", onDocDown);
-      window.removeEventListener("resize", onResize);
     };
   }, [menuOpen]);
   return (
@@ -66,7 +65,7 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
         <div className="nav-actions" style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "var(--spacing-2)" }}>
           <button
             type="button"
-            className="min-[961px]:hidden flex flex-col justify-center gap-1"
+            className="nav-hamburger flex flex-col justify-center gap-1"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((o) => !o)}
@@ -94,7 +93,7 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
         </div>
       </nav>
       {menuOpen ? (
-        <div style={{
+        <div className="nav-mobile-menu" style={{
           position: "absolute", top: "100%", left: 0, right: 0,
           marginTop: scrolled ? "var(--spacing-1)" : 0,
           background: scrolled ? "rgba(50, 69, 99, 0.98)" : "rgba(255, 254, 251, 0.98)",

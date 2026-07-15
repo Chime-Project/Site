@@ -8,38 +8,16 @@ const LABS_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 const LABS_SOLID = "#A59FD6"; // Iris Signal (Accent) — main section ground
 const LABS_INK = "#2A283A"; // dark neutral ink for text on light surfaces
 
-// Scroll-reveal wrapper (same behavior as WLReveal).
+// Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
+// `delay` accepted for API compatibility.
 function LabsReveal({ children, delay, style }) {
-  const ref = React.useRef(null);
-  const reduced = React.useMemo(function () {
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-  const [shown, setShown] = React.useState(reduced);
-  React.useEffect(function () {
-    if (reduced) return;
-    const el = ref.current;
-    if (!el || !("IntersectionObserver" in window)) { setShown(true); return; }
-    const io = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { setShown(true); io.disconnect(); }
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    io.observe(el);
-    return function () { io.disconnect(); };
-  }, [reduced]);
-  return (
-    <div ref={ref} style={Object.assign({
-      opacity: shown ? 1 : 0,
-      transform: shown ? "none" : "translateY(28px)",
-      transition: "opacity 0.8s var(--ease-out, ease-out), transform 0.8s var(--ease-out, ease-out)",
-      transitionDelay: (delay || 0) + "ms",
-      willChange: "opacity, transform",
-    }, style || {})}>{children}</div>
-  );
+  return <div className="reveal" style={style}>{children}</div>;
 }
 
 function ChimeLabsSection() {
   return (
     <section id="labs-section" data-screen-label="Labs" data-theme="lab" style={{
-      position: "relative", overflow: "hidden",
+      position: "relative", overflow: "clip",
       background: LABS_SOLID,
       fontFamily: "var(--font-family-base)",
     }}>
