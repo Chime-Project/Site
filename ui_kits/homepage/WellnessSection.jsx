@@ -39,7 +39,6 @@ function ChimeWellnessSection() {
       position: "relative", overflow: "hidden",
       background: HW_SOLID,
       fontFamily: "var(--font-family-base)",
-      marginTop: "var(--spacing-12)",
     }}>
       {/* Background video, glued to the solid color with a gradient */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 860, pointerEvents: "none" }}>
