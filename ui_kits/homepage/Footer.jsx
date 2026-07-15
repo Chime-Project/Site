@@ -5,6 +5,11 @@
 
 const FOOTER_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
 
+// Destination pages for footer nav labels; labels without an entry fall back to "#".
+const FOOTER_HREFS = window.CHIME_NAV_HREFS || {
+  "Weight Loss": "weight-loss.html",
+};
+
 function ChimeFooter() {
   return (
     <footer style={{
@@ -42,7 +47,7 @@ function ChimeFooter() {
         </div>
 
         <nav style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-          {["Weight Loss", "Health, Energy & Wellness", "Labs"].map((l) => <FooterLink key={l} label={l} />)}
+          {["Weight Loss", "Health, Energy & Wellness", "Labs"].map((l) => <FooterLink key={l} label={l} href={FOOTER_HREFS[l] || "#"} />)}
         </nav>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
@@ -76,11 +81,11 @@ function ChimeFooter() {
   );
 }
 
-function FooterLink({ label, underline = false }) {
+function FooterLink({ label, href = "#", underline = false }) {
   const [hover, setHover] = React.useState(false);
   return (
     <a
-      href="#"
+      href={href}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

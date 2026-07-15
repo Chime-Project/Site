@@ -68,7 +68,7 @@ function ChimeLabsSection() {
           fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.12,
           color: "var(--color-white)", textWrap: "balance",
           textShadow: "0 1px 18px rgba(42,40,58,0.45)",
-        }}>Your Body Has Been Trying<br></br><span style={{ color: "#2A283A" }}>To Tell You Something</span></h2>
+        }}>Your Body Has Been Trying<br></br><span style={{ color: "var(--color-white)" }}>To Tell You Something</span></h2>
         </LabsReveal>
 
         {/* Subtitle + CTAs at the bottom of the products shown in the video */}

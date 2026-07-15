@@ -70,7 +70,8 @@ function ChimeWeightLossHero() {
   return (
     <section data-theme="weight-loss" data-screen-label="WL Hero" style={{ background: "var(--bg-default)" }}>
       {/* Bento grid: images on top, headline + checklist tiles below */}
-      <div className="wlh-bento hero-enter" style={{
+      <WLReveal>
+      <div className="wlh-bento" style={{
         maxWidth: 1280, margin: "0 auto",
         padding: "var(--spacing-8) var(--spacing-6) 0",
         display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "var(--spacing-3)",
@@ -135,13 +136,16 @@ function ChimeWeightLossHero() {
             strong="Ongoing Support" rest="a team that stays with you throughout your journey"></WLHeroCheckItem>
         </div>
       </div>
+      </WLReveal>
 
-      <div className="hero-enter" style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "var(--spacing-3) var(--spacing-6) var(--spacing-12)", animationDelay: "240ms" }}>
+      <WLReveal delay={140}>
+      <div style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "var(--spacing-3) var(--spacing-6) var(--spacing-12)" }}>
         <p style={{
           margin: "0 auto", maxWidth: 960, padding: 0,
           fontSize: "var(--text-xs)", lineHeight: 1.6, color: "var(--fg-muted)",
         }}><strong style={{ color: "var(--fg-default)" }}>Safety info:</strong> GLP-1 medications may have serious side effects. Eligibility determination and prescription required for all treatments. Individual results vary; *average reflects clinical study data, not a guarantee. <a href="#" style={{ color: "var(--accent-strong)" }}>See serious warnings &amp; safety info</a>.</p>
       </div>
+      </WLReveal>
     </section>
   );
 }
