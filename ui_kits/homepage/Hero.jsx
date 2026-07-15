@@ -21,8 +21,8 @@ function ChimeHero() {
           </h1>
           <ProductHeroCard
             slotId="hero-weight-loss"
-            brand="SEMAGLUTIDE"
-            product="Boost"
+            brand={<span style={{ color: "#fff" }}>GLP-1</span>}
+            product=""
             price="Start from $179.00"
             src={HERO_UPLOADS + "/pen.png"}
           />
