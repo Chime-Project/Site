@@ -24,7 +24,7 @@ function WLHeroBenefit({ icon, label }) {
 const wlhIcon = (d) => <Icon size={28} strokeWidth={1.5}>{d}</Icon>;
 
 function ChimeWeightLossHero() {
-  const open = () => window.dispatchEvent(new CustomEvent("chime:open-assessment"));
+  const open = () => { window.openChimeAssessment && window.openChimeAssessment(); };
   return (
     <section data-theme="weight-loss" data-screen-label="WL Hero" style={{ background: "var(--bg-default)" }}>
       {/* Bento grid: images on top, headline + checklist tiles below */}
