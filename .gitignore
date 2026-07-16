@@ -1,0 +1,5 @@
+# This repo's root is served publicly by GitHub Pages — anything committed here
+# is fetchable at https://chime-project.github.io/Site/<path>. Keep local-only
+# working notes and OS cruft out of the deploy.
+CLAUDE.md
+.DS_Store

@@ -3,6 +3,29 @@
 // one question at a time with lettered answers). Chime tokens throughout.
 // Opened via window.openChimeAssessment(). No nav links inside the modal.
 
+// The small circle used twice below: the progress stepper's dots and each
+// answer row's letter. Kept local rather than promoted to shared/ui — this file
+// is its only consumer, and AssessmentModal already loads on all four pages, so
+// a shared file would cost four <script> tags for no reuse. Phase 7.
+//   size:     px (26 stepper dot · 28 answer letter)
+//   state:    "done" | "current" | "todo"
+//   elevated: lift the "done" state (answer rows only)
+function StepBadge({ size = 26, state = "todo", elevated, ariaLabel, children }) {
+  const done = state === "done";
+  return (
+    <span aria-label={ariaLabel} style={{
+      width: size, height: size, borderRadius: "50%", flex: "none", boxSizing: "border-box",
+      display: "inline-flex", alignItems: "center", justifyContent: "center",
+      background: done ? "var(--accent-strong)" : "var(--color-white)",
+      border: done ? "1px solid var(--accent-strong)"
+        : (state === "current" ? "2px solid var(--accent-strong)" : "1px solid var(--border-strong)"),
+      color: done ? "var(--color-white)" : "var(--text-secondary)",
+      fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)",
+      boxShadow: (done && elevated) ? "var(--shadow-sm)" : "none",
+    }}>{children}</span>
+  );
+}
+
 const ASSESSMENT_SECTIONS = [
   {
     name: "About you",
@@ -143,18 +166,12 @@ function ChimeAssessmentModal() {
                   <React.Fragment key={fq.id}>
                     {i > 0 &&
                       <span style={{ flex: 1, height: 2, minWidth: 10, background: i <= qIndex ? "var(--accent-strong)" : "var(--border-default)" }}></span>}
-                    <span aria-label={"Question " + (i + 1)} style={{
-                      width: 26, height: 26, borderRadius: "50%", flex: "none", boxSizing: "border-box",
-                      display: "inline-flex", alignItems: "center", justifyContent: "center",
-                      background: complete ? "var(--accent-strong)" : "var(--color-white)",
-                      border: complete ? "1px solid var(--accent-strong)" : (current ? "2px solid var(--accent-strong)" : "1px solid var(--border-strong)"),
-                      color: complete ? "var(--color-white)" : "var(--text-secondary)",
-                      fontSize: 11, fontWeight: "var(--font-weight-semibold)",
-                    }}>
+                    <StepBadge size={26} ariaLabel={"Question " + (i + 1)}
+                      state={complete ? "done" : (current ? "current" : "todo")}>
                       {complete ?
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12.5l5 5L20 7"></path></svg>
                         : (i + 1)}
-                    </span>
+                    </StepBadge>
                   </React.Fragment>
                 );
               })}
@@ -241,15 +258,7 @@ function AssessmentAnswerRow({ letter, label, selected, last, onSelect }) {
         padding: "var(--spacing-4) var(--spacing-2)",
         transition: "background var(--transition-base) var(--ease-in-out)",
       }}>
-      <span style={{
-        width: 28, height: 28, borderRadius: "50%", flex: "none", boxSizing: "border-box",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        background: selected ? "var(--accent-strong)" : "var(--color-white)",
-        border: selected ? "1px solid var(--accent-strong)" : "1px solid var(--border-strong)",
-        color: selected ? "var(--color-white)" : "var(--text-secondary)",
-        fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)",
-        boxShadow: selected ? "var(--shadow-sm)" : "none",
-      }}>{letter}</span>
+      <StepBadge size={28} state={selected ? "done" : "todo"} elevated>{letter}</StepBadge>
       <span style={{ fontSize: "var(--text-base)", color: "var(--text-default)", fontWeight: selected ? "var(--font-weight-semibold)" : "var(--font-weight-normal)" }}>{label}</span>
     </button>
   );
