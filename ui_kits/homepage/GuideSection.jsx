@@ -10,13 +10,13 @@ function GuideReveal({ children, delay, style }) {
   return <div className="reveal" style={style}>{children}</div>;
 }
 
-function ChimeGuideSection() {
+function ChimeGuideSection({ theme = "default" }) {
   const [email, setEmail] = React.useState("");
   const [hover, setHover] = React.useState(false);
   const [focus, setFocus] = React.useState(false);
   const linkStyle = { color: "var(--color-white)", textDecoration: "underline", textUnderlineOffset: 3 };
   return (
-    <section data-screen-label="Guide CTA" className="guide-section" style={{
+    <section data-screen-label="Guide CTA" data-theme={theme} className="guide-section" style={{
       fontFamily: "var(--font-family-base)",
       padding: "var(--spacing-12) var(--spacing-8)",
       maxWidth: "var(--container-xl)", margin: "0 auto", boxSizing: "border-box",
@@ -64,12 +64,12 @@ function ChimeGuideSection() {
               style={{
                 appearance: "none", width: "100%", boxSizing: "border-box",
                 background: "var(--color-white)",
-                border: focus ? "1px solid var(--color-blue-500)" : "1px solid transparent",
+                border: focus ? "1px solid var(--accent-default)" : "1px solid transparent",
                 borderRadius: "var(--radius-4xl)",
                 padding: "var(--spacing-3) var(--spacing-5)",
                 fontSize: "var(--text-base)", fontFamily: "var(--font-family-base)",
                 color: "var(--color-slate-800)", outline: "none",
-                boxShadow: focus ? "0 0 0 3px rgba(101,128,188,0.25)" : "var(--shadow-sm)",
+                boxShadow: focus ? "0 0 0 3px color-mix(in srgb, var(--accent-default) 30%, transparent)" : "var(--shadow-sm)",
                 transition: "box-shadow var(--transition-base) var(--ease-in-out), border-color var(--transition-base) var(--ease-in-out)",
               }} />
             <button type="submit"
@@ -81,7 +81,7 @@ function ChimeGuideSection() {
                 padding: "var(--spacing-3) var(--spacing-5)",
                 fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
                 fontFamily: "var(--font-family-base)",
-                color: "var(--color-blue-800)",
+                color: "var(--accent-active)",
                 boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
                 transform: hover ? "translateY(-2px)" : "none",
                 transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out)",
