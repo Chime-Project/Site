@@ -12,42 +12,15 @@ const WNT_SOLID = "#D7AA52"; // Soft Cadmium (Accent) — main section ground
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
 // `delay` accepted for API compatibility.
-function WNTReveal({ children, delay, style }) {
-  return <div className="reveal" style={style}>{children}</div>;
+function WNTReveal(props) {
+  return <Reveal {...props} />;
 }
 
 // Rx carousel arrow.
 // 2-product Rx carousel — same shape the homepage Health, Energy & Wellness section uses,
 // on a dark-gold card so it reads on the white panel.
 function WNTButton({ label, primary }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <a href="#"
-      onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        display: "inline-block", position: "relative", overflow: "hidden",
-        background: primary ? "var(--accent-default)" : "var(--color-white)",
-        color: primary ? "var(--color-white)" : (hover ? "var(--color-white)" : "var(--text-default)"),
-        border: primary ? "1px solid transparent" : "1px solid var(--border-strong)",
-        borderRadius: "var(--radius-4xl)",
-        padding: "var(--spacing-2) var(--spacing-5)",
-        fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)",
-        textDecoration: "none", whiteSpace: "nowrap",
-        boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
-        transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out), color 0.35s var(--ease-in-out)",
-      }}>
-      <span style={{
-        position: "absolute", inset: 0,
-        background: primary ? "var(--accent-strong)" : "var(--accent-default)",
-        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
-        transition: "transform 0.35s var(--ease-in-out)",
-      }}></span>
-      <span style={{ position: "relative" }}>{label}</span>
-    </a>
-  );
+  return <Button label={label} tone="onLight" variant={primary ? "primary" : "secondary"} size="compact" />;
 }
 
 // Gold checkmark bullet for the membership benefits list.

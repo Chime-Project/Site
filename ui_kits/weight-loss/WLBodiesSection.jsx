@@ -3,60 +3,11 @@
 // Content ref: uploads/pasted-1784134687917-0.png
 
 function WLBodiesCTA({ label, onClick }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <button onClick={onClick}
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-      style={{
-        position: "relative", overflow: "hidden", cursor: "pointer",
-        whiteSpace: "nowrap",
-        border: "none",
-        background: "var(--accent-default)",
-        color: "var(--color-white)",
-        borderRadius: "var(--radius-4xl)",
-        padding: "var(--spacing-3) var(--spacing-5)",
-        fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
-        fontFamily: "var(--font-family-base)",
-        boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
-        transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out)",
-      }}>
-      <span aria-hidden="true" style={{
-        position: "absolute", inset: 0,
-        background: "var(--accent-active)",
-        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
-        transition: "transform 0.35s var(--ease-in-out)",
-      }}></span>
-      <span style={{ position: "relative" }}>{label}</span>
-    </button>
-  );
+  return <Button label={label} onClick={onClick} tone="onLight" variant="primary" size="cta" />;
 }
 
 function WLBannerCTA({ label }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <button
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-      style={{
-        position: "relative", overflow: "hidden", cursor: "pointer",
-        whiteSpace: "nowrap", border: "none",
-        background: "var(--accent-default)", color: "var(--color-white)",
-        borderRadius: 999,
-        padding: "12px 20px",
-        fontSize: 16, fontWeight: 600,
-        fontFamily: "var(--font-family-base)",
-        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
-        transition: "transform 0.35s var(--ease-in-out, ease-in-out)",
-      }}>
-      <span aria-hidden="true" style={{
-        position: "absolute", inset: 0,
-        background: "var(--accent-active)",
-        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
-        transition: "transform 0.35s var(--ease-in-out, ease-in-out)",
-      }}></span>
-      <span style={{ position: "relative" }}>{label}</span>
-    </button>
-  );
+  return <Button label={label} tone="onLight" variant="primary" size="cta" />;
 }
 
 function WLBanner() {

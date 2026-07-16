@@ -6,8 +6,8 @@ const GUIDE_BG = GUIDE_UPLOADS + "/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
 // `delay` accepted for API compatibility.
-function GuideReveal({ children, delay, style }) {
-  return <div className="reveal" style={style}>{children}</div>;
+function GuideReveal(props) {
+  return <Reveal {...props} />;
 }
 
 function ChimeGuideSection({ theme = "default" }) {

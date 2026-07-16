@@ -1,0 +1,36 @@
+// Chime Health — shared FAQ content. Load before FaqAccordion.jsx.
+// Keyed by page theme; render with <FaqAccordion items={window.CHIME_FAQS[key]} />.
+window.CHIME_FAQS = {
+  "weight-loss": [
+    { q: "How does the Chime weight loss program work?",
+      a: "It starts with a short assessment. A licensed provider reviews your goals and health history, and — if it's a fit — builds a personalized plan that may include GLP-1 medication, coaching, and ongoing support that adjusts as you progress." },
+    { q: "What is the difference between GLP-1 and GLP1/GIP medications?",
+      a: "GLP-1 medications help regulate appetite and blood sugar. GLP1/GIP medications act on an additional hormone pathway (GIP) and are often prescribed for greater results. Your provider recommends the option best suited to your body and goals." },
+    { q: "Is a GLP-1 medication right for me?",
+      a: "You don't have to figure it out alone. After your assessment, a licensed provider reviews your information to determine whether medication is appropriate and, if so, which one — always with clinical oversight." },
+    { q: "Will I speak with a provider?",
+      a: "Yes. A licensed provider reviews your information and is involved in any recommendations or treatments, so your plan always has clinical oversight from day one." },
+    { q: "How much does it cost?",
+      a: "Plans start from $249/mo. You can choose 3-month, 6-month, or 1-year terms, and some promotional plans include a 4th month free. Everything is transparent before you commit — no surprise fees." },
+    { q: "Do I need lab testing first?",
+      a: "Sometimes. Depending on your goals and health history, your provider may recommend lab work so your plan can be tailored to you and reviewed for safety before you start." },
+    { q: "What kind of support will I have?",
+      a: "Your care team stays with you the whole way — with a wellness coach for accountability, a provider for clinical oversight, and regular check-ins that adjust your plan as your life changes. You're Not Doing This Alone™." },
+  ],
+  wellness: [
+    { q: "How does the Chime Energy & Wellness program work?",
+      a: "It starts with your goals. A wellness coach and licensed provider help you explore options — from coaching and health insights to wellness therapies — and build a personalized path designed around your needs." },
+    { q: "What is NAD+?",
+      a: "NAD+ is a coenzyme found naturally in every cell that plays a role in energy production and cellular health. Some members explore it as part of a personalized wellness plan — your provider can help determine whether it may be a fit for you." },
+    { q: "What is LIPO-C?",
+      a: "LIPO-C is a blend of compounds — often including B-vitamins and amino acids — that some people use to support metabolism and everyday energy. Whether it's appropriate for you is determined during your provider consultation." },
+    { q: "How do I know which option is right for me?",
+      a: "You don't have to figure it out alone. After a short assessment, your wellness coach and provider review your goals and health background to recommend the options best suited to you." },
+    { q: "Will I speak with a provider?",
+      a: "Yes. A licensed provider reviews your information and is involved in any recommendations or treatments, so your plan always has clinical oversight." },
+    { q: "Do I need lab testing first?",
+      a: "Sometimes. Depending on your goals and the options you're exploring, your provider may recommend lab work so any plan can be tailored to you and reviewed for safety." },
+    { q: "How does wellness coaching work?",
+      a: "Your coach is a consistent point of support — helping you set goals, stay accountable, and adjust your plan as your life changes, with regular check-ins along the way." },
+  ],
+};

@@ -7,9 +7,8 @@ const WL_SOLID = "#5E93D1"; // Tide Blue (Accent) — main section ground
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
 // `delay` accepted for API compatibility.
-function WLReveal({ children, delay, style, className }) {
-  const cls = className ? "reveal " + className : "reveal";
-  return <div className={cls} style={style}>{children}</div>;
+function WLReveal(props) {
+  return <Reveal {...props} />;
 }
 
 function ChimeWeightLossSection() {
@@ -214,37 +213,8 @@ function WLProductCarousel({ theme, bare }) {
 }
 
 function WLButton({ label, primary, small, tiny, large }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <a href="#"
-      onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        display: "inline-block", position: "relative", overflow: "hidden",
-        background: primary ? "var(--color-white)" : "rgba(255,255,255,0.18)",
-        color: primary
-          ? (hover ? "var(--text-on-primary)" : "#1C3049")
-          : "var(--color-white)",
-        backdropFilter: primary ? "none" : "blur(8px)",
-        border: primary ? "1px solid transparent" : "1px solid rgba(255,255,255,0.25)",
-        borderRadius: "var(--radius-4xl)",
-        padding: tiny ? "var(--spacing-1) var(--spacing-3)" : (small ? "var(--spacing-2) var(--spacing-5)" : (large ? "var(--spacing-4) var(--spacing-10)" : "var(--spacing-3) var(--spacing-7)")),
-        fontSize: tiny ? "var(--text-sm)" : (large ? "var(--text-lg)" : "var(--text-base)"), fontWeight: "var(--font-weight-semibold)",
-        textDecoration: "none", whiteSpace: "nowrap",
-        boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
-        transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out), color 0.35s var(--ease-in-out)",
-      }}>
-      <span style={{
-        position: "absolute", inset: 0,
-        background: "var(--accent-default)",
-        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
-        transition: "transform 0.35s var(--ease-in-out)",
-      }}></span>
-      <span style={{ position: "relative" }}>{label}</span>
-    </a>
-  );
+  return <Button label={label} tone="onDark" variant={primary ? "primary" : "secondary"}
+    size={tiny ? "tiny" : (small ? "small" : (large ? "large" : "default"))} />;
 }
 
 Object.assign(window, { ChimeWeightLossSection, WLReveal, WLProductCarousel });
