@@ -36,32 +36,7 @@ const HWS_CSS = `
 }`;
 
 function HWSSoundFamiliarCTA({ label, onClick }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <button onClick={onClick}
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-      style={{
-        position: "relative", overflow: "hidden", cursor: "pointer",
-        whiteSpace: "nowrap", border: "none",
-        background: "var(--color-cadmium-100)",
-        color: "var(--accent-strong)",
-        borderRadius: "var(--radius-4xl)",
-        padding: "var(--spacing-3) var(--spacing-5)",
-        fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
-        fontFamily: "var(--font-family-base)",
-        boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
-        transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out)",
-      }}>
-      <span aria-hidden="true" style={{
-        position: "absolute", inset: 0,
-        background: "var(--color-cadmium-200)",
-        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
-        transition: "transform 0.35s var(--ease-in-out)",
-      }}></span>
-      <span style={{ position: "relative" }}>{label}</span>
-    </button>
-  );
+  return <Button label={label} onClick={onClick} variant="ghost" size="cta" />;
 }
 
 function ChimeHWSymptomsSection() {

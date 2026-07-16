@@ -3,8 +3,8 @@
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
 // `delay` accepted for API compatibility.
-function SimplePathReveal({ children, delay, style }) {
-  return <div className="reveal" style={style}>{children}</div>;
+function SimplePathReveal(props) {
+  return <Reveal {...props} />;
 }
 
 // Step copy is shared; only the color ramp swaps per landing page palette so

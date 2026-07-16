@@ -10,8 +10,8 @@ const LABS_INK = "#2A283A"; // dark neutral ink for text on light surfaces
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
 // `delay` accepted for API compatibility.
-function LabsReveal({ children, delay, style }) {
-  return <div className="reveal" style={style}>{children}</div>;
+function LabsReveal(props) {
+  return <Reveal {...props} />;
 }
 
 function ChimeLabsSection() {
