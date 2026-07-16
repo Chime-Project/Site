@@ -136,15 +136,23 @@ function TestimonialCarousel() {
   );
 }
 
+// Shared shell for the two stat tiles below. Kept as a style object rather than a
+// component: the pair differ by tag (<div> vs <a>) and behaviour, not by shape, and
+// this is their only consumer. Always spread into a fresh object — never mutate it.
+// (Not merged with Hero's CategoryCard/StartHereCard: those are flex-row tiles with a
+// border, a 52px image-slot and a trailing glyph. The only overlap is radius-2xl +
+// minHeight 88 — too little to share. Phase 7.)
+const STAT_TILE_SHELL = {
+  background: "var(--color-sand-100)", borderRadius: "var(--radius-2xl)",
+  padding: "var(--spacing-5) var(--spacing-6)", minHeight: 88, boxSizing: "border-box",
+  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+  gap: "var(--spacing-1)", textAlign: "center",
+};
+
 function TestimonialStat({ children, delay }) {
   const [ref, revealStyle] = useReveal(delay);
   return (
-    <div ref={ref} style={Object.assign({
-      background: "var(--color-sand-100)", borderRadius: "var(--radius-2xl)",
-      padding: "var(--spacing-5) var(--spacing-6)", minHeight: 88, boxSizing: "border-box",
-      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-      gap: "var(--spacing-1)", textAlign: "center",
-    }, revealStyle)}>
+    <div ref={ref} style={Object.assign({}, STAT_TILE_SHELL, revealStyle)}>
       {children}
     </div>
   );
@@ -158,11 +166,8 @@ function TestimonialStatCTA({ delay }) {
       onClick={function (e) { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={function () { setHover(true); }}
       onMouseLeave={function () { setHover(false); }}
-      style={Object.assign({
-        background: "var(--color-sand-100)", borderRadius: "var(--radius-2xl)",
-        padding: "var(--spacing-5) var(--spacing-6)", minHeight: 88, boxSizing: "border-box",
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        gap: "var(--spacing-1)", textAlign: "center", textDecoration: "none",
+      style={Object.assign({}, STAT_TILE_SHELL, {
+        textDecoration: "none",
         boxShadow: hover ? "var(--shadow-md)" : "none",
       }, revealStyle, {
         transform: hover ? (revealStyle.opacity === 1 ? "translateY(-3px)" : revealStyle.transform) : revealStyle.transform,

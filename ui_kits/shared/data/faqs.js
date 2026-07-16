@@ -17,6 +17,27 @@ window.CHIME_FAQS = {
     { q: "What kind of support will I have?",
       a: "Your care team stays with you the whole way — with a wellness coach for accountability, a provider for clinical oversight, and regular check-ins that adjust your plan as your life changes. You're Not Doing This Alone™." },
   ],
+  // NOTE: placeholder marketing copy pending review. Deliberately avoids prices
+  // and turnaround times — panel pricing isn't set (ChimeLabsSection still shows
+  // "From $—"), so no figures are stated here. Claims are kept in line with the
+  // Labs disclaimer: provider-ordered, informational, not a diagnosis, and not
+  // available in all 50 states.
+  lab: [
+    { q: "How do Chime health insights work?",
+      a: "It starts with a short assessment. A licensed provider orders your panel, your sample is collected at a nearby lab, and your results are reviewed by a provider — then turned into a personalized path built around what your biomarkers show." },
+    { q: "What is the difference between the panels?",
+      a: "Each panel goes a level deeper: Comprehensive covers 80+ biomarkers, Complete 100+, and Executive 130+. If you're not sure which fits, your provider can help you choose based on your goals and health history." },
+    { q: "Where is my sample collected?",
+      a: "At a partner lab near you. It's a standard blood draw that usually takes just a few minutes — you'll get your location options and any preparation instructions when you book." },
+    { q: "Will a provider review my results?",
+      a: "Yes. Lab tests are ordered and reviewed by licensed providers, so your results always have clinical oversight. You can also add a 45-minute lab review to walk through what your results mean and what to consider next." },
+    { q: "Are my results a diagnosis?",
+      a: "No. Results are informational and are not a diagnosis. They're designed to help uncover biomarkers that may support conversations about your wellness, energy, metabolism, recovery, and long-term health with your provider." },
+    { q: "Do I need to fast before my test?",
+      a: "Sometimes. Certain biomarkers — like glucose and cholesterol — can be affected by recent meals, so your provider may ask you to fast beforehand. Any instructions are shared with you before your appointment." },
+    { q: "Is testing available where I live?",
+      a: "Lab testing is not available in all 50 states, and the panels offered can vary by location. You'll see what's available to you once you start your assessment." },
+  ],
   wellness: [
     { q: "How does the Chime Energy & Wellness program work?",
       a: "It starts with your goals. A wellness coach and licensed provider help you explore options — from coaching and health insights to wellness therapies — and build a personalized path designed around your needs." },

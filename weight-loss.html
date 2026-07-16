@@ -63,7 +63,7 @@
     .wlb-grid { grid-template-columns: 1fr !important; }
     .wlb-banner { grid-template-columns: 1fr !important; justify-items: center !important; text-align: center !important; row-gap: var(--spacing-8) !important; }
     .wlb-banner .wlb-banner-tile { margin: 0 auto !important; }
-    .wlt-panel { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; padding: var(--spacing-8) var(--spacing-6) !important; }
+    .membership-panel { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; padding: var(--spacing-8) var(--spacing-6) !important; }
     .wl-calc-grid { grid-template-columns: 1fr !important; }
     .simple-path-section { padding-inline: var(--spacing-5) !important; }
     .simple-path-title { font-size: var(--text-4xl) !important; }
@@ -93,27 +93,28 @@
 <div id="root"></div>
 <!-- Main menu -->
 <script src="ui_kits/shared/data/products.js?v=20260718"></script>
-<script src="ui_kits/shared/data/faqs.js?v=20260718"></script>
+<script src="ui_kits/shared/data/faqs.js?v=20260720"></script>
 <script type="text/babel" src="ui_kits/shared/common/RxCarousel.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/CheckItem.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/shared/common/MembershipPanel.jsx?v=20260720"></script>
 <script type="text/babel" src="ui_kits/shared/common/FaqAccordion.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260718"></script>
-<!-- Weight Loss sections + shared building blocks (WLProductCarousel / WLReveal / WLButton) -->
+<!-- Weight Loss sections; WLShared.jsx supplies WLReveal -->
 <script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260718"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLShared.jsx?v=20260718"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLShared.jsx?v=20260720"></script>
 <script type="text/babel" src="ui_kits/weight-loss/WeightLossHero.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/weight-loss/WLBodiesSection.jsx?v=20260718"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLTimelineSection.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLTimelineSection.jsx?v=20260720"></script>
 <script type="text/babel" src="ui_kits/weight-loss/WLCalculatorSection.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/homepage/GuideSection.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/weight-loss/WLFaqSection.jsx?v=20260718"></script>
 <!-- Footer + assessment modal -->
 <script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260718"></script>
-<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260718"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260720"></script>
 <script type="text/babel">
 function WeightLossPage() {
   return (
