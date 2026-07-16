@@ -71,19 +71,7 @@ function WLTimelineSection() {
               listStyle: "none", margin: "var(--spacing-5) 0 0", padding: 0,
             }}>
               {["Lifestyle Strategies", "Laboratory Testing", "Wellness Support", "Coaching", "Treatment Options"].map((item) => (
-                <li key={item} style={{
-                  display: "flex", alignItems: "center", gap: "var(--spacing-3)",
-                  padding: "var(--spacing-2) 0",
-                }}>
-                  <span aria-hidden="true" style={{
-                    flex: "none", width: 24, height: 24, borderRadius: "var(--radius-4xl)",
-                    background: "var(--accent-default)", color: "var(--color-white)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12.5l5 5 11-12" /></svg>
-                  </span>
-                  <span style={{ fontSize: "var(--text-base)", color: "var(--fg-default)", fontWeight: "var(--font-weight-medium)" }}>{item}</span>
-                </li>
+                <CheckBullet key={item} label={item} />
               ))}
             </ul>
 

@@ -86,11 +86,7 @@ function ChimeProductsSection() {
         marginBottom: "var(--spacing-8)",
       }}>
         <div>
-          <div style={{
-            color: "var(--accent-strong)", fontSize: "var(--text-sm)",
-            fontWeight: "var(--font-weight-semibold)", letterSpacing: "0.12em",
-            textTransform: "uppercase", marginBottom: "var(--spacing-3)",
-          }}>Treatments</div>
+          <Eyebrow marginBottom="var(--spacing-3)" label="Treatments" />
           <h2 className="products-title" style={{
             margin: 0, fontSize: "var(--text-5xl)", fontWeight: 300,
             lineHeight: 1.1, color: "var(--text-default)", textWrap: "balance",

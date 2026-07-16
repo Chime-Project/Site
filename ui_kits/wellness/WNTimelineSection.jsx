@@ -24,19 +24,8 @@ function WNTButton({ label, primary }) {
 }
 
 // Gold checkmark bullet for the membership benefits list.
-function WNTCheckItem({ label }) {
-  return (
-    <li style={{ display: "flex", alignItems: "center", gap: "var(--spacing-3)", padding: "var(--spacing-2) 0" }}>
-      <span aria-hidden="true" style={{
-        flex: "none", width: 24, height: 24, borderRadius: "var(--radius-4xl)",
-        background: "var(--accent-default)", color: "var(--color-white)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-      }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12.5l5 5 11-12" /></svg>
-      </span>
-      <span style={{ fontSize: "var(--text-base)", color: "var(--fg-default)", fontWeight: "var(--font-weight-medium)" }}>{label}</span>
-    </li>
-  );
+function WNTCheckItem(props) {
+  return <CheckBullet {...props} />;
 }
 
 const WNT_BENEFITS = [

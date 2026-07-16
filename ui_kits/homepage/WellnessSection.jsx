@@ -38,11 +38,7 @@ function ChimeWellnessSection() {
         display: "flex", flexDirection: "column", alignItems: "center",
       }}>
         <HWReveal style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{
-          color: "rgba(255,255,255,0.9)", fontSize: "var(--text-sm)",
-          fontWeight: "var(--font-weight-semibold)", letterSpacing: "0.12em",
-          textTransform: "uppercase", opacity: 0.9, marginBottom: "var(--spacing-3)",
-        }}>Health, Energy &amp; Wellness by Chime</div>
+        <Eyebrow tone="onDark" opacity={0.9} marginBottom="var(--spacing-3)" label="Health, Energy & Wellness by Chime" />
         <h2 className="hw-title" style={{
           margin: 0, textAlign: "center", maxWidth: "13em",
           fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.08,
