@@ -7,28 +7,49 @@ function SimplePathReveal({ children, delay, style }) {
   return <div className="reveal" style={style}>{children}</div>;
 }
 
-const SIMPLE_PATH_STEPS = [
-  {
-    n: 1, title: "Discover", body: "Tell us about your goals.",
-    bg: "var(--color-blue-950)", text: "var(--color-white)",
-    numeral: "var(--color-blue-300)", bodyOpacity: 0.78,
-  },
-  {
-    n: 2, title: "Connect", body: "Meet your care team.",
-    bg: "var(--color-blue-800)", text: "var(--color-white)",
-    numeral: "var(--color-blue-100)", bodyOpacity: 0.78,
-  },
-  {
-    n: 3, title: "Personalize", body: "Receive your personalized plan.",
-    bg: "var(--color-blue-500)", text: "var(--color-white)",
-    numeral: "var(--color-blue-800)", bodyOpacity: 0.78,
-  },
-  {
-    n: 4, title: "Thrive", body: "Stay supported along the way.",
-    bg: "var(--color-sand-100)", text: "var(--color-blue-800)",
-    numeral: "var(--color-sand-400)", body_color: "var(--color-sand-800)", bodyOpacity: 1,
-  },
+// Step copy is shared; only the color ramp swaps per landing page palette so
+// each page keeps its own accent (default = homepage blue).
+const SIMPLE_PATH_COPY = [
+  { n: 1, title: "Discover", body: "Tell us about your goals." },
+  { n: 2, title: "Connect", body: "Meet your care team." },
+  { n: 3, title: "Personalize", body: "Receive your personalized plan." },
+  { n: 4, title: "Thrive", body: "Stay supported along the way." },
 ];
+
+// Per-theme color ramps: darkest → mid → light neutral, mirroring the homepage.
+const SIMPLE_PATH_RAMPS = {
+  default: [
+    { bg: "var(--color-blue-950)", text: "var(--color-white)",   numeral: "var(--color-blue-300)", bodyOpacity: 0.78 },
+    { bg: "var(--color-blue-800)", text: "var(--color-white)",   numeral: "var(--color-blue-100)", bodyOpacity: 0.78 },
+    { bg: "var(--color-blue-500)", text: "var(--color-white)",   numeral: "var(--color-blue-800)", bodyOpacity: 0.78 },
+    { bg: "var(--color-sand-100)", text: "var(--color-blue-800)", numeral: "var(--color-sand-400)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
+  ],
+  wellness: [
+    { bg: "var(--color-cadmium-800)", text: "var(--color-white)",      numeral: "var(--color-cadmium-500)", bodyOpacity: 0.82 },
+    { bg: "var(--color-cadmium-700)", text: "var(--color-white)",      numeral: "var(--color-cadmium-300)", bodyOpacity: 0.85 },
+    { bg: "var(--color-cadmium-600)", text: "var(--color-white)",      numeral: "var(--color-cadmium-800)", bodyOpacity: 0.9 },
+    { bg: "var(--color-sand-100)",    text: "var(--color-cadmium-800)", numeral: "var(--color-cadmium-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
+  ],
+  "weight-loss": [
+    { bg: "var(--color-tide-800)", text: "var(--color-white)",   numeral: "var(--color-tide-500)", bodyOpacity: 0.82 },
+    { bg: "var(--color-tide-700)", text: "var(--color-white)",   numeral: "var(--color-tide-300)", bodyOpacity: 0.85 },
+    { bg: "var(--color-tide-500)", text: "var(--color-white)",   numeral: "var(--color-tide-800)", bodyOpacity: 0.85 },
+    { bg: "var(--color-sand-100)", text: "var(--color-tide-800)", numeral: "var(--color-tide-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
+  ],
+};
+
+// Applies the per-theme color ramp to a copy list of any length. The last card
+// always takes the light neutral (final ramp entry); earlier cards walk the
+// dark→mid shades — so a 3-card list still reads dark→dark→light like the 4-card.
+function simplePathSteps(theme, copy) {
+  const ramp = SIMPLE_PATH_RAMPS[theme] || SIMPLE_PATH_RAMPS.default;
+  const list = copy || SIMPLE_PATH_COPY;
+  const n = list.length;
+  return list.map(function (c, i) {
+    const rampIdx = i === n - 1 ? ramp.length - 1 : Math.min(i, ramp.length - 2);
+    return Object.assign({ n: i + 1 }, c, ramp[rampIdx]);
+  });
+}
 
 function SimplePathCard({ step, isActive, isLit }) {
   const [hover, setHover] = React.useState(false);
@@ -112,42 +133,51 @@ function useSimplePathSweep(ref, count) {
   return activeStep;
 }
 
-function ChimeSimplePathSection() {
+function ChimeSimplePathSection({ theme = "default", title = "A Simple Path Forward", subtitle, steps: stepsCopy }) {
   const [linkHover, setLinkHover] = React.useState(false);
   const gridRef = React.useRef(null);
-  const activeStep = useSimplePathSweep(gridRef, SIMPLE_PATH_STEPS.length);
+  const steps = simplePathSteps(theme, stepsCopy);
+  const activeStep = useSimplePathSweep(gridRef, steps.length);
   return (
-    <section data-screen-label="Simple Path Forward" className="simple-path-section" style={{
+    <section data-screen-label="Simple Path Forward" data-theme={theme} className="simple-path-section" style={{
       fontFamily: "var(--font-family-base)",
       padding: "var(--spacing-12) var(--spacing-8)",
       maxWidth: "var(--container-xl)", margin: "0 auto", boxSizing: "border-box",
       background: "var(--bg-default)",
     }}>
       <SimplePathReveal style={{
-        display: "flex", alignItems: "baseline", justifyContent: "space-between",
+        display: "flex", alignItems: "flex-end", justifyContent: "space-between",
         flexWrap: "wrap", gap: "var(--spacing-4)",
         marginBottom: "var(--spacing-8)",
       }}>
-        <h2 className="simple-path-title" style={{
-          margin: 0, fontSize: "var(--text-5xl)", fontWeight: 300,
-          lineHeight: 1.1, color: "var(--text-default)",
-        }}>A Simple Path Forward</h2>
-        <a href="#" data-theme="default"
+        <div style={{ maxWidth: "34em" }}>
+          <h2 className="simple-path-title" style={{
+            margin: 0, fontSize: "var(--text-5xl)", fontWeight: 300,
+            lineHeight: 1.1, color: "var(--text-default)",
+          }}>{title}</h2>
+          {subtitle ? (
+            <p style={{
+              margin: "var(--spacing-4) 0 0", fontSize: "var(--text-lg)",
+              lineHeight: 1.5, color: "var(--fg-muted)",
+            }}>{subtitle}</p>
+          ) : null}
+        </div>
+        <a href="#"
           onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
           onMouseEnter={() => setLinkHover(true)}
           onMouseLeave={() => setLinkHover(false)}
           style={{
             fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
             color: linkHover ? "var(--accent-hover)" : "var(--accent-strong)",
-            textDecoration: "underline", textUnderlineOffset: "3px",
+            textDecoration: "underline", textUnderlineOffset: "3px", whiteSpace: "nowrap",
             transition: "color var(--transition-base) var(--ease-in-out)",
           }}>Discover your health path</a>
       </SimplePathReveal>
 
       <div ref={gridRef} className="simple-path-grid" style={{
-        display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "var(--spacing-4)",
+        display: "grid", gridTemplateColumns: "repeat(" + steps.length + ", 1fr)", gap: "var(--spacing-4)",
       }}>
-        {SIMPLE_PATH_STEPS.map((step, i) => (
+        {steps.map((step, i) => (
           <SimplePathReveal key={step.n} delay={i * 100}>
             <SimplePathCard
               step={step}

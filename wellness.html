@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Health, Energy &amp; Wellness</title>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#D7AA52"></rect><circle cx="50" cy="50" r="20" fill="none" stroke="#FFFEFB" stroke-width="3"></circle><circle cx="50" cy="50" r="12" fill="none" stroke="#F3E3C4" stroke-width="3"></circle><circle cx="50" cy="50" r="5" fill="#FFFEFB"></circle></svg></template>
+<link rel="stylesheet" href="styles.css">
+<script src="tailwind.setup.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="dsbundle.js"></script>
+<script src="ui_kits/homepage/image-slot.js"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg-default); padding-top: 72px; }
+  a { color: var(--accent-strong); }
+  a:hover { color: var(--accent-default); }
+
+  /* ---- Nav + footer (shared with homepage) ---- */
+  @media (max-width: 960px) {
+    .nav-links { display: none !important; }
+    .nav-bar { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+    .nav-actions { order: -1; }
+    .nav-logo { order: 2; margin-inline-start: 0 !important; }
+    .nav-login { display: none !important; }
+    .footer-grid { grid-template-columns: 1fr !important; }
+  }
+  /* Nav: hide hamburger + stale-open mobile menu on desktop (no JS resize listener). */
+  @media (min-width: 961px) {
+    .nav-hamburger { display: none !important; }
+    .nav-mobile-menu { display: none !important; }
+  }
+  /* Section scroll-reveal — pure CSS scroll-driven animation. Unsupported
+     browsers rest at the end state (visible), so content is never stuck hidden. */
+  @keyframes chime-reveal {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: chime-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 22%;
+    }
+  }
+
+  /* ---- Wellness hero (bento) responsive ---- */
+  @media (max-width: 960px) {
+    .wnh-bento > div { grid-column: span 12 !important; }
+    .wnh-tile-img { height: auto !important; aspect-ratio: 4 / 3 !important; }
+    .wnh-tile-video { aspect-ratio: 3 / 4 !important; }
+  }
+
+  /* ---- Timeline to treatment (recreated from Weight Loss, gold-themed) ---- */
+  @media (max-width: 960px) {
+    .wnt-panel { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; padding: var(--spacing-8) var(--spacing-6) !important; }
+  }
+
+  /* ---- Homepage sections: Simple Path Forward + Guide CTA (shared) ---- */
+  @media (max-width: 960px) {
+    .simple-path-section { padding-inline: var(--spacing-5) !important; }
+    .simple-path-grid { grid-template-columns: 1fr 1fr !important; }
+    .simple-path-title { font-size: var(--text-4xl) !important; }
+    .guide-section { padding-inline: var(--spacing-5) !important; }
+    .guide-content { padding: var(--spacing-8) var(--spacing-6) !important; }
+  }
+  @media (max-width: 560px) {
+    .simple-path-grid { grid-template-columns: 1fr !important; }
+    .simple-path-section { padding-inline: var(--spacing-4) !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Main menu -->
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx"></script>
+<!-- Wellness hero -->
+<script type="text/babel" src="ui_kits/wellness/WellnessHero.jsx"></script>
+<!-- "Does Any of This Sound Familiar?" sticky-stack parallax -->
+<script type="text/babel" src="ui_kits/wellness/HWSymptomsSection.jsx"></script>
+<!-- "Your timeline to treatment" band (recreated from Weight Loss, gold-themed) -->
+<script type="text/babel" src="ui_kits/wellness/WNTimelineSection.jsx"></script>
+<!-- Frequently Asked Questions accordion -->
+<script type="text/babel" src="ui_kits/wellness/WNFaqSection.jsx"></script>
+<!-- Homepage closing sections: Simple Path Forward (sweep animation) + Guide CTA -->
+<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/GuideSection.jsx"></script>
+<!-- Footer + assessment modal -->
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx"></script>
+<script type="text/babel">
+function WellnessPage() {
+  return (
+    <React.Fragment>
+      <ChimeNavbar />
+      <main>
+        <ChimeWellnessHero />
+        <ChimeHWSymptomsSection />
+        <ChimeSimplePathSection theme="wellness"
+          title="Chime focuses on people"
+          subtitle="Wellness should be personal, supportive, and designed around your individual goals."
+          steps={[
+            { title: "Personalized Guidance", body: "A path designed around your goals, lifestyle, and needs." },
+            { title: "Wellness Coach Support", body: "Support, accountability, and encouragement along the way." },
+            { title: "Provider Oversight", body: "Providers help guide care decisions and recommendations." },
+          ]} />
+        <WNTimelineSection />
+        <ChimeGuideSection theme="wellness" />
+      </main>
+      <ChimeFooter />
+      <ChimeAssessmentModal />
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<WellnessPage />);
+</script>
+</body>
+</html>

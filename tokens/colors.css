@@ -125,6 +125,15 @@
   --color-peach-700: #A56955;
   --color-peach-800: #8B5948;
 
+  /* Soft Cadmium — Wellness accent scale (base 500 = #D7AA52) */
+  --color-cadmium-100: #FAF3E6;
+  --color-cadmium-200: #F3E3C4;
+  --color-cadmium-300: #E4C68B;
+  --color-cadmium-500: #D7AA52;
+  --color-cadmium-600: #BE9137;
+  --color-cadmium-700: #9C7830;
+  --color-cadmium-800: #7C6027;
+
   /* Base */
   --color-white: #FFFFFF;
   --color-black: #000000;
@@ -212,13 +221,14 @@
   --accent-border:      var(--color-iris-300);
 }
 
+[data-theme="wellness"],
 [data-theme="energy-wellness"] {
-  --accent-default:     var(--color-peach-500);
-  --accent-strong:      var(--color-peach-700);
-  --accent-hover:       var(--color-peach-600);
-  --accent-active:      var(--color-peach-800);
-  --accent-subtle:      var(--color-peach-100);
-  --accent-subtleHover: var(--color-peach-200);
-  --accent-onSubtle:    var(--color-peach-800);
-  --accent-border:      var(--color-peach-300);
+  --accent-default:     var(--color-cadmium-500);
+  --accent-strong:      var(--color-cadmium-700);
+  --accent-hover:       var(--color-cadmium-600);
+  --accent-active:      var(--color-cadmium-800);
+  --accent-subtle:      var(--color-cadmium-100);
+  --accent-subtleHover: var(--color-cadmium-200);
+  --accent-onSubtle:    var(--color-cadmium-800);
+  --accent-border:      var(--color-cadmium-300);
 }

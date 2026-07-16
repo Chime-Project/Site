@@ -6,6 +6,7 @@ const NAV_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
 // Map nav labels to their destination pages. Labels without an entry fall back to "#".
 const NAV_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
+  "Health, Energy & Wellness": "wellness.html",
 };
 const navHref = (label) => NAV_HREFS[label] || "#";
 
