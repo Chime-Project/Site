@@ -21,21 +21,10 @@ function RxArrow({ dir, onClick }) {
   );
 }
 
-// Shared 2-product Rx carousel (Semaglutide + Tirzepatide) — same component the
+// Shared 2-product Rx carousel (GLP-1 + GLP1/GIP) — same component the
 // Health, Energy & Wellness section uses on the homepage, incl. the vial-solo.png image.
 function ChimeRxCarousel({ Button, accentColor, uploads }) {
-  const PRODUCTS = [
-    { name: "Semaglutide", start: "$249.00", plans: [
-      { term: "3 Months", price: "$596.00", promo: true },
-      { term: "6 Months", price: "$1,050.00" },
-      { term: "1 Year", price: "$1,800.00" },
-    ] },
-    { name: "Tirzepatide", start: "$359.00", plans: [
-      { term: "3 Months", price: "$896.00", promo: true },
-      { term: "6 Months", price: "$1,650.00" },
-      { term: "1 Year", price: "$2,880.00" },
-    ] },
-  ];
+  const PRODUCTS = window.CHIME_RX_PRODUCTS;
   const [idx, setIdx] = React.useState(0);
   const [vhover, setVhover] = React.useState(false);
   const p = PRODUCTS[idx];
@@ -225,7 +214,7 @@ function WLTButton({ label, primary }) {
       }}>
       <span style={{
         position: "absolute", inset: 0,
-        background: primary ? "var(--color-blue-800)" : "var(--accent-default)",
+        background: primary ? "var(--accent-active)" : "var(--accent-default)",
         transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
         transition: "transform 0.35s var(--ease-in-out)",
       }}></span>

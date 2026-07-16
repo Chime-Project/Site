@@ -106,8 +106,7 @@ function ChimeWellnessHero() {
           background: "var(--color-cadmium-100)", borderRadius: "var(--radius-2xl)", overflow: "hidden",
         }}>
           <video autoPlay muted loop playsInline
-            ref={function (el) { if (el) el.playbackRate = 0.5; }}
-            src={WNH_UPLOADS + "/hf_20260713_173242_23f715b1-50ef-45c4-addf-d7f2be7692c0.mp4"}
+            src={WNH_UPLOADS + "/chime-wellness.mp4"}
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}></video>
         </div>
 

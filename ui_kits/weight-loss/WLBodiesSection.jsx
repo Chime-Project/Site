@@ -23,7 +23,7 @@ function WLBodiesCTA({ label, onClick }) {
       }}>
       <span aria-hidden="true" style={{
         position: "absolute", inset: 0,
-        background: "var(--color-blue-800)",
+        background: "var(--accent-active)",
         transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
         transition: "transform 0.35s var(--ease-in-out)",
       }}></span>
@@ -50,7 +50,7 @@ function WLBannerCTA({ label }) {
       }}>
       <span aria-hidden="true" style={{
         position: "absolute", inset: 0,
-        background: "var(--fg-default)",
+        background: "var(--accent-active)",
         transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
         transition: "transform 0.35s var(--ease-in-out, ease-in-out)",
       }}></span>

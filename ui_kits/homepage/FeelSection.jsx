@@ -12,7 +12,7 @@ function ChimeFeelSection() {
     }}>
       <div style={{
         position: "relative", borderRadius: "var(--radius-3xl)", overflow: "hidden",
-        background: "var(--color-navy-900, #1B263A)",
+        background: "var(--glass-solid)",
         minHeight: 520,
         display: "flex", alignItems: "stretch",
         boxShadow: "var(--shadow-xs)",
@@ -23,7 +23,7 @@ function ChimeFeelSection() {
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
-          background: "linear-gradient(100deg, rgba(27,38,58,0.62) 0%, rgba(27,38,58,0.32) 48%, rgba(27,38,58,0.08) 100%)",
+          background: "linear-gradient(100deg, rgb(var(--glass-rgb) / 0.62) 0%, rgb(var(--glass-rgb) / 0.32) 48%, rgb(var(--glass-rgb) / 0.08) 100%)",
         }}></div>
         <div className="feel-content" style={{
           position: "relative", zIndex: 1, flex: 1,
@@ -40,7 +40,7 @@ function ChimeFeelSection() {
             margin: 0, maxWidth: "14em",
             fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.1,
             color: "var(--color-white)", textWrap: "balance",
-            textShadow: "0 1px 16px rgba(27,38,58,0.35)",
+            textShadow: "0 1px 16px rgb(var(--glass-rgb) / 0.35)",
           }}>Because no two bodies are the same</h2>
           <div className="feel-row" style={{
             display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -50,7 +50,7 @@ function ChimeFeelSection() {
               margin: 0, maxWidth: "34em",
               fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-normal)",
               color: "var(--color-white)", opacity: 0.92, lineHeight: 1.5,
-              textShadow: "0 1px 12px rgba(27,38,58,0.35)",
+              textShadow: "0 1px 12px rgb(var(--glass-rgb) / 0.35)",
             }}>Most telehealth companies begin with a prescription. Our approach combines wellness coaching, licensed provider oversight, and convenient pharmacy fulfillment to create a more personalized healthcare experience.</p>
             <FeelCTA label="Explore The Chime Membership" />
           </div>

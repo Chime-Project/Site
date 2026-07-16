@@ -4,14 +4,14 @@
 const PRODUCTS_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
 const CHIME_PRODUCTS = [
-  { id: "prod-semaglutide", name: "Semaglutide", category: "Weight Loss", theme: "weight-loss", price: "From $249/mo", status: "In stock", badge: null,
+  { id: "prod-semaglutide", name: "GLP-1", category: "Weight Loss", theme: "weight-loss", price: "From $249/mo", status: "In stock", badge: null,
     plans: [
       { key: "1mo", price: "From $249.00", note: null },
       { key: "3mo", price: "$596.00*", note: "*Includes ", noteBold: "4th month for free" },
       { key: "6mo", price: "$1,050.00", note: null },
       { key: "1yr", price: "$1,800.00", note: null },
     ] },
-  { id: "prod-tirzepatide", name: "Tirzepatide", category: "Weight Loss", theme: "weight-loss", price: "From $359/mo", status: "In stock", badge: "Popular",
+  { id: "prod-tirzepatide", name: "GLP1/GIP", category: "Weight Loss", theme: "weight-loss", price: "From $359/mo", status: "In stock", badge: "Popular",
     plans: [
       { key: "1mo", price: "From $359.00", note: null },
       { key: "3mo", price: "$896.00*", note: "*Includes ", noteBold: "4th month for free" },

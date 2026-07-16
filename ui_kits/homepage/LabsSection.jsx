@@ -45,7 +45,7 @@ function ChimeLabsSection() {
           margin: 0, textAlign: "center", maxWidth: "15em",
           fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.12,
           color: "var(--color-white)", textWrap: "balance",
-          textShadow: "0 1px 18px rgba(42,40,58,0.45)",
+          textShadow: "0 1px 18px rgb(var(--glass-rgb) / 0.45)",
         }}>Your Body Has Been Trying<br></br><span style={{ color: "var(--color-white)" }}>To Tell You Something</span></h2>
         </LabsReveal>
 
@@ -68,8 +68,8 @@ function ChimeLabsSection() {
         <LabsReveal>
         <div style={{
           position: "relative",
-          background: "rgba(42,40,58,0.45)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgb(var(--glass-rgb) / 0.45)",
+          border: "1px solid var(--glass-border)",
           borderRadius: "var(--radius-3xl)",
           padding: "var(--spacing-10)",
           display: "flex", flexDirection: "column", gap: "var(--spacing-8)",
@@ -93,8 +93,8 @@ function ChimeLabsSection() {
         {/* Health Insights tiers */}
         <LabsReveal>
         <div className="labs-tiers" style={{
-          background: "rgba(42,40,58,0.45)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgb(var(--glass-rgb) / 0.45)",
+          border: "1px solid var(--glass-border)",
           borderRadius: "var(--radius-3xl)",
           padding: "var(--spacing-12) var(--spacing-10)",
           display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-8)",
@@ -201,7 +201,7 @@ function LabsSignals() {
             }}>
               <span style={{
                 fontSize: "var(--text-xs)", letterSpacing: "0.08em",
-                color: isActive ? "rgba(42,40,58,0.7)" : "rgba(255,255,255,0.7)",
+                color: isActive ? "rgb(var(--glass-rgb) / 0.7)" : "rgba(255,255,255,0.7)",
               }}>{num(i)} — {s.tag}</span>
               <span style={{ fontSize: "var(--text-base)", lineHeight: 1.3 }}>{s.title}</span>
             </button>
@@ -210,7 +210,7 @@ function LabsSignals() {
       </div>
       {/* Detail panel */}
       <div style={{
-        background: "rgba(42,40,58,0.55)", border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgb(var(--glass-rgb) / 0.55)", border: "1px solid var(--glass-border)",
         borderRadius: "var(--radius-2xl)", padding: "var(--spacing-8)", minHeight: 420,
         display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "var(--spacing-8)",
         opacity: fade ? 1 : 0, transform: fade ? "none" : "translateY(10px)",
@@ -242,18 +242,18 @@ function LabsTierCard({ name, markers, upgraded }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-      position: "relative", background: "rgba(42,40,58,0.45)",
-      border: "1px solid " + (hover ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.08)"), borderRadius: "var(--radius-2xl)",
+      position: "relative", background: "rgb(var(--glass-rgb) / 0.45)",
+      border: "1px solid " + (hover ? "rgba(255,255,255,0.22)" : "var(--glass-border)"), borderRadius: "var(--radius-2xl)",
       padding: "var(--spacing-6)",
       display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
       transform: hover ? "translateY(-4px)" : "none",
-      boxShadow: hover ? "0 22px 44px rgba(42,40,58,0.5)" : "none",
+      boxShadow: hover ? "0 22px 44px rgb(var(--glass-rgb) / 0.5)" : "none",
       transition: "transform var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out), border-color var(--transition-base) var(--ease-in-out)",
     }}>
       {/* Biomarkers badge */}
       <div style={{
         position: "absolute", top: "var(--spacing-4)", right: "var(--spacing-4)",
-        background: "rgba(42,40,58,0.55)", border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgb(var(--glass-rgb) / 0.55)", border: "1px solid var(--glass-border)",
         color: "var(--color-white)",
         borderRadius: "var(--radius-lg)", padding: "var(--spacing-2) var(--spacing-3)",
         display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-1)",
@@ -271,7 +271,7 @@ function LabsTierCard({ name, markers, upgraded }) {
         style={{
           width: 120, height: "auto", display: "block", margin: "var(--spacing-4) auto 0",
           transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",
-          filter: hover ? "drop-shadow(0 24px 42px rgba(42,40,58,0.6))" : "drop-shadow(0 16px 32px rgba(42,40,58,0.4))",
+          filter: hover ? "drop-shadow(0 24px 42px rgb(var(--glass-rgb) / 0.6))" : "drop-shadow(0 16px 32px rgb(var(--glass-rgb) / 0.4))",
           transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
         }} />
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>

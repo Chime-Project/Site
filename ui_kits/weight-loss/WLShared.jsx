@@ -132,9 +132,9 @@ function WLProductCarousel({ theme, bare }) {
   const light = theme === "light";
   const Btn = light && window.WLTButton ? window.WLTButton : WLButton;
   const products = [
-    { id: "semaglutide", name: "Semaglutide", price: "From $249/mo", src: WL_UPLOADS + "/ozempic-pen-aa505b46.png", rotate: "-15deg" },
-    { id: "tirzepatide", name: "Tirzepatide", price: "From $329/mo", src: null, rotate: "-8deg" },
-    { id: "oral-semaglutide", name: "Oral Semaglutide", price: "From $199/mo", src: null, rotate: "0deg" },
+    { id: "semaglutide", name: "GLP-1", price: "From $249/mo", src: WL_UPLOADS + "/ozempic-pen-aa505b46.png", rotate: "-15deg" },
+    { id: "tirzepatide", name: "GLP1/GIP", price: "From $329/mo", src: null, rotate: "-8deg" },
+    { id: "oral-semaglutide", name: "Oral GLP-1", price: "From $199/mo", src: null, rotate: "0deg" },
   ];
   const [idx, setIdx] = React.useState(0);
   const go = (d) => setIdx((i) => (i + d + products.length) % products.length);
