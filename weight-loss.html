@@ -61,16 +61,18 @@
     .wlh-tile-video { aspect-ratio: 3 / 4 !important; }
     .wlh-benefits { grid-template-columns: 1fr !important; }
     .wlb-grid { grid-template-columns: 1fr !important; }
+    .wlb-banner { grid-template-columns: 1fr !important; justify-items: center !important; text-align: center !important; row-gap: var(--spacing-8) !important; }
+    .wlb-banner .wlb-banner-tile { margin: 0 auto !important; }
     .wlt-panel { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; padding: var(--spacing-8) var(--spacing-6) !important; }
     .wl-calc-grid { grid-template-columns: 1fr !important; }
-    .path-section { padding-inline: var(--spacing-5) !important; }
-    .path-title { font-size: var(--text-4xl) !important; }
-    .path-grid { grid-template-columns: 1fr 1fr !important; }
+    .simple-path-section { padding-inline: var(--spacing-5) !important; }
+    .simple-path-title { font-size: var(--text-4xl) !important; }
+    .simple-path-grid { grid-template-columns: 1fr 1fr !important; }
     .guide-section { padding-inline: var(--spacing-5) !important; }
     .guide-content { padding: var(--spacing-8) var(--spacing-6) !important; }
   }
   @media (max-width: 560px) {
-    .path-grid { grid-template-columns: 1fr !important; }
+    .simple-path-grid { grid-template-columns: 1fr !important; }
   }
   @keyframes hero-enter {
     from { opacity: 0; transform: translateY(20px); }
@@ -90,19 +92,20 @@
 <body>
 <div id="root"></div>
 <!-- Main menu -->
-<script type="text/babel" src="ui_kits/homepage/Navbar.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260715"></script>
 <!-- Weight Loss sections + shared building blocks (WLProductCarousel / WLReveal / WLButton) -->
-<script type="text/babel" src="ui_kits/shared/WLCalculator.jsx"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLShared.jsx"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WeightLossHero.jsx"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLBodiesSection.jsx"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLTimelineSection.jsx"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLCalculatorSection.jsx"></script>
-<script type="text/babel" src="ui_kits/homepage/PathSection.jsx"></script>
-<script type="text/babel" src="ui_kits/homepage/GuideSection.jsx"></script>
+<script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLShared.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WeightLossHero.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLBodiesSection.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLTimelineSection.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLCalculatorSection.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/homepage/GuideSection.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLFaqSection.jsx?v=20260715"></script>
 <!-- Footer + assessment modal -->
-<script type="text/babel" src="ui_kits/homepage/Footer.jsx"></script>
-<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx"></script>
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260715"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260715"></script>
 <script type="text/babel">
 function WeightLossPage() {
   return (
@@ -113,8 +116,18 @@ function WeightLossPage() {
         <WLBodiesSection />
         <WLTimelineSection />
         <WLCalculatorSection />
-        <ChimePathSection />
-        <ChimeGuideSection />
+        <ChimeSimplePathSection theme="weight-loss"
+          title="You Don’t Have To Do This Alone"
+          subtitle="Weight loss is easier when you have the right team behind you."
+          steps={[
+            { title: "You", body: "It starts with your goals and your story." },
+            { title: "Wellness Coach", body: "Support, accountability, and guidance." },
+            { title: "Provider", body: "Licensed oversight tailored to your needs." },
+            { title: "Personalized Plan", body: "A path designed around your life." },
+            { title: "Ongoing Support", body: "A team that stays in your corner." },
+          ]} />
+        <ChimeGuideSection theme="weight-loss" />
+        <WLFaqSection />
       </main>
       <ChimeFooter />
       <ChimeAssessmentModal />

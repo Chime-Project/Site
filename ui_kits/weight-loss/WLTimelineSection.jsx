@@ -12,9 +12,9 @@ function RxArrow({ dir, onClick }) {
       onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
       style={{
         flex: "none", width: 32, height: 32, borderRadius: "var(--radius-4xl)", cursor: "pointer",
-        border: "1px solid rgba(255,255,255,0.25)",
-        background: h ? "rgba(255,255,255,0.20)" : "rgba(255,255,255,0.07)",
-        color: "var(--color-white)", display: "flex", alignItems: "center", justifyContent: "center",
+        border: "1px solid var(--accent-border)",
+        background: h ? "var(--color-tide-300)" : "var(--color-tide-200)",
+        color: "var(--accent-strong)", display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "var(--text-lg)", lineHeight: 1, paddingBottom: 3,
         transition: "background var(--transition-base) var(--ease-in-out)",
       }}>{dir < 0 ? "‹" : "›"}</button>
@@ -45,9 +45,9 @@ function ChimeRxCarousel({ Button, accentColor, uploads }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--spacing-2)" }}>
         <RxArrow dir={-1} onClick={() => go(-1)} />
         <div style={{ textAlign: "center", minWidth: 0 }}>
-          <h3 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)", lineHeight: 1.2 }}>{p.name}</h3>
-          <div style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.7)", marginTop: 2 }}>
-            Starting from <span style={{ color: "var(--color-white)", fontWeight: "var(--font-weight-semibold)" }}>{p.start}/mo</span>
+          <h3 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)", lineHeight: 1.2 }}>{p.name}</h3>
+          <div style={{ fontSize: "var(--text-xs)", color: "var(--fg-muted)", marginTop: 2 }}>
+            Starting from <span style={{ color: "var(--text-default)", fontWeight: "var(--font-weight-semibold)" }}>{p.start}/mo</span>
           </div>
         </div>
         <RxArrow dir={1} onClick={() => go(1)} />
@@ -67,13 +67,13 @@ function ChimeRxCarousel({ Button, accentColor, uploads }) {
         {p.plans.map((pl) => (
           <div key={pl.term} style={{
             display: "flex", flexDirection: "column", gap: 3,
-            background: pl.promo ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.05)",
-            border: "1px solid " + (pl.promo ? accentColor : "rgba(255,255,255,0.10)"),
+            background: pl.promo ? "var(--color-tide-200)" : "var(--color-white)",
+            border: "1px solid " + (pl.promo ? "var(--accent-default)" : "var(--accent-border)"),
             borderRadius: "var(--radius-lg)", padding: "var(--spacing-2) var(--spacing-3)",
           }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "var(--spacing-2)" }}>
-              <span style={{ fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)", color: "var(--color-white)" }}>{pl.term}</span>
-              <span style={{ fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)" }}>{pl.price}</span>
+              <span style={{ fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)", color: "var(--text-default)" }}>{pl.term}</span>
+              <span style={{ fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>{pl.price}</span>
             </div>
             {pl.promo ? (
               <span style={{ fontSize: 11, fontWeight: "var(--font-weight-semibold)", color: accentColor }}>{"★ Includes 4th month for free"}</span>
@@ -90,13 +90,13 @@ function ChimeRxCarousel({ Button, accentColor, uploads }) {
         {PRODUCTS.map((_, i) => (
           <button key={i} type="button" aria-label={"Show " + PRODUCTS[i].name} onClick={() => setIdx(i)} style={{
             width: i === idx ? 22 : 7, height: 7, borderRadius: 4, border: "none", padding: 0, cursor: "pointer",
-            background: i === idx ? "var(--color-white)" : "rgba(255,255,255,0.35)",
+            background: i === idx ? "var(--accent-default)" : "var(--accent-border)",
             transition: "all var(--transition-base) var(--ease-in-out)",
           }}></button>
         ))}
       </div>
 
-      <a href="#" style={{ textAlign: "center", fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.85)", textDecoration: "underline", textUnderlineOffset: 2 }}>Important safety information</a>
+      <a href="#" style={{ textAlign: "center", fontSize: "var(--text-xs)", color: "var(--accent-strong)", textDecoration: "underline", textUnderlineOffset: 2 }}>Important safety information</a>
     </div>
   );
 }
@@ -118,8 +118,23 @@ function WLTimelineSection() {
         background: "linear-gradient(180deg, rgba(94,147,209,0) 0%, rgba(94,147,209,0) 38%, rgba(94,147,209,0.45) 58%, rgba(94,147,209,0.85) 74%, #5E93D1 88%)",
       }}></div>
 
+      {/* Main title, overlaid on the photo band */}
+      <div style={{
+        position: "relative", maxWidth: 1152, margin: "0 auto",
+        padding: "var(--spacing-16) var(--spacing-6) 0", textAlign: "center",
+      }}>
+        <WLReveal>
+        <h2 style={{
+          margin: 0, fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.1,
+          color: "var(--color-white)", textWrap: "balance", maxWidth: "16em",
+          marginInline: "auto",
+          textShadow: "0 2px 24px rgba(0,0,0,0.35)",
+        }}>If Weight Loss Were Easy, You Wouldn't Still Be Searching</h2>
+        </WLReveal>
+      </div>
+
       {/* Spacer where the photo shows through */}
-      <div style={{ height: 460 }}></div>
+      <div style={{ height: 300 }}></div>
 
       {/* Panel */}
       <div style={{ position: "relative", maxWidth: 1152, margin: "0 auto", padding: "0 var(--spacing-6) var(--spacing-12)" }}>
@@ -135,22 +150,51 @@ function WLTimelineSection() {
             <h2 style={{
               margin: 0, fontSize: "var(--text-4xl)", fontWeight: 300,
               lineHeight: 1.15, color: "var(--fg-default)", textWrap: "pretty",
-            }}>You're Not Doing This Alone™</h2>
+            }}>Chime was built to change that.</h2>
             <p style={{
               margin: "var(--spacing-6) 0 0", fontSize: "var(--text-lg)",
               lineHeight: 1.5, color: "var(--fg-muted)", maxWidth: "24em",
             }}>The Chime Membership is a care team that stays with you and adjusts as your life does — because lasting progress means having the right people in your corner.</p>
+
+            <p style={{
+              margin: "var(--spacing-8) 0 0", fontSize: "var(--text-xl)",
+              fontWeight: "var(--font-weight-semibold)", lineHeight: 1.3, color: "var(--fg-default)",
+            }}>You're Not Doing This Alone™</p>
+
+            <ul style={{
+              listStyle: "none", margin: "var(--spacing-5) 0 0", padding: 0,
+            }}>
+              {["Lifestyle Strategies", "Laboratory Testing", "Wellness Support", "Coaching", "Treatment Options"].map((item) => (
+                <li key={item} style={{
+                  display: "flex", alignItems: "center", gap: "var(--spacing-3)",
+                  padding: "var(--spacing-2) 0",
+                }}>
+                  <span aria-hidden="true" style={{
+                    flex: "none", width: 24, height: 24, borderRadius: "var(--radius-4xl)",
+                    background: "var(--accent-default)", color: "var(--color-white)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12.5l5 5 11-12" /></svg>
+                  </span>
+                  <span style={{ fontSize: "var(--text-base)", color: "var(--fg-default)", fontWeight: "var(--font-weight-medium)" }}>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div style={{ marginTop: "var(--spacing-8)" }}>
+              <WLTButton primary label="Explore The Chime Membership" />
+            </div>
           </div>
 
           {/* Product content — Rx carousel from the Health, Energy & Wellness section,
-              tide-themed on a dark card so it reads on the white panel. */}
+              tide-themed on a light card (mirrors the wellness timeline card). */}
           <div style={{
             maxWidth: 420, margin: "0 auto", width: "100%", boxSizing: "border-box",
-            background: "rgba(24,42,63,0.92)", border: "1px solid rgba(255,255,255,0.10)",
+            background: "var(--color-tide-100)", border: "1px solid var(--accent-border)",
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
-            <ChimeRxCarousel Button={WLTButton} accentColor="var(--color-tide-200)" uploads={WLT_UPLOADS} />
+            <ChimeRxCarousel Button={WLTButton} accentColor="var(--accent-strong)" uploads={WLT_UPLOADS} />
           </div>
         </div>
         </WLReveal>

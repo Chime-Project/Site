@@ -32,16 +32,101 @@ function WLBodiesCTA({ label, onClick }) {
   );
 }
 
+function WLBannerCTA({ label }) {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <button
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        position: "relative", overflow: "hidden", cursor: "pointer",
+        whiteSpace: "nowrap", border: "none",
+        background: "var(--accent-default)", color: "var(--color-white)",
+        borderRadius: 999,
+        padding: "12px 20px",
+        fontSize: 16, fontWeight: 600,
+        fontFamily: "var(--font-family-base)",
+        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
+        transition: "transform 0.35s var(--ease-in-out, ease-in-out)",
+      }}>
+      <span aria-hidden="true" style={{
+        position: "absolute", inset: 0,
+        background: "var(--fg-default)",
+        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
+        transition: "transform 0.35s var(--ease-in-out, ease-in-out)",
+      }}></span>
+      <span style={{ position: "relative" }}>{label}</span>
+    </button>
+  );
+}
+
+function WLBanner() {
+  const [vhover, setVhover] = React.useState(false);
+  return (
+    <div className="wlb-banner" style={{
+      gridColumn: "1 / -1",
+      display: "grid", gridTemplateColumns: "300px 1fr auto",
+      alignItems: "center", columnGap: "var(--spacing-12)",
+      padding: "var(--spacing-10) 0 120px",
+    }}>
+      {/* Left — product tile */}
+      <div className="wlb-banner-tile"
+        onMouseEnter={() => setVhover(true)} onMouseLeave={() => setVhover(false)}
+        style={{
+          position: "relative", width: 300, height: 300, borderRadius: 24,
+          background: "linear-gradient(160deg, var(--accent-default), var(--accent-strong))",
+          cursor: "pointer",
+        }}>
+        <img src="uploads/vial-solo.png" alt="Medication vial"
+          style={{
+            position: "absolute", left: "50%", top: "50%",
+            height: "118%", width: "auto",
+            transform: vhover
+              ? "translate(-50%, -54%) rotate(16deg) scale(1.07)"
+              : "translate(-50%, -50%) rotate(12deg)",
+            filter: vhover
+              ? "drop-shadow(-12px 30px 44px rgba(0,0,0,0.34))"
+              : "drop-shadow(-8px 22px 34px rgba(0,0,0,0.22))",
+            transition: "transform 0.45s var(--ease-in-out), filter 0.45s var(--ease-in-out)",
+          }} />
+      </div>
+
+      {/* Center — copy */}
+      <div>
+        <h3 style={{
+          margin: 0, fontSize: 40, fontWeight: 600, lineHeight: 1.18,
+          color: "var(--fg-default)", textWrap: "pretty",
+        }}>Your Wellness Journey Doesn’t End After Day One</h3>
+        <p style={{
+          margin: "var(--spacing-4) 0 0", fontSize: 20, color: "var(--accent-strong)",
+        }}>Feeling Better Starts With Understanding.</p>
+      </div>
+
+      {/* Right — CTA */}
+      <WLBannerCTA label="Discover Your Wellness Path"></WLBannerCTA>
+    </div>
+  );
+}
+
 function WLBodiesSection() {
   const items = [
-    "Lifestyle Strategies",
-    "Laboratory Testing",
-    "Wellness Support",
-    "Coaching",
-    "Treatment Options",
+    { label: "Personalized Plans", icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"></path><rect x="9" y="3" width="6" height="4" rx="1"></rect><path d="M9 12h6M9 16h4"></path></svg>
+    ) },
+    { label: "Wellness Coaches", icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+    ) },
+    { label: "Provider Oversight", icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+    ) },
+    { label: "Ongoing Support", icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+    ) },
+    { label: "Fast & Convenient", icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+    ) },
   ];
   return (
-    <section data-screen-label="No Two Bodies" style={{
+    <section data-screen-label="No Two Bodies" data-theme="weight-loss" style={{
       fontFamily: "var(--font-family-base)", background: "var(--bg-default)",
       padding: "calc(var(--spacing-12) * 2) var(--spacing-6)",
     }}>
@@ -71,19 +156,19 @@ function WLBodiesSection() {
             listStyle: "none", margin: 0, padding: 0,
             display: "flex", flexDirection: "column", gap: "var(--spacing-3)",
           }}>
-            {items.map((label, i) => (
-              <li key={label} className="wlb-item" style={{
+            {items.map((item, i) => (
+              <li key={item.label} className="wlb-item" style={{
                 display: "flex", alignItems: "center", gap: "var(--spacing-3)",
                 animationDelay: (i * 0.35) + "s",
               }}>
                 <span aria-hidden="true" style={{
-                  width: 26, height: 26, flex: "none", borderRadius: "var(--radius-full)",
+                  width: 30, height: 30, flex: "none", borderRadius: "var(--radius-full)",
                   background: "var(--accent-default)", color: "var(--color-white)",
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
                 }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4 10-10"></path></svg>
+                  {item.icon}
                 </span>
-                <span style={{ fontSize: "var(--text-lg)", color: "var(--fg-default)" }}>{label}</span>
+                <span style={{ fontSize: "var(--text-lg)", color: "var(--fg-default)" }}>{item.label}</span>
               </li>
             ))}
           </ul>
@@ -94,6 +179,8 @@ function WLBodiesSection() {
           }}>You’re Not Doing This Alone™</p>
           <WLBodiesCTA label="Explore The Chime Membership"></WLBodiesCTA>
         </div>
+
+        <WLBanner />
       </WLReveal>
     </section>
   );
