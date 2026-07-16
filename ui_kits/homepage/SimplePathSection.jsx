@@ -17,38 +17,18 @@ const SIMPLE_PATH_COPY = [
 ];
 
 // Per-theme color ramps: darkest → mid → light neutral, mirroring the homepage.
-const SIMPLE_PATH_RAMPS = {
-  default: [
-    { bg: "var(--color-blue-950)", text: "var(--color-white)",   numeral: "var(--color-blue-300)", bodyOpacity: 0.78 },
-    { bg: "var(--color-blue-800)", text: "var(--color-white)",   numeral: "var(--color-blue-100)", bodyOpacity: 0.78 },
-    { bg: "var(--color-blue-500)", text: "var(--color-white)",   numeral: "var(--color-blue-800)", bodyOpacity: 0.78 },
-    { bg: "var(--color-sand-100)", text: "var(--color-blue-800)", numeral: "var(--color-sand-400)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
-  ],
-  wellness: [
-    { bg: "var(--color-cadmium-800)", text: "var(--color-white)",      numeral: "var(--color-cadmium-500)", bodyOpacity: 0.82 },
-    { bg: "var(--color-cadmium-700)", text: "var(--color-white)",      numeral: "var(--color-cadmium-300)", bodyOpacity: 0.85 },
-    { bg: "var(--color-cadmium-600)", text: "var(--color-white)",      numeral: "var(--color-cadmium-800)", bodyOpacity: 0.9 },
-    { bg: "var(--color-sand-100)",    text: "var(--color-cadmium-800)", numeral: "var(--color-cadmium-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
-  ],
-  "weight-loss": [
-    { bg: "var(--color-tide-800)", text: "var(--color-white)",   numeral: "var(--color-tide-500)", bodyOpacity: 0.82 },
-    { bg: "var(--color-tide-700)", text: "var(--color-white)",   numeral: "var(--color-tide-300)", bodyOpacity: 0.85 },
-    { bg: "var(--color-tide-500)", text: "var(--color-white)",   numeral: "var(--color-tide-800)", bodyOpacity: 0.85 },
-    { bg: "var(--color-sand-100)", text: "var(--color-tide-800)", numeral: "var(--color-tide-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
-  ],
-  lab: [
-    { bg: "var(--color-iris-800)", text: "var(--color-white)",   numeral: "var(--color-iris-500)", bodyOpacity: 0.82 },
-    { bg: "var(--color-iris-700)", text: "var(--color-white)",   numeral: "var(--color-iris-300)", bodyOpacity: 0.85 },
-    { bg: "var(--color-iris-500)", text: "var(--color-white)",   numeral: "var(--color-iris-800)", bodyOpacity: 0.85 },
-    { bg: "var(--color-sand-100)", text: "var(--color-iris-800)", numeral: "var(--color-iris-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
-  ],
-};
+const SIMPLE_PATH_RAMP = [
+  { bg: "var(--accent-active)",  text: "var(--color-white)",   numeral: "var(--accent-default)",     bodyOpacity: 0.82 },
+  { bg: "var(--accent-strong)",  text: "var(--color-white)",   numeral: "var(--accent-border)",      bodyOpacity: 0.85 },
+  { bg: "var(--accent-default)", text: "var(--color-white)",   numeral: "var(--accent-active)",      bodyOpacity: 0.85 },
+  { bg: "var(--color-sand-100)", text: "var(--accent-active)", numeral: "var(--accent-subtleHover)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
+]
 
 // Applies the per-theme color ramp to a copy list of any length. The last card
 // always takes the light neutral (final ramp entry); earlier cards walk the
 // dark→mid shades — so a 3-card list still reads dark→dark→light like the 4-card.
-function simplePathSteps(theme, copy) {
-  const ramp = SIMPLE_PATH_RAMPS[theme] || SIMPLE_PATH_RAMPS.default;
+function simplePathSteps(copy) {
+  const ramp = SIMPLE_PATH_RAMP;
   const list = copy || SIMPLE_PATH_COPY;
   const n = list.length;
   return list.map(function (c, i) {
@@ -142,7 +122,7 @@ function useSimplePathSweep(ref, count) {
 function ChimeSimplePathSection({ theme = "default", title = "A Simple Path Forward", subtitle, steps: stepsCopy }) {
   const [linkHover, setLinkHover] = React.useState(false);
   const gridRef = React.useRef(null);
-  const steps = simplePathSteps(theme, stepsCopy);
+  const steps = simplePathSteps(stepsCopy);
   const activeStep = useSimplePathSweep(gridRef, steps.length);
   return (
     <section data-screen-label="Simple Path Forward" data-theme={theme} className="simple-path-section" style={{

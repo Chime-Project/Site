@@ -8,20 +8,8 @@ function WLHeroCTA({ label, primary, onClick }) {
   return <Button label={label} onClick={onClick} tone="onDark" variant="primary" size="cta" />;
 }
 
-function WLHeroCheckItem({ icon, strong, rest, last }) {
-  return (
-    <div style={{
-      display: "grid", gridTemplateColumns: "24px 1fr", gap: "var(--spacing-3)",
-      alignItems: "start", padding: "var(--spacing-4) 0",
-      borderBottom: last ? "none" : "1px solid var(--border-default)",
-    }}>
-      <span aria-hidden="true" style={{ color: "var(--fg-default)", display: "flex", marginTop: 2 }}>{icon}</span>
-      <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.5, color: "var(--fg-default)" }}>
-        <a href="#" style={{ color: "var(--accent-strong)", fontWeight: "var(--font-weight-semibold)", textDecoration: "underline", textUnderlineOffset: 3 }}>{strong}</a>
-        {" "}{rest}
-      </p>
-    </div>
-  );
+function WLHeroCheckItem(props) {
+  return <CheckItem {...props} />;
 }
 
 function WLHeroBenefit({ icon, label }) {
@@ -33,11 +21,7 @@ function WLHeroBenefit({ icon, label }) {
   );
 }
 
-const wlhIcon = (d) => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    {d}
-  </svg>
-);
+const wlhIcon = (d) => <Icon size={28} strokeWidth={1.5}>{d}</Icon>;
 
 function ChimeWeightLossHero() {
   const open = () => window.dispatchEvent(new CustomEvent("chime:open-assessment"));

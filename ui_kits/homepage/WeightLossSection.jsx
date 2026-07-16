@@ -39,11 +39,7 @@ function ChimeWeightLossSection() {
         display: "flex", flexDirection: "column", alignItems: "center",
       }}>
         <WLReveal style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{
-          color: "var(--color-white)", fontSize: "var(--text-sm)",
-          fontWeight: "var(--font-weight-semibold)", letterSpacing: "0.12em",
-          textTransform: "uppercase", opacity: 0.9, marginBottom: "var(--spacing-3)",
-        }}>Weight loss by Chime</div>
+        <Eyebrow tone="onDark" opacity={0.9} marginBottom="var(--spacing-3)" label="Weight loss by Chime" />
         <h2 className="wl-title" style={{
           margin: 0, textAlign: "center", maxWidth: "13em",
           fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.08,

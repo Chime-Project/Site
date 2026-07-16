@@ -31,11 +31,7 @@ function ChimeFeelSection() {
           padding: "var(--spacing-10) var(--spacing-10) var(--spacing-10)",
           gap: "var(--spacing-4)",
         }}>
-          <div style={{
-            color: "var(--color-white)", fontSize: "var(--text-sm)",
-            fontWeight: "var(--font-weight-semibold)", letterSpacing: "0.12em",
-            textTransform: "uppercase", opacity: 0.85,
-          }}>Feel More Like Yourself Again</div>
+          <Eyebrow tone="onDark" opacity={0.85} label="Feel More Like Yourself Again" />
           <h2 className="feel-title" style={{
             margin: 0, maxWidth: "14em",
             fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.1,
