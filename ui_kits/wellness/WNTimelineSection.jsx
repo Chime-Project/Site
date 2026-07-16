@@ -17,91 +17,8 @@ function WNTReveal({ children, delay, style }) {
 }
 
 // Rx carousel arrow.
-function WNTArrow({ dir, onClick }) {
-  const [h, setH] = React.useState(false);
-  return (
-    <button type="button" onClick={onClick} aria-label={dir < 0 ? "Previous product" : "Next product"}
-      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
-      style={{
-        flex: "none", width: 32, height: 32, borderRadius: "var(--radius-4xl)", cursor: "pointer",
-        border: "1px solid var(--accent-border)",
-        background: h ? "var(--color-cadmium-300)" : "var(--color-cadmium-200)",
-        color: "var(--accent-strong)", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "var(--text-lg)", lineHeight: 1, paddingBottom: 3,
-        transition: "background var(--transition-base) var(--ease-in-out)",
-      }}>{dir < 0 ? "‹" : "›"}</button>
-  );
-}
-
 // 2-product Rx carousel — same shape the homepage Health, Energy & Wellness section uses,
 // on a dark-gold card so it reads on the white panel.
-function WNTRxCarousel({ Button, accentColor, uploads }) {
-  const PRODUCTS = window.CHIME_RX_PRODUCTS;
-  const [idx, setIdx] = React.useState(0);
-  const [vhover, setVhover] = React.useState(false);
-  const p = PRODUCTS[idx];
-  const go = (d) => setIdx((idx + d + PRODUCTS.length) % PRODUCTS.length);
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", height: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--spacing-2)" }}>
-        <WNTArrow dir={-1} onClick={() => go(-1)} />
-        <div style={{ textAlign: "center", minWidth: 0 }}>
-          <h3 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)", lineHeight: 1.2 }}>{p.name}</h3>
-          <div style={{ fontSize: "var(--text-xs)", color: "var(--fg-muted)", marginTop: 2 }}>
-            Starting from <span style={{ color: "var(--text-default)", fontWeight: "var(--font-weight-semibold)" }}>{p.start}/mo</span>
-          </div>
-        </div>
-        <WNTArrow dir={1} onClick={() => go(1)} />
-      </div>
-
-      <div onMouseEnter={() => setVhover(true)} onMouseLeave={() => setVhover(false)}
-        style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 116 }}>
-        <img src={uploads + "/vial-solo.png"} alt={p.name + " vial"} style={{
-          width: 92, height: "auto", display: "block",
-          transform: vhover ? "scale(1.08) rotate(-3deg) translateY(-4px)" : "none",
-          filter: vhover ? "drop-shadow(0 22px 34px rgba(0,0,0,0.5))" : "drop-shadow(0 14px 26px rgba(0,0,0,0.38))",
-          transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
-        }} />
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-        {p.plans.map((pl) => (
-          <div key={pl.term} style={{
-            display: "flex", flexDirection: "column", gap: 3,
-            background: pl.promo ? "var(--color-cadmium-200)" : "var(--color-white)",
-            border: "1px solid " + (pl.promo ? "var(--accent-default)" : "var(--accent-border)"),
-            borderRadius: "var(--radius-lg)", padding: "var(--spacing-2) var(--spacing-3)",
-          }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "var(--spacing-2)" }}>
-              <span style={{ fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)", color: "var(--text-default)" }}>{pl.term}</span>
-              <span style={{ fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>{pl.price}</span>
-            </div>
-            {pl.promo ? (
-              <span style={{ fontSize: 11, fontWeight: "var(--font-weight-semibold)", color: accentColor }}>{"★ Includes 4th month for free"}</span>
-            ) : null}
-          </div>
-        ))}
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "auto" }}>
-        <Button primary small label="Get started" />
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "center", gap: 6 }}>
-        {PRODUCTS.map((_, i) => (
-          <button key={i} type="button" aria-label={"Show " + PRODUCTS[i].name} onClick={() => setIdx(i)} style={{
-            width: i === idx ? 22 : 7, height: 7, borderRadius: 4, border: "none", padding: 0, cursor: "pointer",
-            background: i === idx ? "var(--accent-default)" : "var(--accent-border)",
-            transition: "all var(--transition-base) var(--ease-in-out)",
-          }}></button>
-        ))}
-      </div>
-
-      <a href="#" style={{ textAlign: "center", fontSize: "var(--text-xs)", color: "var(--accent-strong)", textDecoration: "underline", textUnderlineOffset: 2 }}>Important safety information</a>
-    </div>
-  );
-}
-
 function WNTButton({ label, primary }) {
   const [hover, setHover] = React.useState(false);
   return (
@@ -235,7 +152,7 @@ function WNTimelineSection() {
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
-            <WNTRxCarousel Button={WNTButton} accentColor="var(--accent-strong)" uploads={WNT_UPLOADS} />
+            <RxCarousel variant="light" Button={WNTButton} uploads={WNT_UPLOADS} />
           </div>
         </div>
         </WNTReveal>
