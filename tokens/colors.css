@@ -156,6 +156,20 @@
   --fg-muted:   var(--text-secondary);
   --bg-surface: var(--bg-elevated);
 
+  /* Surfaces — dark "smoked glass".
+     Glass is a SURFACE, not an accent: it stays a neutral deep ink on every
+     page so translucent panels read consistently over photos/video, and does
+     NOT follow the accent palette. Compose any alpha with
+     rgb(var(--glass-rgb) / <α>); use the named stops for the common cases.
+     A theme may override --glass-rgb to tint its glass (see Labs below). */
+  --glass-rgb: 27 38 58;                             /* deep navy ink (blue-950) */
+  --glass-surface:        rgb(var(--glass-rgb) / 0.35);  /* default translucent panel */
+  --glass-surface-strong: rgb(var(--glass-rgb) / 0.55);  /* denser / nested panel */
+  --glass-scrim:          rgb(var(--glass-rgb) / 0.45);  /* modal & overlay scrim */
+  --glass-solid:          rgb(var(--glass-rgb) / 1);     /* solid dark section ground */
+  --glass-border:         rgb(255 255 255 / 0.08);       /* hairline edge on glass */
+  --glass-blur:           6px;                           /* backdrop-filter blur radius */
+
   --border-default: var(--color-sand-300);
   --border-strong:  var(--color-slate-400);
 
@@ -219,6 +233,14 @@
   --accent-subtleHover: var(--color-iris-200);
   --accent-onSubtle:    var(--color-iris-800);
   --accent-border:      var(--color-iris-300);
+  /* Iris-tinted dark glass for Labs. The named stops must be re-declared (not just
+     --glass-rgb): a stop's nested var() is substituted where the stop is declared,
+     so overriding only --glass-rgb would leave the :root (navy) stops unchanged. */
+  --glass-rgb:            42 40 58;
+  --glass-surface:        rgb(var(--glass-rgb) / 0.35);
+  --glass-surface-strong: rgb(var(--glass-rgb) / 0.55);
+  --glass-scrim:          rgb(var(--glass-rgb) / 0.45);
+  --glass-solid:          rgb(var(--glass-rgb) / 1);
 }
 
 [data-theme="wellness"],

@@ -25,7 +25,7 @@ function WLHeroCTA({ label, primary, onClick }) {
       }}>
       <span aria-hidden="true" style={{
         position: "absolute", inset: 0,
-        background: "var(--color-blue-800)",
+        background: "var(--accent-active)",
         transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
         transition: "transform 0.35s var(--ease-in-out)",
       }}></span>

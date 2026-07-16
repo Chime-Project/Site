@@ -7,6 +7,7 @@ const NAV_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
 const NAV_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
   "Health, Energy & Wellness": "wellness.html",
+  "Labs": "labs.html",
 };
 const navHref = (label) => NAV_HREFS[label] || "#";
 

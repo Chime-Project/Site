@@ -7,26 +7,27 @@ function PathReveal({ children, delay, style }) {
   return <div className="reveal" style={style}>{children}</div>;
 }
 
+// Weight Loss landing — tide ramp (this component is used only on the WL page).
 const PATH_STEPS = [
   {
     n: "1", title: "Discover", body: "Tell us about your goals.",
-    bg: "var(--color-blue-950)", text: "var(--color-white)",
-    sub: "rgba(255,255,255,0.78)", num: "var(--color-blue-300)",
+    bg: "var(--color-tide-800)", text: "var(--color-white)",
+    sub: "rgba(255,255,255,0.78)", num: "var(--color-tide-500)",
   },
   {
     n: "2", title: "Connect", body: "Meet your care team.",
-    bg: "var(--color-blue-800)", text: "var(--color-white)",
-    sub: "rgba(255,255,255,0.78)", num: "var(--color-blue-100)",
+    bg: "var(--color-tide-700)", text: "var(--color-white)",
+    sub: "rgba(255,255,255,0.78)", num: "var(--color-tide-300)",
   },
   {
     n: "3", title: "Personalize", body: "Receive your personalized plan.",
-    bg: "var(--color-blue-500)", text: "var(--color-white)",
-    sub: "rgba(255,255,255,0.82)", num: "var(--color-blue-800)",
+    bg: "var(--color-tide-500)", text: "var(--color-white)",
+    sub: "rgba(255,255,255,0.82)", num: "var(--color-tide-800)",
   },
   {
     n: "4", title: "Thrive", body: "Stay supported along the way.",
-    bg: "var(--color-sand-100)", text: "var(--color-blue-800)",
-    sub: "var(--color-sand-800)", num: "var(--color-sand-400)",
+    bg: "var(--color-sand-100)", text: "var(--color-tide-800)",
+    sub: "var(--color-sand-800)", num: "var(--color-tide-200)",
   },
 ];
 
@@ -77,7 +78,7 @@ function PathCard({ step, index }) {
 function ChimePathSection() {
   const [linkHover, setLinkHover] = React.useState(false);
   return (
-    <section data-screen-label="Simple Path Forward" className="path-section" style={{
+    <section data-screen-label="Simple Path Forward" data-theme="weight-loss" className="path-section" style={{
       fontFamily: "var(--font-family-base)",
       padding: "var(--spacing-12) var(--spacing-8)",
       maxWidth: "var(--container-xl)", margin: "0 auto", boxSizing: "border-box",

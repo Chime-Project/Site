@@ -36,6 +36,12 @@ const SIMPLE_PATH_RAMPS = {
     { bg: "var(--color-tide-500)", text: "var(--color-white)",   numeral: "var(--color-tide-800)", bodyOpacity: 0.85 },
     { bg: "var(--color-sand-100)", text: "var(--color-tide-800)", numeral: "var(--color-tide-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
   ],
+  lab: [
+    { bg: "var(--color-iris-800)", text: "var(--color-white)",   numeral: "var(--color-iris-500)", bodyOpacity: 0.82 },
+    { bg: "var(--color-iris-700)", text: "var(--color-white)",   numeral: "var(--color-iris-300)", bodyOpacity: 0.85 },
+    { bg: "var(--color-iris-500)", text: "var(--color-white)",   numeral: "var(--color-iris-800)", bodyOpacity: 0.85 },
+    { bg: "var(--color-sand-100)", text: "var(--color-iris-800)", numeral: "var(--color-iris-200)", body_color: "var(--color-sand-800)", bodyOpacity: 1 },
+  ],
 };
 
 // Applies the per-theme color ramp to a copy list of any length. The last card

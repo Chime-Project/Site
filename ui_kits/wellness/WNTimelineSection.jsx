@@ -36,18 +36,7 @@ function WNTArrow({ dir, onClick }) {
 // 2-product Rx carousel — same shape the homepage Health, Energy & Wellness section uses,
 // on a dark-gold card so it reads on the white panel.
 function WNTRxCarousel({ Button, accentColor, uploads }) {
-  const PRODUCTS = [
-    { name: "Semaglutide", start: "$249.00", plans: [
-      { term: "3 Months", price: "$596.00", promo: true },
-      { term: "6 Months", price: "$1,050.00" },
-      { term: "1 Year", price: "$1,800.00" },
-    ] },
-    { name: "Tirzepatide", start: "$359.00", plans: [
-      { term: "3 Months", price: "$896.00", promo: true },
-      { term: "6 Months", price: "$1,650.00" },
-      { term: "1 Year", price: "$2,880.00" },
-    ] },
-  ];
+  const PRODUCTS = window.CHIME_RX_PRODUCTS;
   const [idx, setIdx] = React.useState(0);
   const [vhover, setVhover] = React.useState(false);
   const p = PRODUCTS[idx];

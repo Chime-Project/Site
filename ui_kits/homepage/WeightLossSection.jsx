@@ -29,20 +29,9 @@ function RxArrow({ dir, onClick }) {
   );
 }
 
-// Shared 2-product Rx carousel (Semaglutide + Tirzepatide), reused in Weight Loss & Wellness.
+// Shared 2-product Rx carousel (GLP-1 + GLP1/GIP), reused in Weight Loss & Wellness.
 function ChimeRxCarousel({ Button, accentColor, uploads }) {
-  const PRODUCTS = [
-    { name: "Semaglutide", start: "$249.00", plans: [
-      { term: "3 Months", price: "$596.00", promo: true },
-      { term: "6 Months", price: "$1,050.00" },
-      { term: "1 Year", price: "$1,800.00" },
-    ] },
-    { name: "Tirzepatide", start: "$359.00", plans: [
-      { term: "3 Months", price: "$896.00", promo: true },
-      { term: "6 Months", price: "$1,650.00" },
-      { term: "1 Year", price: "$2,880.00" },
-    ] },
-  ];
+  const PRODUCTS = window.CHIME_RX_PRODUCTS;
   const [idx, setIdx] = React.useState(0);
   const [vhover, setVhover] = React.useState(false);
   const p = PRODUCTS[idx];
@@ -175,8 +164,8 @@ function ChimeWeightLossSection() {
         <div className="wl-card-wide" style={{
           position: "relative",
           height: "100%", boxSizing: "border-box",
-          background: "rgba(24,42,63,0.35)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "var(--glass-surface)",
+          border: "1px solid var(--glass-border)",
           borderRadius: "var(--radius-3xl)",
           display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center",
           gap: "var(--spacing-8)", padding: "var(--spacing-10) var(--spacing-10) 0",
@@ -200,7 +189,7 @@ function ChimeWeightLossSection() {
           <WLReveal delay={140}>
           <div style={{
             position: "relative", overflow: "hidden", height: "100%", boxSizing: "border-box",
-            background: "rgba(24,42,63,0.35)", border: "1px solid rgba(255,255,255,0.08)",
+            background: "var(--glass-surface)", border: "1px solid var(--glass-border)",
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>

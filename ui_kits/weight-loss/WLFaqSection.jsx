@@ -10,8 +10,8 @@ const WL_FAQS = [
     a: "It starts with a short assessment. A licensed provider reviews your goals and health history, and — if it's a fit — builds a personalized plan that may include GLP-1 medication, coaching, and ongoing support that adjusts as you progress.",
   },
   {
-    q: "What is the difference between Semaglutide and Tirzepatide?",
-    a: "Both are GLP-1 medications that help regulate appetite and blood sugar. Tirzepatide acts on an additional hormone pathway (GIP) and is often prescribed for greater results. Your provider recommends the option best suited to your body and goals.",
+    q: "What is the difference between GLP-1 and GLP1/GIP medications?",
+    a: "GLP-1 medications help regulate appetite and blood sugar. GLP1/GIP medications act on an additional hormone pathway (GIP) and are often prescribed for greater results. Your provider recommends the option best suited to your body and goals.",
   },
   {
     q: "Is a GLP-1 medication right for me?",
