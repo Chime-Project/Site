@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html data-theme="lab">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Labs &amp; Health Insights</title>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#A59FD6"></rect><circle cx="50" cy="50" r="20" fill="none" stroke="#FFFEFB" stroke-width="3"></circle><circle cx="50" cy="50" r="12" fill="none" stroke="#D1CFE8" stroke-width="3"></circle><circle cx="50" cy="50" r="5" fill="#FFFEFB"></circle></svg></template>
+<link rel="stylesheet" href="styles.css">
+<script src="tailwind.setup.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="dsbundle.js"></script>
+<script src="ui_kits/homepage/image-slot.js"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg-default); padding-top: 72px; }
+  a { color: var(--accent-strong); }
+  a:hover { color: var(--accent-default); }
+
+  /* ---- Nav + footer (shared with homepage) ---- */
+  @media (max-width: 960px) {
+    .nav-links { display: none !important; }
+    .nav-bar { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+    .nav-actions { order: -1; }
+    .nav-logo { order: 2; margin-inline-start: 0 !important; }
+    .nav-login { display: none !important; }
+    .footer-grid { grid-template-columns: 1fr !important; }
+  }
+  /* Nav: hide hamburger + stale-open mobile menu on desktop (no JS resize listener). */
+  @media (min-width: 961px) {
+    .nav-hamburger { display: none !important; }
+    .nav-mobile-menu { display: none !important; }
+  }
+  /* Section scroll-reveal — pure CSS scroll-driven animation. Unsupported
+     browsers rest at the end state (visible), so content is never stuck hidden. */
+  @keyframes chime-reveal {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: chime-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 22%;
+    }
+  }
+
+  /* ---- Labs section (iris) responsive ---- */
+  @media (max-width: 960px) {
+    .labs-title { font-size: var(--text-4xl) !important; }
+    .labs-signals-grid { grid-template-columns: 1fr !important; }
+    .labs-tier-grid { grid-template-columns: 1fr !important; }
+    .labs-tiers { padding: var(--spacing-8) var(--spacing-6) !important; }
+  }
+
+  /* ---- Shared section: Simple Path Forward ---- */
+  @media (max-width: 960px) {
+    .simple-path-section { padding-inline: var(--spacing-5) !important; }
+    .simple-path-grid { grid-template-columns: 1fr 1fr !important; }
+    .simple-path-title { font-size: var(--text-4xl) !important; }
+    /* Insight card stack: single column. The stack keeps its own right gutter —
+       that margin is what reserves room for the fan (see InsightStackSection). */
+    .insight-section { padding-inline: var(--spacing-5) !important; }
+    .insight-panel { grid-template-columns: 1fr !important; padding: var(--spacing-8) var(--spacing-6) !important; }
+    .insight-title { font-size: var(--text-4xl) !important; }
+    /* Product detail: stack the photo above the buy column. */
+    .labs-pdp-section { padding-inline: var(--spacing-5) !important; }
+    .labs-pdp-grid { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; }
+    /* Trust strip: 2-up with a wider gutter; drop the vertical rules (they'd
+       read as arbitrary once the columns wrap). !important beats the inline
+       per-column borderLeft. */
+    .labs-trust-grid { grid-template-columns: 1fr 1fr !important; gap: var(--spacing-8) !important; }
+    .labs-trust-item { border-left: none !important; padding-inline: 0 !important; }
+  }
+  @media (max-width: 560px) {
+    .simple-path-grid { grid-template-columns: 1fr !important; }
+    .simple-path-section { padding-inline: var(--spacing-4) !important; }
+    /* Insight fan: scale card + depth together (×0.66) so the stack plus its
+       fan clears the panel's inner width at 390px — 224 + 14×4 = 280 ≤ 287.
+       Below ~516px the full-size 340 + 22×4 = 428 cannot fit. */
+    .insight-stack { --insight-w: 224px; --insight-h: 248px; --insight-depth: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Main menu -->
+<script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260716"></script>
+<!-- Labs hero: full-bleed ambient video + emotive headline + assessment CTA (iris-themed) -->
+<script type="text/babel" src="ui_kits/labs/LabsHero.jsx?v=20260721"></script>
+<!-- Labs band: signals explorer + health-insight tiers (iris-themed) -->
+<script type="text/babel" src="ui_kits/homepage/LabsSection.jsx?v=20260716"></script>
+<!-- "One Insight Can Change Everything" fanned card stack -->
+<script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260721"></script>
+<!-- Panel product detail: photo + tier/sex/review options + book CTA -->
+<script type="text/babel" src="ui_kits/labs/LabsProductDetailSection.jsx?v=20260721"></script>
+<!-- Homepage closing section: Simple Path Forward (sweep animation) -->
+<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260716"></script>
+<!-- FAQ: shared content + accordion, then the Labs wrapper (data must load first) -->
+<script src="ui_kits/shared/data/faqs.js?v=20260720"></script>
+<script type="text/babel" src="ui_kits/shared/common/FaqAccordion.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/labs/LabsFaqSection.jsx?v=20260721"></script>
+<!-- Trust strip: sits directly above the footer -->
+<script type="text/babel" src="ui_kits/labs/LabsTrustSection.jsx?v=20260721"></script>
+<!-- Footer + assessment modal -->
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260720"></script>
+<script type="text/babel">
+function LabsPage() {
+  return (
+    <React.Fragment>
+      <ChimeNavbar />
+      <main>
+        <ChimeLabsHero />
+        <ChimeInsightStackSection theme="lab" />
+        <LabsProductDetailSection theme="lab" />
+        <ChimeLabsSection />
+        <ChimeSimplePathSection theme="lab"
+          title="Receiving information is only one step"
+          subtitle="Understanding what comes next is where real value begins."
+          steps={[
+            { title: "Insights", body: "Understand what may be happening beneath the surface." },
+            { title: "Guidance", body: "Receive support as you explore your next steps." },
+            { title: "Support", body: "You don’t have to figure it out alone." },
+          ]} />
+        <LabsFaqSection />
+        <LabsTrustSection />
+      </main>
+      <ChimeFooter />
+      <ChimeAssessmentModal />
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<LabsPage />);
+</script>
+</body>
+</html>
