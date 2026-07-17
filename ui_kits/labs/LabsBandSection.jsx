@@ -1,9 +1,10 @@
 // Chime Health — Labs UI kit: Labs band (ChimeLabsBandSection)
 // The labs page's iris-themed band: bg scenario at top glued into solid iris;
-// title → hero visual → CTA → signals explorer → tier cards.
+// title → hero visual → CTA → tier cards.
 
 const LABS_BAND_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
-const LABS_BAND_SOLID = "#A59FD6"; // Iris Signal (Accent) — main section ground
+const LABS_BAND_SOLID = "#F7F3E4"; // Cream (--color-sand-100) — main section ground
+const LABS_BAND_SOLID_RGB = "247,243,228"; // ^ as rgb() channels, for the glue gradient
 const LABS_BAND_INK = "#2A283A"; // dark neutral ink for text on light surfaces
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
@@ -21,12 +22,34 @@ function ChimeLabsBandSection() {
     }}>
       {/* Background video treatment, glued to the solid color with a gradient */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 860, pointerEvents: "none" }}>
-        <video src={LABS_BAND_UPLOADS + "/weight_loss_bg.mp4"} autoPlay muted loop playsInline
+        <video src={LABS_BAND_UPLOADS + "/_030742_54710cbd-10dc-4c82-9c8a-51ddf76d2616.mp4"} autoPlay muted loop playsInline
           ref={function (el) { if (el) { el.muted = true; el.defaultMuted = true; el.volume = 0; } }}
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }}></video>
+        {/* Dark-indigo scrim for title legibility, same vocabulary as LabsHero's
+            (--glass-rgb). Sits UNDER the glue gradient below so that gradient
+            still lands on LABS_BAND_SOLID at the bottom; fades out by 62% so it
+            never touches the glue or the cards. The glue cannot darken anything
+            itself — it is the ground colour.
+            Runs stronger than the hero's 0.68/0.50 because the cream glue lightens
+            this zone far more than the old iris one did: at 0.68 the white title
+            measured 3.16:1 over the footage, at 0.82 it measures 4.11:1. Re-measure
+            if LABS_BAND_SOLID or the video changes. */}
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: 0,
+          background:
+            "linear-gradient(180deg, " +
+            "rgb(var(--glass-rgb) / 0.82) 0%, " +
+            "rgb(var(--glass-rgb) / 0.70) 30%, " +
+            "rgb(var(--glass-rgb) / 0) 62%)",
+        }}></div>
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(180deg, rgba(165,159,214,0.42) 0%, rgba(165,159,214,0.12) 26%, rgba(165,159,214,0.12) 55%, rgba(165,159,214,0.6) 78%, " + LABS_BAND_SOLID + " 96%)",
+          background: "linear-gradient(180deg, " +
+            "rgba(" + LABS_BAND_SOLID_RGB + ",0.42) 0%, " +
+            "rgba(" + LABS_BAND_SOLID_RGB + ",0.12) 26%, " +
+            "rgba(" + LABS_BAND_SOLID_RGB + ",0.12) 55%, " +
+            "rgba(" + LABS_BAND_SOLID_RGB + ",0.6) 78%, " +
+            LABS_BAND_SOLID + " 96%)",
         }}></div>
       </div>
 
@@ -62,37 +85,13 @@ function ChimeLabsBandSection() {
         padding: "0 var(--spacing-8) var(--spacing-20)",
         display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
       }}>
-        {/* Card 1 — signals explorer: rail | detail panel */}
-        <LabsBandReveal>
-        <div style={{
-          position: "relative",
-          background: "rgb(var(--glass-rgb) / 0.45)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-3xl)",
-          padding: "var(--spacing-10)",
-          display: "flex", flexDirection: "column", gap: "var(--spacing-8)",
-        }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-3)" }}>
-            <h3 style={{
-              margin: 0, textAlign: "center", maxWidth: "18em",
-              fontSize: "var(--text-4xl)", fontWeight: 300, lineHeight: 1.12,
-              color: "var(--color-white)", textWrap: "balance",
-            }}>Discover Some Of The Signals Your Body May Be Sending</h3>
-            <p style={{
-              margin: 0, textAlign: "center", maxWidth: "38em",
-              fontSize: "var(--text-base)", lineHeight: 1.55,
-              color: "rgba(255,255,255,0.85)", textWrap: "pretty",
-            }}>Health insights help uncover biomarkers that may support conversations around wellness, energy, recovery, metabolism, healthy aging, and overall health.</p>
-          </div>
-          <LabsBandSignals />
-        </div>
-        </LabsBandReveal>
-
         {/* Health Insights tiers */}
         <LabsBandReveal>
         <div className="labs-tiers" style={{
-          background: "rgb(var(--glass-rgb) / 0.45)",
-          border: "1px solid var(--glass-border)",
+          // Light glass panel — the tier cards inside stay dark glass and read
+          // as raised against it. Panel-level text uses LABS_BAND_INK.
+          background: "rgba(255, 255, 255, 0.72)",
+          border: "1px solid rgba(255, 255, 255, 0.6)",
           borderRadius: "var(--radius-3xl)",
           padding: "var(--spacing-12) var(--spacing-10)",
           display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-8)",
@@ -101,23 +100,27 @@ function ChimeLabsBandSection() {
             <h3 style={{
               margin: 0, textAlign: "center", maxWidth: "18em",
               fontSize: "var(--text-4xl)", fontWeight: 300, lineHeight: 1.12,
-              color: "var(--color-white)", textWrap: "balance",
+              color: LABS_BAND_INK, textWrap: "balance",
             }}>Discover A Deeper Understanding Of Your Health</h3>
             <p style={{
               margin: 0, textAlign: "center", maxWidth: "42em",
               fontSize: "var(--text-base)", lineHeight: 1.55,
-              color: "rgba(255,255,255,0.85)", textWrap: "pretty",
+              color: "rgba(42,40,58,0.78)", textWrap: "pretty",
             }}>Whether you are beginning your wellness journey or seeking the most comprehensive picture possible, Chime offers multiple levels of health insights designed to help guide your path.</p>
           </div>
-          <div className="labs-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--spacing-6)", width: "100%" }}>
+          {/* auto-fit rather than a 4th fixed column: 4 across at container width,
+              wrapping on its own between 960px and there. */}
+          <div className="labs-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "var(--spacing-6)", width: "100%" }}>
             <LabsBandTierCard name="Essential Health Insights" markers="80+" />
             <LabsBandTierCard name="Complete Health Insights" markers="100+" upgraded />
             <LabsBandTierCard name="Executive Health Insights" markers="130+" upgraded />
+            <LabsBandTierCard name="Build Your Own Panel" markers="100+" custom
+              href="#build-your-panel" />
           </div>
           <p style={{
             margin: 0, textAlign: "center",
             fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-medium)",
-            color: "rgba(255,255,255,0.8)",
+            color: "rgba(42,40,58,0.8)",
           }}>Hundreds Of Data Points. One Personalized Path.</p>
         </div>
         </LabsBandReveal>
@@ -125,144 +128,59 @@ function ChimeLabsBandSection() {
         <LabsBandReveal delay={100}>
         <p style={{
           margin: "var(--spacing-2) auto 0", maxWidth: "52em", textAlign: "center",
-          fontSize: "var(--text-xs)", lineHeight: 1.6, color: "rgba(255,255,255,0.8)",
-        }}>Not available in all 50 states. Lab tests are ordered and reviewed by licensed providers. Results are informational and not a diagnosis. <a href="#" style={{ color: "var(--color-white)" }}>Read more</a></p>
+          // Sits directly on the cream ground, not on the panel — hence ink, not white.
+          fontSize: "var(--text-xs)", lineHeight: 1.6, color: "rgba(42,40,58,0.78)",
+        }}>Not available in all 50 states. Lab tests are ordered and reviewed by licensed providers. Results are informational and not a diagnosis. <a href="#" style={{ color: "var(--accent-strong)" }}>Read more</a></p>
         </LabsBandReveal>
       </div>
     </section>
   );
 }
 
-const LABS_BAND_SIGNALS = [
-  { tag: "Hormones", title: "Hormonal Health & Vitality",
-    body: "Hormones influence far more than body composition. They may also play a role in energy, recovery, motivation, and overall vitality.",
-    markers: "Testosterone · Free Testosterone · Estradiol" },
-  { tag: "Metabolism", title: "Metabolism & Weight Management",
-    body: "Metabolic markers may reflect how your body processes energy, manages blood sugar, and stores fuel over time.",
-    markers: "HbA1c · Fasting Insulin · Glucose" },
-  { tag: "Energy", title: "Energy & Recovery",
-    body: "Day-to-day energy and recovery can connect to nutrient status, iron levels, and how your body handles stress.",
-    markers: "Ferritin · Vitamin D · Cortisol" },
-  { tag: "Heart Health", title: "Advanced Heart Health Insights",
-    body: "A closer look at cardiovascular markers that go beyond a standard cholesterol test.",
-    markers: "ApoB · Lp(a) · hs-CRP" },
-  { tag: "Healthy Aging", title: "Healthy Aging",
-    body: "Markers associated with long-term wellness that may support conversations around healthy aging.",
-    markers: "HbA1c · hs-CRP · DHEA-S" },
-  { tag: "And More", title: "And Much More…",
-    body: "Thyroid, liver, kidney, nutrients, and beyond — a fuller picture across your body's systems.",
-    markers: "TSH · ALT · eGFR" },
-];
-
-function LabsBandSignals() {
-  const [active, setActive] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
-  const [fade, setFade] = React.useState(true);
-  const reduced = React.useMemo(function () {
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-  const go = React.useCallback(function (i) {
-    setFade(false);
-    setTimeout(function () { setActive(i); setFade(true); }, 450);
-  }, []);
-  React.useEffect(function () {
-    if (reduced || paused) return;
-    const t = setInterval(function () {
-      setFade(false);
-      setTimeout(function () {
-        setActive(function (a) { return (a + 1) % LABS_BAND_SIGNALS.length; });
-        setFade(true);
-      }, 450);
-    }, 5000);
-    return function () { clearInterval(t); };
-  }, [reduced, paused]);
-  const item = LABS_BAND_SIGNALS[active];
-  const num = function (i) { return (i + 1 < 10 ? "0" : "") + (i + 1); };
-  return (
-    <div className="labs-signals-grid"
-      onMouseEnter={function () { setPaused(true); }}
-      onMouseLeave={function () { setPaused(false); }}
-      style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: "var(--spacing-6)", alignItems: "stretch" }}>
-      {/* Rail */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-        {LABS_BAND_SIGNALS.map(function (s, i) {
-          const isActive = i === active;
-          return (
-            <button key={s.tag} onClick={function () { go(i); }} style={{
-              textAlign: "left", cursor: "pointer", font: "inherit",
-              background: isActive ? "var(--color-iris-200)" : "rgba(255,255,255,0.05)",
-              color: isActive ? LABS_BAND_INK : "var(--color-white)",
-              border: isActive ? "1px solid var(--color-iris-300)" : "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "var(--radius-xl)", padding: "var(--spacing-3) var(--spacing-4)",
-              display: "flex", flexDirection: "column", gap: "var(--spacing-1)",
-              transition: "background var(--transition-base) var(--ease-in-out), color var(--transition-base) var(--ease-in-out), border-color var(--transition-base) var(--ease-in-out)",
-            }}>
-              <span style={{
-                fontSize: "var(--text-xs)", letterSpacing: "0.08em",
-                color: isActive ? "rgb(var(--glass-rgb) / 0.7)" : "rgba(255,255,255,0.7)",
-              }}>{num(i)} — {s.tag}</span>
-              <span style={{ fontSize: "var(--text-base)", lineHeight: 1.3 }}>{s.title}</span>
-            </button>
-          );
-        })}
-      </div>
-      {/* Detail panel */}
-      <div style={{
-        background: "rgb(var(--glass-rgb) / 0.55)", border: "1px solid var(--glass-border)",
-        borderRadius: "var(--radius-2xl)", padding: "var(--spacing-8)", minHeight: 420,
-        display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "var(--spacing-8)",
-        opacity: fade ? 1 : 0, transform: fade ? "none" : "translateY(10px)",
-        transition: "opacity 0.9s var(--ease-out, ease-out), transform 0.9s var(--ease-out, ease-out)",
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <span style={{
-            background: "var(--color-white)", color: LABS_BAND_INK,
-            borderRadius: "var(--radius-4xl)", padding: "var(--spacing-1) var(--spacing-4)",
-            fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
-          }}>{item.tag}</span>
-          <span style={{ fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.7)" }}>{num(active)}</span>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-          <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>Did you know?</div>
-          <h4 style={{ margin: 0, fontSize: "var(--text-3xl)", fontWeight: 300, lineHeight: 1.15, color: "var(--color-white)" }}>{item.title}</h4>
-          <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.55, color: "rgba(255,255,255,0.85)", maxWidth: "34em" }}>{item.body}</p>
-          <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.55, color: "rgba(255,255,255,0.75)" }}>Featured biomarkers: {item.markers}.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LabsBandTierCard({ name, markers, upgraded }) {
+// `href` turns the card into an anchor (used by the Build-Your-Own card to reach
+// the selector section); `custom` swaps the fixed price for a build affordance.
+function LabsBandTierCard({ name, markers, upgraded, custom, href }) {
   const [hover, setHover] = React.useState(false);
+  const Tag = href ? "a" : "div";
   return (
-    <div
+    <Tag
+      href={href}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-      position: "relative", background: "rgb(var(--glass-rgb) / 0.45)",
-      border: "1px solid " + (hover ? "rgba(255,255,255,0.22)" : "var(--glass-border)"), borderRadius: "var(--radius-2xl)",
+      textDecoration: "none",
+      // Wellness-card treatment (see HWSymptomsSection): white surface, accent
+      // hairline, shadow-md. Tokens are theme-scoped, so `lab` resolves iris.
+      position: "relative", background: "var(--color-white)",
+      border: "1px solid var(--accent-border)", borderRadius: "var(--radius-xl)",
       padding: "var(--spacing-6)",
       display: "flex", flexDirection: "column", gap: "var(--spacing-5)",
       transform: hover ? "translateY(-4px)" : "none",
-      boxShadow: hover ? "0 22px 44px rgb(var(--glass-rgb) / 0.5)" : "none",
+      boxShadow: hover ? "var(--shadow-lg)" : "var(--shadow-md)",
       transition: "transform var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out), border-color var(--transition-base) var(--ease-in-out)",
     }}>
       {/* Biomarkers badge */}
       <div style={{
-        position: "absolute", top: "var(--spacing-4)", right: "var(--spacing-4)",
-        background: "rgb(var(--glass-rgb) / 0.55)", border: "1px solid var(--glass-border)",
+        // zIndex needed: the vial's drop-shadow filter gives it a stacking context,
+        // so it paints in the same step as this badge and wins on tree order. They
+        // overlap once the card narrows (badge 115–244 vs vial 71–191 at 390px).
+        position: "absolute", zIndex: 1,
+        top: "var(--spacing-4)", right: "var(--spacing-4)",
+        // Solid ink, not 0.55 glass: the card is white now, so translucent glass
+        // composited to a pale mauve and dropped the label to 3.45:1. Matches
+        // the PDP badge.
+        background: "var(--glass-solid)", border: "1px solid var(--glass-border)",
         color: "var(--color-white)",
         borderRadius: "var(--radius-lg)", padding: "var(--spacing-2) var(--spacing-3)",
         display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-1)",
       }}>
         <div style={{ fontSize: "var(--text-2xl)", fontWeight: 300, lineHeight: 1 }}>{markers}</div>
         <div style={{ fontSize: "var(--text-xs)", opacity: 0.85 }}>Biomarkers</div>
-        {upgraded ? (
+        {upgraded || custom ? (
           <div style={{
             background: "var(--color-iris-700)", color: "var(--color-white)",
             borderRadius: "var(--radius-4xl)", padding: "2px 10px", fontSize: 11,
-          }}>Upgraded Panel</div>
+          }}>{custom ? "Choose your own" : "Upgraded Panel"}</div>
         ) : null}
       </div>
       <img src={LABS_BAND_UPLOADS + "/vial-solo.png"} alt={name + " sample vial"}
@@ -273,13 +191,27 @@ function LabsBandTierCard({ name, markers, upgraded }) {
           transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
         }} />
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-        <h4 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-medium)", color: "var(--color-white)", lineHeight: 1.25 }}>{name}</h4>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
-          <span style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.8)" }}>From</span>
-          <span style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)" }}>$—</span>
-        </div>
+        <h4 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-medium)", color: "var(--text-default)", lineHeight: 1.25 }}>{name}</h4>
+        {custom ? (
+          <div style={{
+            display: "flex", alignItems: "center", gap: "var(--spacing-2)",
+            fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)",
+            color: "var(--accent-strong)",
+          }}>
+            <span>Pick your biomarkers</span>
+            <span aria-hidden="true" style={{
+              transform: hover ? "translateX(3px)" : "none",
+              transition: "transform var(--transition-base) var(--ease-in-out)",
+            }}>→</span>
+          </div>
+        ) : (
+          <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
+            <span style={{ fontSize: "var(--text-sm)", color: "var(--fg-muted)" }}>From</span>
+            <span style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>$—</span>
+          </div>
+        )}
       </div>
-    </div>
+    </Tag>
   );
 }
 

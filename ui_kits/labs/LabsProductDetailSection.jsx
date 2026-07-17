@@ -14,9 +14,15 @@ const LABS_PDP_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 // Marker counts match the tiers already shown in ChimeLabsSection.
 // NOTE: prices are PLACEHOLDERS. ChimeLabsSection deliberately renders "From $—"
 // because real pricing isn't set yet; swap these once it is.
+// A tier may override the product photo with `image`/`alt`; tiers that omit them
+// fall back to the section's `image`/`alt` props.
 const LABS_TIERS = {
   Comprehensive: { markers: "80+",  price: "$399", was: "$499" },
-  Complete:      { markers: "100+", price: "$549", was: "$699" },
+  Complete:      {
+    markers: "100+", price: "$549", was: "$699",
+    image: LABS_PDP_UPLOADS + "/2vials.png",
+    alt: "Two capped blood collection vials beside a white specimen box",
+  },
   Executive:     { markers: "130+", price: "$799", was: "$999" },
 };
 
@@ -87,6 +93,8 @@ function LabsProductDetailSection({
   const [review, setReview] = React.useState(LABS_REVIEWS[0]);
   const [ctaHover, setCtaHover] = React.useState(false);
   const panel = LABS_TIERS[tier];
+  const panelImage = panel.image || image;
+  const panelAlt = panel.image ? panel.alt : alt;
 
   return (
     <section data-screen-label="Labs Product Detail" data-theme={theme}
@@ -105,7 +113,7 @@ function LabsProductDetailSection({
             position: "relative", aspectRatio: "16 / 15", overflow: "clip",
             borderRadius: "var(--radius-2xl)", background: "var(--accent-subtle)",
           }}>
-            <img src={image} alt={alt} style={{
+            <img src={panelImage} alt={panelAlt} style={{
               width: "100%", height: "100%", objectFit: fit, display: "block",
             }} />
             {/* Dark badge pinned top-right: count over label */}
