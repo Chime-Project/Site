@@ -91,14 +91,18 @@ function SimplePathCard({ step, isActive, isLit }) {
 
 // Sequential highlight: once the section enters view, sweep the emphasis
 // across the steps 1 -> 2 -> 3 -> 4 to trace "the path to go".
+// Desktop only — on mobile the cards stack and the sweep is skipped, matching
+// each page's CSS, which disables this section's `.reveal` at the same 960px.
 function useSimplePathSweep(ref, count) {
-  const reduced = React.useMemo(function () {
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const skip = React.useMemo(function () {
+    if (!window.matchMedia) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      || window.matchMedia("(max-width: 960px)").matches;
   }, []);
   // activeStep: which step the sweep is currently landing on (0 = none, count = done).
-  const [activeStep, setActiveStep] = React.useState(reduced ? count : 0);
+  const [activeStep, setActiveStep] = React.useState(skip ? count : 0);
   React.useEffect(function () {
-    if (reduced) return;
+    if (skip) return;
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) { setActiveStep(count); return; }
     let timers = [];
@@ -115,7 +119,7 @@ function useSimplePathSweep(ref, count) {
       io.disconnect();
       timers.forEach(clearTimeout);
     };
-  }, [reduced, count]);
+  }, [skip, count]);
   return activeStep;
 }
 
