@@ -226,7 +226,13 @@
 
 [data-theme="lab"] {
   --accent-default:     var(--color-iris-500);
-  --accent-strong:      var(--color-iris-700);
+  /* iris-800, not -700, and deliberately equal to --accent-active below. The iris
+     ramp is pale: -700 (#7D79A2) reads 4.09:1 on white and 3.70:1 on --accent-subtle,
+     under the 4.5 AA floor, and --accent-strong is the text/link color on this theme's
+     light grounds. -800 clears it (5.42:1 / 4.90:1). Losing the step against -active is
+     the accepted cost — -800 is the darkest iris there is. Restoring the step needs a
+     new iris-900, not a revert to -700. */
+  --accent-strong:      var(--color-iris-800);
   --accent-hover:       var(--color-iris-600);
   --accent-active:      var(--color-iris-800);
   --accent-subtle:      var(--color-iris-100);
