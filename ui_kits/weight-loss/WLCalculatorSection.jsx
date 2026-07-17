@@ -1,10 +1,11 @@
 // Chime Health — Weight Loss landing: standalone calculator section
-// Renders the shared WLCalculatorCard (ui_kits/shared/WLCalculator.jsx) on a tide band.
+// Renders the shared WLCalculatorCard (ui_kits/shared/WLCalculator.jsx) on an accent band.
+// `theme` selects the accent palette; the band and the card both follow it.
 
-function WLCalculatorSection() {
+function WLCalculatorSection({ theme = "weight-loss" }) {
   return (
-    <section data-screen-label="Calculator" data-theme="weight-loss" style={{
-      background: "#5E93D1",
+    <section data-screen-label="Calculator" data-theme={theme} style={{
+      background: "var(--accent-default)",
       fontFamily: "var(--font-family-base)",
       padding: "var(--spacing-12) var(--spacing-6)",
     }}>

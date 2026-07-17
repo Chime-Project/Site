@@ -113,7 +113,7 @@ function ChimeWeightLossSection() {
 
         {/* Row 2 — calculator full width */}
         <WLReveal>
-        <WLCalculatorCard />
+        <WLCalculatorCard variant="dark" />
         </WLReveal>
 
         <WLReveal delay={100}>

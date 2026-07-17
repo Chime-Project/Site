@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chime Health — Labs &amp; Health Insights</title>
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#A59FD6"></rect><circle cx="50" cy="50" r="20" fill="none" stroke="#FFFEFB" stroke-width="3"></circle><circle cx="50" cy="50" r="12" fill="none" stroke="#D1CFE8" stroke-width="3"></circle><circle cx="50" cy="50" r="5" fill="#FFFEFB"></circle></svg></template>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260723">
 <script src="tailwind.setup.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -89,11 +89,11 @@
 <!-- Main menu -->
 <script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260716"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
-<script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260722"></script>
 <!-- Labs hero: full-bleed ambient video + emotive headline + assessment CTA (iris-themed) -->
 <script type="text/babel" src="ui_kits/labs/LabsHero.jsx?v=20260721"></script>
 <!-- Labs band: signals explorer + health-insight tiers (iris-themed) -->
-<script type="text/babel" src="ui_kits/homepage/LabsSection.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/homepage/LabsSection.jsx?v=20260722"></script>
 <!-- "One Insight Can Change Everything" fanned card stack -->
 <script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260721"></script>
 <!-- Panel product detail: photo + tier/sex/review options + book CTA -->
@@ -102,8 +102,7 @@
 <script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260716"></script>
 <!-- FAQ: shared content + accordion, then the Labs wrapper (data must load first) -->
 <script src="ui_kits/shared/data/faqs.js?v=20260720"></script>
-<script type="text/babel" src="ui_kits/shared/common/FaqAccordion.jsx?v=20260716"></script>
-<script type="text/babel" src="ui_kits/labs/LabsFaqSection.jsx?v=20260721"></script>
+<script type="text/babel" src="ui_kits/shared/common/FaqAccordion.jsx?v=20260723"></script>
 <!-- Trust strip: sits directly above the footer -->
 <script type="text/babel" src="ui_kits/labs/LabsTrustSection.jsx?v=20260721"></script>
 <!-- Footer + assessment modal -->
@@ -127,7 +126,7 @@ function LabsPage() {
             { title: "Guidance", body: "Receive support as you explore your next steps." },
             { title: "Support", body: "You don’t have to figure it out alone." },
           ]} />
-        <LabsFaqSection />
+        <ChimeFaqSection theme="lab" items={window.CHIME_FAQS.lab} />
         <LabsTrustSection />
       </main>
       <ChimeFooter />

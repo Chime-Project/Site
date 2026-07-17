@@ -5,3 +5,11 @@
 @import "tokens/spacing.css";
 @import "tokens/effects.css";
 @import "tokens/base.css";
+
+/* Shared FAQ section gutter (ChimeFaqSection — ui_kits/shared/common/FaqAccordion.jsx).
+   Lives here rather than per-page so every page gets the same width automatically.
+   Matches the .guide-section / .simple-path-section step at the same breakpoint;
+   !important because the component sets its padding inline. */
+@media (max-width: 960px) {
+  .faq-section { padding-inline: var(--spacing-5) !important; }
+}

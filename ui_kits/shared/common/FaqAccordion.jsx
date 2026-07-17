@@ -75,4 +75,24 @@ function FaqAccordion({ items, maxWidth, title }) {
   );
 }
 
-Object.assign(window, { FaqAccordion, FaqItem });
+// Standalone FAQ section — the one implementation every page uses, so the card
+// stays the same width across pages. Theme-aware via `theme` (tide / cadmium /
+// iris), mirroring ChimeGuideSection. The container matches GuideSection and
+// SimplePathSection, so the card's edges line up with the neighbouring sections.
+// The ≤960px gutter lives in styles.css as `.faq-section`.
+function ChimeFaqSection({ theme = "default", items, title }) {
+  return (
+    <section data-screen-label="FAQ" data-theme={theme} style={{
+      fontFamily: "var(--font-family-base)", background: "var(--bg-default)",
+    }}>
+      <div className="reveal faq-section" style={{
+        padding: "var(--spacing-16) var(--spacing-8)",
+        maxWidth: "var(--container-xl)", margin: "0 auto", boxSizing: "border-box",
+      }}>
+        <FaqAccordion items={items} title={title} maxWidth="100%" />
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { FaqAccordion, FaqItem, ChimeFaqSection });
