@@ -50,9 +50,25 @@
   /* ---- Labs section (iris) responsive ---- */
   @media (max-width: 960px) {
     .labs-title { font-size: var(--text-4xl) !important; }
+    .labs-signals-section { padding-inline: var(--spacing-5) !important; }
     .labs-signals-grid { grid-template-columns: 1fr !important; }
     .labs-tier-grid { grid-template-columns: 1fr !important; }
     .labs-tiers { padding: var(--spacing-8) var(--spacing-6) !important; }
+  }
+
+  /* ---- Build your own panel ---- */
+  @media (max-width: 960px) {
+    /* One column, and the cart stops sticking (a sticky sidebar that has become
+       full-width would pin itself over the list it filters). */
+    .bp-section { padding-inline: var(--spacing-5) !important; }
+    .bp-grid { grid-template-columns: 1fr !important; }
+    .bp-cart-col { position: static !important; }
+  }
+  @media (max-width: 560px) {
+    /* Row: let price + actions drop under the name instead of crushing it. */
+    .bp-row-main { flex-wrap: wrap !important; }
+    .bp-row-price { order: 3; }
+    .bp-row-actions { order: 4; margin-inline-start: auto; }
   }
 
   /* ---- Shared section: Simple Path Forward ---- */
@@ -60,6 +76,9 @@
     .simple-path-section { padding-inline: var(--spacing-5) !important; }
     .simple-path-grid { grid-template-columns: 1fr 1fr !important; }
     .simple-path-title { font-size: var(--text-4xl) !important; }
+    /* No scroll-reveal on this section below mobile; the JS step sweep in
+       SimplePathSection.jsx opts out at this same breakpoint. */
+    .simple-path-section .reveal { animation-name: none !important; }
     /* Insight card stack: single column. The stack keeps its own right gutter —
        that margin is what reserves room for the fan (see InsightStackSection). */
     .insight-section { padding-inline: var(--spacing-5) !important; }
@@ -92,12 +111,16 @@
 <script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260722"></script>
 <!-- Labs hero: full-bleed ambient video + emotive headline + assessment CTA (iris-themed) -->
 <script type="text/babel" src="ui_kits/labs/LabsHero.jsx?v=20260721"></script>
-<!-- Labs band: signals explorer + health-insight tiers (iris-themed) -->
-<script type="text/babel" src="ui_kits/labs/LabsBandSection.jsx?v=20260724"></script>
+<!-- Signals explorer: category rail + rotating detail panel (iris-themed) -->
+<script type="text/babel" src="ui_kits/labs/LabsSignalsSection.jsx?v=20260724"></script>
+<!-- Labs band: health-insight tiers (iris-themed) -->
+<script type="text/babel" src="ui_kits/labs/LabsBandSection.jsx?v=20260732"></script>
+<!-- Build your own panel: biomarker filter/search/sort + sticky cart -->
+<script type="text/babel" src="ui_kits/labs/BuildPanelSection.jsx?v=20260733"></script>
 <!-- "One Insight Can Change Everything" fanned card stack -->
 <script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260721"></script>
 <!-- Panel product detail: photo + tier/sex/review options + book CTA -->
-<script type="text/babel" src="ui_kits/labs/LabsProductDetailSection.jsx?v=20260721"></script>
+<script type="text/babel" src="ui_kits/labs/LabsProductDetailSection.jsx?v=20260724"></script>
 <!-- Homepage closing section: Simple Path Forward (sweep animation) -->
 <script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260716"></script>
 <!-- FAQ: shared content + accordion, then the Labs wrapper (data must load first) -->
@@ -117,7 +140,9 @@ function LabsPage() {
         <ChimeLabsHero />
         <ChimeInsightStackSection theme="lab" />
         <LabsProductDetailSection theme="lab" />
+        <ChimeLabsSignalsSection />
         <ChimeLabsBandSection />
+        <ChimeBuildPanelSection />
         <ChimeSimplePathSection theme="lab"
           title="Receiving information is only one step"
           subtitle="Understanding what comes next is where real value begins."
