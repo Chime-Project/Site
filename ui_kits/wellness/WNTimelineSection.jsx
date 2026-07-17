@@ -79,15 +79,6 @@ function WNTimelineSection() {
           Button={WNTButton} uploads={WNT_UPLOADS} />
         </WNTReveal>
       </div>
-
-      {/* FAQ card — sits on the gold ground below the membership panel,
-          matched to the panel's width */}
-      <div className="reveal" style={{
-        position: "relative", maxWidth: 1152, margin: "0 auto",
-        padding: "0 var(--spacing-6) calc(var(--spacing-16) + var(--spacing-6))",
-      }}>
-        <WNFaqCard maxWidth="100%" />
-      </div>
     </section>
   );
 }

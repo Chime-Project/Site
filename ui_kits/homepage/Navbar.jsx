@@ -11,7 +11,7 @@ const NAV_HREFS = window.CHIME_NAV_HREFS || {
 };
 const navHref = (label) => NAV_HREFS[label] || "#";
 
-function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs"], homeHref = "homepage.html" }) {
+function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs"], homeHref = "index.html" }) {
   const { Button } = window.ChimeHealthDesignSystem_b350cf;
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
