@@ -44,6 +44,13 @@ function ChimeFooter() {
             <div>Monday-Friday</div>
             <div>8:00 AM – 6:00 PM CST</div>
           </div>
+
+          <div style={{ fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)", textTransform: "uppercase", letterSpacing: "0.5px", marginTop: "var(--spacing-6)" }}>Address</div>
+          <address style={{ fontSize: "var(--text-sm)", color: "var(--color-blue-100)", lineHeight: 1.6, fontStyle: "normal" }}>
+            <div>4212 San Felipe St, Suite 576</div>
+            <div>Houston, TX 77027</div>
+            <div>United States</div>
+          </address>
         </div>
 
         <nav style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
