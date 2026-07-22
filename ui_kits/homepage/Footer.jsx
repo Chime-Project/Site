@@ -8,6 +8,17 @@ const FOOTER_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
 // Destination pages for footer nav labels; labels without an entry fall back to "#".
 const FOOTER_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
+  "Health, Energy & Wellness": "wellness.html",
+  "Labs": "labs.html",
+};
+
+// Legal column — kept separate from FOOTER_HREFS so a page overriding
+// CHIME_NAV_HREFS for its product nav can't accidentally drop the legal links.
+const FOOTER_LEGAL_HREFS = {
+  "Privacy Policy": "privacy-policy.html",
+  "HIPAA Notice": "hipaa-notice.html",
+  "Telehealth Consent": "telehealth-consent.html",
+  "Terms & Conditions": "terms-conditions.html",
 };
 
 function ChimeFooter() {
@@ -59,7 +70,7 @@ function ChimeFooter() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
           {["Privacy Policy", "HIPAA Notice", "Telehealth Consent", "Terms & Conditions"].map((l) => (
-            <FooterLink key={l} label={l} />
+            <FooterLink key={l} label={l} href={FOOTER_LEGAL_HREFS[l]} />
           ))}
         </div>
       </div>
