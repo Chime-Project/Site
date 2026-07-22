@@ -123,13 +123,13 @@ function useSimplePathSweep(ref, count) {
   return activeStep;
 }
 
-function ChimeSimplePathSection({ theme = "default", title = "A Simple Path Forward", subtitle, steps: stepsCopy }) {
+function ChimeSimplePathSection({ theme = "default", title = "A Simple Path Forward", subtitle, steps: stepsCopy, ctaLabel = "Discover your health path", screenLabel = "Simple Path Forward" }) {
   const [linkHover, setLinkHover] = React.useState(false);
   const gridRef = React.useRef(null);
   const steps = simplePathSteps(stepsCopy);
   const activeStep = useSimplePathSweep(gridRef, steps.length);
   return (
-    <section data-screen-label="Simple Path Forward" data-theme={theme} className="simple-path-section" style={{
+    <section data-screen-label={screenLabel} data-theme={theme} className="simple-path-section" style={{
       fontFamily: "var(--font-family-base)",
       padding: "var(--spacing-12) var(--spacing-8)",
       maxWidth: "var(--container-xl)", margin: "0 auto", boxSizing: "border-box",
@@ -152,16 +152,18 @@ function ChimeSimplePathSection({ theme = "default", title = "A Simple Path Forw
             }}>{subtitle}</p>
           ) : null}
         </div>
-        <a href="#"
-          onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
-          onMouseEnter={() => setLinkHover(true)}
-          onMouseLeave={() => setLinkHover(false)}
-          style={{
-            fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
-            color: linkHover ? "var(--accent-hover)" : "var(--accent-strong)",
-            textDecoration: "underline", textUnderlineOffset: "3px", whiteSpace: "nowrap",
-            transition: "color var(--transition-base) var(--ease-in-out)",
-          }}>Discover your health path</a>
+        {ctaLabel ? (
+          <a href="#"
+            onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
+            onMouseEnter={() => setLinkHover(true)}
+            onMouseLeave={() => setLinkHover(false)}
+            style={{
+              fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
+              color: linkHover ? "var(--accent-hover)" : "var(--accent-strong)",
+              textDecoration: "underline", textUnderlineOffset: "3px", whiteSpace: "nowrap",
+              transition: "color var(--transition-base) var(--ease-in-out)",
+            }}>{ctaLabel}</a>
+        ) : null}
       </SimplePathReveal>
 
       <div ref={gridRef} className="simple-path-grid" style={{

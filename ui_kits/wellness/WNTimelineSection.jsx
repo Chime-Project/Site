@@ -71,8 +71,7 @@ function WNTimelineSection() {
         <WNTReveal>
         <MembershipPanel
           panelBg="rgba(255,255,255,0.85)"
-          title="Imagine Showing Up As Your Best Self"
-          body="The goal of Chime Membership is to help you continue moving forward with confidence and support. Because feeling your best its built over time."
+          body="The goal of Chime Membership is to help you continue moving forward with confidence and support. Because feeling your best isn’t built in a single moment — it’s built over time."
           tagline="You’re Not Doing This Alone™"
           benefits={WNT_BENEFITS}
           ctaLabel="Explore The Chime Membership"
