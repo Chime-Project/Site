@@ -4,6 +4,6 @@
 CLAUDE.md
 .DS_Store
 
-# Source/reference material, not site assets — the deployed page uses test_vials.png
+# Source/reference material, not site assets — the deployed page uses test_vials.webp
 uploads/*.pdf
 uploads/test_vials.jpg

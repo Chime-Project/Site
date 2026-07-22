@@ -28,7 +28,7 @@ function WLFinalCTASection() {
             background: "linear-gradient(160deg, var(--accent-default), var(--accent-strong))",
             cursor: "pointer",
           }}>
-          <img src="uploads/vial-solo.png" alt="Medication vial"
+          <img src="uploads/vial-solo.webp" alt="Medication vial"
             style={{
               position: "absolute", left: "50%", top: "50%",
               height: "118%", width: "auto",

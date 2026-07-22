@@ -182,7 +182,7 @@ function ProductCard({ p, planIdx }) {
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
         <image-slot id={p.id} shape="rect" fit="contain" placeholder="Drop product photo"
-          src={PRODUCTS_UPLOADS + "/vial-solo.png"}
+          src={PRODUCTS_UPLOADS + "/vial-solo.webp"}
           style={{
             position: "absolute", inset: "9%",
             transform: hover ? "scale(1.14) rotate(-3deg) translateY(-6px)" : "none",

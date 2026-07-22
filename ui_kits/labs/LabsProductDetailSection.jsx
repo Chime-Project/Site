@@ -22,7 +22,7 @@ const LABS_TIERS = {
   Essential: { markers: "80+",  price: "$299/mo" },
   Complete:  {
     markers: "100+", price: "$399/mo",
-    image: LABS_PDP_UPLOADS + "/2vials.png",
+    image: LABS_PDP_UPLOADS + "/2vials.webp",
     alt: "Two capped blood collection vials beside a white specimen box",
   },
   Executive: { markers: "130+", price: "$599/mo" },

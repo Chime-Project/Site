@@ -262,7 +262,7 @@ function LabsTierCard({ name, markers, upgraded }) {
           }}>Upgraded Panel</div>
         ) : null}
       </div>
-      <img src={LABS_UPLOADS + "/vial-solo.png"} alt={name + " sample vial"}
+      <img src={LABS_UPLOADS + "/vial-solo.webp"} alt={name + " sample vial"}
         style={{
           width: 120, height: "auto", display: "block", margin: "var(--spacing-4) auto 0",
           transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",

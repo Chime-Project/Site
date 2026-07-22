@@ -1,6 +1,6 @@
 // Chime Health — Homepage UI kit: Weight Loss section
 // Full-bleed band themed with the Weight Loss (Tide Blue) palette.
-// bg_scenario.png at top, gradient glued into solid tide blue; title → model → CTAs → 3 cards.
+// bg_scenario.webp at top, gradient glued into solid tide blue; title → model → CTAs → 3 cards.
 
 const WL_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 const WL_SOLID = "#5E93D1"; // Tide Blue (Accent) — main section ground
@@ -23,7 +23,7 @@ function ChimeWeightLossSection() {
     }}>
       {/* Background scenario image, glued to the solid color with a gradient */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 860, pointerEvents: "none" }}>
-        <img src={WL_UPLOADS + "/bg_scenario.png"} alt=""
+        <img src={WL_UPLOADS + "/bg_scenario.webp"} alt=""
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }} />
         <div style={{
           position: "absolute", inset: 0,
@@ -50,7 +50,7 @@ function ChimeWeightLossSection() {
 
         <WLReveal delay={120} style={{ width: "100%" }}>
         <div style={{ position: "relative", marginTop: "var(--spacing-6)", display: "flex", justifyContent: "center", width: "100%" }}>
-          <img className="wl-model" src={WL_UPLOADS + "/model_weight.png"} alt="Woman carrying a yoga mat"
+          <img className="wl-model" src={WL_UPLOADS + "/model_weight.webp"} alt="Woman carrying a yoga mat"
             style={{ width: "min(480px, 74vw)", height: "auto", display: "block", filter: "drop-shadow(0 24px 48px rgba(17,30,44,0.45))" }} />
           {/* CTAs overlapping the bottom of the model */}
           <div style={{
@@ -90,7 +90,7 @@ function ChimeWeightLossSection() {
             <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.5, color: "rgba(255,255,255,0.9)", maxWidth: "26em" }}>Your goals, lifestyle, and health history all play a role in determining the right path forward.</p>
           </div>
           <div className="w-wl-model max-nav:w-full max-nav:max-w-wl-model" style={{ justifySelf: "center", alignSelf: "end" }}>
-            <img src={WL_UPLOADS + "/wieght_loss_md.png"} alt="Video visit with a provider on a phone"
+            <img src={WL_UPLOADS + "/wieght_loss_md.webp"} alt="Video visit with a provider on a phone"
               style={{ width: "100%", height: "auto", display: "block", filter: "drop-shadow(0 20px 40px rgba(17,30,44,0.4))" }} />
           </div>
           <div className="nav:absolute nav:start-10 nav:bottom-8 max-nav:flex max-nav:justify-center">

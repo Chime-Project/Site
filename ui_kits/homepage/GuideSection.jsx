@@ -2,7 +2,7 @@
 // Rounded full-width card with runners background image, email capture on the left.
 
 const GUIDE_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
-const GUIDE_BG = GUIDE_UPLOADS + "/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.png";
+const GUIDE_BG = GUIDE_UPLOADS + "/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.webp";
 
 // Scroll-reveal wrapper — pure-CSS scroll-driven animation (see `.reveal`);
 // `delay` accepted for API compatibility.
