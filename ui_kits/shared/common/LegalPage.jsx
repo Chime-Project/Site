@@ -16,7 +16,9 @@ function legalLinkify(text) {
     const href = isEmail ? "mailto:" + part
       : (part.indexOf("http") === 0 ? part : "https://" + part);
     return (
-      <a key={i} href={href} style={{ color: "var(--accent-strong)", textUnderlineOffset: 3 }}>
+      // .legal-link (styles.css) carries the hover underline wipe; currentColor
+      // there resolves to this accent, so the rule stays theme-agnostic.
+      <a key={i} className="legal-link" href={href} style={{ color: "var(--accent-strong)" }}>
         {part}
       </a>
     );
