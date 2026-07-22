@@ -36,6 +36,14 @@ function WLTimelineSection() {
           marginInline: "auto",
           textShadow: "0 2px 24px rgba(0,0,0,0.35)",
         }}>If Weight Loss Were Easy, You Wouldn't Still Be Searching</h2>
+        <p style={{
+          margin: "var(--spacing-5) auto 0", fontSize: "var(--text-lg)", lineHeight: 1.5,
+          color: "var(--color-white)", maxWidth: "30em",
+          textShadow: "0 1px 16px rgba(0,0,0,0.35)",
+        }}>You need a plan that's actually designed for you.</p>
+        <div style={{ marginTop: "var(--spacing-8)" }}>
+          <Button label="Discover Your Weight Loss Path" tone="onDark" variant="primary" size="cta" />
+        </div>
         </WLReveal>
       </div>
 
@@ -46,7 +54,7 @@ function WLTimelineSection() {
       <div style={{ position: "relative", maxWidth: 1152, margin: "0 auto", padding: "0 var(--spacing-6) var(--spacing-12)" }}>
         <WLReveal>
         <MembershipPanel
-          title="Chime was built to change that."
+          title="The Support Doesn't End Here"
           body="The Chime Membership is a care team that stays with you and adjusts as your life does — because lasting progress means having the right people in your corner."
           tagline="You're Not Doing This Alone™"
           benefits={["Lifestyle Strategies", "Laboratory Testing", "Wellness Support", "Coaching", "Treatment Options"]}

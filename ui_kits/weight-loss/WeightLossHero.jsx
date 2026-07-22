@@ -47,6 +47,10 @@ function ChimeWeightLossHero() {
             lineHeight: 1.12, color: "var(--color-white)", maxWidth: "14em",
             textWrap: "pretty",
           }}>Weight Loss That Works With You</h1>
+          <p style={{
+            margin: 0, fontSize: "var(--text-lg)", lineHeight: 1.5,
+            color: "var(--color-tide-100)", maxWidth: "26em",
+          }}>A path designed around your goals, lifestyle, and health.</p>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "var(--spacing-3)" }}>
             <div style={{ display: "flex", gap: "var(--spacing-3)", flexWrap: "wrap" }}>
               <WLHeroCTA label="Discover Your Weight Loss Path" onClick={open}></WLHeroCTA>
@@ -89,9 +93,12 @@ function ChimeWeightLossHero() {
           <WLHeroCheckItem
             icon={wlhIcon(<React.Fragment><circle cx="12" cy="12" r="9" /><path d="M8.5 12.5l2.5 2.5 4.5-5" /></React.Fragment>)}
             strong="Provider Oversight" rest="recommendations tailored to your needs"></WLHeroCheckItem>
-          <WLHeroCheckItem last
+          <WLHeroCheckItem
             icon={wlhIcon(<path d="M21 12a8 8 0 0 1-8 8H5l2-3a8 8 0 1 1 14-5z" />)}
             strong="Ongoing Support" rest="a team that stays with you throughout your journey"></WLHeroCheckItem>
+          <WLHeroCheckItem last
+            icon={wlhIcon(<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />)}
+            strong="Fast &amp; Convenient" rest="online visits on your schedule"></WLHeroCheckItem>
         </div>
       </div>
       </WLReveal>

@@ -108,14 +108,15 @@
 <!-- Weight Loss sections; WLShared.jsx supplies WLReveal -->
 <script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260722"></script>
 <script type="text/babel" src="ui_kits/weight-loss/WLShared.jsx?v=20260720"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WeightLossHero.jsx?v=20260722"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLBodiesSection.jsx?v=20260718"></script>
-<script type="text/babel" src="ui_kits/weight-loss/WLTimelineSection.jsx?v=20260720"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WeightLossHero.jsx?v=20260740"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLBodiesSection.jsx?v=20260740"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLTimelineSection.jsx?v=20260740"></script>
 <script type="text/babel" src="ui_kits/weight-loss/WLCalculatorSection.jsx?v=20260718"></script>
-<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/weight-loss/WLFinalCTASection.jsx?v=20260740"></script>
+<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260740"></script>
 <script type="text/babel" src="ui_kits/homepage/GuideSection.jsx?v=20260718"></script>
 <!-- Footer + assessment modal -->
-<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260737"></script>
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260739"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260720"></script>
 <script type="text/babel">
 function WeightLossPage() {
@@ -127,9 +128,11 @@ function WeightLossPage() {
         <WLBodiesSection />
         <WLTimelineSection />
         <WLCalculatorSection />
+        {/* Support system section — hidden 2026-07-21, restore by uncommenting
         <ChimeSimplePathSection theme="weight-loss"
           title="You Don’t Have To Do This Alone"
           subtitle="Weight loss is easier when you have the right team behind you."
+          ctaLabel={null}
           steps={[
             { title: "You", body: "It starts with your goals and your story." },
             { title: "Wellness Coach", body: "Support, accountability, and guidance." },
@@ -137,8 +140,20 @@ function WeightLossPage() {
             { title: "Personalized Plan", body: "A path designed around your life." },
             { title: "Ongoing Support", body: "A team that stays in your corner." },
           ]} />
+        */}
+        <ChimeSimplePathSection theme="weight-loss"
+          title="A Personalized Path Forward"
+          screenLabel="Personalized Path"
+          ctaLabel={null}
+          steps={[
+            { title: "Discover", body: "Tell us about your goals." },
+            { title: "Connect", body: "Meet your care team." },
+            { title: "Personalize", body: "Receive your personalized plan." },
+            { title: "Move Forward", body: "Stay supported along the way." },
+          ]} />
         <ChimeGuideSection theme="weight-loss" />
         <ChimeFaqSection theme="weight-loss" items={window.CHIME_FAQS["weight-loss"]} />
+        <WLFinalCTASection />
       </main>
       <ChimeFooter />
       <ChimeAssessmentModal />
