@@ -3,3 +3,7 @@
 # working notes and OS cruft out of the deploy.
 CLAUDE.md
 .DS_Store
+
+# Source/reference material, not site assets — the deployed page uses test_vials.png
+uploads/*.pdf
+uploads/test_vials.jpg
