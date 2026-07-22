@@ -80,11 +80,6 @@ function ChimeLabsSection() {
               fontSize: "var(--text-4xl)", fontWeight: 300, lineHeight: 1.12,
               color: "var(--color-white)", textWrap: "balance",
             }}>Discover Some Of The Signals Your Body May Be Sending</h3>
-            <p style={{
-              margin: 0, textAlign: "center", maxWidth: "38em",
-              fontSize: "var(--text-base)", lineHeight: 1.55,
-              color: "rgba(255,255,255,0.85)", textWrap: "pretty",
-            }}>Health insights help uncover biomarkers that may support conversations around wellness, energy, recovery, metabolism, healthy aging, and overall health.</p>
           </div>
           <LabsSignals />
         </div>
@@ -109,7 +104,7 @@ function ChimeLabsSection() {
               margin: 0, textAlign: "center", maxWidth: "42em",
               fontSize: "var(--text-base)", lineHeight: 1.55,
               color: "rgba(255,255,255,0.85)", textWrap: "pretty",
-            }}>Whether you are beginning your wellness journey or seeking the most comprehensive picture possible, Chime offers multiple levels of health insights designed to help guide your path.</p>
+            }}>Chime offers multiple levels of health insights designed to help guide your path.</p>
           </div>
           <div className="labs-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--spacing-6)", width: "100%" }}>
             <LabsTierCard name="Essential Health Insights" markers="80+" />

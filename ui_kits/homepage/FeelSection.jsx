@@ -42,12 +42,6 @@ function ChimeFeelSection() {
             display: "flex", alignItems: "center", justifyContent: "space-between",
             gap: "var(--spacing-6)", flexWrap: "wrap", marginTop: "var(--spacing-2)",
           }}>
-            <p style={{
-              margin: 0, maxWidth: "34em",
-              fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-normal)",
-              color: "var(--color-white)", opacity: 0.92, lineHeight: 1.5,
-              textShadow: "0 1px 12px rgb(var(--glass-rgb) / 0.35)",
-            }}>Most telehealth companies begin with a prescription. Our approach combines wellness coaching, licensed provider oversight, and convenient pharmacy fulfillment to create a more personalized healthcare experience.</p>
             <FeelCTA label="Explore The Chime Membership" />
           </div>
         </div>

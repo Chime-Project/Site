@@ -53,12 +53,7 @@ function ChimeWellnessSection() {
           display: "flex", justifyContent: "center", alignItems: "center",
           gap: "var(--spacing-8)", flexWrap: "wrap", width: "100%",
         }}>
-          <p style={{
-            margin: 0, maxWidth: "34em",
-            fontSize: "var(--text-lg)", lineHeight: 1.55, color: "var(--color-white)", opacity: 0.92,
-            textShadow: "0 1px 14px rgba(56,42,10,0.4)",
-          }}>Energy, wellness, and vitality are deeply personal. Whether you’re looking to improve your daily energy, stay focused, support recovery, or simply feel your best, Chime helps you explore a more personalized path forward.</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-4)" }}>
             <HWButton primary large label="Discover Your Wellness Path" />
           </div>
         </div>
