@@ -84,11 +84,14 @@ function ChimeFooter() {
 
         <div style={{
           fontSize: "var(--text-xs)", lineHeight: 1.6,
-          color: "var(--color-blue-100)", maxWidth: "90ch",
-          display: "grid", rowGap: "var(--spacing-1)",
+          color: "var(--color-blue-100)",
+          display: "grid", rowGap: "var(--spacing-3)",
         }}>
-          <p style={{ margin: 0 }}>The content on this page is intended for consumers or healthcare professionals who are U.S. residents ages 18 and over.</p>
-          <p style={{ margin: 0 }}>ChimeDirect&reg; is a registered trademark owned or licensed by Chime, Inc., its subsidiaries, or affiliates. Third-party trademarks are the property of their respective owners.</p>
+          <p style={{ margin: 0 }}>Chime Health connects patients with licensed healthcare providers through an online telehealth platform. Chime Health does not practice medicine or provide medical services directly.</p>
+          <p style={{ margin: 0 }}>Compounded medications are not FDA-approved drug products and have not been evaluated by the FDA for safety, effectiveness, or quality. They are prepared by licensed 503A compounding pharmacies pursuant to a valid prescription from a licensed healthcare provider.</p>
+          <p style={{ margin: 0 }}>Individual results vary. Results are not typical or guaranteed. State availability varies &mdash; not all services are available in all states. Prescription treatments require consultation and approval by a licensed healthcare provider. Treatment is not guaranteed.</p>
+          <p style={{ margin: 0 }}>Next-day shipping availability depends on provider approval, pharmacy processing times, patient location, and carrier service.</p>
+          <p style={{ margin: 0 }}>This website is for informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Not for emergencies &mdash; call 911.</p>
         </div>
 
         <p style={{ margin: "var(--spacing-4) 0 0 0", fontSize: "var(--text-xs)", color: "var(--color-blue-100)" }}>
