@@ -58,7 +58,7 @@ function ChimeLabsSignalsSection({ theme = "lab" }) {
             margin: 0, textAlign: "center", maxWidth: "38em",
             fontSize: "var(--text-base)", lineHeight: 1.55,
             color: "var(--fg-muted)", textWrap: "pretty",
-          }}>Health insights help uncover biomarkers that may support conversations around wellness, energy, recovery, metabolism, healthy aging, and overall health.</p>
+          }}>What your biomarkers may be telling you.</p>
         </div>
         <LabsSignalsExplorer />
       </div>

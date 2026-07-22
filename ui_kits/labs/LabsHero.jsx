@@ -105,16 +105,14 @@ function ChimeLabsHero() {
           fontSize: "clamp(var(--text-5xl), 5.5vw, 56px)", fontWeight: 300,
           lineHeight: 1.12, color: "var(--color-white)", textWrap: "balance",
           textShadow: "0 2px 22px rgb(var(--glass-rgb) / 0.55)",
-        }}>Your Body Has Been Whispering.<br />It’s Time To Listen.</h1>
+        }}>Your Body Has Been Trying<br />To Tell You Something</h1>
 
         <p style={{
           margin: 0, maxWidth: "34em",
           fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-normal)",
           lineHeight: 1.55, color: "rgba(255,255,255,0.92)", textWrap: "pretty",
           textShadow: "0 1px 14px rgb(var(--glass-rgb) / 0.4)",
-        }}>Chime Labs reads hundreds of biomarkers to surface what’s happening beneath
-        the surface — across your energy, metabolism, recovery, and long-term health —
-        and turns those signals into a path you can actually follow.</p>
+        }}>Hundreds of biomarkers. One clear picture of what’s happening beneath the surface.</p>
 
         <ChimeLabsHeroButton label="Discover Your Health Path" />
       </div>
