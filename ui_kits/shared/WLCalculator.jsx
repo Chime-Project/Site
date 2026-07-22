@@ -44,7 +44,9 @@ function WLSlider({ label, value, min, max, onChange, v = WL_CALC_VARIANTS.light
         <span style={{ fontSize: "var(--text-sm)", color: v.muted }}>{label}</span>
         <span style={{ fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-medium)", color: v.title, fontVariantNumeric: "tabular-nums" }}>{value} lb</span>
       </div>
-      <input type="range" min={min} max={max} value={value}
+      {/* aria-label, not a <label> wrapper: the visible text above is a styled
+          span in a flex row, so associating it would change the DOM structure. */}
+      <input type="range" min={min} max={max} value={value} aria-label={label}
         onChange={(e) => onChange(Number(e.target.value))}
         style={{ width: "100%", accentColor: v.accent, cursor: "pointer" }} />
     </div>

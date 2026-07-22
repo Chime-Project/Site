@@ -95,13 +95,24 @@ function RxCarousel({ variant = "light", Button, uploads }) {
         <Button primary small label="Get started" />
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: 6 }}>
+      {/* The button is the 24x24 touch target (WCAG 2.2 target-size); the dot you
+          actually see is the inner span, still 22x7 / 7x7. gap drops 6 -> 0 so the
+          wider boxes don't push the visible dots apart. The 8.5px of transparent
+          padding above/below stays inside the column's --spacing-4 gap, so it
+          cannot overlap -- and steal clicks from -- the CTA or the link below. */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 0 }}>
         {PRODUCTS.map((_, i) => (
           <button key={i} type="button" aria-label={"Show " + PRODUCTS[i].name} onClick={() => setIdx(i)} style={{
-            width: i === idx ? 22 : 7, height: 7, borderRadius: 4, border: "none", padding: 0, cursor: "pointer",
-            background: i === idx ? v.dotOn : v.dotOff,
-            transition: "all var(--transition-base) var(--ease-in-out)",
-          }}></button>
+            width: 24, height: 24, border: "none", padding: 0, cursor: "pointer",
+            background: "none", display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <span aria-hidden="true" style={{
+              display: "block",
+              width: i === idx ? 22 : 7, height: 7, borderRadius: 4,
+              background: i === idx ? v.dotOn : v.dotOff,
+              transition: "all var(--transition-base) var(--ease-in-out)",
+            }}></span>
+          </button>
         ))}
       </div>
 
