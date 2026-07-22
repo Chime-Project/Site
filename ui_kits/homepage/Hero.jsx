@@ -24,13 +24,13 @@ function ChimeHero() {
             brand={<span style={{ color: "#fff" }}>GLP-1</span>}
             product=""
             price="Start from $179.00"
-            src={HERO_UPLOADS + "/pen.png"}
+            src={HERO_UPLOADS + "/pen.webp"}
           />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", minWidth: 0 }}>
           <TreatmentPathCard
             slotId="hero-results"
-            src={HERO_UPLOADS + "/hf_20260709_235042_d5fcb10f-0daf-4a3f-a324-6c1333d8210d.png"}
+            src={HERO_UPLOADS + "/hf_20260709_235042_d5fcb10f-0daf-4a3f-a324-6c1333d8210d.webp"}
           />
           <div className="hero-chips-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-3)" }}>
             <TrustChip label="Dedicated Wellness Coaches" icon="coach" />

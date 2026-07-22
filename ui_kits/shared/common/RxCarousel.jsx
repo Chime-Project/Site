@@ -64,7 +64,7 @@ function RxCarousel({ variant = "light", Button, uploads }) {
 
       <div onMouseEnter={() => setVhover(true)} onMouseLeave={() => setVhover(false)}
         style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 116 }}>
-        <img src={uploads + "/vial-solo.png"} alt={p.name + " vial"} style={{
+        <img src={uploads + "/vial-solo.webp"} alt={p.name + " vial"} style={{
           width: 92, height: "auto", display: "block",
           transform: vhover ? "scale(1.08) rotate(-3deg) translateY(-4px)" : "none",
           filter: vhover ? "drop-shadow(0 22px 34px rgba(0,0,0,0.5))" : "drop-shadow(0 14px 26px rgba(0,0,0,0.38))",

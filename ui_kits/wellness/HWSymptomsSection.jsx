@@ -157,7 +157,7 @@ function ChimeHWSymptomsSection() {
         }}>
           <image-slot id="hws-tired" shape="circle" fit="cover"
             placeholder="Drop a photo — person in daily life, low energy"
-            src={HWS_UPLOADS + "/stressed%20couple.png"}
+            src={HWS_UPLOADS + "/stressed-couple.webp"}
             style={{ position: "absolute", inset: 0 }}></image-slot>
         </div>
 

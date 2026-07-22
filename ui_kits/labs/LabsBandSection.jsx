@@ -176,7 +176,7 @@ function LabsBandTierCard({ name, markers, upgraded, custom, href }) {
           }}>{custom ? "Choose your own" : "Upgraded Panel"}</div>
         ) : null}
       </div>
-      <img src={LABS_BAND_UPLOADS + "/test_vials.png"} alt={name + " sample vials"}
+      <img src={LABS_BAND_UPLOADS + "/test_vials.webp"} alt={name + " sample vials"}
         style={{
           width: 120, height: "auto", display: "block", margin: "var(--spacing-12) auto 0",
           transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",

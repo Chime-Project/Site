@@ -6,14 +6,14 @@ const WLT_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
 // Rx carousel arrow — ported from the Health, Energy & Wellness section (homepage).
 // Shared 2-product Rx carousel (GLP-1 + GLP1/GIP) — same component the
-// Health, Energy & Wellness section uses on the homepage, incl. the vial-solo.png image.
+// Health, Energy & Wellness section uses on the homepage, incl. the vial-solo.webp image.
 function WLTimelineSection() {
   return (
     <section data-screen-label="Timeline to treatment" data-theme="weight-loss" style={{
       position: "relative", fontFamily: "var(--font-family-base)", background: "#5E93D1", overflow: "hidden",
     }}>
       {/* Image as background for the WHOLE section */}
-      <img src={WLT_UPLOADS + "/hf_20260715_175520_37b982f3-c380-43c9-bc9c-8d50b3441ae1.png"} alt="" aria-hidden="true"
+      <img src={WLT_UPLOADS + "/hf_20260715_175520_37b982f3-c380-43c9-bc9c-8d50b3441ae1.webp"} alt="" aria-hidden="true"
         style={{
           position: "absolute", inset: 0, width: "100%", height: "100%",
           objectFit: "cover", objectPosition: "50% 18%",

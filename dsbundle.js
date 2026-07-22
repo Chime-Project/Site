@@ -2174,7 +2174,7 @@ try { (() => {
 // Rounded full-width card with runners background image, email capture on the left.
 
 const GUIDE_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
-const GUIDE_BG = GUIDE_UPLOADS + "/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.png";
+const GUIDE_BG = GUIDE_UPLOADS + "/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.webp";
 
 // Scroll-reveal wrapper: fades/slides children in when they enter the viewport.
 function GuideReveal({
@@ -2421,7 +2421,7 @@ function ChimeHero() {
     brand: "SEMAGLUTIDE",
     product: "Boost",
     price: "Start from $179.00",
-    src: HERO_UPLOADS + "/pen.png"
+    src: HERO_UPLOADS + "/pen.webp"
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -2431,7 +2431,7 @@ function ChimeHero() {
     }
   }, /*#__PURE__*/React.createElement(TreatmentPathCard, {
     slotId: "hero-results",
-    src: HERO_UPLOADS + "/hf_20260709_235042_d5fcb10f-0daf-4a3f-a324-6c1333d8210d.png"
+    src: HERO_UPLOADS + "/hf_20260709_235042_d5fcb10f-0daf-4a3f-a324-6c1333d8210d.webp"
   }), /*#__PURE__*/React.createElement("div", {
     className: "hero-chips-grid",
     style: {
@@ -3470,7 +3470,7 @@ function LabsTierCard({
       fontSize: 11
     }
   }, "Upgraded Panel") : null), /*#__PURE__*/React.createElement("img", {
-    src: LABS_UPLOADS + "/tier-img-b82013dc.png",
+    src: LABS_UPLOADS + "/tier-img-b82013dc.webp",
     alt: name + " sample vial",
     style: {
       width: 180,
@@ -4073,7 +4073,7 @@ function ProductCard({
     shape: "rect",
     fit: "contain",
     placeholder: "Drop product photo",
-    src: PRODUCTS_UPLOADS + "/ozempic-pen-aa505b46.png",
+    src: PRODUCTS_UPLOADS + "/ozempic-pen-aa505b46.webp",
     style: {
       position: "absolute",
       inset: "10%",
@@ -4270,7 +4270,7 @@ Object.assign(window, {
 try { (() => {
 // Chime Health — Homepage UI kit: Weight Loss section
 // Full-bleed band themed with the Weight Loss (sage) palette.
-// bg_scenario.png at top, gradient glued into solid sage; title → model → CTAs → 3 cards.
+// bg_scenario.webp at top, gradient glued into solid sage; title → model → CTAs → 3 cards.
 
 const WL_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 const WL_SOLID = "#7A9472"; // Muted Sage Green (Accent) — main section ground
@@ -4340,7 +4340,7 @@ function ChimeWeightLossSection() {
       pointerEvents: "none"
     }
   }, /*#__PURE__*/React.createElement("img", {
-    src: WL_UPLOADS + "/bg_scenario.png",
+    src: WL_UPLOADS + "/bg_scenario.webp",
     alt: "",
     style: {
       width: "100%",
@@ -4410,7 +4410,7 @@ function ChimeWeightLossSection() {
     }
   }, /*#__PURE__*/React.createElement("img", {
     className: "wl-model",
-    src: WL_UPLOADS + "/model_weight.png",
+    src: WL_UPLOADS + "/model_weight.webp",
     alt: "Woman carrying a yoga mat",
     style: {
       width: "min(480px, 74vw)",
@@ -4504,7 +4504,7 @@ function ChimeWeightLossSection() {
       alignSelf: "end"
     }
   }, /*#__PURE__*/React.createElement("img", {
-    src: WL_UPLOADS + "/wieght_loss_md.png",
+    src: WL_UPLOADS + "/wieght_loss_md.webp",
     alt: "Video visit with a provider on a phone",
     style: {
       width: "100%",
@@ -4551,7 +4551,7 @@ function ChimeWeightLossSection() {
     shape: "rect",
     fit: "contain",
     placeholder: "Drop product photo",
-    src: WL_UPLOADS + "/ozempic-pen-aa505b46.png",
+    src: WL_UPLOADS + "/ozempic-pen-aa505b46.webp",
     style: {
       position: "absolute",
       inset: "6%",
