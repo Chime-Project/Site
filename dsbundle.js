@@ -4672,6 +4672,7 @@ function WLSlider({
     }
   }, value, " lb")), /*#__PURE__*/React.createElement("input", {
     type: "range",
+    "aria-label": label,
     min: min,
     max: max,
     value: value,

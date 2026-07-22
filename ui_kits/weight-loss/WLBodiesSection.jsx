@@ -38,7 +38,7 @@ function WLBodiesSection() {
           position: "relative", aspectRatio: "1 / 1", maxWidth: 640, margin: "0 auto", width: "100%",
           background: "var(--color-tide-200)", borderRadius: "50%", overflow: "hidden",
         }}>
-          <img src="assets/wl-bodies-gym.png" alt="Two smiling women in workout clothes standing in a gym"
+          <img src="assets/wl-bodies-gym.webp" alt="Two smiling women in workout clothes standing in a gym"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%", opacity: 0.9 }} />
         </div>
 
