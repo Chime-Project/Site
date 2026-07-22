@@ -59,6 +59,15 @@
     .membership-panel { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; padding: var(--spacing-8) var(--spacing-6) !important; }
   }
 
+  /* ---- Signature Moment: slow gold-gradient drift ---- */
+  @keyframes wn-signature-pan {
+    from { background-position: 0% 50%; }
+    to   { background-position: 100% 50%; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .wn-signature-bg { animation: wn-signature-pan 16s ease-in-out infinite alternate; }
+  }
+
   /* ---- Homepage sections: Simple Path Forward + Guide CTA (shared) ---- */
   @media (max-width: 960px) {
     .simple-path-section { padding-inline: var(--spacing-5) !important; }
@@ -86,7 +95,7 @@
 <script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/CheckItem.jsx?v=20260719"></script>
-<script type="text/babel" src="ui_kits/shared/common/MembershipPanel.jsx?v=20260720"></script>
+<script type="text/babel" src="ui_kits/shared/common/MembershipPanel.jsx?v=20260739"></script>
 <script type="text/babel" src="ui_kits/shared/common/FaqAccordion.jsx?v=20260723"></script>
 <script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260722"></script>
 <!-- Wellness hero -->
@@ -94,12 +103,14 @@
 <!-- "Does Any of This Sound Familiar?" sticky-stack parallax -->
 <script type="text/babel" src="ui_kits/wellness/HWSymptomsSection.jsx?v=20260718"></script>
 <!-- "Your timeline to treatment" band (recreated from Weight Loss, gold-themed) -->
-<script type="text/babel" src="ui_kits/wellness/WNTimelineSection.jsx?v=20260723"></script>
+<script type="text/babel" src="ui_kits/wellness/WNTimelineSection.jsx?v=20260739"></script>
+<!-- "Imagine Showing Up As Your Best Self" closing image band -->
+<script type="text/babel" src="ui_kits/wellness/WNSignatureSection.jsx?v=20260740"></script>
 <!-- Homepage closing sections: Simple Path Forward (sweep animation) + Guide CTA -->
-<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260739"></script>
 <script type="text/babel" src="ui_kits/homepage/GuideSection.jsx?v=20260718"></script>
 <!-- Footer + assessment modal -->
-<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260737"></script>
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260739"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260720"></script>
 <script type="text/babel">
 function WellnessPage() {
@@ -110,8 +121,9 @@ function WellnessPage() {
         <ChimeWellnessHero />
         <ChimeHWSymptomsSection />
         <ChimeSimplePathSection theme="wellness"
-          title="Chime focuses on people"
+          title="Most Wellness Programs Focus On Products. Chime Focuses On People."
           subtitle="Wellness should be personal, supportive, and designed around your individual goals."
+          ctaLabel="Discover Your Wellness Path"
           steps={[
             { title: "Personalized Guidance", body: "A path designed around your goals, lifestyle, and needs." },
             { title: "Wellness Coach Support", body: "Support, accountability, and encouragement along the way." },
@@ -120,6 +132,7 @@ function WellnessPage() {
         <WNTimelineSection />
         <ChimeGuideSection theme="wellness" />
         <ChimeFaqSection theme="wellness" items={window.CHIME_FAQS.wellness} />
+        <WNSignatureSection />
       </main>
       <ChimeFooter />
       <ChimeAssessmentModal />

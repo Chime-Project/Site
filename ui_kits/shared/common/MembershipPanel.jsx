@@ -15,6 +15,7 @@
 // gradient overlay and a fixed spacer, WN a <video> with a CSS mask and no spacer.
 // Same intent, different techniques; merging them would be a false unification.
 //
+//   title:    optional — WN omits it (its headline lives on the media band above the panel)
 //   panelBg:  panel ground — WL opaque white; WN 0.85 alpha so the gold shows through
 //   Button:   the page's button adapter, also forwarded to <RxCarousel>
 //   uploads:  uploads base, forwarded to <RxCarousel>
@@ -32,12 +33,14 @@ function MembershipPanel({
       alignItems: "center",
     }}>
       <div>
-        <h2 style={{
-          margin: 0, fontSize: "var(--text-4xl)", fontWeight: 300,
-          lineHeight: 1.15, color: "var(--fg-default)", textWrap: "pretty",
-        }}>{title}</h2>
+        {title ? (
+          <h2 style={{
+            margin: 0, fontSize: "var(--text-4xl)", fontWeight: 300,
+            lineHeight: 1.15, color: "var(--fg-default)", textWrap: "pretty",
+          }}>{title}</h2>
+        ) : null}
         <p style={{
-          margin: "var(--spacing-6) 0 0", fontSize: "var(--text-lg)",
+          margin: title ? "var(--spacing-6) 0 0" : 0, fontSize: "var(--text-lg)",
           lineHeight: 1.5, color: "var(--fg-muted)", maxWidth: "24em",
         }}>{body}</p>
 
