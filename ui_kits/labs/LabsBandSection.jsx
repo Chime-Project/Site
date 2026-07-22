@@ -59,18 +59,11 @@ function ChimeLabsBandSection() {
         maxWidth: "var(--container-xl)", margin: "0 auto",
         padding: "var(--spacing-20) var(--spacing-8) 0",
         minHeight: 700,
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between",
+        // No copy in this band (the hero already carries the headline) — just the
+        // video visual with the CTA resting at its base, per the 2026-07 copy doc.
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end",
       }}>
-        <LabsBandReveal style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <h2 className="labs-title" style={{
-          margin: 0, textAlign: "center", maxWidth: "15em",
-          fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.12,
-          color: "var(--color-white)", textWrap: "balance",
-          textShadow: "0 1px 18px rgb(var(--glass-rgb) / 0.45)",
-        }}>Your Body Has Been Trying<br></br><span style={{ color: "var(--color-white)" }}>To Tell You Something</span></h2>
-        </LabsBandReveal>
-
-        {/* Subtitle + CTAs at the bottom of the products shown in the video */}
+        {/* CTA at the bottom of the products shown in the video */}
         <LabsBandReveal delay={120} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-5)", paddingBottom: "var(--spacing-10)" }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <LabsBandButton hero label="Discover Your Health Path" />

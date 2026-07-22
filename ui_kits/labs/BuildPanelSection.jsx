@@ -28,41 +28,42 @@ const BUILD_PANEL_CATEGORIES = [
   "Genetic Testing", "Adrenal Health",
 ];
 
-// Array order is the "Featured" sort. `was` present ⇒ discounted.
+// Array order is the "Featured" sort. Monthly pricing, no compare-at prices,
+// per the 2026-07 copy doc (uploads/Chime_Health_Labs_.pdf).
 const BUILD_PANEL_MARKERS = [
-  { id: "testosterone-total", name: "Total Testosterone", category: "Sex Hormones", price: 39, was: 59 },
+  { id: "testosterone-total", name: "Total Testosterone", category: "Sex Hormones", price: 39 },
   { id: "estradiol", name: "Estradiol (E2)", category: "Sex Hormones", price: 42 },
   { id: "progesterone", name: "Progesterone", category: "Sex Hormones", price: 38 },
-  { id: "shbg", name: "SHBG", category: "Sex Hormones", price: 35, was: 49 },
-  { id: "hba1c", name: "Hemoglobin A1c", category: "Metabolic Health", price: 29, was: 45 },
-  { id: "fasting-insulin", name: "Fasting Insulin", category: "Metabolic Health", price: 34, was: 49 },
+  { id: "shbg", name: "SHBG", category: "Sex Hormones", price: 35 },
+  { id: "hba1c", name: "Hemoglobin A1c", category: "Metabolic Health", price: 29 },
+  { id: "fasting-insulin", name: "Fasting Insulin", category: "Metabolic Health", price: 34 },
   { id: "fasting-glucose", name: "Fasting Glucose", category: "Metabolic Health", price: 19 },
   { id: "leptin", name: "Leptin", category: "Metabolic Health", price: 55 },
-  { id: "hs-crp", name: "hs-CRP", category: "Inflammation", price: 29, was: 42 },
+  { id: "hs-crp", name: "hs-CRP", category: "Inflammation", price: 29 },
   { id: "homocysteine", name: "Homocysteine", category: "Inflammation", price: 39 },
-  { id: "ferritin", name: "Ferritin", category: "Inflammation", price: 32, was: 45 },
-  { id: "lipid-panel", name: "Lipid Panel", category: "Heart Health", price: 35, was: 55 },
-  { id: "apob", name: "ApoB", category: "Heart Health", price: 44, was: 65 },
+  { id: "ferritin", name: "Ferritin", category: "Inflammation", price: 32 },
+  { id: "lipid-panel", name: "Lipid Panel", category: "Heart Health", price: 35 },
+  { id: "apob", name: "ApoB", category: "Heart Health", price: 44 },
   { id: "lp-a", name: "Lipoprotein(a)", category: "Heart Health", price: 49 },
   { id: "nt-probnp", name: "NT-proBNP", category: "Heart Health", price: 59 },
-  { id: "tsh", name: "TSH", category: "Thyroid Function", price: 29, was: 39 },
+  { id: "tsh", name: "TSH", category: "Thyroid Function", price: 29 },
   { id: "free-t4", name: "Free T4", category: "Thyroid Function", price: 32 },
-  { id: "free-t3", name: "Free T3", category: "Thyroid Function", price: 34, was: 48 },
+  { id: "free-t3", name: "Free T3", category: "Thyroid Function", price: 34 },
   { id: "tpo-antibodies", name: "TPO Antibodies", category: "Thyroid Function", price: 45 },
-  { id: "vitamin-d", name: "Vitamin D (25-OH)", category: "Vitamins & Minerals", price: 35, was: 52 },
+  { id: "vitamin-d", name: "Vitamin D (25-OH)", category: "Vitamins & Minerals", price: 35 },
   { id: "vitamin-b12", name: "Vitamin B12", category: "Vitamins & Minerals", price: 28 },
   { id: "folate", name: "Folate", category: "Vitamins & Minerals", price: 26 },
-  { id: "magnesium-rbc", name: "Magnesium (RBC)", category: "Vitamins & Minerals", price: 42, was: 58 },
+  { id: "magnesium-rbc", name: "Magnesium (RBC)", category: "Vitamins & Minerals", price: 42 },
   { id: "creatinine-egfr", name: "Creatinine & eGFR", category: "Kidney Health", price: 22 },
-  { id: "cystatin-c", name: "Cystatin C", category: "Kidney Health", price: 46, was: 62 },
+  { id: "cystatin-c", name: "Cystatin C", category: "Kidney Health", price: 46 },
   { id: "uric-acid", name: "Uric Acid", category: "Kidney Health", price: 24 },
-  { id: "psa-total", name: "PSA (Total)", category: "Cancer Screening", price: 39, was: 55 },
+  { id: "psa-total", name: "PSA (Total)", category: "Cancer Screening", price: 39 },
   { id: "ca-125", name: "CA-125", category: "Cancer Screening", price: 52 },
   { id: "cea", name: "CEA", category: "Cancer Screening", price: 48 },
-  { id: "apoe", name: "APOE Genotype", category: "Genetic Testing", price: 99, was: 149 },
+  { id: "apoe", name: "APOE Genotype", category: "Genetic Testing", price: 99 },
   { id: "mthfr", name: "MTHFR Variant", category: "Genetic Testing", price: 79 },
-  { id: "factor-v-leiden", name: "Factor V Leiden", category: "Genetic Testing", price: 89, was: 119 },
-  { id: "cortisol-am", name: "Cortisol (AM)", category: "Adrenal Health", price: 36, was: 49 },
+  { id: "factor-v-leiden", name: "Factor V Leiden", category: "Genetic Testing", price: 89 },
+  { id: "cortisol-am", name: "Cortisol (AM)", category: "Adrenal Health", price: 36 },
   { id: "dhea-s", name: "DHEA-S", category: "Adrenal Health", price: 40 },
   { id: "aldosterone", name: "Aldosterone", category: "Adrenal Health", price: 54 },
 ];
@@ -73,11 +74,6 @@ const BUILD_PANEL_SORTS = [
   { value: "price-desc", label: "Price: High to Low" },
   { value: "name-asc", label: "Name: A–Z" },
 ];
-
-function buildPanelDiscount(m) {
-  if (!m.was || m.was <= m.price) return 0;
-  return Math.round(((m.was - m.price) / m.was) * 100);
-}
 
 // Initials for the swatch — derived from the name, so no icon asset is needed and
 // nothing has to be kept in sync with the data.
@@ -110,39 +106,22 @@ function BuildPanelPill({ label, active, onSelect }) {
 }
 
 function BuildPanelPrice({ marker, align }) {
-  const off = buildPanelDiscount(marker);
   return (
     <div style={{
-      display: "flex", flexDirection: "column", alignItems: align === "right" ? "flex-end" : "flex-start",
-      gap: "var(--spacing-1)",
+      display: "flex", alignItems: "baseline", gap: "var(--spacing-1)",
+      justifyContent: align === "right" ? "flex-end" : "flex-start",
     }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
-        <span style={{
-          fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)",
-          color: "var(--text-default)", fontVariantNumeric: "lining-nums",
-        }}>${marker.price}</span>
-        {marker.was ? (
-          <span style={{
-            fontSize: "var(--text-sm)", color: "var(--text-muted)",
-            textDecoration: "line-through", fontVariantNumeric: "lining-nums",
-          }}>${marker.was}</span>
-        ) : null}
-      </div>
-      {off > 0 ? (
-        <span style={{
-          fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)",
-          color: "var(--color-white)", background: "var(--success-default)",
-          borderRadius: "var(--radius-4xl)", padding: "1px var(--spacing-2)",
-          fontVariantNumeric: "lining-nums",
-        }}>-{off}%</span>
-      ) : null}
+      <span style={{
+        fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)",
+        color: "var(--text-default)", fontVariantNumeric: "lining-nums",
+      }}>${marker.price}</span>
+      <span style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>/mo</span>
     </div>
   );
 }
 
 function BuildPanelRow({ marker, added, onToggle }) {
   const [open, setOpen] = React.useState(false);
-  const off = buildPanelDiscount(marker);
   return (
     <div className="bp-row" style={{
       background: "var(--bg-elevated)",
@@ -188,7 +167,7 @@ function BuildPanelRow({ marker, added, onToggle }) {
           <DSButton variant="outline" size="sm" aria-expanded={open}
             onClick={function () { setOpen(function (v) { return !v; }); }}>Quick view</DSButton>
           <DSButton variant={added ? "secondary" : "primary"} size="sm"
-            onClick={function () { onToggle(marker.id); }}>{added ? "Added" : "Add"}</DSButton>
+            onClick={function () { onToggle(marker.id); }}>{added ? "Included" : "Include"}</DSButton>
         </div>
       </div>
 
@@ -206,14 +185,8 @@ function BuildPanelRow({ marker, added, onToggle }) {
           </div>
           <div>
             <dt style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Price</dt>
-            <dd style={{ margin: "2px 0 0", color: "var(--text-default)", fontVariantNumeric: "lining-nums" }}>${marker.price}</dd>
+            <dd style={{ margin: "2px 0 0", color: "var(--text-default)", fontVariantNumeric: "lining-nums" }}>${marker.price}/mo</dd>
           </div>
-          {off > 0 ? (
-            <div>
-              <dt style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: "0.08em" }}>You save</dt>
-              <dd style={{ margin: "2px 0 0", color: "var(--text-default)", fontVariantNumeric: "lining-nums" }}>${marker.was - marker.price} ({off}%)</dd>
-            </div>
-          ) : null}
         </dl>
       ) : null}
     </div>
@@ -271,7 +244,7 @@ function BuildPanelCart({ items, total, onRemove }) {
         <p style={{
           margin: 0, padding: "var(--spacing-6) 0", textAlign: "center",
           fontSize: "var(--text-sm)", lineHeight: 1.5, color: "var(--text-muted)",
-        }}>Click “Add” on any biomarker to start building your custom panel.</p>
+        }}>Click “Include” on any biomarker to start building your custom panel.</p>
       ) : (
         <ul style={{
           listStyle: "none", margin: 0, padding: 0,
@@ -294,7 +267,7 @@ function BuildPanelCart({ items, total, onRemove }) {
                   flexShrink: 0, fontSize: "var(--text-sm)",
                   fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)",
                   fontVariantNumeric: "lining-nums",
-                }}>${m.price}</span>
+                }}>${m.price}/mo</span>
                 <button type="button" onClick={function () { onRemove(m.id); }}
                   aria-label={"Remove " + m.name}
                   style={{
@@ -321,11 +294,11 @@ function BuildPanelCart({ items, total, onRemove }) {
           <span style={{
             fontSize: "var(--text-2xl)", fontWeight: "var(--font-weight-semibold)",
             color: "var(--text-default)", fontVariantNumeric: "lining-nums",
-          }}>${total}</span>
+          }}>${total}/mo</span>
         </div>
         <DSButton variant="primary" size="md" fullWidth
           disabled={items.length === 0}
-          onClick={function () { window.openChimeAssessment && window.openChimeAssessment(); }}>Add to cart</DSButton>
+          onClick={function () { window.openChimeAssessment && window.openChimeAssessment(); }}>Review My Panel</DSButton>
       </div>
     </aside>
   );
