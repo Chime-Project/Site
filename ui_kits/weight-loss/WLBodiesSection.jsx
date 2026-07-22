@@ -6,58 +6,6 @@ function WLBodiesCTA({ label, onClick }) {
   return <Button label={label} onClick={onClick} tone="onLight" variant="primary" size="cta" />;
 }
 
-function WLBannerCTA({ label }) {
-  return <Button label={label} tone="onLight" variant="primary" size="cta" />;
-}
-
-function WLBanner() {
-  const [vhover, setVhover] = React.useState(false);
-  return (
-    <div className="wlb-banner" style={{
-      gridColumn: "1 / -1",
-      display: "grid", gridTemplateColumns: "300px 1fr auto",
-      alignItems: "center", columnGap: "var(--spacing-12)",
-      padding: "var(--spacing-10) 0 120px",
-    }}>
-      {/* Left — product tile */}
-      <div className="wlb-banner-tile"
-        onMouseEnter={() => setVhover(true)} onMouseLeave={() => setVhover(false)}
-        style={{
-          position: "relative", width: 300, height: 300, borderRadius: 24,
-          background: "linear-gradient(160deg, var(--accent-default), var(--accent-strong))",
-          cursor: "pointer",
-        }}>
-        <img src="uploads/vial-solo.png" alt="Medication vial"
-          style={{
-            position: "absolute", left: "50%", top: "50%",
-            height: "118%", width: "auto",
-            transform: vhover
-              ? "translate(-50%, -54%) rotate(16deg) scale(1.07)"
-              : "translate(-50%, -50%) rotate(12deg)",
-            filter: vhover
-              ? "drop-shadow(-12px 30px 44px rgba(0,0,0,0.34))"
-              : "drop-shadow(-8px 22px 34px rgba(0,0,0,0.22))",
-            transition: "transform 0.45s var(--ease-in-out), filter 0.45s var(--ease-in-out)",
-          }} />
-      </div>
-
-      {/* Center — copy */}
-      <div>
-        <h3 style={{
-          margin: 0, fontSize: 40, fontWeight: 600, lineHeight: 1.18,
-          color: "var(--fg-default)", textWrap: "pretty",
-        }}>Your Wellness Journey Doesn’t End After Day One</h3>
-        <p style={{
-          margin: "var(--spacing-4) 0 0", fontSize: 20, color: "var(--accent-strong)",
-        }}>Feeling Better Starts With Understanding.</p>
-      </div>
-
-      {/* Right — CTA */}
-      <WLBannerCTA label="Discover Your Wellness Path"></WLBannerCTA>
-    </div>
-  );
-}
-
 function WLBodiesSection() {
   const items = [
     { label: "Personalized Plans", icon: (
@@ -102,7 +50,7 @@ function WLBodiesSection() {
           <p style={{
             margin: "var(--spacing-6) 0 var(--spacing-4)",
             fontSize: "var(--text-base)", color: "var(--fg-muted)",
-          }}>Depending on your needs, your care team may recommend:</p>
+          }}>We have options — never one-size-fits-all.</p>
           <ul style={{
             listStyle: "none", margin: 0, padding: 0,
             display: "flex", flexDirection: "column", gap: "var(--spacing-3)",
@@ -123,15 +71,10 @@ function WLBodiesSection() {
               </li>
             ))}
           </ul>
-          <p style={{
-            margin: "var(--spacing-8) 0 var(--spacing-4)",
-            fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)",
-            color: "var(--fg-default)",
-          }}>You’re Not Doing This Alone™</p>
-          <WLBodiesCTA label="Explore The Chime Membership"></WLBodiesCTA>
+          <div style={{ marginTop: "var(--spacing-8)" }}>
+            <WLBodiesCTA label="See Your Options"></WLBodiesCTA>
+          </div>
         </div>
-
-        <WLBanner />
       </WLReveal>
     </section>
   );
