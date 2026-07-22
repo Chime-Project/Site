@@ -13,3 +13,34 @@
 @media (max-width: 960px) {
   .faq-section { padding-inline: var(--spacing-5) !important; }
 }
+
+/* Prose links inside legal documents (ui_kits/shared/common/LegalPage.jsx).
+   Lives here rather than in the component because the wipe needs ::after, and
+   the component styles inline. The resting underline is deliberate: these links
+   sit mid-sentence, so they must stay distinguishable from body text without
+   relying on color alone. Hover/focus wipes a thicker accent rule over it. */
+.legal-link {
+  position: relative;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.legal-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-base) var(--ease-in-out);
+}
+.legal-link:hover::after,
+.legal-link:focus-visible::after { transform: scaleX(1); }
+/* Reduced motion: keep the hover affordance, drop the sweep. */
+@media (prefers-reduced-motion: reduce) {
+  .legal-link::after { transition: none; }
+}
