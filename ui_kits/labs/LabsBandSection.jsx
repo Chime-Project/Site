@@ -222,7 +222,7 @@ function LabsBandButton({ label, primary, small, tiny, large, hero }) {
   if (hero) {
     // Fixed spec: 52px-tall pill, content-hugging — no stretch.
     return (
-      <a href="#"
+      <a href="assessment.html"
         onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
@@ -240,7 +240,7 @@ function LabsBandButton({ label, primary, small, tiny, large, hero }) {
     );
   }
   return (
-    <a href="#"
+    <a href="assessment.html"
       onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
