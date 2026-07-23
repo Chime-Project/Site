@@ -54,7 +54,7 @@ function ChimeHero() {
 function ProductHeroCard({ slotId, brand, product, price, src }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <a href="#" data-theme="default"
+    <a href="#" data-theme="default" className="hero-product-card"
       onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
