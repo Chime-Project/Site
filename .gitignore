@@ -7,3 +7,9 @@ CLAUDE.md
 # Source/reference material, not site assets — the deployed page uses test_vials.webp
 uploads/*.pdf
 uploads/test_vials.jpg
+
+# Internal pricing/funnel docs (all-brand strategy) — never publish these
+uploads/*.xlsx
+
+# Full-resolution signals-photo masters — the site serves the 000N.webp recompressions
+uploads/000[0-9].png
