@@ -10,22 +10,25 @@ const LABS_PDP_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
 // Tier → panel data. Selecting a tier drives the price and biomarker count off
 // this map — nothing downstream is hardcoded.
-// Tier names follow the confirmed system (Essential / Complete / Executive),
-// matching the cards in ChimeLabsBandSection. Monthly pricing, no compare-at
-// prices, per the 2026-07 copy doc (uploads/Chime_Health_Labs_.pdf).
-// NOTE: Complete's $399/mo comes from that doc; Essential/Executive are still
-// PLACEHOLDERS (ChimeLabsSection deliberately renders "From $—" because their
-// real pricing isn't set yet) — swap these once it is.
+// Tier names follow the confirmed system (Comprehensive / Complete / Executive),
+// matching the cards in ChimeLabsBandSection. One-time "From" pricing (no /mo),
+// per the plans reference (uploads/plans_labs.jpeg): 80+/$495, 100+/$895,
+// 130+/$1,950. Product photos are being reshot — swap `image`/`alt` when the
+// new panel images land.
 // A tier may override the product photo with `image`/`alt`; tiers that omit them
 // fall back to the section's `image`/`alt` props.
 const LABS_TIERS = {
-  Essential: { markers: "80+",  price: "$299/mo" },
+  Comprehensive: {
+    markers: "80+",  price: "$495",
+    image: LABS_PDP_UPLOADS + "/comprehensive.jpeg",
+    alt: "Two blood collection vials labelled Total Health Panel Comprehensive",
+  },
   Complete:  {
-    markers: "100+", price: "$399/mo",
+    markers: "100+", price: "$895",
     image: LABS_PDP_UPLOADS + "/2vials.webp",
     alt: "Two capped blood collection vials beside a white specimen box",
   },
-  Executive: { markers: "130+", price: "$599/mo" },
+  Executive: { markers: "130+", price: "$1,950" },
 };
 
 const LABS_TIER_NAMES = Object.keys(LABS_TIERS);
@@ -94,16 +97,28 @@ function LabsProductDetailSection({
   const [sex, setSex] = React.useState(LABS_SEXES[0]);
   const [review, setReview] = React.useState(LABS_REVIEWS[0]);
   const [ctaHover, setCtaHover] = React.useState(false);
+  const sectionRef = React.useRef(null);
+  React.useEffect(function () {
+    // Registered on window like openChimeAssessment (AssessmentModal.jsx:70) —
+    // the tier cards in ChimeLabsBandSection call this to jump up here with
+    // their tier active. Unknown tier names scroll without changing selection.
+    window.chimeSelectLabsTier = function (next) {
+      if (LABS_TIERS[next]) setTier(next);
+      if (sectionRef.current) sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    return function () { delete window.chimeSelectLabsTier; };
+  }, []);
   const panel = LABS_TIERS[tier];
   const panelImage = panel.image || image;
   const panelAlt = panel.image ? panel.alt : alt;
 
   return (
-    <section data-screen-label="Labs Product Detail" data-theme={theme}
+    <section ref={sectionRef} data-screen-label="Labs Product Detail" data-theme={theme}
       className="labs-pdp-section" style={{
         fontFamily: "var(--font-family-base)",
         padding: "var(--spacing-12) var(--spacing-8)",
         maxWidth: "var(--container-xl)", margin: "0 auto", boxSizing: "border-box",
+        scrollMarginTop: 96, // clear the fixed navbar, same as BuildPanelSection
       }}>
       <div className="labs-pdp-grid" style={{
         display: "grid", gridTemplateColumns: "1fr 1fr",

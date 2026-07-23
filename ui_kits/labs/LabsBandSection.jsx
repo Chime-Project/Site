@@ -101,14 +101,11 @@ function ChimeLabsBandSection() {
               color: "rgba(42,40,58,0.78)", textWrap: "pretty",
             }}>Whether you are beginning your wellness journey or seeking the most comprehensive picture possible, Chime offers multiple levels of health insights designed to help guide your path.</p>
           </div>
-          {/* auto-fit rather than a 4th fixed column: 4 across at container width,
-              wrapping on its own between 960px and there. */}
+          {/* auto-fit: 3 across at container width, wrapping on its own below. */}
           <div className="labs-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "var(--spacing-6)", width: "100%" }}>
-            <LabsBandTierCard name="Essential Health Insights" markers="80+" />
-            <LabsBandTierCard name="Complete Health Insights" markers="100+" upgraded />
-            <LabsBandTierCard name="Executive Health Insights" markers="130+" upgraded />
-            <LabsBandTierCard name="Build Your Own Panel" markers="100+" custom
-              href="#build-your-panel" />
+            <LabsBandTierCard name="Comprehensive Health Insights" tier="Comprehensive" markers="80+" price="$495" />
+            <LabsBandTierCard name="Complete Health Insights" tier="Complete" markers="100+" price="$895" upgraded />
+            <LabsBandTierCard name="Executive Health Insights" tier="Executive" markers="130+" price="$1,950" upgraded />
           </div>
           <p style={{
             margin: 0, textAlign: "center",
@@ -130,18 +127,16 @@ function ChimeLabsBandSection() {
   );
 }
 
-// `href` turns the card into an anchor (used by the Build-Your-Own card to reach
-// the selector section); `custom` swaps the fixed price for a build affordance.
-function LabsBandTierCard({ name, markers, upgraded, custom, href }) {
+// `tier` is the PDP tier key (LABS_TIERS in LabsProductDetailSection.jsx); the
+// Select CTA preselects it there via window.chimeSelectLabsTier.
+function LabsBandTierCard({ name, tier, markers, price, upgraded }) {
   const [hover, setHover] = React.useState(false);
-  const Tag = href ? "a" : "div";
+  const [ctaHover, setCtaHover] = React.useState(false);
   return (
-    <Tag
-      href={href}
+    <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-      textDecoration: "none",
       // Wellness-card treatment (see HWSymptomsSection): white surface, accent
       // hairline, shadow-md. Tokens are theme-scoped, so `lab` resolves iris.
       position: "relative", background: "var(--color-white)",
@@ -169,11 +164,11 @@ function LabsBandTierCard({ name, markers, upgraded, custom, href }) {
       }}>
         <div style={{ fontSize: "var(--text-2xl)", fontWeight: 300, lineHeight: 1 }}>{markers}</div>
         <div style={{ fontSize: "var(--text-xs)", opacity: 0.85 }}>Biomarkers</div>
-        {upgraded || custom ? (
+        {upgraded ? (
           <div style={{
             background: "var(--color-iris-700)", color: "var(--color-white)",
             borderRadius: "var(--radius-4xl)", padding: "2px 10px", fontSize: 11,
-          }}>{custom ? "Choose your own" : "Upgraded Panel"}</div>
+          }}>Upgraded Panel</div>
         ) : null}
       </div>
       <img src={LABS_BAND_UPLOADS + "/test_vials.webp"} alt={name + " sample vials"}
@@ -185,26 +180,34 @@ function LabsBandTierCard({ name, markers, upgraded, custom, href }) {
         }} />
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
         <h4 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-medium)", color: "var(--text-default)", lineHeight: 1.25 }}>{name}</h4>
-        {custom ? (
-          <div style={{
-            display: "flex", alignItems: "center", gap: "var(--spacing-2)",
-            fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)",
-            color: "var(--accent-strong)",
-          }}>
-            <span>Pick your biomarkers</span>
-            <span aria-hidden="true" style={{
-              transform: hover ? "translateX(3px)" : "none",
-              transition: "transform var(--transition-base) var(--ease-in-out)",
-            }}>→</span>
-          </div>
-        ) : (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
-            <span style={{ fontSize: "var(--text-sm)", color: "var(--fg-muted)" }}>From</span>
-            <span style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>$—</span>
-          </div>
-        )}
+        <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
+          <span style={{ fontSize: "var(--text-sm)", color: "var(--fg-muted)" }}>From</span>
+          <span style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>{price || "$—"}</span>
+        </div>
       </div>
-    </Tag>
+      <button type="button"
+        onClick={() => { window.chimeSelectLabsTier && window.chimeSelectLabsTier(tier); }}
+        onMouseEnter={() => setCtaHover(true)}
+        onMouseLeave={() => setCtaHover(false)}
+        style={{
+          appearance: "none", cursor: "pointer", width: "100%",
+          // marginTop auto: the grid stretches cards equal-height, this pins the
+          // CTA to the bottom edge across all three.
+          marginTop: "auto",
+          background: ctaHover
+            ? "color-mix(in srgb, var(--accent-active) 88%, black)"
+            : "var(--accent-active)",
+          color: "var(--text-on-primary)", border: "none",
+          borderRadius: "var(--radius-4xl)",
+          // text-sm + spacing-4 sides (not the PDP CTA's base/spacing-6): the
+          // longest label must stay one line inside a 240px-min grid card.
+          padding: "var(--spacing-4) var(--spacing-4)",
+          fontFamily: "var(--font-family-base)", fontSize: "var(--text-sm)",
+          fontWeight: "var(--font-weight-semibold)",
+          boxShadow: ctaHover ? "var(--shadow-md)" : "var(--shadow-sm)",
+          transition: "background var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out)",
+        }}>{"Select " + tier}</button>
+    </div>
   );
 }
 
