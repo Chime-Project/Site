@@ -103,9 +103,12 @@ function ChimeLabsBandSection() {
           </div>
           {/* auto-fit: 3 across at container width, wrapping on its own below. */}
           <div className="labs-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "var(--spacing-6)", width: "100%" }}>
-            <LabsBandTierCard name="Comprehensive Health Insights" tier="Comprehensive" markers="80+" price="$495" />
-            <LabsBandTierCard name="Complete Health Insights" tier="Complete" markers="100+" price="$895" upgraded />
-            <LabsBandTierCard name="Executive Health Insights" tier="Executive" markers="130+" price="$1,950" upgraded />
+            <LabsBandTierCard name="Comprehensive Health Insights" tier="Comprehensive" markers="80+" price="$495"
+              image={LABS_BAND_UPLOADS + "/comprehensive.jpeg"} />
+            <LabsBandTierCard name="Complete Health Insights" tier="Complete" markers="100+" price="$895" upgraded
+              image={LABS_BAND_UPLOADS + "/comprehensive.jpeg"} />
+            <LabsBandTierCard name="Executive Health Insights" tier="Executive" markers="130+" price="$1,950" upgraded
+              image={LABS_BAND_UPLOADS + "/executive_.jpeg"} />
           </div>
           <p style={{
             margin: 0, textAlign: "center",
@@ -129,7 +132,9 @@ function ChimeLabsBandSection() {
 
 // `tier` is the PDP tier key (LABS_TIERS in LabsProductDetailSection.jsx); the
 // Select CTA preselects it there via window.chimeSelectLabsTier.
-function LabsBandTierCard({ name, tier, markers, price, upgraded }) {
+// `image` overrides the shared test_vials.webp cutout with a tier-specific
+// product photo (square photos get a radius so their background reads as a card).
+function LabsBandTierCard({ name, tier, markers, price, upgraded, image }) {
   const [hover, setHover] = React.useState(false);
   const [ctaHover, setCtaHover] = React.useState(false);
   return (
@@ -171,9 +176,10 @@ function LabsBandTierCard({ name, tier, markers, price, upgraded }) {
           }}>Upgraded Panel</div>
         ) : null}
       </div>
-      <img src={LABS_BAND_UPLOADS + "/test_vials.webp"} alt={name + " sample vials"}
+      <img src={image || LABS_BAND_UPLOADS + "/test_vials.webp"} alt={name + " sample vials"}
         style={{
           width: 120, height: "auto", display: "block", margin: "var(--spacing-12) auto 0",
+          borderRadius: image ? "var(--radius-lg)" : 0,
           transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",
           filter: hover ? "drop-shadow(0 24px 42px rgb(var(--glass-rgb) / 0.6))" : "drop-shadow(0 16px 32px rgb(var(--glass-rgb) / 0.4))",
           transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",

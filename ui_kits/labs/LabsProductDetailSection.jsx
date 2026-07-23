@@ -24,11 +24,17 @@ const LABS_TIERS = {
     alt: "Two blood collection vials labelled Total Health Panel Comprehensive",
   },
   Complete:  {
+    // Stand-in: reuses the Comprehensive product shot (vial labels read
+    // "Comprehensive") until a Complete-labelled photo is shot.
     markers: "100+", price: "$895",
-    image: LABS_PDP_UPLOADS + "/2vials.webp",
-    alt: "Two capped blood collection vials beside a white specimen box",
+    image: LABS_PDP_UPLOADS + "/comprehensive.jpeg",
+    alt: "Two blood collection vials labelled Total Health Panel Comprehensive",
   },
-  Executive: { markers: "130+", price: "$1,950" },
+  Executive: {
+    markers: "130+", price: "$1,950",
+    image: LABS_PDP_UPLOADS + "/executive_.jpeg",
+    alt: "Two blood collection vials labelled Total Health Panel Executive on gold-veined marble",
+  },
 };
 
 const LABS_TIER_NAMES = Object.keys(LABS_TIERS);
