@@ -8,10 +8,11 @@ const NAV_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
   "Health, Energy & Wellness": "wellness.html",
   "Labs": "labs.html",
+  "Assessment": "assessment.html",
 };
 const navHref = (label) => NAV_HREFS[label] || "#";
 
-function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs"], homeHref = "index.html" }) {
+function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Labs", "Assessment"], homeHref = "index.html" }) {
   const { Button } = window.ChimeHealthDesignSystem_b350cf;
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);

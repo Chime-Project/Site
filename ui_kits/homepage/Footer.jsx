@@ -10,6 +10,7 @@ const FOOTER_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
   "Health, Energy & Wellness": "wellness.html",
   "Labs": "labs.html",
+  "Assessment": "assessment.html",
 };
 
 // Legal column — kept separate from FOOTER_HREFS so a page overriding
@@ -65,7 +66,7 @@ function ChimeFooter() {
         </div>
 
         <nav style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-          {["Weight Loss", "Health, Energy & Wellness", "Labs"].map((l) => <FooterLink key={l} label={l} href={FOOTER_HREFS[l] || "#"} />)}
+          {["Weight Loss", "Health, Energy & Wellness", "Labs", "Assessment"].map((l) => <FooterLink key={l} label={l} href={FOOTER_HREFS[l] || "#"} />)}
         </nav>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
