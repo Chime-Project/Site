@@ -91,7 +91,7 @@ function ChimeGuideSection({ theme = "default" }) {
           <p style={{
             margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.55,
             color: "var(--color-white)", opacity: 0.92, maxWidth: "26em",
-          }}>By creating an account using email, I agree to the <a href="#" style={linkStyle}>Terms &amp; Conditions</a>, and acknowledge the <a href="#" style={linkStyle}>Privacy Policy</a>.</p>
+          }}>By creating an account using email, I agree to the <a href="terms-conditions.html" style={linkStyle}>Terms &amp; Conditions</a>, and acknowledge the <a href="privacy-policy.html" style={linkStyle}>Privacy Policy</a>.</p>
           </GuideReveal>
         </div>
       </div>
