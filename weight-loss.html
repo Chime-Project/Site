@@ -76,6 +76,8 @@
   }
   @media (max-width: 560px) {
     .simple-path-grid { grid-template-columns: 1fr !important; }
+    /* Phones: drop the first (portrait) hero video tile to tighten the stack. */
+    .wlh-tile-video { display: none !important; }
   }
   @keyframes hero-enter {
     from { opacity: 0; transform: translateY(20px); }
