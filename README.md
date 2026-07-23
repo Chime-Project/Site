@@ -41,6 +41,7 @@ The homepage is `index.html`. Pages:
 | `/weight-loss.html` | `weight-loss.html` | `weight-loss` (tide) |
 | `/wellness.html` | `wellness.html` | `wellness` (cadmium/gold) |
 | `/labs.html` | `labs.html` | `lab` (iris) |
+| `/assessment.html` | `assessment.html` | `default` (blue) |
 
 ---
 
@@ -52,6 +53,7 @@ chime/
 ├── weight-loss.html        # Weight Loss landing page
 ├── wellness.html           # Health, Energy & Wellness page
 ├── labs.html               # Labs & Health Insights page
+├── assessment.html         # Health Assessment (intake funnel)
 │
 ├── styles.css              # Global entry point — @imports the token files
 ├── tokens/                 # CSS custom-property design tokens
@@ -70,6 +72,10 @@ chime/
 │   ├── weight-loss/        #   WeightLossHero, WLBodies, WLTimeline, WLCalculator sections…
 │   ├── wellness/           #   WellnessHero, HWSymptoms, WNTimeline…
 │   ├── labs/               #   LabsHero, LabsSignals, InsightStack, BuildPanel…
+│   ├── assessment/         #   intake funnel
+│   │   ├── assessment-data.js      # questions, options, coverage, disqualifier keys
+│   │   ├── AssessmentControls.jsx  # field components (options, consents, stepper, toast)
+│   │   └── AssessmentFlow.jsx      # engine + page component (routing, verdicts, results)
 │   └── shared/             #   cross-page building blocks
 │       ├── ui/             #     Button, Icon, Eyebrow, Reveal, CheckItem
 │       ├── common/         #     FaqAccordion, RxCarousel, MembershipPanel
@@ -100,16 +106,39 @@ Shared content loads as plain-script globals before the components that use it:
 
 - `products.js` → `window.CHIME_RX_PRODUCTS` (GLP‑1 pricing carousel data)
 - `faqs.js` → `window.CHIME_FAQS` (FAQ copy keyed by page theme)
+- `assessment-data.js` → `window.CHIME_ASSESSMENT` (intake questions + eligibility keys)
 
-### Assessment flow
+### Assessment
 
-The intake assessment is launched with:
+There are two assessment surfaces:
+
+**The modal** (all pages) is a lightweight demo questionnaire, launched with:
 
 ```js
 window.openChimeAssessment();   // defined in ui_kits/homepage/AssessmentModal.jsx
 ```
 
-The `chime:open-assessment` CustomEvent has no listener.
+The `chime:open-assessment` CustomEvent has no listener. On `assessment.html`
+the same call scrolls to the form instead — the page does not load the modal.
+
+**The page** (`assessment.html`, linked from the navbar and footer) is the full
+intake funnel, ported from the PortalIntake1 reference capture:
+
+- Opens on a **program picker** (GLP‑1 / NAD+ / Peptides, multi‑select). The
+  order decides which steps the visitor walks and which disqualifier keys
+  screen the record. `?product=GLP` (or a comma list, `?product=GLP,NAD`) on
+  the URL skips the picker and is persisted.
+- **Nothing rejects at the point of question.** Every answer is stored, and the
+  baseline key plus each ordered program's key evaluate once, on submit,
+  producing a per‑key verdict shown on the results screen. NAD/PEP have no
+  authored key: they walk the baseline and their verdict discloses it.
+- Engine behaviors: BMI/age derivation with age‑band consent boxes, conditional
+  reveals that clear when hidden, "None of these" exclusivity, soft confirm
+  boxes under flagged answers, and a fail‑closed coverage map (an option that
+  is neither safe nor named by a key fails every open key).
+- Demo only: answers persist in `localStorage` (`chime_assessment_v1`) and
+  nothing is transmitted. The GLP‑1 consent step is visibly banded as
+  placeholder copy pending medical review.
 
 ---
 
@@ -123,7 +152,7 @@ to every component.
 
 | `data-theme` | Accent palette | Page |
 |---|---|---|
-| `default` | blue | Homepage |
+| `default` | blue | Homepage, Assessment |
 | `weight-loss` | tide | Weight Loss |
 | `wellness` / `energy-wellness` | cadmium (gold) | Wellness |
 | `lab` | iris | Labs |
