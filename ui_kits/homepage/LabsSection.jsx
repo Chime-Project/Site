@@ -104,12 +104,15 @@ function ChimeLabsSection() {
               margin: 0, textAlign: "center", maxWidth: "42em",
               fontSize: "var(--text-base)", lineHeight: 1.55,
               color: "rgba(255,255,255,0.85)", textWrap: "pretty",
-            }}>Chime offers multiple levels of health insights designed to help guide your path.</p>
+            }}>Whether you are beginning your wellness journey or seeking the most comprehensive picture possible, Chime offers multiple levels of health insights designed to help guide your path.</p>
           </div>
           <div className="labs-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--spacing-6)", width: "100%" }}>
-            <LabsTierCard name="Essential Health Insights" markers="80+" />
-            <LabsTierCard name="Complete Health Insights" markers="100+" upgraded />
-            <LabsTierCard name="Executive Health Insights" markers="130+" upgraded />
+            <LabsTierCard name="Comprehensive Health Insights" tier="Comprehensive" markers="80+" price="$495"
+              image={LABS_UPLOADS + "/comprehensive.jpeg"} />
+            <LabsTierCard name="Complete Health Insights" tier="Complete" markers="100+" price="$895" upgraded
+              image={LABS_UPLOADS + "/complete_.jpeg"} />
+            <LabsTierCard name="Executive Health Insights" tier="Executive" markers="130+" price="$1,950" upgraded
+              image={LABS_UPLOADS + "/executive_.jpeg"} />
           </div>
           <p style={{
             margin: 0, textAlign: "center",
@@ -130,25 +133,33 @@ function ChimeLabsSection() {
   );
 }
 
+// Detail-panel photos: uploads/0001–0006.webp, same numbering/order as the
+// labs page's LabsSignalsSection.jsx.
 const LABS_SIGNALS = [
   { tag: "Hormones", title: "Hormonal Health & Vitality",
     body: "Hormones influence far more than body composition. They may also play a role in energy, recovery, motivation, and overall vitality.",
-    markers: "Testosterone · Free Testosterone · Estradiol" },
+    markers: "Testosterone · Free Testosterone · Estradiol",
+    image: "0001.webp", alt: "Two smiling clinicians reviewing a labeled blood sample vial and a results folder in a bright clinic" },
   { tag: "Metabolism", title: "Metabolism & Weight Management",
     body: "Metabolic markers may reflect how your body processes energy, manages blood sugar, and stores fuel over time.",
-    markers: "HbA1c · Fasting Insulin · Glucose" },
+    markers: "HbA1c · Fasting Insulin · Glucose",
+    image: "0002.webp", alt: "Balanced plates of whole grains, greens, egg, and vegetables shared at a bright table" },
   { tag: "Energy", title: "Energy & Recovery",
     body: "Day-to-day energy and recovery can connect to nutrient status, iron levels, and how your body handles stress.",
-    markers: "Ferritin · Vitamin D · Cortisol" },
+    markers: "Ferritin · Vitamin D · Cortisol",
+    image: "0003.webp", alt: "Person resting peacefully on a bed in soft morning light under an indigo blanket" },
   { tag: "Heart Health", title: "Advanced Heart Health Insights",
     body: "A closer look at cardiovascular markers that go beyond a standard cholesterol test.",
-    markers: "ApoB · Lp(a) · hs-CRP" },
+    markers: "ApoB · Lp(a) · hs-CRP",
+    image: "0004.webp", alt: "Runner in blue keeping a steady pace down an empty road at dawn" },
   { tag: "Healthy Aging", title: "Healthy Aging",
     body: "Markers associated with long-term wellness that may support conversations around healthy aging.",
-    markers: "HbA1c · hs-CRP · DHEA-S" },
+    markers: "HbA1c · hs-CRP · DHEA-S",
+    image: "0005.webp", alt: "Silver-haired swimmer moving easily through a sunlit outdoor pool" },
   { tag: "And More", title: "And Much More…",
     body: "Thyroid, liver, kidney, nutrients, and beyond — a fuller picture across your body's systems.",
-    markers: "TSH · ALT · eGFR" },
+    markers: "TSH · ALT · eGFR",
+    image: "0006.webp", alt: "Labeled blood collection vials arranged across stepped white blocks" },
 ];
 
 function LabsSignals() {
@@ -203,35 +214,53 @@ function LabsSignals() {
           );
         })}
       </div>
-      {/* Detail panel */}
-      <div style={{
+      {/* Detail panel — text column + rotating photo (uploads/0001–0006.webp) */}
+      <div className="labs-signals-detail" style={{
         background: "rgb(var(--glass-rgb) / 0.55)", border: "1px solid var(--glass-border)",
         borderRadius: "var(--radius-2xl)", padding: "var(--spacing-8)", minHeight: 420,
-        display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "var(--spacing-8)",
+        display: "grid", gridTemplateColumns: "1fr 340px", gap: "var(--spacing-6)",
         opacity: fade ? 1 : 0, transform: fade ? "none" : "translateY(10px)",
         transition: "opacity 0.9s var(--ease-out, ease-out), transform 0.9s var(--ease-out, ease-out)",
       }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <span style={{
-            background: "var(--color-white)", color: LABS_INK,
-            borderRadius: "var(--radius-4xl)", padding: "var(--spacing-1) var(--spacing-4)",
-            fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
-          }}>{item.tag}</span>
-          <span style={{ fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.7)" }}>{num(active)}</span>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "var(--spacing-8)", minWidth: 0 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <span style={{
+              background: "var(--color-white)", color: LABS_INK,
+              borderRadius: "var(--radius-4xl)", padding: "var(--spacing-1) var(--spacing-4)",
+              fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
+            }}>{item.tag}</span>
+            <span style={{ fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.7)" }}>{num(active)}</span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
+            <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>Did you know?</div>
+            <h4 style={{ margin: 0, fontSize: "var(--text-3xl)", fontWeight: 300, lineHeight: 1.15, color: "var(--color-white)" }}>{item.title}</h4>
+            <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.55, color: "rgba(255,255,255,0.85)", maxWidth: "34em" }}>{item.body}</p>
+            <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.55, color: "rgba(255,255,255,0.75)" }}>Featured biomarkers: {item.markers}.</p>
+          </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-          <div style={{ fontSize: "var(--text-xs)", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>Did you know?</div>
-          <h4 style={{ margin: 0, fontSize: "var(--text-3xl)", fontWeight: 300, lineHeight: 1.15, color: "var(--color-white)" }}>{item.title}</h4>
-          <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.55, color: "rgba(255,255,255,0.85)", maxWidth: "34em" }}>{item.body}</p>
-          <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.55, color: "rgba(255,255,255,0.75)" }}>Featured biomarkers: {item.markers}.</p>
-        </div>
+        <img className="labs-signals-photo" src={LABS_UPLOADS + "/" + item.image} alt={item.alt}
+          style={{
+            width: "100%", height: "100%", minHeight: 0, objectFit: "cover", display: "block",
+            borderRadius: "var(--radius-xl)", border: "1px solid var(--glass-border)",
+          }} />
+      </div>
+      {/* Off-screen preload of every panel photo so the 5s rotation never pops
+          on its first cycle. */}
+      <div aria-hidden="true" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", opacity: 0 }}>
+        {LABS_SIGNALS.map(function (s) {
+          return <img key={s.image} src={LABS_UPLOADS + "/" + s.image} alt="" width="1" height="1" />;
+        })}
       </div>
     </div>
   );
 }
 
-function LabsTierCard({ name, markers, upgraded }) {
+// Content mirrors the labs page's LabsBandTierCard (names, prices, tier photos);
+// the treatment stays this section's dark glass. The Select CTA goes to the labs
+// page, where the same tiers are wired to the product-detail selector.
+function LabsTierCard({ name, tier, markers, price, upgraded, image }) {
   const [hover, setHover] = React.useState(false);
+  const [ctaHover, setCtaHover] = React.useState(false);
   return (
     <div
       onMouseEnter={() => setHover(true)}
@@ -245,9 +274,12 @@ function LabsTierCard({ name, markers, upgraded }) {
       boxShadow: hover ? "0 22px 44px rgb(var(--glass-rgb) / 0.5)" : "none",
       transition: "transform var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out), border-color var(--transition-base) var(--ease-in-out)",
     }}>
-      {/* Biomarkers badge */}
+      {/* Biomarkers badge. zIndex: the photo's drop-shadow filter gives it a
+          stacking context, so without this the image wins on tree order once
+          the card narrows and they overlap. */}
       <div style={{
-        position: "absolute", top: "var(--spacing-4)", right: "var(--spacing-4)",
+        position: "absolute", zIndex: 1,
+        top: "var(--spacing-4)", right: "var(--spacing-4)",
         background: "rgb(var(--glass-rgb) / 0.55)", border: "1px solid var(--glass-border)",
         color: "var(--color-white)",
         borderRadius: "var(--radius-lg)", padding: "var(--spacing-2) var(--spacing-3)",
@@ -262,9 +294,10 @@ function LabsTierCard({ name, markers, upgraded }) {
           }}>Upgraded Panel</div>
         ) : null}
       </div>
-      <img src={LABS_UPLOADS + "/vial-solo.webp"} alt={name + " sample vial"}
+      <img src={image || LABS_UPLOADS + "/vial-solo.webp"} alt={name + " sample vials"}
         style={{
-          width: 120, height: "auto", display: "block", margin: "var(--spacing-4) auto 0",
+          width: 120, height: "auto", display: "block", margin: "var(--spacing-12) auto 0",
+          borderRadius: image ? "var(--radius-lg)" : 0,
           transform: hover ? "scale(1.12) rotate(-3deg) translateY(-6px)" : "none",
           filter: hover ? "drop-shadow(0 24px 42px rgb(var(--glass-rgb) / 0.6))" : "drop-shadow(0 16px 32px rgb(var(--glass-rgb) / 0.4))",
           transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
@@ -273,9 +306,36 @@ function LabsTierCard({ name, markers, upgraded }) {
         <h4 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-medium)", color: "var(--color-white)", lineHeight: 1.25 }}>{name}</h4>
         <div style={{ display: "flex", alignItems: "baseline", gap: "var(--spacing-2)" }}>
           <span style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.8)" }}>From</span>
-          <span style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)" }}>$—</span>
+          <span style={{ fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)" }}>{price || "$—"}</span>
         </div>
       </div>
+      <a href="labs.html"
+        onMouseEnter={() => setCtaHover(true)}
+        onMouseLeave={() => setCtaHover(false)}
+        style={{
+          // marginTop auto: the grid stretches cards equal-height, this pins the
+          // CTA to the bottom edge across all three.
+          marginTop: "auto", width: "100%", boxSizing: "border-box",
+          position: "relative", overflow: "hidden",
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          background: "var(--color-white)",
+          color: ctaHover ? "var(--text-on-primary)" : LABS_INK,
+          borderRadius: "var(--radius-4xl)",
+          padding: "var(--spacing-4) var(--spacing-4)",
+          fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)",
+          textDecoration: "none", whiteSpace: "nowrap",
+          boxShadow: ctaHover ? "var(--shadow-md)" : "var(--shadow-sm)",
+          transform: ctaHover ? "translateY(-3px) scale(1.04)" : "none",
+          transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out), color 0.35s var(--ease-in-out)",
+        }}>
+        <span aria-hidden="true" style={{
+          position: "absolute", inset: 0,
+          background: "var(--accent-default)",
+          transform: ctaHover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
+          transition: "transform 0.35s var(--ease-in-out)",
+        }}></span>
+        <span style={{ position: "relative" }}>{"Select " + tier}</span>
+      </a>
     </div>
   );
 }
