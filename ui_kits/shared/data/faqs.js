@@ -11,7 +11,7 @@ window.CHIME_FAQS = {
     { q: "Will I speak with a provider?",
       a: "Yes. A licensed provider reviews your information and is involved in any recommendations or treatments, so your plan always has clinical oversight from day one." },
     { q: "How much does it cost?",
-      a: "Plans start from $249/mo. You can choose 3-month, 6-month, or 1-year terms, and some promotional plans include a 4th month free. Everything is transparent before you commit — no surprise fees." },
+      a: "Plans start from $299/mo. You can go month-to-month or choose a 3-month, 6-month, or 1-year term — longer terms bring the effective monthly rate down, and multi-month plans are eligible for payment plans. Every program includes an app for nutrition and custom training (a $99 value). Everything is transparent before you commit — no surprise fees." },
     { q: "Do I need lab testing first?",
       a: "Sometimes. Depending on your goals and health history, your provider may recommend lab work so your plan can be tailored to you and reviewed for safety before you start." },
     { q: "What kind of support will I have?",

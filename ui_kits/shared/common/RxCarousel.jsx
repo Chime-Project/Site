@@ -1,4 +1,4 @@
-// Chime Health — shared Rx product carousel (GLP-1 + GLP1/GIP).
+// Chime Health — shared Rx product carousel (GLP Squared).
 // One implementation for all three placements:
 //   variant="dark"  — homepage Weight Loss section (white-on-navy card)
 //   variant="light" — Weight Loss / Wellness timeline cards (ink-on-tint card)
@@ -48,18 +48,19 @@ function RxCarousel({ variant = "light", Button, uploads }) {
   const [idx, setIdx] = React.useState(0);
   const [vhover, setVhover] = React.useState(false);
   const p = PRODUCTS[idx];
+  const many = PRODUCTS.length > 1;
   const go = (d) => setIdx((idx + d + PRODUCTS.length) % PRODUCTS.length);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", height: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--spacing-2)" }}>
-        <RxArrow dir={-1} onClick={() => go(-1)} v={v} />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: many ? "space-between" : "center", gap: "var(--spacing-2)" }}>
+        {many && <RxArrow dir={-1} onClick={() => go(-1)} v={v} />}
         <div style={{ textAlign: "center", minWidth: 0 }}>
           <h3 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)", color: v.name, lineHeight: 1.2 }}>{p.name}</h3>
           <div style={{ fontSize: "var(--text-xs)", color: v.muted, marginTop: 2 }}>
             Starting from <span style={{ color: v.price, fontWeight: "var(--font-weight-semibold)" }}>{p.start}/mo</span>
           </div>
         </div>
-        <RxArrow dir={1} onClick={() => go(1)} v={v} />
+        {many && <RxArrow dir={1} onClick={() => go(1)} v={v} />}
       </div>
 
       <div onMouseEnter={() => setVhover(true)} onMouseLeave={() => setVhover(false)}
@@ -84,6 +85,9 @@ function RxCarousel({ variant = "light", Button, uploads }) {
               <span style={{ fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)", color: v.planText }}>{pl.term}</span>
               <span style={{ fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)", color: v.planText }}>{pl.price}</span>
             </div>
+            {pl.permo ? (
+              <span style={{ fontSize: 11, color: v.muted, alignSelf: "flex-end" }}>{pl.permo + "/mo"}</span>
+            ) : null}
             {pl.promo ? (
               <span style={{ fontSize: 11, fontWeight: "var(--font-weight-semibold)", color: v.star }}>{"★ Includes 4th month for free"}</span>
             ) : null}
@@ -100,7 +104,7 @@ function RxCarousel({ variant = "light", Button, uploads }) {
           wider boxes don't push the visible dots apart. The 8.5px of transparent
           padding above/below stays inside the column's --spacing-4 gap, so it
           cannot overlap -- and steal clicks from -- the CTA or the link below. */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 0 }}>
+      <div style={{ display: many ? "flex" : "none", justifyContent: "center", gap: 0 }}>
         {PRODUCTS.map((_, i) => (
           <button key={i} type="button" aria-label={"Show " + PRODUCTS[i].name} onClick={() => setIdx(i)} style={{
             width: 24, height: 24, border: "none", padding: 0, cursor: "pointer",
