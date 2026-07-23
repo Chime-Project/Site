@@ -106,7 +106,7 @@ function ChimeLabsBandSection() {
             <LabsBandTierCard name="Comprehensive Health Insights" tier="Comprehensive" markers="80+" price="$495"
               image={LABS_BAND_UPLOADS + "/comprehensive.jpeg"} />
             <LabsBandTierCard name="Complete Health Insights" tier="Complete" markers="100+" price="$895" upgraded
-              image={LABS_BAND_UPLOADS + "/comprehensive.jpeg"} />
+              image={LABS_BAND_UPLOADS + "/complete_.jpeg"} />
             <LabsBandTierCard name="Executive Health Insights" tier="Executive" markers="130+" price="$1,950" upgraded
               image={LABS_BAND_UPLOADS + "/executive_.jpeg"} />
           </div>
