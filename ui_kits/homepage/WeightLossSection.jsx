@@ -58,7 +58,6 @@ function ChimeWeightLossSection() {
             display: "flex", justifyContent: "center", gap: "var(--spacing-3)", flexWrap: "wrap",
           }}>
             <WLButton primary large label="Start my visit" />
-            <WLButton large label="Learn more" />
           </div>
         </div>
         </WLReveal>

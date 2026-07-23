@@ -241,7 +241,7 @@ function ProductCard({ p, planIdx }) {
 function ProductBtn({ primary, label, disabled }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <a href="#"
+    <a href={disabled ? "#" : "assessment.html"}
       onClick={(e) => { e.preventDefault(); if (!disabled) window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}

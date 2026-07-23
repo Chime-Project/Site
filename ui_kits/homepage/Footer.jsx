@@ -35,7 +35,7 @@ function ChimeFooter() {
         display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr",
         gap: "var(--spacing-12)", alignItems: "start",
       }}>
-        <a href="#" aria-label="Chime Health home" style={{ display: "inline-flex", gridColumn: "1" }}>
+        <a href="index.html" aria-label="Chime Health home" style={{ display: "inline-flex", gridColumn: "1" }}>
           <img src={FOOTER_ASSETS + "/logo-white.png"} alt="Chime Health" style={{ height: 72, width: "auto", display: "block" }} />
         </a>
 
@@ -129,7 +129,8 @@ function FooterCta({ label }) {
   const [hover, setHover] = React.useState(false);
   return (
     <a
-      href="#"
+      href="assessment.html"
+      onClick={(e) => { if (window.openChimeAssessment) { e.preventDefault(); window.openChimeAssessment(); } }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

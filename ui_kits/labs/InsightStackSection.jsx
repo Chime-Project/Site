@@ -201,7 +201,7 @@ function InsightCardStack() {
               pointerEvents: contentLit ? "auto" : "none",
               transition: reduced ? "none" : "opacity 320ms var(--ease-in-out)",
             }}>
-              <a href="#" tabIndex={isFront ? 0 : -1}
+              <a href="assessment.html" tabIndex={isFront ? 0 : -1}
                 onClick={function (e) {
                   e.preventDefault(); e.stopPropagation();
                   window.openChimeAssessment && window.openChimeAssessment();
