@@ -67,7 +67,7 @@ function ProductHeroCard({ slotId, brand, product, price, src }) {
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
       <video
-        src={HERO_UPLOADS + "/hf_20260714_000537_2158f109-c991-447a-aa60-3fad001a4fa4.mp4"}
+        src={HERO_UPLOADS + "/glp1.mp4"}
         autoPlay muted loop playsInline
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
       <div style={{ position: "absolute", top: "var(--spacing-5)", right: "var(--spacing-6)", pointerEvents: "none" }}>
@@ -114,7 +114,7 @@ function TreatmentPathCard({ slotId, src }) {
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
       <video className="hero-card-video"
-        src={HERO_UPLOADS + "/glp1.mp4"}
+        src={HERO_UPLOADS + "/hf_20260712_215808_12876c8b-1eda-48be-9200-1414fa5686e7.mp4"}
         autoPlay muted loop playsInline
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
       <div className="hero-card-content" style={{
