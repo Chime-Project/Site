@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Health Assessment</title>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#6580BC"></rect><circle cx="50" cy="50" r="20" fill="none" stroke="#FFFEFB" stroke-width="3"></circle><path d="M40 50l7 7 14-15" fill="none" stroke="#FFFEFB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></template>
+<link rel="stylesheet" href="styles.css?v=20260738">
+<script src="tailwind.setup.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="dsbundle.js"></script>
+<script src="ui_kits/homepage/image-slot.js?v=20260718"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg-default); padding-top: 72px; }
+  a { color: var(--accent-strong); }
+  a:hover { color: var(--accent-default); }
+
+  /* ---- Nav + footer (shared with homepage) ---- */
+  @media (max-width: 960px) {
+    .nav-links { display: none !important; }
+    .nav-bar { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+    .nav-actions { order: -1; }
+    .nav-logo { order: 2; margin-inline-start: 0 !important; }
+    .nav-login { display: none !important; }
+    .footer-grid { grid-template-columns: 1fr !important; }
+  }
+  /* Nav: hide hamburger + stale-open mobile menu on desktop (no JS resize listener). */
+  @media (min-width: 961px) {
+    .nav-hamburger { display: none !important; }
+    .nav-mobile-menu { display: none !important; }
+  }
+
+  /* ---- Assessment responsive ---- */
+  @media (max-width: 560px) {
+    /* Identity + height/weight grids collapse to one column (wide fields use
+       1 / -1, which is safe on a single-column grid). */
+    .asmt-grid2 { grid-template-columns: 1fr !important; }
+    .asmt-grid2 > * { grid-column: auto !important; }
+    .asmt-grid3 { grid-template-columns: 1fr 1fr 1fr !important; }
+    /* Stepper: dots only; the labels have no room at 390px. */
+    .asmt-step-label { display: none !important; }
+    .asmt-stepper { padding-inline: var(--spacing-4) !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Main menu -->
+<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260718"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260722"></script>
+<!-- Assessment: content + eligibility keys (data must load before the flow) -->
+<script src="ui_kits/assessment/assessment-data.js?v=20260750"></script>
+<script type="text/babel" src="ui_kits/assessment/AssessmentControls.jsx?v=20260751"></script>
+<script type="text/babel" src="ui_kits/assessment/AssessmentFlow.jsx?v=20260750"></script>
+<!-- Footer -->
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260748"></script>
+<script type="text/babel">
+function AssessmentPage() {
+  return (
+    <React.Fragment>
+      <ChimeNavbar />
+      <main>
+        <ChimeAssessmentFlow />
+      </main>
+      <ChimeFooter />
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<AssessmentPage />);
+</script>
+</body>
+</html>
