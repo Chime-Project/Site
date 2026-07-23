@@ -132,19 +132,28 @@ function FooterCta({ label }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
+        // Hero-CTA hover vocabulary (see Hero.jsx TreatmentPathCard pill):
+        // lift + accent sweep-fill from the left, text flips to on-primary.
         display: "inline-flex", alignItems: "center",
-        background: hover ? "var(--color-sand-100)" : "var(--color-white)",
-        color: "var(--color-blue-800)",
+        position: "relative", overflow: "hidden",
+        background: "var(--color-white)",
+        color: hover ? "var(--text-on-primary)" : "var(--color-blue-800)",
         fontSize: "var(--text-sm)",
         fontWeight: "var(--font-weight-semibold)",
         textDecoration: "none",
         padding: "var(--spacing-3) var(--spacing-6)",
         borderRadius: "var(--radius-4xl)",
         boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-        transition: "background var(--transition-fast) var(--ease-in-out), box-shadow var(--transition-fast) var(--ease-in-out)",
+        transform: hover ? "translateY(-3px) scale(1.04)" : "none",
+        transition: "box-shadow var(--transition-base) var(--ease-in-out), transform var(--transition-base) var(--ease-in-out), color 0.35s var(--ease-in-out)",
       }}
     >
-      {label}
+      <span style={{
+        position: "absolute", inset: 0, background: "var(--accent-default)",
+        transform: hover ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center",
+        transition: "transform 0.35s var(--ease-in-out)",
+      }}></span>
+      <span style={{ position: "relative" }}>{label}</span>
     </a>
   );
 }

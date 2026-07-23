@@ -3,22 +3,17 @@
 
 const PRODUCTS_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
+// Weight-loss pricing: "Product Flows for Design.xlsx" (uploads/), Chime Flows
+// sheet, TR flow. NAD+ "From $149/mo" is the sheet's 3-month rate ($209 for 1M).
 const CHIME_PRODUCTS = [
-  { id: "prod-semaglutide", name: "GLP-1", category: "Weight Loss", theme: "weight-loss", price: "From $249/mo", status: "In stock", badge: null,
+  { id: "prod-glp-squared", name: "GLP Squared", category: "Weight Loss", theme: "weight-loss", price: "From $299/mo", status: "In stock", badge: null,
     plans: [
-      { key: "1mo", price: "From $249.00", note: null },
-      { key: "3mo", price: "$596.00*", note: "*Includes ", noteBold: "4th month for free" },
-      { key: "6mo", price: "$1,050.00", note: null },
-      { key: "1yr", price: "$1,800.00", note: null },
+      { key: "1mo", price: "From $299.00", note: null },
+      { key: "3mo", price: "$996.00", note: null },
+      { key: "6mo", price: "$1,914.00", note: null },
+      { key: "1yr", price: "$3,588.00", note: null },
     ] },
-  { id: "prod-tirzepatide", name: "GLP1/GIP", category: "Weight Loss", theme: "weight-loss", price: "From $359/mo", status: "In stock", badge: "Popular",
-    plans: [
-      { key: "1mo", price: "From $359.00", note: null },
-      { key: "3mo", price: "$896.00*", note: "*Includes ", noteBold: "4th month for free" },
-      { key: "6mo", price: "$1,650.00", note: null },
-      { key: "1yr", price: "$2,880.00", note: null },
-    ] },
-  { id: "prod-nad", name: "NAD+", category: "Energy & Wellness", theme: "energy-wellness", price: "From $145/mo", status: "In stock", badge: null },
+  { id: "prod-nad", name: "NAD+", category: "Energy & Wellness", theme: "energy-wellness", price: "From $149/mo", status: "In stock", badge: null },
   { id: "prod-lipoc", name: "Lipo-C", category: "Energy & Wellness", theme: "energy-wellness", price: "From $135/mo", status: "In stock", badge: null },
   { id: "prod-sermorelin", name: "Sermorelin", category: "Energy & Wellness", theme: "energy-wellness", price: "From $190/mo", status: "Coming soon", badge: "Coming soon" },
 ];
