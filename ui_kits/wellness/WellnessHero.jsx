@@ -76,6 +76,9 @@ function ChimeWellnessHero() {
           <video src={WNH_UPLOADS + "/wellnes_vide_01.mp4"}
             autoPlay muted loop playsInline aria-label="A person feeling energized and well"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}></video>
+          <div style={{ position: "absolute", left: "var(--spacing-5)", bottom: "var(--spacing-5)" }}>
+            <WNHeroCTA label="Start Your Assessment" onClick={open}></WNHeroCTA>
+          </div>
         </div>
 
         {/* Row 2 — checklist tile */}
