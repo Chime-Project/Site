@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chime Health — Weight Loss</title>
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#5E93D1"></rect><circle cx="50" cy="50" r="20" fill="none" stroke="#FFFEFB" stroke-width="3"></circle><circle cx="50" cy="50" r="12" fill="none" stroke="#C3D7EE" stroke-width="3"></circle><circle cx="50" cy="50" r="5" fill="#FFFEFB"></circle></svg></template>
-<link rel="stylesheet" href="styles.css?v=20260738">
+<link rel="stylesheet" href="styles.css?v=20260757">
 <script src="tailwind.setup.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -18,21 +18,6 @@
   body { background: var(--bg-default); padding-top: 72px; }
   a { color: var(--accent-strong); }
   a:hover { color: var(--accent-default); }
-
-  /* ---- Nav + footer (shared with homepage) ---- */
-  @media (max-width: 960px) {
-    .nav-links { display: none !important; }
-    .nav-bar { display: flex !important; justify-content: space-between !important; align-items: center !important; }
-    .nav-actions { order: -1; }
-    .nav-logo { order: 2; margin-inline-start: 0 !important; }
-    .nav-login { display: none !important; }
-    .footer-grid { grid-template-columns: 1fr !important; }
-  }
-  /* Nav: hide hamburger + stale-open mobile menu on desktop (no JS resize listener). */
-  @media (min-width: 961px) {
-    .nav-hamburger { display: none !important; }
-    .nav-mobile-menu { display: none !important; }
-  }
   /* Weight Loss calculator grids — columns owned here (not Tailwind utilities)
      so they don't depend on Play-CDN utility ordering. */
   .wl-calc-grid { grid-template-columns: 1fr; }
