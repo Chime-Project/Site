@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chime Health — Terms &amp; Conditions</title>
+<title>Chime Health — Frequently Asked Questions</title>
 <link rel="stylesheet" href="styles.css?v=20260738">
 <script src="tailwind.setup.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -14,8 +14,6 @@
 <style>
   html, body { margin: 0; }
   body { background: var(--bg-default); padding-top: 72px; }
-  a { color: var(--accent-strong); }
-  a:hover { color: var(--accent-default); }
 
   /* ---- Nav + footer (shared with homepage) ---- */
   @media (max-width: 960px) {
@@ -30,34 +28,30 @@
     .nav-hamburger { display: none !important; }
     .nav-mobile-menu { display: none !important; }
   }
-  /* Legal prose: tighten the gutters and title on small screens. */
-  @media (max-width: 560px) {
-    .legal-page header, .legal-page article > div { padding-inline: var(--spacing-5) !important; }
-    .legal-page h1 { font-size: var(--text-4xl) !important; }
-  }
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260752"></script>
-<script src="ui_kits/shared/data/legal.js?v=20260735"></script>
-<script type="text/babel" src="ui_kits/shared/common/LegalPage.jsx?v=20260738"></script>
+<script src="ui_kits/shared/data/faqs.js?v=20260756"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260753"></script>
+<script type="text/babel" src="ui_kits/shared/common/FaqAccordion.jsx?v=20260756"></script>
 <script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260756"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260753"></script>
 <script type="text/babel">
-function LegalDocPage() {
+function FaqPage() {
   return (
     <React.Fragment>
       <ChimeNavbar />
-      <main className="legal-page">
-        <ChimeLegalPage doc={window.CHIME_LEGAL["terms-conditions"]} />
+      <main>
+        <ChimeFaqBrowser />
       </main>
       <ChimeFooter />
       <ChimeAssessmentModal />
     </React.Fragment>
   );
 }
-ReactDOM.createRoot(document.getElementById("root")).render(<LegalDocPage />);
+ReactDOM.createRoot(document.getElementById("root")).render(<FaqPage />);
 </script>
 </body>
 </html>

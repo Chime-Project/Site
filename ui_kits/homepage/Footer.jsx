@@ -12,6 +12,9 @@ const FOOTER_HREFS = window.CHIME_NAV_HREFS || {
   "Labs": "labs.html",
   "Assessment": "assessment.html",
 };
+// FAQs lives outside FOOTER_HREFS: pages override CHIME_NAV_HREFS for the
+// product nav, and that override must not be able to drop the FAQ link.
+const FOOTER_FAQ_HREF = "faq.html";
 
 // Legal column — kept separate from FOOTER_HREFS so a page overriding
 // CHIME_NAV_HREFS for its product nav can't accidentally drop the legal links.
@@ -67,6 +70,7 @@ function ChimeFooter() {
 
         <nav style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
           {["Weight Loss", "Health, Energy & Wellness", "Labs", "Assessment"].map((l) => <FooterLink key={l} label={l} href={FOOTER_HREFS[l] || "#"} />)}
+          <FooterLink label="FAQs" href={FOOTER_FAQ_HREF} />
         </nav>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
