@@ -42,6 +42,12 @@ The homepage is `index.html`. Pages:
 | `/wellness.html` | `wellness.html` | `wellness` (cadmium/gold) |
 | `/labs.html` | `labs.html` | `lab` (iris) |
 | `/assessment.html` | `assessment.html` | `default` (blue) |
+| `/faq.html` | `faq.html` | `default` (blue) |
+| `/privacy-policy.html` etc. | 4 legal pages¹ | `default` (blue) |
+
+¹ `privacy-policy.html`, `terms-conditions.html`, `hipaa-notice.html`,
+`telehealth-consent.html` — same shell, rendered by `LegalPage.jsx` from
+`shared/data/legal.js`.
 
 ---
 
@@ -54,6 +60,11 @@ chime/
 ├── wellness.html           # Health, Energy & Wellness page
 ├── labs.html               # Labs & Health Insights page
 ├── assessment.html         # Health Assessment (intake funnel)
+├── faq.html                # Full FAQ (all categories, ChimeFaqBrowser)
+├── privacy-policy.html     # Legal pages — same shell, content from
+├── terms-conditions.html   #   shared/data/legal.js rendered by
+├── hipaa-notice.html       #   shared/common/LegalPage.jsx
+├── telehealth-consent.html
 │
 ├── styles.css              # Global entry point — @imports the token files
 ├── tokens/                 # CSS custom-property design tokens
@@ -78,8 +89,8 @@ chime/
 │   │   └── AssessmentFlow.jsx      # engine + page component (routing, verdicts, results)
 │   └── shared/             #   cross-page building blocks
 │       ├── ui/             #     Button, Icon, Eyebrow, Reveal, CheckItem
-│       ├── common/         #     FaqAccordion, RxCarousel, MembershipPanel
-│       ├── data/           #     products.js, faqs.js  (window.CHIME_* globals)
+│       ├── common/         #     FaqAccordion, RxCarousel, MembershipPanel, LegalPage
+│       ├── data/           #     products.js, faqs.js, legal.js  (window.CHIME_* globals)
 │       ├── WLCalculator.jsx
 │       ├── THEME_CONTRACT.md
 │       └── check-theme-agnostic.sh
@@ -100,26 +111,34 @@ Components are functions attached to the global scope, prefixed `Chime*` (for
 example `ChimeNavbar`, `ChimeHero`, `ChimeWeightLossSection`). There is no module
 system, so script order in the HTML defines the dependency graph: a component is
 listed after everything it references. Styling is inline `style={{…}}` reading from
-CSS custom properties, with responsive overrides in each page's `<style>` block.
+CSS custom properties. Responsive overrides for the shared nav/footer chrome live
+once in `styles.css`; page‑specific overrides live in that page's `<style>` block.
 
 Shared content loads as plain-script globals before the components that use it:
 
 - `products.js` → `window.CHIME_RX_PRODUCTS` (GLP‑1 pricing carousel data)
-- `faqs.js` → `window.CHIME_FAQS` (FAQ copy keyed by page theme)
+- `faqs.js` → `window.CHIME_FAQ_SECTIONS` (the full FAQ, grouped by category;
+  answers are block‑structured — paragraphs, bullet lists, optional assessment
+  CTA). The per‑page lists (`window.CHIME_FAQS`) and the closing band
+  (`window.CHIME_FAQ_CLOSING`) are derived from it, so page FAQ copy and the
+  full FAQ page (`faq.html`, rendered by `ChimeFaqBrowser`) cannot drift apart.
+- `legal.js` → `window.CHIME_LEGAL` (legal-page documents)
 - `assessment-data.js` → `window.CHIME_ASSESSMENT` (intake questions + eligibility keys)
 
 ### Assessment
 
-There are two assessment surfaces:
-
-**The modal** (all pages) is a lightweight demo questionnaire, launched with:
+Every CTA on the site funnels to the assessment through one call:
 
 ```js
-window.openChimeAssessment();   // defined in ui_kits/homepage/AssessmentModal.jsx
+window.openChimeAssessment();
 ```
 
-The `chime:open-assessment` CustomEvent has no listener. On `assessment.html`
-the same call scrolls to the form instead — the page does not load the modal.
+On marketing and legal pages that function (defined by the shim in
+`ui_kits/homepage/AssessmentModal.jsx` — the old demo modal is retired) navigates
+to `assessment.html`; on `assessment.html` itself, `AssessmentFlow.jsx` overrides
+it to scroll to the form so in‑progress answers survive. CTA anchors also carry a
+real `href="assessment.html"`, so middle‑click and open‑in‑new‑tab work. The
+`chime:open-assessment` CustomEvent has no listener.
 
 **The page** (`assessment.html`, linked from the navbar and footer) is the full
 intake funnel, ported from the PortalIntake1 reference capture:
@@ -207,8 +226,10 @@ A push to `main` is a live deploy.
 
 - `.jsx` files are not modules; there is no `import`/`export`. A component defines a
   global `Chime*` function, and its `<script>` tag is placed after its dependencies.
-- Styling uses inline styles and CSS custom properties. Responsive overrides live in
-  each page's `<style>` block, keyed to the section's class.
+- Styling uses inline styles and CSS custom properties. The shared nav/footer
+  responsive rules live in `styles.css` (single source — do not copy them into
+  pages); page‑specific responsive overrides live in that page's `<style>` block,
+  keyed to the section's class.
 - Each section carries a `data-screen-label` attribute.
 - `CLAUDE.md` and `.DS_Store` are git‑ignored; the repository root is served
   publicly by GitHub Pages.
