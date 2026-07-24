@@ -140,8 +140,8 @@ it to scroll to the form so in‑progress answers survive. CTA anchors also carr
 real `href="assessment.html"`, so middle‑click and open‑in‑new‑tab work. The
 `chime:open-assessment` CustomEvent has no listener.
 
-**The page** (`assessment.html`, linked from the navbar and footer) is the full
-intake funnel, ported from the PortalIntake1 reference capture:
+**The page** (`assessment.html`, linked from the footer and reached by every
+CTA) is the full intake funnel, ported from the PortalIntake1 reference capture:
 
 - Opens on a **program picker** (GLP‑1 / NAD+ / Peptides, multi‑select). The
   order decides which steps the visitor walks and which disqualifier keys
