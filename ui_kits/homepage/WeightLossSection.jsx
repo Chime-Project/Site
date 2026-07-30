@@ -50,8 +50,10 @@ function ChimeWeightLossSection() {
 
         <WLReveal delay={120} style={{ width: "100%" }}>
         <div style={{ position: "relative", marginTop: "var(--spacing-6)", display: "flex", justifyContent: "center", width: "100%" }}>
-          <img className="wl-model" src={WL_UPLOADS + "/model_weight.webp"} alt="Woman carrying a yoga mat"
-            style={{ width: "min(480px, 74vw)", height: "auto", display: "block", filter: "drop-shadow(0 24px 48px rgba(17,30,44,0.45))" }} />
+          <img className="wl-model" src={WL_UPLOADS + "/wl01.webp"}
+            srcSet={WL_UPLOADS + "/wl01-mobile.webp 590w, " + WL_UPLOADS + "/wl01.webp 960w"}
+            sizes="min(295px, 74vw)" alt="Smiling woman in a blue dress"
+            style={{ width: "min(295px, 74vw)", height: "auto", display: "block", filter: "drop-shadow(0 24px 48px rgba(17,30,44,0.45))" }} />
           {/* CTAs overlapping the bottom of the model */}
           <div style={{
             position: "absolute", bottom: "var(--spacing-8)", left: 0, right: 0,
