@@ -59,8 +59,9 @@ function ChimeNavbar({ links = ["Weight Loss", "Health, Energy & Wellness", "Lab
         fontFamily: "var(--font-family-base)",
       }}>
         <a href={homeHref} aria-label="Chime Health home" className="nav-logo" style={{ display: "inline-flex", alignItems: "center", justifySelf: "start", position: "relative", marginLeft: "var(--spacing-4)" }}>
-          <img src={NAV_ASSETS + "/logo-slate.png"} alt="Chime Health" style={{ height: 44, width: "auto", display: "block", opacity: scrolled ? 0 : 1, transition: "opacity var(--transition-base) var(--ease-in-out)" }} />
-          <img src={NAV_ASSETS + "/logo-white.png"} alt="" aria-hidden="true" style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", height: 44, width: "auto", display: "block", opacity: scrolled ? 1 : 0, transition: "opacity var(--transition-base) var(--ease-in-out)" }} />
+          <img src={NAV_ASSETS + "/logo-main.svg"} alt="Chime Health" style={{ height: 30, width: "auto", display: "block", opacity: scrolled ? 0 : 1, transition: "opacity var(--transition-base) var(--ease-in-out)" }} />
+          {/* Same artwork flattened to white for the dark scrolled pill. */}
+          <img src={NAV_ASSETS + "/logo-main.svg"} alt="" aria-hidden="true" style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", height: 30, width: "auto", display: "block", filter: "brightness(0) invert(1)", opacity: scrolled ? 1 : 0, transition: "opacity var(--transition-base) var(--ease-in-out)" }} />
         </a>
         <div className="nav-links" style={{ display: "flex", gap: "var(--spacing-2)", justifySelf: "center" }}>
           {links.map((label) => <NavLink key={label} label={label} href={navHref(label)} onDark={scrolled} />)}
