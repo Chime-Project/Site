@@ -17,7 +17,7 @@ function ChimeHero() {
             fontSize: "var(--text-6xl)", fontWeight: 300,
             lineHeight: 1.08, color: "var(--text-default)",
           }}>
-            <span style={{ whiteSpace: "nowrap" }}>Health That’s</span><br />Tuned To You
+            <span style={{ whiteSpace: "nowrap" }}>Health That is</span><br />In Tune With You
           </h1>
           <ProductHeroCard
             slotId="hero-weight-loss"
