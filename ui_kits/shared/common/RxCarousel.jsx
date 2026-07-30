@@ -151,7 +151,7 @@ function RxCarousel({ variant = "light", Button, uploads, category }) {
         ))}
       </div>
 
-      <a href="#" style={{ textAlign: "center", fontSize: "var(--text-xs)", color: v.safety, textDecoration: "underline", textUnderlineOffset: 2 }}>Important safety information</a>
+      <a href="terms-conditions.html" style={{ textAlign: "center", fontSize: "var(--text-xs)", color: v.safety, textDecoration: "underline", textUnderlineOffset: 2 }}>Important safety information</a>
     </div>
   );
 }
