@@ -39,7 +39,8 @@ function ChimeFooter() {
         gap: "var(--spacing-12)", alignItems: "start",
       }}>
         <a href="index.html" aria-label="Chime Health home" style={{ display: "inline-flex", gridColumn: "1" }}>
-          <img src={FOOTER_ASSETS + "/logo-white.png"} alt="Chime Health" style={{ height: 72, width: "auto", display: "block" }} />
+          {/* Navy wordmark flattened to white for the deep slate panel. */}
+          <img src={FOOTER_ASSETS + "/logo-main.svg"} alt="Chime Health" style={{ width: "min(190px, 100%)", height: "auto", display: "block", filter: "brightness(0) invert(1)" }} />
         </a>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
