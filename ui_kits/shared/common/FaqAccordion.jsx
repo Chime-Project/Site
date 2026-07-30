@@ -74,9 +74,8 @@ function FaqItem({ item, open, onToggle, last }) {
 }
 
 // Self-contained card: heading inside, above the accordion. `maxWidth` lets a host
-// match it to a neighbouring card. First item open by default; pass
-// defaultOpen={-1} to start fully collapsed (the full-FAQ browser does).
-function FaqAccordion({ items, maxWidth, title, defaultOpen = 0 }) {
+// match it to a neighbouring card. All items start collapsed by default.
+function FaqAccordion({ items, maxWidth, title, defaultOpen = -1 }) {
   const list = items || [];
   const [openIdx, setOpenIdx] = React.useState(defaultOpen);
   return (
