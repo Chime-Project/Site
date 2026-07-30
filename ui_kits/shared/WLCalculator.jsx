@@ -63,14 +63,14 @@ function wlDerive(startWeight, goalWeight, pace) {
   const weeks = Math.ceil(totalChange / rate);
   const months = Math.round((weeks / 4.345) * 10) / 10;
 
-  // Curve: smoothstep descent to goal, then a flat sustain tail ≈ 20% past it.
-  const horizon = weeks * 1.2;
+  // Curve: smoothstep descent from start to goal across the selected week range.
+  // X-axis domain is exactly [0, weeks] so the chart scales with the user's plan.
   const samples = [];
   for (let i = 0; i <= 60; i++) {
-    const w = (i / 60) * horizon;
-    const u = Math.min(1, w / weeks);
+    const w = (i / 60) * weeks;
+    const u = w / weeks;
     const smooth = 3 * u * u - 2 * u * u * u;
-    samples.push({ w, weight: w <= weeks ? startWeight - totalChange * smooth : goalWeight });
+    samples.push({ w, weight: startWeight - totalChange * smooth });
   }
 
   // Milestone weeks must be strictly increasing: cap m2 below the final week,
@@ -78,7 +78,7 @@ function wlDerive(startWeight, goalWeight, pace) {
   const m2 = Math.min(Math.round(weeks / 2), weeks - 1);
   let m1 = Math.min(4, Math.max(2, Math.round(weeks * 0.22)));
   if (m1 >= m2) m1 = Math.max(1, m2 - 1);
-  return { totalChange, rate, weeks, months, horizon, samples, milestoneWeeks: [m1, m2, weeks] };
+  return { totalChange, rate, weeks, months, samples, milestoneWeeks: [m1, m2, weeks] };
 }
 
 // `theme` is optional: omit it and the card inherits the accent palette from the
@@ -116,10 +116,11 @@ function WLCalculatorCard({ theme, variant = "light" }) {
   const padX = 34, padY = isMobile ? 30 : 22;
   const fs = isMobile ? 16 : 11;
   const pts = d.samples.map((s) => [
-    padX + (s.w / d.horizon) * (W - 2 * padX),
+    padX + (s.w / d.weeks) * (W - 2 * padX),
     padY + ((start - s.weight) / d.totalChange) * (H - 2 * padY),
   ]);
-  const goalX = padX + (d.weeks / d.horizon) * (W - 2 * padX);
+  // Goal sits at the right edge — X domain is [0, weeks].
+  const goalX = W - padX;
   const goalY = H - padY;
   const path = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
   const milestones = [
