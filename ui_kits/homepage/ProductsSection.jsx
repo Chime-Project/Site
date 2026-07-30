@@ -219,7 +219,7 @@ function ProductCard({ p, planIdx }) {
         <div style={{ display: "flex", gap: "var(--spacing-2)", marginTop: "var(--spacing-2)", flexWrap: "wrap" }}>
           <ProductBtn primary={true} disabled={future} label={future ? "Join waitlist" : "Get started"} />
         </div>
-        <a href="#" style={{
+        <a href="terms-conditions.html" style={{
           marginTop: "var(--spacing-1)", fontSize: "var(--text-xs)",
           color: "var(--text-muted)", textDecoration: "underline", textUnderlineOffset: 2,
         }}>Important safety information</a>
