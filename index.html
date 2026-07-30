@@ -85,6 +85,9 @@
     .hero-section { padding-inline: var(--spacing-5) !important; }
     .guide-section { padding-inline: var(--spacing-5) !important; }
     .guide-content { padding: var(--spacing-8) var(--spacing-6) !important; }
+    /* Homepage only: "A Simple Path Forward" is desktop-only. The rules below
+       stay so the section is still responsive if it is ever un-hidden. */
+    .simple-path-section { display: none !important; }
     .simple-path-section { padding-inline: var(--spacing-5) !important; }
     .simple-path-grid { grid-template-columns: 1fr 1fr !important; }
     .simple-path-title { font-size: var(--text-4xl) !important; }
@@ -118,7 +121,7 @@
 <body>
 <div id="root"></div>
 <script src="ui_kits/shared/data/products.js?v=20260745"></script>
-<script type="text/babel" src="ui_kits/shared/common/RxCarousel.jsx?v=20260745"></script>
+<script type="text/babel" src="ui_kits/shared/common/RxCarousel.jsx?v=20260764"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260753"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260718"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Eyebrow.jsx?v=20260719"></script>
@@ -126,14 +129,14 @@
 <script type="text/babel" src="ui_kits/homepage/Hero.jsx?v=20260753"></script>
 <script type="text/babel" src="ui_kits/homepage/FeelSection.jsx?v=20260739"></script>
 <script type="text/babel" src="ui_kits/homepage/SimplePathSection.jsx?v=20260753"></script>
-<script type="text/babel" src="ui_kits/homepage/ProductsSection.jsx?v=20260758"></script>
+<script type="text/babel" src="ui_kits/homepage/ProductsSection.jsx?v=20260764"></script>
 <script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260743"></script>
 <script type="text/babel" src="ui_kits/homepage/WeightLossSection.jsx?v=20260754"></script>
 <script type="text/babel" src="ui_kits/homepage/WellnessSection.jsx?v=20260739"></script>
-<script type="text/babel" src="ui_kits/homepage/LabsSection.jsx?v=20260753"></script>
+<script type="text/babel" src="ui_kits/homepage/LabsSection.jsx?v=20260764"></script>
 <script type="text/babel" src="ui_kits/homepage/TestimonialsSection.jsx?v=20260753"></script>
 <script type="text/babel" src="ui_kits/homepage/GuideSection.jsx?v=20260755"></script>
-<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260760"></script>
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260763"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260753"></script>
 <script type="text/babel">
 function HomePage() {

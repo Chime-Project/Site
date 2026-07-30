@@ -6,7 +6,7 @@ const WLT_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
 // Rx carousel arrow — ported from the Health, Energy & Wellness section (homepage).
 // Shared 2-product Rx carousel (GLP-1 + GLP1/GIP) — same component the
-// Health, Energy & Wellness section uses on the homepage, incl. the vial-solo.webp image.
+// Health, Energy & Wellness section uses on the homepage, incl. the vialF.png image.
 function WLTimelineSection() {
   return (
     <section data-screen-label="Timeline to treatment" data-theme="weight-loss" style={{

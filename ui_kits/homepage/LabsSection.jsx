@@ -294,7 +294,7 @@ function LabsTierCard({ name, tier, markers, price, upgraded, image }) {
           }}>Upgraded Panel</div>
         ) : null}
       </div>
-      <img src={image || LABS_UPLOADS + "/vial-solo.webp"} alt={name + " sample vials"}
+      <img src={image || LABS_UPLOADS + "/vialF.png"} alt={name + " sample vials"}
         style={{
           width: 120, height: "auto", display: "block", margin: "var(--spacing-12) auto 0",
           borderRadius: image ? "var(--radius-lg)" : 0,
