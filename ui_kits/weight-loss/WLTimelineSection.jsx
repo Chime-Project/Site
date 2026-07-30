@@ -59,7 +59,7 @@ function WLTimelineSection() {
           tagline="You're Not Doing This Alone™"
           benefits={["Lifestyle Strategies", "Laboratory Testing", "Wellness Support", "Coaching", "Treatment Options"]}
           ctaLabel="Explore The Chime Membership"
-          Button={WLTButton} uploads={WLT_UPLOADS} />
+          Button={WLTButton} uploads={WLT_UPLOADS} category="weight-loss" />
         </WLReveal>
       </div>
     </section>

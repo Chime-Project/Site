@@ -13,7 +13,7 @@ function WLReveal(props) {
   return <Reveal {...props} />;
 }
 
-// Shared 2-product Rx carousel (GLP-1 + GLP1/GIP), reused in Weight Loss & Wellness.
+// Shared Rx product slider (weight-loss catalog), reused in Weight Loss & Wellness.
 function ChimeWeightLossSection() {
   return (
     <section id="weight-loss-section" data-screen-label="Weight Loss" data-theme="weight-loss" style={{
@@ -105,7 +105,7 @@ function ChimeWeightLossSection() {
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
-            <RxCarousel variant="dark" Button={WLButton} uploads={WL_UPLOADS} />
+            <RxCarousel variant="dark" Button={WLButton} uploads={WL_UPLOADS} category="weight-loss" />
           </div>
           </WLReveal>
         </div>

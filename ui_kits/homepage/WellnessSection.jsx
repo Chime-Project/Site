@@ -79,7 +79,7 @@ function ChimeWellnessSection() {
             borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420, width: "100%",
             display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
           }}>
-            <RxCarousel variant="dark" Button={HWButton} uploads={HW_UPLOADS} />
+            <RxCarousel variant="dark" Button={HWButton} uploads={HW_UPLOADS} category="energy-wellness" />
           </div>
           </HWReveal>
         </div>

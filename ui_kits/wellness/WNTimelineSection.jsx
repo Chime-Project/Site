@@ -75,7 +75,7 @@ function WNTimelineSection() {
           tagline="You’re Not Doing This Alone™"
           benefits={WNT_BENEFITS}
           ctaLabel="Explore The Chime Membership"
-          Button={WNTButton} uploads={WNT_UPLOADS} />
+          Button={WNTButton} uploads={WNT_UPLOADS} category="energy-wellness" />
         </WNTReveal>
       </div>
     </section>
