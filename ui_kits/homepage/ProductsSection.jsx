@@ -3,20 +3,9 @@
 
 const PRODUCTS_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
-// Weight-loss pricing: "Product Flows for Design.xlsx" (uploads/), Chime Flows
-// sheet, TR flow. NAD+ "From $149/mo" is the sheet's 3-month rate ($209 for 1M).
-const CHIME_PRODUCTS = [
-  { id: "prod-glp-squared", name: "GLP Squared", category: "Weight Loss", theme: "weight-loss", price: "From $299/mo", status: "In stock", badge: null,
-    plans: [
-      { key: "1mo", price: "From $299.00", note: null },
-      { key: "3mo", price: "$996.00", note: null },
-      { key: "6mo", price: "$1,914.00", note: null },
-      { key: "1yr", price: "$3,588.00", note: null },
-    ] },
-  { id: "prod-nad", name: "NAD+", category: "Energy & Wellness", theme: "energy-wellness", price: "From $149/mo", status: "In stock", badge: null },
-  { id: "prod-lipoc", name: "Lipo-C", category: "Energy & Wellness", theme: "energy-wellness", price: "From $135/mo", status: "In stock", badge: null },
-  { id: "prod-sermorelin", name: "Sermorelin", category: "Energy & Wellness", theme: "energy-wellness", price: "From $190/mo", status: "Coming soon", badge: "Coming soon" },
-];
+// Catalog + pricing live in ui_kits/shared/data/products.js (window.CHIME_PRODUCTS,
+// one product per uploads/vials/ image) — load that script first.
+const CHIME_PRODUCTS = window.CHIME_PRODUCTS;
 
 const CHIME_PLAN_KEYS = [
   { key: "1mo", label: "1 Month" },
@@ -163,7 +152,9 @@ function ChimeProductsSection() {
 function ProductCard({ p, planIdx }) {
   const [hover, setHover] = React.useState(false);
   const future = p.status === "Coming soon";
-  const plan = p.plans ? p.plans[planIdx] : null;
+  // Keyed lookup, not index — a product with partial plans (e.g. 1mo/3mo only)
+  // falls back to its "From $X/mo" label on the terms it doesn't offer.
+  const plan = p.plans ? p.plans.find((pl) => pl.key === CHIME_PLAN_KEYS[planIdx].key) : null;
   return (
     <article data-product-card data-theme={p.theme}
       onMouseEnter={() => setHover(true)}
@@ -177,7 +168,7 @@ function ProductCard({ p, planIdx }) {
         transition: "box-shadow var(--transition-base) var(--ease-in-out)",
       }}>
         <image-slot id={p.id} shape="rect" fit="contain" placeholder="Drop product photo"
-          src={PRODUCTS_UPLOADS + "/vialF.png"}
+          src={PRODUCTS_UPLOADS + "/" + p.img}
           style={{
             position: "absolute", inset: "9%",
             transform: hover ? "scale(1.14) rotate(-3deg) translateY(-6px)" : "none",

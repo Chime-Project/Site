@@ -22,7 +22,7 @@
 // Requires CheckItem.jsx (CheckBullet) and RxCarousel.jsx to load first.
 function MembershipPanel({
   panelBg = "var(--color-white)",
-  title, body, tagline, benefits = [], ctaLabel, Button, uploads,
+  title, body, tagline, benefits = [], ctaLabel, Button, uploads, category,
 }) {
   return (
     <div className="membership-panel" style={{
@@ -67,7 +67,7 @@ function MembershipPanel({
         borderRadius: "var(--radius-3xl)", padding: "var(--spacing-5)", minHeight: 420,
         display: "flex", flexDirection: "column", gap: "var(--spacing-4)",
       }}>
-        <RxCarousel variant="light" Button={Button} uploads={uploads} />
+        <RxCarousel variant="light" Button={Button} uploads={uploads} category={category} />
       </div>
     </div>
   );

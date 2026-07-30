@@ -1,10 +1,12 @@
-// Chime Health — shared Rx product carousel (GLP Squared).
-// One implementation for all three placements:
-//   variant="dark"  — homepage Weight Loss section (white-on-navy card)
+// Chime Health — shared Rx product slider.
+// One implementation for all placements:
+//   variant="dark"  — homepage Weight Loss / Wellness sections (white-on-navy card)
 //   variant="light" — Weight Loss / Wellness timeline cards (ink-on-tint card)
 // Colors bind to --accent-* + theme-neutral white/ink only, so each page keeps its
 // own palette via the section's data-theme (tide, cadmium, …). Products come from
-// window.CHIME_RX_PRODUCTS — load ui_kits/shared/data/products.js first.
+// window.CHIME_PRODUCTS (load ui_kits/shared/data/products.js first), filtered by
+// the `category` prop ("weight-loss" | "energy-wellness"; omit for all) — "Coming
+// soon" products are excluded since the card's CTA is a purchase path.
 // The `Button` prop lets each page pass its own button (shared <Button> lands in Phase 4).
 
 const RX_VARIANTS = {
@@ -42,39 +44,68 @@ function RxArrow({ dir, onClick, v }) {
   );
 }
 
-function RxCarousel({ variant = "light", Button, uploads }) {
+// Slides the incoming product's content in from the direction of travel.
+// Direct style mutation + a forced reflow (offsetWidth) between the start and
+// end states — no @keyframes needed, so it stays self-contained in this file.
+// First render (and dir 0) skips the animation so initial paint is stable.
+function RxSlide({ k, dir, children, style }) {
+  const ref = React.useRef(null);
+  const first = React.useRef(true);
+  React.useLayoutEffect(() => {
+    if (first.current) { first.current = false; return; }
+    const el = ref.current;
+    if (!el || !dir) return;
+    el.style.transition = "none";
+    el.style.transform = "translateX(" + dir * 28 + "px)";
+    el.style.opacity = "0";
+    void el.offsetWidth;
+    el.style.transition = "transform var(--transition-base) var(--ease-in-out), opacity var(--transition-base) var(--ease-in-out)";
+    el.style.transform = "translateX(0)";
+    el.style.opacity = "1";
+  }, [k]);
+  return <div ref={ref} style={style}>{children}</div>;
+}
+
+function RxCarousel({ variant = "light", Button, uploads, category }) {
   const v = RX_VARIANTS[variant] || RX_VARIANTS.light;
-  const PRODUCTS = window.CHIME_RX_PRODUCTS;
+  const PRODUCTS = window.CHIME_PRODUCTS.filter(function (p) {
+    return (!category || p.theme === category) && p.status !== "Coming soon";
+  });
   const [idx, setIdx] = React.useState(0);
+  const [dir, setDir] = React.useState(0);
   const [vhover, setVhover] = React.useState(false);
   const p = PRODUCTS[idx];
   const many = PRODUCTS.length > 1;
-  const go = (d) => setIdx((idx + d + PRODUCTS.length) % PRODUCTS.length);
+  const go = (d) => { setDir(d); setIdx((idx + d + PRODUCTS.length) % PRODUCTS.length); };
+  const pick = (i) => { if (i === idx) return; setDir(i > idx ? 1 : -1); setIdx(i); };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", height: "100%" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: many ? "space-between" : "center", gap: "var(--spacing-2)" }}>
         {many && <RxArrow dir={-1} onClick={() => go(-1)} v={v} />}
-        <div style={{ textAlign: "center", minWidth: 0 }}>
+        <RxSlide k={idx} dir={dir} style={{ textAlign: "center", minWidth: 0 }}>
           <h3 style={{ margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)", color: v.name, lineHeight: 1.2 }}>{p.name}</h3>
           <div style={{ fontSize: "var(--text-xs)", color: v.muted, marginTop: 2 }}>
             Starting from <span style={{ color: v.price, fontWeight: "var(--font-weight-semibold)" }}>{p.start}/mo</span>
           </div>
-        </div>
+        </RxSlide>
         {many && <RxArrow dir={1} onClick={() => go(1)} v={v} />}
       </div>
 
       <div onMouseEnter={() => setVhover(true)} onMouseLeave={() => setVhover(false)}
         style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 116 }}>
-        <img src={uploads + "/vialF.png"} alt={p.name + " vial"} style={{
-          width: 92, height: "auto", display: "block",
+        <RxSlide k={idx} dir={dir}>
+        <img src={uploads + "/" + p.img} alt={p.name + " vial"} style={{
+          height: 116, width: "auto", display: "block",
           transform: vhover ? "scale(1.08) rotate(-3deg) translateY(-4px)" : "none",
           filter: vhover ? "drop-shadow(0 22px 34px rgba(0,0,0,0.5))" : "drop-shadow(0 14px 26px rgba(0,0,0,0.38))",
           transition: "transform var(--transition-base) var(--ease-in-out), filter var(--transition-base) var(--ease-in-out)",
         }} />
+        </RxSlide>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-        {p.plans.map((pl) => (
+      {/* Multi-month rows only — the "1mo" rate is already the header's "Starting from". */}
+      <RxSlide k={idx} dir={dir} style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
+        {p.plans.filter((pl) => pl.key !== "1mo").map((pl) => (
           <div key={pl.term} style={{
             display: "flex", flexDirection: "column", gap: 3,
             background: pl.promo ? v.planPromoBg : v.planBg,
@@ -93,7 +124,7 @@ function RxCarousel({ variant = "light", Button, uploads }) {
             ) : null}
           </div>
         ))}
-      </div>
+      </RxSlide>
 
       <div style={{ display: "flex", justifyContent: "center", marginTop: "auto" }}>
         <Button primary small label="Get started" />
@@ -106,7 +137,7 @@ function RxCarousel({ variant = "light", Button, uploads }) {
           cannot overlap -- and steal clicks from -- the CTA or the link below. */}
       <div style={{ display: many ? "flex" : "none", justifyContent: "center", gap: 0 }}>
         {PRODUCTS.map((_, i) => (
-          <button key={i} type="button" aria-label={"Show " + PRODUCTS[i].name} onClick={() => setIdx(i)} style={{
+          <button key={i} type="button" aria-label={"Show " + PRODUCTS[i].name} onClick={() => pick(i)} style={{
             width: 24, height: 24, border: "none", padding: 0, cursor: "pointer",
             background: "none", display: "flex", alignItems: "center", justifyContent: "center",
           }}>
