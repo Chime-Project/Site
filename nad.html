@@ -72,10 +72,27 @@
   .nad-hero-ctas { flex-wrap: nowrap; white-space: nowrap; }
 
   @media (max-width: 700px) {
-    /* !important: the badge svg carries an inline display:block */
+    /* !important throughout this block: these fight inline styles that are
+       correct on desktop (badge display, hero row alignment, plus-glyph
+       sizing) — stylesheet !important is what outranks an inline style. */
     .nad-badge { display: none !important; }
+    .nad-hero-word { display: none !important; }
     .nad-hero-ctas { flex-wrap: wrap; white-space: normal; }
-    .nad-hero-bottom { flex-direction: column; align-items: stretch; }
+    #offer { padding-top: var(--spacing-10) !important; padding-bottom: var(--spacing-10) !important; }
+    /* desktop hero bleeds the wordmark to the bottom edge (padding-bottom 0);
+       with the wordmark hidden on mobile the video needs breathing room */
+    [data-screen-label="NAD Hero"] { padding-bottom: var(--spacing-10) !important; }
+    [data-screen-label="What Is NAD+"] { padding-top: var(--spacing-10) !important; padding-bottom: var(--spacing-10) !important; }
+    /* inline alignItems:flex-end is vertical in the desktop row but becomes
+       horizontal (right-shove) once the column kicks in */
+    .nad-hero-bottom { flex-direction: column; align-items: stretch !important; }
+    /* recenter the vial-on-plus composition: desktop glyph floor (340px) and
+       the 34% vial offset don't fit a phone column */
+    .nad-plus-visual { min-height: 400px !important; }
+    .nad-plus-visual span { font-size: min(88vw, 344px) !important; }
+    /* keep a reduced offset so the vial rides the + arm instead of hiding
+       the vertical stroke */
+    .nad-plus-visual img { margin-left: 30% !important; height: min(300px, 62vw) !important; }
     .nad-hero-media {
       position: static !important; width: 100% !important;
       margin: var(--spacing-8) 0 0;
@@ -95,7 +112,7 @@
 <body>
 <div id="root"></div>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260773"></script>
-<script type="text/babel" src="ui_kits/nad/NadPage.jsx?v=20260773"></script>
+<script type="text/babel" src="ui_kits/nad/NadPage.jsx?v=20260774"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>

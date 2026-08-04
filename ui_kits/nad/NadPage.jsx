@@ -53,8 +53,8 @@ function NadSpinBadge() {
 function NadCta({ label, style }) {
   return (
     <a href="#offer" style={{
-      display: "inline-block", background: "var(--nad-ink-dark)",
-      color: "var(--nad-ink-light)", textDecoration: "none",
+      display: "inline-block", background: "var(--primary-default)",
+      color: "var(--text-on-primary)", textDecoration: "none",
       borderRadius: "var(--radius-4xl)", padding: "16px 30px",
       fontWeight: "var(--font-weight-bold)", fontSize: "var(--text-lg)",
       letterSpacing: "0.01em", ...style,
@@ -78,8 +78,8 @@ function NadChrome() {
         <img src="assets/logo-main.svg" alt="Chime" style={{ height: 18, display: "block" }} />
       </a>
       <a href="#offer" style={{
-        pointerEvents: "auto", background: "var(--nad-ink-dark)",
-        color: "var(--nad-ink-light)", borderRadius: "var(--radius-4xl)",
+        pointerEvents: "auto", background: "var(--primary-default)",
+        color: "var(--text-on-primary)", borderRadius: "var(--radius-4xl)",
         border: "1px solid rgb(255 255 255 / 0.4)",
         padding: "12px 22px", textDecoration: "none", letterSpacing: "0.02em",
         fontWeight: "var(--font-weight-semibold)", fontSize: "var(--text-sm)",
@@ -122,11 +122,18 @@ function NadHero() {
           display: "flex", alignItems: "center",
           gap: "var(--spacing-4)", marginTop: "var(--spacing-6)",
         }}>
-          <NadCta label="Add NAD+" />
+          {/* pill + "or" as one unit: on a mobile wrap, "or" stays beside the
+              button and only the link drops to the next line */}
           <span style={{
-            color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
-            fontWeight: "var(--font-weight-normal)",
-          }}>or</span>
+            display: "inline-flex", alignItems: "center", gap: "var(--spacing-4)",
+            whiteSpace: "nowrap",
+          }}>
+            <NadCta label="Add NAD+" />
+            <span style={{
+              color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
+              fontWeight: "var(--font-weight-normal)",
+            }}>or</span>
+          </span>
           <a href="index.html" style={{
             color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
             fontWeight: "var(--font-weight-semibold)",
@@ -135,7 +142,7 @@ function NadHero() {
         </div>
       </div>
       <div className="nad-hero-bottom" style={{ position: "relative", flex: 1, display: "flex", alignItems: "flex-end" }}>
-        <div aria-hidden="true" style={{
+        <div className="nad-hero-word" aria-hidden="true" style={{
           color: "var(--nad-ink-dark)", fontWeight: "var(--font-weight-bold)",
           fontSize: "clamp(110px, 21vw, 300px)", lineHeight: 0.82,
           letterSpacing: "-0.04em", marginLeft: "-0.04em",
@@ -265,7 +272,7 @@ function NadPlus() {
           }}>Adding NAD+ may help support the way you want to feel as you move forward with your Chime plan.</p>
           <NadCta label="Add NAD+ To My Plan" style={{ marginTop: "var(--spacing-8)" }} />
         </div>
-        <div className="reveal" style={{
+        <div className="reveal nad-plus-visual" style={{
           position: "relative", minHeight: 460, display: "flex",
           alignItems: "center", justifyContent: "center", overflow: "hidden",
         }}>
@@ -355,7 +362,7 @@ function NadOffer() {
             margin: "var(--spacing-6) calc(-1 * var(--spacing-8))",
           }} />
           <a href="assessment.html" onClick={goAssessment} style={{
-            display: "block", background: "var(--accent-active)",
+            display: "block", background: "var(--primary-default)",
             color: "var(--text-on-primary)", textDecoration: "none",
             borderRadius: "var(--radius-4xl)", padding: "16px 24px",
             fontWeight: "var(--font-weight-bold)", fontSize: "var(--text-lg)",
