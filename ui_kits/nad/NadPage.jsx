@@ -62,6 +62,32 @@ function NadCta({ label, style }) {
   );
 }
 
+function NadCtaRow({ label, style }) {
+  // Pill + "or" wrap as one unit; on mobile only the link drops to line two
+  // (.nad-hero-ctas supplies nowrap on desktop, wrap under 700px).
+  return (
+    <div className="nad-hero-ctas" style={{
+      display: "flex", alignItems: "center", gap: "var(--spacing-4)", ...style,
+    }}>
+      <span style={{
+        display: "inline-flex", alignItems: "center", gap: "var(--spacing-4)",
+        whiteSpace: "nowrap",
+      }}>
+        <NadCta label={label} />
+        <span style={{
+          color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
+          fontWeight: "var(--font-weight-normal)",
+        }}>or</span>
+      </span>
+      <a href="index.html" style={{
+        color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
+        fontWeight: "var(--font-weight-semibold)",
+        textDecoration: "underline", textUnderlineOffset: 6,
+      }}>Continue Without Adding</a>
+    </div>
+  );
+}
+
 function NadChrome() {
   return (
     <header data-screen-label="NAD Chrome" style={{
@@ -118,28 +144,7 @@ function NadHero() {
           margin: 0, color: "var(--nad-ink-dark)", fontSize: "var(--text-xl)",
           lineHeight: 1.45, fontWeight: "var(--font-weight-medium)",
         }}>You’ve already taken the first step. Now, you may add NAD+ to your wellness plan.</p>
-        <div className="nad-hero-ctas" style={{
-          display: "flex", alignItems: "center",
-          gap: "var(--spacing-4)", marginTop: "var(--spacing-6)",
-        }}>
-          {/* pill + "or" as one unit: on a mobile wrap, "or" stays beside the
-              button and only the link drops to the next line */}
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: "var(--spacing-4)",
-            whiteSpace: "nowrap",
-          }}>
-            <NadCta label="Add NAD+" />
-            <span style={{
-              color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
-              fontWeight: "var(--font-weight-normal)",
-            }}>or</span>
-          </span>
-          <a href="index.html" style={{
-            color: "var(--nad-ink-dark)", fontSize: "var(--text-2xl)",
-            fontWeight: "var(--font-weight-semibold)",
-            textDecoration: "underline", textUnderlineOffset: 6,
-          }}>Continue Without Adding</a>
-        </div>
+        <NadCtaRow label="Add NAD+" style={{ marginTop: "var(--spacing-6)" }} />
       </div>
       <div className="nad-hero-bottom" style={{ position: "relative", flex: 1, display: "flex", alignItems: "flex-end" }}>
         <div className="nad-hero-word" aria-hidden="true" style={{
@@ -270,7 +275,7 @@ function NadPlus() {
             margin: 0, color: "var(--text-secondary)", fontSize: "var(--text-xl)",
             lineHeight: 1.55, maxWidth: "26em",
           }}>Adding NAD+ may help support the way you want to feel as you move forward with your Chime plan.</p>
-          <NadCta label="Add NAD+ To My Plan" style={{ marginTop: "var(--spacing-8)" }} />
+          <NadCtaRow label="Add NAD+ To My Plan" style={{ marginTop: "var(--spacing-8)" }} />
         </div>
         <div className="reveal nad-plus-visual" style={{
           position: "relative", minHeight: 460, display: "flex",
