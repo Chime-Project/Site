@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="energy-wellness">
+<html lang="en" data-theme="default">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,26 +14,29 @@
   body { background: var(--bg-default); }
 
   /* NAD page theme wiring — palette primitives live HERE, not in the kit
-     (ui_kits/nad/NadPage.jsx binds to these --nad-* vars only). The strip
-     ramp is a cadmium monochrome fan: light → deep. */
+     (ui_kits/nad/NadPage.jsx binds to these --nad-* vars only). Main (default)
+     Chime theme: the strip ramp is a brand-blue monochrome fan, light → deep,
+     and the dark bands sit on the site's navy section ground (blue-950, the
+     same ink as --glass-rgb). The semantic text stack is left alone — the
+     site-wide navy values ARE this theme. */
   :root {
-    --nad-strip-1: var(--color-cadmium-100);
-    --nad-strip-2: var(--color-cadmium-200);
-    --nad-strip-3: var(--color-cadmium-300);
-    --nad-strip-4: var(--color-cadmium-500);
-    --nad-strip-5: var(--color-cadmium-700);
-    --nad-strip-6: var(--color-cadmium-800);
-    --nad-ink-dark: var(--color-sand-950);
+    --nad-strip-1: var(--color-blue-100);
+    --nad-strip-2: var(--color-blue-200);
+    --nad-strip-3: var(--color-blue-300);
+    --nad-strip-4: var(--color-blue-500);
+    --nad-strip-5: var(--color-blue-700);
+    --nad-strip-6: var(--color-blue-800);
+    --nad-ink-dark: var(--color-blue-950);
     --nad-ink-light: var(--bg-default);
-    --nad-hairline-dark: color-mix(in srgb, var(--color-sand-950) 35%, transparent);
-    --nad-band-dark: var(--color-sand-950);
-    /* De-blue the semantic text stack for this page: the site-wide values
-       resolve to the brand navy scale, which reads as leftover weight-loss
-       blue against the cadmium ground. Warm sand inks instead (all ≥6:1 on
-       the page's light grounds). */
-    --text-default: var(--color-sand-950);
-    --text-secondary: var(--color-sand-800);
-    --text-muted: var(--color-sand-800);
+    --nad-hairline-dark: color-mix(in srgb, var(--color-blue-950) 35%, transparent);
+    --nad-band-dark: var(--color-blue-950);
+    /* The kit grounds the hero + footer on --accent-default. The default
+       theme's blue-500 is a mid tone no ink clears AA on (navy 3.9:1, white
+       3.9:1), so this page pins the accent one stop lighter: same colored-band
+       moment, and --nad-ink-dark reads 7.6:1 on blue-300 — AA at every size.
+       On this page only the hero/footer grounds and the decorative "+" glyph
+       consume --accent-default, so nothing else shifts. */
+    --accent-default: var(--color-blue-300);
   }
 
   /* Section scroll-reveal — same pattern as weight-loss.html. Unsupported
@@ -112,7 +115,7 @@
 <body>
 <div id="root"></div>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260773"></script>
-<script type="text/babel" src="ui_kits/nad/NadPage.jsx?v=20260775"></script>
+<script type="text/babel" src="ui_kits/nad/NadPage.jsx?v=20260776"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
