@@ -388,7 +388,7 @@ function NadFooter() {
   return (
     <footer data-screen-label="NAD Footer" style={{
       background: "var(--accent-default)", fontFamily: "var(--font-family-base)",
-      paddingTop: "var(--spacing-16)", overflow: "hidden",
+      padding: "var(--spacing-16) 0", overflow: "hidden",
     }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 var(--spacing-6)" }}>
         <div style={{
@@ -406,12 +406,6 @@ function NadFooter() {
           </nav>
         </div>
       </div>
-      <div aria-hidden="true" style={{
-        color: "var(--nad-ink-dark)", fontWeight: "var(--font-weight-bold)",
-        fontSize: "clamp(150px, 28vw, 400px)", lineHeight: 0.72,
-        letterSpacing: "-0.04em", whiteSpace: "nowrap", textAlign: "center",
-        transform: "translateY(18%)", userSelect: "none",
-      }}>NAD+</div>
     </footer>
   );
 }
