@@ -601,9 +601,8 @@ function AsmtV4PillCard({ label, on, blocked, index, onToggle }) {
 // Bubble variant — opt in per screen with `bubbles` in the config. Same
 // control, same interaction model; the silhouette is a circle and the motion is
 // soda. Still opt-in rather than the default for `chips`, because a circle has
-// to fit its label inside an inscribed chord: the longer the option, the wider
-// the bubble has to be to stay legible, and a screen of uniformly long options
-// ends up a row of near-identical discs with no size rhythm to it.
+// to fit its label inside an inscribed chord — the group diameter is dictated
+// by the longest option, so a screen of long options means very large discs.
 // ---------------------------------------------------------------------------
 
 // Deterministic per-index jitter. Bubbles have to look uncorrelated, but the
@@ -614,49 +613,46 @@ function asmtV4BubbleRnd(index, salt) {
   return x - Math.floor(x);
 }
 
-// Diameter and type scale from label length. One diameter for all of them is
-// not on the table — the same screen holds "Focus" and "A better understanding
-// of my body" — and varied sizes are truer to the metaphor anyway: soda bubbles
-// are not uniform.
+// Uniform circles per screen (user call, 2026-08-06): every bubble in a group
+// takes ONE diameter, sized by the screen's most demanding label, and one
+// 20px (--text-xl) font. The earlier varied-size ladder is gone — the need
+// function below still grades by length, but only the group MAX is used.
 //
-// The ladder has to keep climbing past A4's 33-character maximum: B1.1 runs to
-// 66 ("Currently using Semaglutide or Tirzepatide and want better support").
-// Without the top bands every long option collapsed into one 208px size, which
-// both clipped the longest and flattened the size variety the metaphor needs.
-function asmtV4BubbleSize(label) {
+// The longest-word floor stays: total length is the wrong measure for a single
+// unbreakable word ("Skin health" and "Performance" are both 11 characters,
+// but only the first can wrap). ~11px per glyph at 20px; dividing by 0.72
+// rather than the true 0.76 content ratio leaves slack past the 12% padding.
+function asmtV4BubbleNeed(label) {
   const n = label.length;
-  let size;
-  if (n <= 7) size = { d: 112, f: "var(--text-lg)" };
-  else if (n <= 12) size = { d: 140, f: "var(--text-base)" };
-  else if (n <= 24) size = { d: 168, f: "var(--text-base)" };
-  // 208 rather than a smoother 196: this band already existed as the old top
-  // of the ladder, and A4's longest option sits in it. Narrowing it would have
-  // quietly resized a screen that was already signed off.
-  else if (n <= 36) size = { d: 208, f: "var(--text-sm)" };
-  else if (n <= 52) size = { d: 224, f: "var(--text-sm)" };
-  else size = { d: 252, f: "var(--text-sm)" };
-
-  // Total length is the wrong measure for a single unbreakable word. "Skin
-  // health" and "Performance" are both 11 characters and land in the same band,
-  // but the first wraps to two lines and the second cannot — it needed 108px in
-  // a 104px box and clipped. Widen to whatever the longest word requires.
-  // ~10px per character at 18px (--text-lg and --text-base are both 18px in
-  // this scale), 7.8px at 14px; dividing by 0.72 rather than the true 0.76
-  // content ratio leaves slack past the 12% side padding.
+  let d;
+  if (n <= 7) d = 116;
+  else if (n <= 12) d = 144;
+  else if (n <= 24) d = 176;
+  else if (n <= 36) d = 212;
+  else if (n <= 52) d = 240;
+  else d = 272;
   const longest = label.split(/\s+/).reduce((m, w) => (w.length > m ? w.length : m), 0);
-  const need = Math.ceil(longest * (size.f === "var(--text-sm)" ? 7.8 : 10) / 0.72);
-  return need > size.d ? { d: need, f: size.f } : size;
+  return Math.max(d, Math.ceil(longest * 11 / 0.72));
+}
+
+function asmtV4BubbleGroupDiameter(options) {
+  let d = 0;
+  for (let i = 0; i < options.length; i++) {
+    const o = options[i];
+    const need = asmtV4BubbleNeed(typeof o === "string" ? o : o.value);
+    if (need > d) d = need;
+  }
+  return d;
 }
 
 // `radio` swaps the ARIA role only, exactly as on AsmtV4GoalCard — a bubble
 // behaves identically whether the screen takes one answer or many.
-function AsmtV4BubbleCard({ label, on, blocked, index, onToggle, radio }) {
+function AsmtV4BubbleCard({ label, on, blocked, index, onToggle, radio, diameter }) {
   const wrapRef = React.useRef(null);
   const fillRef = React.useRef(null);
   const mounted = React.useRef(false);
   const reduced = typeof matchMedia === "function" &&
     matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const size = asmtV4BubbleSize(label);
 
   // Rise, then drift. Both live on the WRAPPER, never the button: the hover
   // lift tweens the button's y with overwrite:"auto", and an idle loop sharing
@@ -715,15 +711,14 @@ function AsmtV4BubbleCard({ label, on, blocked, index, onToggle, radio }) {
           // can rescale the whole set without this file knowing about viewports.
           // They need SEPARATE factors: shrinking the circle without shrinking
           // the label is what pushed "Confidence" onto its own border at 390px.
-          "--bubble-d": size.d + "px",
-          "--bubble-f": size.f,
-          // Selecting inflates the bubble. The new size lands in ONE layout
-          // pass with no transition of its own — the parent field FLIPs the
-          // move, and a CSS size transition would fight that by reflowing the
-          // siblings again on every frame.
-          "--bubble-sel": on ? "1.3" : "1",
-          width: "calc(var(--bubble-d) * var(--bubble-scale, 1) * var(--bubble-sel, 1))",
-          height: "calc(var(--bubble-d) * var(--bubble-scale, 1) * var(--bubble-sel, 1))",
+          "--bubble-d": diameter + "px",
+          // No selection growth (user call, 2026-08-06 — it fought the uniform
+          // group size): selection reads through the fill wipe and inverted
+          // label alone, and every circle keeps the group diameter at all
+          // times. The FLIP field above stays — it still animates reflows from
+          // wrapping changes, and simply never fires when nothing moves.
+          width: "calc(var(--bubble-d) * var(--bubble-scale, 1))",
+          height: "calc(var(--bubble-d) * var(--bubble-scale, 1))",
           flex: "none", position: "relative", overflow: "hidden",
           borderRadius: "50%", boxSizing: "border-box",
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -733,7 +728,7 @@ function AsmtV4BubbleCard({ label, on, blocked, index, onToggle, radio }) {
           // Percentage padding keeps the text inside the inscribed square at
           // every diameter, including the rescaled mobile one.
           padding: "0 12%",
-          fontSize: "calc(var(--bubble-f) * var(--bubble-font-scale, 1))",
+          fontSize: "calc(var(--text-xl) * var(--bubble-font-scale, 1))",
           lineHeight: 1.3,
           opacity: blocked ? "var(--opacity-disabled, 0.5)" : 1,
           transition: "border-color var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out)",
@@ -768,6 +763,7 @@ function AsmtV4BubbleCard({ label, on, blocked, index, onToggle, radio }) {
 // Everything else — sizing, rise, drift, FLIP — is shared, so a scale screen
 // and a multi-select screen are the same object to the eye.
 function AsmtV4BubbleField({ options, picked, value, full, single, onPick }) {
+  const diameter = asmtV4BubbleGroupDiameter(options);
   const rootRef = React.useRef(null);
   const prev = React.useRef(null);
   const reduced = typeof matchMedia === "function" &&
@@ -812,7 +808,7 @@ function AsmtV4BubbleField({ options, picked, value, full, single, onPick }) {
     }}>
       {options.map((opt, i) => (
         <div key={opt} data-k={opt} style={{ display: "inline-flex" }}>
-          <AsmtV4BubbleCard label={opt} index={i} radio={single}
+          <AsmtV4BubbleCard label={opt} index={i} radio={single} diameter={diameter}
             on={single ? value === opt : picked.indexOf(opt) >= 0}
             blocked={!single && picked.indexOf(opt) < 0 && full}
             onToggle={() => onPick(opt)} />
@@ -827,10 +823,18 @@ function AsmtV4Chips({ options, value, onToggle, max, bubbles }) {
   const full = max && picked.length >= max;
   return (
     <div>
-      {max &&
+      {max ?
         <p style={{ margin: "0 0 var(--spacing-3)", fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
           Choose up to {max}.
-        </p>}
+        </p>
+      : bubbles ?
+        // Multi-select legend for the bubble screens; centred because the
+        // field itself centres. A capped screen keeps the more specific
+        // "Choose up to N." note instead — never both.
+        <p style={{ margin: "0 0 var(--spacing-4)", textAlign: "center", fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+          Choose all the options that apply to you
+        </p>
+      : null}
       {bubbles
         ? <AsmtV4BubbleField options={options} picked={picked} full={full} onPick={onToggle} />
         : <div role="group" style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-2)" }}>
@@ -1357,11 +1361,11 @@ function AsmtV4HeroHeader({ screen, headingRef }) {
     <header className="hero-section feel-section" style={{ fontFamily: "var(--font-family-base)" }}>
       <div style={{
         position: "relative", borderRadius: "var(--radius-3xl)", overflow: "hidden",
-        // 300, not 400: A1 is the only screen with a hero band, and the band is
-        // what pushed it past the fixed question-block height (400 + 20 + a
-        // 638px card grid = 1058). At 300 the whole screen lands at 958, inside
-        // the box, so the Back/Continue row does not move when you leave A1.
-        background: "var(--glass-solid)", minHeight: 300,
+        // Was 400, then 300 (to fit the 960px question box), now 220 by user
+        // call — the band is a min-height, so its own copy can never clip; the
+        // video just crops tighter vertically. A1's block lands ~878, inside
+        // the box, so the Back/Continue row stays pinned.
+        background: "var(--glass-solid)", minHeight: 220,
         display: "flex", alignItems: "stretch", boxShadow: "var(--shadow-xs)",
       }}>
         <video className="feel-video"

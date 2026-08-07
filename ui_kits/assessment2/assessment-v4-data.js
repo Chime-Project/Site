@@ -70,6 +70,8 @@
     a5PersonaMap: {
       "I don’t feel like myself anymore": { id: "base", label: "General Wellness / base tone" },
       "I’ve tried different things and nothing has felt sustainable": { id: "p3", label: "Persona 3 — Starting With Support" },
+      // Option removed from the A5 screen (2026-08-06); the entry stays so a
+      // saved answer from before the removal still resolves to its persona.
       "I know something feels off, but I’m not sure what": { id: "labsSeeker", label: "Labs & Health Insights Seeker" },
       "I want to be proactive about my health": { id: "p1", label: "Persona 1 — The Executive" },
       "I want a more private and personalized experience": { id: "p2", label: "Persona 2 — The Private Client" },
@@ -212,7 +214,6 @@
         options: [
           { value: "I don’t feel like myself anymore", icon: "user" },
           { value: "I’ve tried different things and nothing has felt sustainable", icon: "refresh" },
-          { value: "I know something feels off, but I’m not sure what", icon: "help" },
           { value: "I want to be proactive about my health", icon: "shield" },
           { value: "I want a more private and personalized experience", icon: "lock" },
           { value: "I want guidance from people who understand this journey", icon: "users" },
@@ -334,7 +335,6 @@
           { value: "Not having enough support", icon: "users" },
           { value: "Not knowing what’s right for my body", icon: "help" },
           { value: "Feeling judged or dismissed", icon: "heart" },
-          { value: "Managing side effects or questions", icon: "shield" },
           { value: "Losing weight but gaining it back", icon: "refresh" },
         ],
       },
