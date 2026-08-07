@@ -28,38 +28,28 @@
      page scroll. */
   .asmt-v4-viewport { overflow-x: clip; }
   @supports not (overflow-x: clip) { .asmt-v4-viewport { overflow-x: hidden; } }
-  /* The question block carries a MIN height on desktop.
-     #assessment is a flex column, so whatever the block measures is where the
-     Back/Continue row lands. Measured across every screen at 1440, the natural
-     block ran from 206px (b1-2, two yes/no cards) to 925px (b1-5, nine cards)
-     — that is a 719px swing in the button row, which is the jump. The floor
-     lifts every short screen to the same height, so the row stops moving.
+  /* Desktop: the section fills EXACTLY one browser viewport (100vh minus the
+     72px body offset under the floating navbar), and the question block is the
+     flex child that absorbs the slack — so on any screen whose content fits,
+     the Back/Continue row sits at the bottom of the window with no page
+     scroll, at the same spot on every such screen.
 
-     960 = the tallest screen (925) plus headroom. A1 used to be the exception
-     at 1058, so its hero band came down 400 -> 300 (AssessmentV4Controls.jsx)
-     to bring it to 958 rather than letting one screen dictate a taller box that
-     would leave ~850px of dead air under a yes/no question.
+     flex: 1 0 auto, not a pixel floor: grow to fill, never shrink. Content
+     taller than the window (b1-5 at ~925px on a short window) simply grows the
+     block and pushes the page — the normal thing for a page to do — instead of
+     nesting a scrollbar. So the height is viewport-min but only exceeds it
+     when the content genuinely needs more (user call, 2026-08-06; replaces the
+     earlier fixed 960px box).
 
-     min-height, NOT height: a hard height turns any screen that outgrows the
-     box — a narrow desktop window where the card grid wraps taller, or longer
-     copy later — into a nested scroller. A floor lets those grow the block and
-     push the page instead, which is the normal thing for a page to do. The
-     trade is that such a screen moves the button row; nothing does today.
-     Note overflow-y stays *visible* here on purpose. Pairing it with the
-     overflow-x: clip above is legal and leaves it alone, but setting it to
-     auto/hidden would re-introduce the very scrollbar this avoids.
-
-     Content is centred in the box so short screens read as deliberately airy
-     rather than top-aligned with a hole beneath them.
-
-     Mobile keeps its own smaller floor. The same screens run to ~1450px when
-     the grid collapses to one column, so a 960 floor there would stack dead
-     space on top of already-tall content. */
+     Content stays centred in the block so short screens read as deliberately
+     airy. overflow-y remains visible — auto/hidden here would re-introduce the
+     inner scrollbar. Mobile keeps its own smaller floor: one-column screens
+     run to ~1450px, and a viewport floor would stack dead space on top. */
   .asmt-v4-viewport { min-height: 560px; }
   @media (min-width: 961px) {
-    #assessment { min-height: 100vh; box-sizing: border-box; }
+    #assessment { min-height: calc(100vh - 72px); box-sizing: border-box; }
     .asmt-v4-viewport {
-      min-height: 960px;
+      min-height: 0; flex: 1 0 auto;
       display: flex; flex-direction: column; justify-content: center;
     }
   }
