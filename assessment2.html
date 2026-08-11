@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chime Health — Health Assessment v4</title>
+<title>Chime Health — Health Assessment</title>
 <link rel="stylesheet" href="styles.css?v=20260762">
 <script src="tailwind.setup.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -53,8 +53,36 @@
       display: flex; flex-direction: column; justify-content: center;
     }
   }
-  /* Fallback only — used when GSAP is unavailable; reduced motion drops it. */
-  .asmt-v4-anim { animation: asmtV4In 120ms var(--ease-in-out, ease) both; }
+  /* Back/Continue row sticks to the bottom of the window (client request), so
+     a screen taller than the viewport never scrolls its own way forward out of
+     reach. It releases at the end of #assessment, coming to rest above "Start
+     over" — which is why the row keeps its place in normal flow rather than
+     being position: fixed.
+
+     Two things this depends on, both already true and both easy to undo:
+     the row is a SIBLING of .asmt-v4-viewport, not a child — sticky dies
+     inside that element's overflow-x: clip; and #assessment sets no overflow
+     of its own, or the same thing happens one level up.
+
+     The background is not decoration: without an opaque bar the option cards
+     scroll through the buttons. It has to track the page, so the accent-page
+     screens (which paint <body> --accent-strong from the flow component)
+     override it below rather than flashing a sand stripe across the blue.
+     On desktop the viewport child already grows to push this row to the
+     bottom, so sticky is a no-op there and only earns its keep on tall
+     screens and on mobile. */
+  .asmt-v4-nav {
+    position: sticky; bottom: 0; z-index: 2;
+    background: var(--bg-default);
+    padding-top: var(--spacing-4);
+    padding-bottom: max(var(--spacing-4), env(safe-area-inset-bottom));
+  }
+  #assessment[data-accent-page] .asmt-v4-nav { background: var(--accent-strong); }
+
+  /* Fallback only — used when GSAP is unavailable; reduced motion drops it.
+     347ms = 120 × 1.7 × 1.7, kept in step with the GSAP tween's two 70%
+     slowdowns so the no-GSAP path does not feel like a different product. */
+  .asmt-v4-anim { animation: asmtV4In 347ms var(--ease-in-out, ease) both; }
   @keyframes asmtV4In {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: none; }
@@ -116,11 +144,27 @@
     .feel-content { padding: var(--spacing-6) !important; }
     /* The clip carries a baked-in "Chime Health" wordmark on its left third.
        A centred crop slices it mid-word, leaving a ghosted "Health" sitting on
-       the eyebrow. The narrow band (0.84) crops a 1.78 source hard, so there is
-       ample horizontal slack — bias the crop right, past the wordmark, onto the
+       the eyebrow, so the crop is biased right, past the wordmark, onto the
        subject. Desktop needs no such rule: at 1.80 the band matches the source
-       aspect almost exactly, so it crops vertically and this would do nothing. */
+       aspect almost exactly, so it crops vertically and this would do nothing.
+
+       The crop alone does NOT clear the wordmark, and cannot: at 390px the
+       band is 335x220 and the 1920x1080 source covers it at 391px wide, so
+       there are 56px of horizontal slack in total. 85% spends 48 of them and
+       100% would spend 56 — eight more pixels against a wordmark that runs
+       ~180px into the band. (Measured, 2026-08-07: it was still legible
+       behind the headline.) So the scrim does the work instead — deepened at
+       the left end only, where the wordmark and the headline both sit. That
+       also lifts the white headline and "Takes about 3 minutes." off a
+       light-blue backdrop, which was marginal on contrast. */
     #assessment .feel-video { object-position: 85% center; }
+    #assessment .feel-scrim {
+      background: linear-gradient(100deg,
+        rgb(var(--glass-rgb) / 0.92) 0%,
+        rgb(var(--glass-rgb) / 0.78) 34%,
+        rgb(var(--glass-rgb) / 0.34) 72%,
+        rgb(var(--glass-rgb) / 0.12) 100%) !important;
+    }
   }
   @media (max-width: 560px) {
     /* Goal cards + two-column grids collapse to one column (wide fields use
@@ -134,8 +178,15 @@
     /* A4 bubbles: the component sets each diameter as --bubble-d and derives
        width/height from it, so one scale factor here rescales the whole set
        without the component knowing about viewports. Padding is a percentage,
-       so the text inset shrinks with the circle instead of eating it. */
-    .asmt-v4-bubble { --bubble-scale: 0.78; --bubble-font-scale: 0.82; }
+       so the text inset shrinks with the circle instead of eating it.
+
+       0.76, not 0.78, and the number is load-bearing: the field is a 335px
+       flex-wrap row with a 12px gap, so two bubbles fit only under 161.5px
+       each. 0.78 of the 212px group diameter is 165px — 342px for a pair,
+       seven over — so all nine wrapped to their own row and A4 ran 3561px at
+       390px. 0.76 gives 161px (334px a pair) and halves the screen. Anything
+       that raises the group diameter or the gap has to be re-checked here. */
+    .asmt-v4-bubble { --bubble-scale: 0.76; --bubble-font-scale: 0.82; }
   }
 </style>
 </head>
@@ -150,11 +201,11 @@
 <!-- Shared product catalog: the offer rows resolve their vial thumbnails from
      it by name, so the art is not duplicated into the assessment config. -->
 <script src="ui_kits/shared/data/products.js?v=20260823"></script>
-<script src="ui_kits/assessment2/assessment-v4-data.js?v=20260831"></script>
-<script src="ui_kits/assessment2/assessment-v4-logic.js?v=20260779"></script>
+<script src="ui_kits/assessment2/assessment-v4-data.js?v=20260837"></script>
+<script src="ui_kits/assessment2/assessment-v4-logic.js?v=20260837"></script>
 <script type="text/babel" src="ui_kits/assessment/AssessmentControls.jsx?v=20260751"></script>
-<script type="text/babel" src="ui_kits/assessment2/AssessmentV4Controls.jsx?v=20260830"></script>
-<script type="text/babel" src="ui_kits/assessment2/AssessmentV4Flow.jsx?v=20260826"></script>
+<script type="text/babel" src="ui_kits/assessment2/AssessmentV4Controls.jsx?v=20260833"></script>
+<script type="text/babel" src="ui_kits/assessment2/AssessmentV4Flow.jsx?v=20260836"></script>
 <!-- Footer -->
 <script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260763"></script>
 <script type="text/babel">

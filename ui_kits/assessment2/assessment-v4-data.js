@@ -119,6 +119,11 @@
     // ✦ closer (default; flagged in DECISIONS for team confirmation).
     b31SkipValue: "Not interested right now",
 
+    // A2G → the pregnancy/breastfeeding gate (A2) is asked ONLY of this
+    // answer. Keeping the trigger in config, beside the other routing values,
+    // means a change to the A2G option list can't silently strand the rule.
+    a2gAsksPregnancy: "Female",
+
     // B1.2 gate / B1.3 free-text + dose-skip values.
     b12ShowValue: "Yes",
     b13OtherValue: "Others",
@@ -134,6 +139,13 @@
     // ---------------------------------------------------------------------
     // Screens, in base order. Branch screens carry branch: "B1".."B4".
     // label = data-screen-label (the DOM-diff verification hook).
+    //
+    // autoAdvance: true — the screen moves on by itself once an option is
+    // picked, instead of waiting for Continue (client request, v7 "Cambios
+    // solicitados por el cliente" (2)). It belongs on SINGLE-select screens
+    // only: a multi-select that jumped on the first tap would make the second
+    // selection unreachable. listFree screens keep it, because the flow
+    // suppresses the jump for the free-text option (see setSingle).
     // ---------------------------------------------------------------------
     screens: [
 
@@ -156,24 +168,43 @@
       },
 
       {
-        id: "A2", block: "A", type: "checkboxes", label: "a2-eligibility",
-        // presentation only: render as A1-style goal cards. Copy verbatim —
-        // `value` carries the exact option string the logic matches on
-        // (v4MedicationEligible compares against "None of the above").
-        cards: true,
-        title: "Do any of these apply to you?",
-        exclusive: "None of the above",
-        options: [
-          { value: "Currently or possibly pregnant, or actively trying to become pregnant", icon: "baby" },
-          { value: "Breastfeeding or bottle feeding with breastmilk", icon: "bottle" },
-          { value: "Have given birth to a child within the last 6 months", icon: "calendar" },
-          { value: "None of the above", icon: "ban" },
-        ],
+        id: "A3", block: "A", type: "contact", label: "a3-about-you",
+        title: "A Few Details About You",
+        shippingStates: SHIPPING_STATES,
       },
 
       {
-        // Shown only when A2 has a disqualifying selection: the medication-
-        // based path stops here; the flow continues via Labs or Coaching.
+        // Split out of the Info Page (A3), where this was the "Sex assigned at
+        // birth" segmented control, so the pregnancy/breastfeeding screen can
+        // sit DIRECTLY after it — client request, v7 "Cambios solicitados por
+        // el cliente" (3). Deliberately icon-less: the icon set carries no
+        // gender artwork, and two identical `user` glyphs read as a bug.
+        id: "A2G", block: "A", type: "list", label: "a2g-gender",
+        cards: true,
+        autoAdvance: true,
+        title: "Gender at Birth",
+        options: ["Female", "Male"],
+      },
+
+      {
+        // ▣ Legal / compliance content — VERBATIM from v7. Do not reword, do
+        // not add options. Replaces the v4 four-option checkbox screen; "Yes"
+        // ends the medication-based path and hands over to the A2F fork.
+        // Asked only when A2G answered `a2gAsksPregnancy` — putting this
+        // question to someone who just answered "Male" is the reason gender
+        // was split out to sit immediately before it.
+        // Icon-less on purpose: this is the one gate where the affirm/negate
+        // glyph pair used on B1.2 would read as a verdict on the answer.
+        id: "A2", block: "A", type: "gate", label: "a2-eligibility",
+        cards: true,
+        autoAdvance: true,
+        title: "Are you currently pregnant or breast feeding?",
+        options: ["Yes", "No"],
+      },
+
+      {
+        // Shown only when A2 disqualifies: the medication-based path stops
+        // here; the flow continues via Labs or Coaching.
         id: "A2F", block: "A", type: "fork", label: "a2-fork",
         // COPY NEEDED from copy team — placeholder: neutral, warm, no alarm.
         copyNeeded: true,
@@ -183,12 +214,6 @@
           { value: "labs", label: "Continue toward Labs" },
           { value: "coaching", label: "Continue toward Coaching" },
         ],
-      },
-
-      {
-        id: "A3", block: "A", type: "contact", label: "a3-about-you",
-        title: "A Few Details About You",
-        shippingStates: SHIPPING_STATES,
       },
 
       {
@@ -206,6 +231,7 @@
 
       {
         id: "A5", block: "A", type: "list", label: "a5-starting-point",
+        autoAdvance: true,
         title: "Which of these feels closest to where you are right now?",
         // presentation only: A1-style cards, single-select. Copy verbatim —
         // `value` is the exact string a5PersonaMap is keyed by, so every
@@ -268,6 +294,7 @@
       },
       {
         id: "B1.2", block: "B", branch: "B1", type: "gate", label: "b1-2-med-gate",
+        autoAdvance: true,
         // presentation only: A1-style icon cards. `value` stays the bare string
         // the routing compares against (b12ShowValue === "Yes").
         cards: true,
@@ -279,6 +306,9 @@
       },
       {
         id: "B1.3", block: "B", branch: "B1", type: "listFree", label: "b1-3-past-meds",
+        // "Others" opens a free-text field, so that one option must NOT jump —
+        // the flow passes noAuto for it (AssessmentV4Flow.jsx, setSingle).
+        autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "What medications have you taken in the past?",
         options: [
@@ -290,6 +320,7 @@
       },
       {
         id: "B1.4", block: "B", branch: "B1", type: "dynlist", label: "b1-4-dose",
+        autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "Which dose most closely matches your most recent weekly dose?",
         // Ladder values not in the doc — clearly-labeled placeholders, trivial
@@ -384,6 +415,7 @@
       },
       {
         id: "B2.3", block: "B", branch: "B2", type: "list", label: "b2-3-cross-sell",
+        autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "Would you be open to exploring weight loss or advanced wellness support if it fits your path?",
         options: [
@@ -409,6 +441,7 @@
       // ---- B3 · Labs & Health Insights Path ----
       {
         id: "B3.1", block: "B", branch: "B3", type: "list", label: "b3-1-interest",
+        autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "How interested are you in understanding what’s happening beneath the surface?",
         options: [
@@ -432,6 +465,7 @@
       },
       {
         id: "B3.3", block: "B", branch: "B3", type: "list", label: "b3-3-recent-labs",
+        autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "Have you had lab work done recently?",
         options: [
@@ -452,6 +486,7 @@
       // ---- B4 · Advanced Wellness Path ----
       {
         id: "B4.1", block: "B", branch: "B4", type: "list", label: "b4-1-familiarity",
+        autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "How familiar are you with wellness therapies such as peptides or hormone-related support?",
         options: [
