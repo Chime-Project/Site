@@ -139,24 +139,37 @@
   }
 
   /* A1 hero band (feel-section) — same mobile constraints as the homepage. */
+
+  /* Desktop framing. The band is 720x220 (aspect 3.27) against a 1.78 source,
+     so `cover` scales to width and leaves 185px of VERTICAL slack — the crop
+     is decided entirely here. Centred splits that slack evenly and takes her
+     forehead off; 12% keeps the face whole with a little headroom above it and
+     spends the crop on her shoes instead, which is the right thing to lose in
+     a band this shallow. Measured at 1440px, 2026-08-11.
+     Mobile overrides this below, and vertically it does not matter there: at
+     390px the band is ~1.6 against the same 1.78 source, so `cover` scales to
+     HEIGHT and the only slack is horizontal. */
+  #assessment .feel-video { object-position: 50% 12%; }
+
   @media (max-width: 960px) {
     .feel-title { font-size: var(--text-4xl) !important; }
     .feel-content { padding: var(--spacing-6) !important; }
-    /* The clip carries a baked-in "Chime Health" wordmark on its left third.
-       A centred crop slices it mid-word, leaving a ghosted "Health" sitting on
-       the eyebrow, so the crop is biased right, past the wordmark, onto the
-       subject. Desktop needs no such rule: at 1.80 the band matches the source
-       aspect almost exactly, so it crops vertically and this would do nothing.
+    /* assesstV1-web.mp4 seats its subject in the right half and leaves the
+       left half flat studio blue. The crop is biased right so the 390px band
+       spends its 56px of horizontal slack on that empty blue rather than on
+       the subject — she stays in frame, and the headline still lands over the
+       plainest part of the picture.
 
-       The crop alone does NOT clear the wordmark, and cannot: at 390px the
-       band is 335x220 and the 1920x1080 source covers it at 391px wide, so
-       there are 56px of horizontal slack in total. 85% spends 48 of them and
-       100% would spend 56 — eight more pixels against a wordmark that runs
-       ~180px into the band. (Measured, 2026-08-07: it was still legible
-       behind the headline.) So the scrim does the work instead — deepened at
-       the left end only, where the wordmark and the headline both sit. That
-       also lifts the white headline and "Takes about 3 minutes." off a
-       light-blue backdrop, which was marginal on contrast. */
+       (The numbers predate this clip and still hold: at 390px the band is
+       335x220 and the 1920x1080 source covers it at 391px wide, so 85% spends
+       48px of the 56 available. They were originally chosen to escape a
+       baked-in "Chime Health" wordmark on the OLD clip's left third — this
+       clip has no wordmark, so that constraint is gone and only the framing
+       argument above keeps the rule.)
+
+       The scrim's deepened left end, however, is not optional and is now
+       doing MORE work than before: this clip is pale, near-white studio blue
+       exactly where the white headline and "Takes about 3 minutes." sit. */
     #assessment .feel-video { object-position: 85% center; }
     #assessment .feel-scrim {
       background: linear-gradient(100deg,
@@ -204,7 +217,7 @@
 <script src="ui_kits/assessment2/assessment-v4-data.js?v=20260837"></script>
 <script src="ui_kits/assessment2/assessment-v4-logic.js?v=20260837"></script>
 <script type="text/babel" src="ui_kits/assessment/AssessmentControls.jsx?v=20260751"></script>
-<script type="text/babel" src="ui_kits/assessment2/AssessmentV4Controls.jsx?v=20260833"></script>
+<script type="text/babel" src="ui_kits/assessment2/AssessmentV4Controls.jsx?v=20260838"></script>
 <script type="text/babel" src="ui_kits/assessment2/AssessmentV4Flow.jsx?v=20260836"></script>
 <!-- Footer -->
 <script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260763"></script>
