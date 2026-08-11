@@ -542,8 +542,9 @@
       {
         id: "C.PRE", block: "C", type: "phrase", label: "c-pre-trust",
         // Same treatment as the other closers. This source is an RGBA cutout,
-        // not a scene, so it takes the contain-on-white variant — it is the one
-        // image in the set that actually depicts "you and your care team".
+        // not a scene, so it is contained and floats free of any card — it is
+        // the one image in the set that actually depicts "you and your care
+        // team".
         pageAccent: true,
         image: "wieght_loss_md.webp", // filename typo is upstream; the file is named this on disk
         imageCutout: true,
