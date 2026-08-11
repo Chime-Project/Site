@@ -5,9 +5,12 @@
 // pure asmtV4* engine (assessment-v4-logic.js); this file is glue + chrome.
 //
 // UX contract (behavioral only — copy stays verbatim from the config):
-//   - one screen, one topic; EVERY screen advances on Continue only. Choosing
-//     an option never moves the user on by itself — picking and proceeding are
-//     separate acts, so a mis-tap costs a correction rather than a screen.
+//   - one screen, one topic. SINGLE-select screens advance on the pick itself
+//     (config flag `autoAdvance`, client request); every other screen advances
+//     on Continue. A mis-tap on an auto-advancing screen costs one Back press,
+//     which is why Back is on every screen and preserves the answer.
+//   - the Continue/Back row is sticky to the bottom of the window, so a screen
+//     taller than the viewport never hides the way forward (client request)
 //   - Back on every screen except after D renders; answers preserved; a
 //     routing-relevant change recomputes the queue forward (asmtV4Prune)
 //   - block-level progress only, and it may never regress (maxBlock)
@@ -15,16 +18,25 @@
 //     prefers-reduced-motion drops the slide/scroll animation
 //   - inline validation on blur/change, kind tone, never on load
 
-const ASMT_V4_STORE_KEY = "chime_assessment_v4";
+// Bumped from "chime_assessment_v4" when A2 changed shape (a multi-select
+// array → the legal team's verbatim Yes/No string) and gender moved out of A3.
+// A stale session would have restored an array onto a single-select screen:
+// nothing would look chosen, yet the answer reads as present, so Continue
+// would sail past an unanswered eligibility gate. Discarding beats migrating.
+const ASMT_V4_STORE_KEY = "chime_assessment_v4_2";
 const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
 
 // Visual order of A3 fields, for focusing the first field needing attention.
+// Every entry needs a real DOM id: the walk in advance() breaks at the first
+// field with a problem, so an entry with no focusable target would leave the
+// user with just the toast. Every field here is a real <input>/<select> now
+// that sex has moved to its own screen (A2G).
 const ASMT_V4_FIELD_IDS = [
   ["firstName", "asmt-v4-first"], ["lastName", "asmt-v4-last"],
   ["email", "asmt-v4-email"], ["phone", "asmt-v4-phone"],
   ["address1", "asmt-v4-address1"], ["city", "asmt-v4-city"],
   ["zip", "asmt-v4-zip"], ["state", "asmt-v4-state"],
-  ["sex", null], ["dob", "asmt-v4-dob"],
+  ["dob", "asmt-v4-dob"],
 ];
 
 function asmtV4InitState() {
@@ -115,7 +127,11 @@ function ChimeAssessmentFlowV4() {
       // (power3.out finished 90% of it in the first 230ms), so raising the
       // duration only stretched an invisible sub-pixel tail. This spreads the
       // motion across the full duration, which is what actually reads as slower.
-      { x: 0, autoAlpha: 1, duration: 0.3, ease: "power1.out",
+      // 0.87 = 0.3 × 1.7 × 1.7 — slowed 70% twice over (user calls, both
+      // 2026-08-11), so 2.9× the original 0.3s. The linear-ish ease is what
+      // lets that read as a slower slide rather than a longer wait; at this
+      // duration a steeper ease would show a visible stall at the end.
+      { x: 0, autoAlpha: 1, duration: 0.87, ease: "power1.out",
         clearProps: "transform,opacity,visibility" });
     return () => tween.kill();
   }, [screenId]);
@@ -165,9 +181,13 @@ function ChimeAssessmentFlowV4() {
   // see the UX contract above. Kept so a screen can opt back in without
   // rebuilding the timer plumbing (the clearTimeout calls around it also guard
   // against a stale advance firing after Back or a re-selection).
+  // 425ms = 250 × 1.7, matching the slide tween's 70% slowdown (user call,
+  // 2026-08-11). This pause is not dead time: it is how long the card's
+  // selected state is on screen before the screen leaves, so the pick visibly
+  // registers instead of the answer vanishing under the transition.
   const scheduleAdvance = () => {
     clearTimeout(autoTimer.current);
-    autoTimer.current = setTimeout(() => setState(stepForward), 250);
+    autoTimer.current = setTimeout(() => setState(stepForward), 425);
   };
 
   const startOver = () => {
@@ -238,6 +258,25 @@ function ChimeAssessmentFlowV4() {
     return out;
   })();
 
+  // A6's range check, held back until the user leaves the field it is about
+  // (or presses Continue). Judged per keystroke it fires on the way INTO a
+  // valid answer — typing 210 is "1", then "21", both outside 50–700 — and the
+  // panel that renders it is aria-live, so it was announced twice per entry.
+  //
+  // The gate is per GROUP, not per screen: height and weight are separate
+  // thoughts, and a screen-wide flag meant finishing the height opened the
+  // gate on a weight still being typed. Which group a problem belongs to is
+  // re-derived from the values rather than sniffed from the message, and
+  // weight is tested first to match asmtV4SnapshotProblem's own precedence.
+  const snapshotProblem = (() => {
+    if (screen.type !== "snapshot") return null;
+    const p = asmtV4SnapshotProblem(answers.A6);
+    if (!p || forceErrors) return p;
+    const r = cfg.snapshotRanges, lbs = parseFloat((answers.A6 || {}).weightLbs);
+    const weightBad = !isNaN(lbs) && (lbs < r.weightMin || lbs > r.weightMax);
+    return touched[weightBad ? "A6weight" : "A6height"] ? p : null;
+  })();
+
   const advance = () => {
     clearTimeout(autoTimer.current);
     const t = screen.type;
@@ -260,7 +299,8 @@ function ChimeAssessmentFlowV4() {
     }
     if (t === "snapshot") {
       const problem = asmtV4SnapshotProblem(answers.A6);
-      if (problem) return say(problem);
+      // forceErrors so the inline panel shows it too, not just the 3s toast.
+      if (problem) { setForceErrors(true); return say(problem); }
       if (!answers.A6 || asmtV4SnapshotTier(answers) === null)
         return say("Please add your height and weight to continue.");
     }
@@ -272,11 +312,17 @@ function ChimeAssessmentFlowV4() {
   };
 
   // ---------------------------------------------------------------- render
+  // The question heading names its own option group: every group role here is
+  // a bare <div>, so without this a screen reader announced "group" with no
+  // question attached. One id per screen, so back-navigation can't leave a
+  // stale reference behind.
+  const headingId = "asmt-v4-q-" + screenId;
+
   const header = screen.title && screen.type !== "phrase" && (screen.hero ?
-    <AsmtV4HeroHeader screen={screen} headingRef={headingRef} />
+    <AsmtV4HeroHeader screen={screen} headingRef={headingRef} headingId={headingId} />
     :
     <header style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-      <h2 ref={headingRef} tabIndex={-1} style={{
+      <h2 id={headingId} ref={headingRef} tabIndex={-1} style={{
         margin: 0, outline: "none", fontSize: "var(--text-3xl)", fontWeight: 400, lineHeight: 1.2,
         fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--text-default)",
       }}>{screen.title}</h2>
@@ -291,14 +337,17 @@ function ChimeAssessmentFlowV4() {
 
   let body = null;
   if (screen.type === "cards")
-    body = <AsmtV4MultiSelectCards options={screen.options} value={answers[screenId]} onToggle={toggleMulti} />;
+    body = <AsmtV4MultiSelectCards options={screen.options} value={answers[screenId]} onToggle={toggleMulti}
+      labelledBy={headingId} />;
   else if (screen.type === "checkboxes")
     // `cards` is presentation only — the type stays "checkboxes" so validation
     // keeps saying "option" (the "cards" branch says "goal", which is A1's word).
     // Cards need {value, icon} options; the row list takes plain strings.
     body = screen.cards
-      ? <AsmtV4MultiSelectCards options={screen.options} value={answers[screenId]} onToggle={toggleMulti} />
-      : <AsmtV4Checkboxes options={screen.options} value={answers[screenId]} onToggle={toggleMulti} />;
+      ? <AsmtV4MultiSelectCards options={screen.options} value={answers[screenId]} onToggle={toggleMulti}
+          labelledBy={headingId} />
+      : <AsmtV4Checkboxes options={screen.options} value={answers[screenId]} onToggle={toggleMulti}
+          labelledBy={headingId} />;
   else if (screen.type === "fork")
     body = (
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
@@ -328,38 +377,43 @@ function ChimeAssessmentFlowV4() {
   else if (screen.type === "chips")
     body = screen.cards
       ? <AsmtV4MultiSelectCards options={screen.options} value={answers[screenId]} onToggle={toggleMulti}
-          max={screen.maxSelections} />
+          max={screen.maxSelections} labelledBy={headingId} />
       : <AsmtV4Chips options={screen.options} value={answers[screenId]} onToggle={toggleMulti}
-          max={screen.maxSelections} bubbles={screen.bubbles} />;
+          max={screen.maxSelections} bubbles={screen.bubbles} labelledBy={headingId} />;
   else if (screen.type === "list")
     // Same `cards` flag as A2 — presentation only. The card grid normalises
     // its options, so a screen may pass plain strings (no icon) or
     // {value, icon}; scales pass strings.
     body = screen.cards
-      ? <AsmtV4SingleSelectCards options={screen.options} value={answers[screenId]} onSelect={setSingle} />
+      ? <AsmtV4SingleSelectCards options={screen.options} value={answers[screenId]} onSelect={setSingle}
+          labelledBy={headingId} />
       : <AsmtV4SingleSelectList options={screen.options} value={answers[screenId]} onSelect={setSingle}
-          bubbles={screen.bubbles} />;
+          bubbles={screen.bubbles} labelledBy={headingId} />;
   else if (screen.type === "gate")
     body = screen.cards
-      ? <AsmtV4SingleSelectCards options={screen.options} value={answers[screenId]} onSelect={setSingle} />
+      ? <AsmtV4SingleSelectCards options={screen.options} value={answers[screenId]} onSelect={setSingle}
+          labelledBy={headingId} />
       : <AsmtV4YesNoGate options={screen.options} value={answers[screenId]} onSelect={setSingle}
-          bubbles={screen.bubbles} />;
+          bubbles={screen.bubbles} labelledBy={headingId} />;
   else if (screen.type === "listFree")
     body = (
       <AsmtV4SingleSelectWithFreeText options={screen.options} freeValue={cfg.b13OtherValue}
         value={answers[screenId]} freeText={answers["B1.3_other"]}
         onSelect={(v) => setSingle(v, v === cfg.b13OtherValue)} bubbles={screen.bubbles} cards={screen.cards}
+        labelledBy={headingId}
         onFreeText={(v) => setState((s) => ({ ...s, answers: { ...s.answers, "B1.3_other": v } }))} />
     );
   else if (screen.type === "dynlist")
     body = (
       <AsmtV4DynamicSingleSelect ladders={screen.ladders} dependsOn={answers["B1.3"]}
-        value={answers[screenId]} onSelect={setSingle} bubbles={screen.bubbles} cards={screen.cards} />
+        value={answers[screenId]} onSelect={setSingle} bubbles={screen.bubbles} cards={screen.cards}
+        labelledBy={headingId} />
     );
   else if (screen.type === "snapshot")
     body = (
       <AsmtV4Snapshot value={answers.A6} onField={(f, v) => setNested("A6", f, v)}
-        content={asmtV4SnapshotContent(answers)} problem={asmtV4SnapshotProblem(answers.A6)} />
+        content={asmtV4SnapshotContent(answers)} problem={snapshotProblem}
+        onBlur={(group) => markTouched("A6" + group)} />
     );
   else if (screen.type === "phrase")
     body = (
@@ -389,6 +443,17 @@ function ChimeAssessmentFlowV4() {
       // (scrollIntoView) must land the heading below it, not under it.
       scrollMarginTop: 96,
     }}>
+      {/* The page's only h1. Visually hidden because the design opens on the
+          A1 hero band, not a page title — but without it the heading tree
+          starts at h2 and the document has no name of its own. Not the focus
+          target: that stays the per-screen h2, which is what actually
+          changes. Clip-path over `display:none`, which would hide it from AT
+          as well and defeat the point. */}
+      <h1 style={{
+        position: "absolute", width: 1, height: 1, margin: -1, padding: 0,
+        overflow: "hidden", clipPath: "inset(50%)", whiteSpace: "nowrap", border: 0,
+      }}>Chime Health Assessment</h1>
+
       <AsmtV4Progress blocks={cfg.blocks} current={maxBlock} />
 
       <div className="asmt-v4-viewport">
@@ -401,7 +466,7 @@ function ChimeAssessmentFlowV4() {
       </div>
 
       {screen.type !== "result" && (showBack || showContinue) &&
-        <div style={{ display: "flex", justifyContent: "space-between", gap: "var(--spacing-4)" }}>
+        <div className="asmt-v4-nav" style={{ display: "flex", justifyContent: "space-between", gap: "var(--spacing-4)" }}>
           {showBack ? <AsmtV4Button label="Back" variant="secondary" onClick={goBack} /> : <span></span>}
           {showContinue && (screen.type === "placeholder"
             ? <AsmtV4Button label="Continue" onClick={completeStatic} />

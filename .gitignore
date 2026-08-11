@@ -11,5 +11,10 @@ uploads/test_vials.jpg
 # Internal pricing/funnel docs (all-brand strategy) — never publish these
 uploads/*.xlsx
 
+# Assessment redesign proposals (Chime_Assessment_V*.pages). They carry the
+# legal/compliance team's verbatim screening questions and consent names — the
+# last thing that should be fetchable from the Pages root.
+uploads/*.pages
+
 # Full-resolution signals-photo masters — the site serves the 000N.webp recompressions
 uploads/000[0-9].png

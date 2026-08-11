@@ -452,7 +452,7 @@ function AsmtV4GoalCard({ o, on, onToggle, radio, blocked }) {
 // screens keep their bare string options untouched.
 function asmtV4NormOption(o) { return typeof o === "string" ? { value: o } : o; }
 
-function AsmtV4MultiSelectCards({ options, value, onToggle, max }) {
+function AsmtV4MultiSelectCards({ options, value, onToggle, max, labelledBy }) {
   const picked = value || [];
   const full = max && picked.length >= max;
   return (
@@ -461,7 +461,7 @@ function AsmtV4MultiSelectCards({ options, value, onToggle, max }) {
         <p style={{ margin: "0 0 var(--spacing-3)", fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
           Choose up to {max}.
         </p>}
-      <div className="asmt-v4-cards" role="group" style={{
+      <div className="asmt-v4-cards" role="group" aria-labelledby={labelledBy} style={{
         display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-3)",
       }}>
         {options.map(asmtV4NormOption).map((o) => (
@@ -477,9 +477,9 @@ function AsmtV4MultiSelectCards({ options, value, onToggle, max }) {
 
 // A5 · the same grid, single-select. radiogroup rather than group, and picking
 // replaces the answer instead of toggling it.
-function AsmtV4SingleSelectCards({ options, value, onSelect }) {
+function AsmtV4SingleSelectCards({ options, value, onSelect, labelledBy }) {
   return (
-    <div className="asmt-v4-cards" role="radiogroup" style={{
+    <div className="asmt-v4-cards" role="radiogroup" aria-labelledby={labelledBy} style={{
       display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-3)",
     }}>
       {options.map(asmtV4NormOption).map((o) => (
@@ -494,9 +494,9 @@ function AsmtV4SingleSelectCards({ options, value, onSelect }) {
 // ---------------------------------------------------------------------------
 // A2 · MultiSelectCheckboxes ("None of the above" exclusivity lives in the flow)
 // ---------------------------------------------------------------------------
-function AsmtV4Checkboxes({ options, value, onToggle }) {
+function AsmtV4Checkboxes({ options, value, onToggle, labelledBy }) {
   return (
-    <div role="group" style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
+    <div role="group" aria-labelledby={labelledBy} style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
       {options.map((opt) => (
         <AsmtOptionRow key={opt} kind="checkbox" label={opt}
           checked={(value || []).indexOf(opt) >= 0} onToggle={() => onToggle(opt)} />
@@ -762,7 +762,7 @@ function AsmtV4BubbleCard({ label, on, blocked, index, onToggle, radio, diameter
 // `picked` is an array) and single-select (a `radiogroup`, `value` is a string).
 // Everything else — sizing, rise, drift, FLIP — is shared, so a scale screen
 // and a multi-select screen are the same object to the eye.
-function AsmtV4BubbleField({ options, picked, value, full, single, onPick }) {
+function AsmtV4BubbleField({ options, picked, value, full, single, onPick, labelledBy }) {
   const diameter = asmtV4BubbleGroupDiameter(options);
   const rootRef = React.useRef(null);
   const prev = React.useRef(null);
@@ -802,7 +802,7 @@ function AsmtV4BubbleField({ options, picked, value, full, single, onPick }) {
   });
 
   return (
-    <div ref={rootRef} role={single ? "radiogroup" : "group"} style={{
+    <div ref={rootRef} role={single ? "radiogroup" : "group"} aria-labelledby={labelledBy} style={{
       display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)",
       alignItems: "center", justifyContent: "center",
     }}>
@@ -818,7 +818,7 @@ function AsmtV4BubbleField({ options, picked, value, full, single, onPick }) {
   );
 }
 
-function AsmtV4Chips({ options, value, onToggle, max, bubbles }) {
+function AsmtV4Chips({ options, value, onToggle, max, bubbles, labelledBy }) {
   const picked = value || [];
   const full = max && picked.length >= max;
   return (
@@ -836,8 +836,8 @@ function AsmtV4Chips({ options, value, onToggle, max, bubbles }) {
         </p>
       : null}
       {bubbles
-        ? <AsmtV4BubbleField options={options} picked={picked} full={full} onPick={onToggle} />
-        : <div role="group" style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-2)" }}>
+        ? <AsmtV4BubbleField options={options} picked={picked} full={full} onPick={onToggle} labelledBy={labelledBy} />
+        : <div role="group" aria-labelledby={labelledBy} style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-2)" }}>
             {options.map((opt, i) => (
               <AsmtV4PillCard key={opt} label={opt} index={i}
                 on={picked.indexOf(opt) >= 0}
@@ -855,11 +855,11 @@ function AsmtV4Chips({ options, value, onToggle, max, bubbles }) {
 // `bubbles` routes the whole single-select family — list, dynlist, listFree and
 // the yes/no gate all reach the field through here or through a component that
 // forwards the flag, so one prop keeps every scale screen on the same visual.
-function AsmtV4SingleSelectList({ options, value, onSelect, bubbles, cards }) {
-  if (cards) return <AsmtV4SingleSelectCards options={options} value={value} onSelect={onSelect} />;
-  if (bubbles) return <AsmtV4BubbleField options={options} value={value} single onPick={onSelect} />;
+function AsmtV4SingleSelectList({ options, value, onSelect, bubbles, cards, labelledBy }) {
+  if (cards) return <AsmtV4SingleSelectCards options={options} value={value} onSelect={onSelect} labelledBy={labelledBy} />;
+  if (bubbles) return <AsmtV4BubbleField options={options} value={value} single onPick={onSelect} labelledBy={labelledBy} />;
   return (
-    <div role="radiogroup" style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
+    <div role="radiogroup" aria-labelledby={labelledBy} style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
       {options.map((opt) => (
         <AsmtOptionRow key={opt} kind="radio" label={opt}
           checked={value === opt} onToggle={() => onSelect(opt)} />
@@ -869,18 +869,18 @@ function AsmtV4SingleSelectList({ options, value, onSelect, bubbles, cards }) {
 }
 
 // B1.4 — options injected from config based on the B1.3 answer.
-function AsmtV4DynamicSingleSelect({ ladders, dependsOn, value, onSelect, bubbles, cards }) {
+function AsmtV4DynamicSingleSelect({ ladders, dependsOn, value, onSelect, bubbles, cards, labelledBy }) {
   const options = ladders[dependsOn] || [];
-  return <AsmtV4SingleSelectList options={options} value={value} onSelect={onSelect} bubbles={bubbles} cards={cards} />;
+  return <AsmtV4SingleSelectList options={options} value={value} onSelect={onSelect} bubbles={bubbles} cards={cards} labelledBy={labelledBy} />;
 }
 
 // ---------------------------------------------------------------------------
 // B1.2 · YesNoGate — two large targets
 // ---------------------------------------------------------------------------
-function AsmtV4YesNoGate({ options, value, onSelect, bubbles }) {
-  if (bubbles) return <AsmtV4BubbleField options={options} value={value} single onPick={onSelect} />;
+function AsmtV4YesNoGate({ options, value, onSelect, bubbles, labelledBy }) {
+  if (bubbles) return <AsmtV4BubbleField options={options} value={value} single onPick={onSelect} labelledBy={labelledBy} />;
   return (
-    <div role="radiogroup" style={{ display: "flex", gap: "var(--spacing-3)" }}>
+    <div role="radiogroup" aria-labelledby={labelledBy} style={{ display: "flex", gap: "var(--spacing-3)" }}>
       {options.map((opt) => {
         const on = value === opt;
         return (
@@ -904,10 +904,10 @@ function AsmtV4YesNoGate({ options, value, onSelect, bubbles }) {
 // ---------------------------------------------------------------------------
 // B1.3 · SingleSelectWithFreeText — "Others" reveals a text field
 // ---------------------------------------------------------------------------
-function AsmtV4SingleSelectWithFreeText({ options, freeValue, value, freeText, onSelect, onFreeText, bubbles, cards }) {
+function AsmtV4SingleSelectWithFreeText({ options, freeValue, value, freeText, onSelect, onFreeText, bubbles, cards, labelledBy }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-      <AsmtV4SingleSelectList options={options} value={value} onSelect={onSelect} bubbles={bubbles} cards={cards} />
+      <AsmtV4SingleSelectList options={options} value={value} onSelect={onSelect} bubbles={bubbles} cards={cards} labelledBy={labelledBy} />
       {value === freeValue &&
         <AsmtV4Field id="asmt-v4-b13-other" label="Please tell us which medication" value={freeText}
           onChange={onFreeText} />}
@@ -918,7 +918,7 @@ function AsmtV4SingleSelectWithFreeText({ options, freeValue, value, freeText, o
 // ---------------------------------------------------------------------------
 // A3 · field primitives with inline validation (kind tone, on blur/change)
 // ---------------------------------------------------------------------------
-function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, error, onChange, onBlur, autoComplete }) {
+function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, error, onChange, onBlur, autoComplete, required }) {
   const [focus, setFocus] = React.useState(false);
   const errId = id + "-error";
   return (
@@ -926,6 +926,11 @@ function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, 
       <AsmtFieldLabel text={label} htmlFor={id} />
       <input id={id} type={type} value={value || ""} placeholder={placeholder} inputMode={inputMode}
         autoComplete={autoComplete}
+        // aria-required, not the `required` attribute: validation is ours and
+        // runs on Continue, so the native bubble would fire first and in a
+        // different voice. This only tells AT which fields are mandatory —
+        // the visible cue is the "(optional)" suffix on the one that isn't.
+        aria-required={required ? "true" : undefined}
         aria-invalid={error ? "true" : undefined} aria-describedby={error ? errId : undefined}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocus(true)}
@@ -939,13 +944,14 @@ function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, 
   );
 }
 
-function AsmtV4Select({ id, label, value, options, placeholder, error, onChange, onBlur }) {
+function AsmtV4Select({ id, label, value, options, placeholder, error, onChange, onBlur, autoComplete, required }) {
   const [focus, setFocus] = React.useState(false);
   const errId = id + "-error";
   return (
     <div>
       <AsmtFieldLabel text={label} htmlFor={id} />
-      <select id={id} value={value || ""}
+      <select id={id} value={value || ""} autoComplete={autoComplete}
+        aria-required={required ? "true" : undefined}
         aria-invalid={error ? "true" : undefined} aria-describedby={error ? errId : undefined}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocus(true)}
@@ -974,28 +980,28 @@ function AsmtV4ContactShippingFields({ value, errors, onField, onBlur, states })
   return (
     <React.Fragment>
       <div style={{ gridColumn: "1 / -1" }}>
-        <AsmtV4Field id="asmt-v4-email" label="Email" type="email" autoComplete="email"
+        <AsmtV4Field id="asmt-v4-email" label="Email" type="email" autoComplete="email" required
           value={d.email} error={e.email} onChange={(v) => onField("email", v)} onBlur={() => onBlur("email")} />
       </div>
       <div style={{ gridColumn: "1 / -1" }}>
-        <AsmtV4Field id="asmt-v4-phone" label="Phone" type="tel" inputMode="tel" autoComplete="tel"
+        <AsmtV4Field id="asmt-v4-phone" label="Phone" type="tel" inputMode="tel" autoComplete="tel" required
           value={d.phone} error={e.phone} onChange={(v) => onField("phone", v)} onBlur={() => onBlur("phone")} />
       </div>
       <div style={{ gridColumn: "1 / -1" }}>
-        <AsmtV4Field id="asmt-v4-address1" label="Street address" autoComplete="address-line1"
+        <AsmtV4Field id="asmt-v4-address1" label="Street address" autoComplete="address-line1" required
           value={d.address1} error={e.address1} onChange={(v) => onField("address1", v)} onBlur={() => onBlur("address1")} />
       </div>
       <div style={{ gridColumn: "1 / -1" }}>
         <AsmtV4Field id="asmt-v4-address2" label="Apartment, suite, unit (optional)" autoComplete="address-line2"
           value={d.address2} error={e.address2} onChange={(v) => onField("address2", v)} onBlur={() => onBlur("address2")} />
       </div>
-      <AsmtV4Field id="asmt-v4-city" label="City" autoComplete="address-level2"
+      <AsmtV4Field id="asmt-v4-city" label="City" autoComplete="address-level2" required
         value={d.city} error={e.city} onChange={(v) => onField("city", v)} onBlur={() => onBlur("city")} />
-      <AsmtV4Field id="asmt-v4-zip" label="ZIP code" inputMode="numeric" autoComplete="postal-code"
+      <AsmtV4Field id="asmt-v4-zip" label="ZIP code" inputMode="numeric" autoComplete="postal-code" required
         value={d.zip} error={e.zip} onChange={(v) => onField("zip", v)} onBlur={() => onBlur("zip")} />
       <div style={{ gridColumn: "1 / -1" }}>
         <AsmtV4Select id="asmt-v4-state" label="What state will your medication be shipped to?"
-          placeholder="Select a state" options={states}
+          placeholder="Select a state" options={states} autoComplete="address-level1" required
           value={d.state} error={e.state} onChange={(v) => onField("state", v)} onBlur={() => onBlur("state")} />
       </div>
     </React.Fragment>
@@ -1003,27 +1009,22 @@ function AsmtV4ContactShippingFields({ value, errors, onField, onBlur, states })
 }
 
 // A3 · ContactFields — identity fields + the movable contact/shipping group.
-// Height and weight are NOT here — they live in A6.
+// Height and weight are NOT here — they live in A6. Sex is no longer here
+// either: it became its own screen (A2G) so the pregnancy question could sit
+// directly after it, per the client's request.
 function AsmtV4ContactFields({ value, errors, onField, onBlur, states, maskDob }) {
   const d = value || {}, e = errors || {};
   return (
     <div className="asmt-v4-grid2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-4)" }}>
-      <AsmtV4Field id="asmt-v4-first" label="First name" autoComplete="given-name"
+      <AsmtV4Field id="asmt-v4-first" label="First name" autoComplete="given-name" required
         value={d.firstName} error={e.firstName} onChange={(v) => onField("firstName", v)} onBlur={() => onBlur("firstName")} />
-      <AsmtV4Field id="asmt-v4-last" label="Last name" autoComplete="family-name"
+      <AsmtV4Field id="asmt-v4-last" label="Last name" autoComplete="family-name" required
         value={d.lastName} error={e.lastName} onChange={(v) => onField("lastName", v)} onBlur={() => onBlur("lastName")} />
 
       <AsmtV4ContactShippingFields value={d} errors={e} onField={onField} onBlur={onBlur} states={states} />
 
-      <div>
-        <AsmtFieldLabel text="Sex assigned at birth" />
-        <AsmtSegment ariaLabel="Sex assigned at birth"
-          options={[{ value: "female", label: "Female" }, { value: "male", label: "Male" }]}
-          value={d.sex} onChange={(v) => onField("sex", v)} />
-        {e.sex &&
-          <p style={{ margin: "var(--spacing-1) 0 0", fontSize: "var(--text-xs)", color: "var(--error-default)" }}>{e.sex}</p>}
-      </div>
       <AsmtV4Field id="asmt-v4-dob" label="Date of Birth" placeholder="MM/DD/YYYY" inputMode="numeric"
+        autoComplete="bday" required
         value={d.dob} error={e.dob} onChange={(v) => onField("dob", maskDob(v))} onBlur={() => onBlur("dob")} />
     </div>
   );
@@ -1034,17 +1035,23 @@ function AsmtV4ContactFields({ value, errors, onField, onBlur, states, maskDob }
 // The region shows the tier's headline + message ONLY — never a number, never
 // a label. Tier "flag" renders nothing here (A6P handles it).
 // ---------------------------------------------------------------------------
-function AsmtV4Snapshot({ value, onField, content, problem }) {
+function AsmtV4Snapshot({ value, onField, content, problem, onBlur }) {
   const d = value || {};
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
       <div className="asmt-v4-grid3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--spacing-4)" }}>
-        <AsmtV4Field id="asmt-v4-ft" label="Height (feet)" type="number" inputMode="numeric" placeholder="5"
-          value={d.heightFt} onChange={(v) => onField("heightFt", v)} />
-        <AsmtV4Field id="asmt-v4-in" label="Height (inches)" type="number" inputMode="numeric" placeholder="6"
-          value={d.heightIn} onChange={(v) => onField("heightIn", v)} />
-        <AsmtV4Field id="asmt-v4-lbs" label="Weight (lbs)" type="number" inputMode="numeric" placeholder="180"
-          value={d.weightLbs} onChange={(v) => onField("weightLbs", v)} />
+        {/* onBlur, so the range check waits for a finished number. Judged per
+            keystroke it fires on the way INTO a valid answer — typing 210
+            reads "1" then "21", both outside 50–700 — and the panel below is
+            aria-live, so a screen reader announced that twice per entry.
+            The group name goes with it: height and weight gate separately, so
+            finishing one cannot open the gate on the other. */}
+        <AsmtV4Field id="asmt-v4-ft" label="Height (feet)" type="number" inputMode="numeric" placeholder="5" required
+          value={d.heightFt} onChange={(v) => onField("heightFt", v)} onBlur={() => onBlur && onBlur("height")} />
+        <AsmtV4Field id="asmt-v4-in" label="Height (inches)" type="number" inputMode="numeric" placeholder="6" required
+          value={d.heightIn} onChange={(v) => onField("heightIn", v)} onBlur={() => onBlur && onBlur("height")} />
+        <AsmtV4Field id="asmt-v4-lbs" label="Weight (lbs)" type="number" inputMode="numeric" placeholder="180" required
+          value={d.weightLbs} onChange={(v) => onField("weightLbs", v)} onBlur={() => onBlur && onBlur("weight")} />
       </div>
       <div aria-live="polite" style={{ minHeight: 44 }}>
         {problem &&
@@ -1355,7 +1362,7 @@ function AsmtV4Result({ rec, headingRef, onCreateAccount }) {
 // Hero header for `hero: true` screens — the homepage "hero-section feel-section"
 // band (video + gradient wash, bottom-anchored copy) carrying the screen's
 // title, supporting line, and time note.
-function AsmtV4HeroHeader({ screen, headingRef }) {
+function AsmtV4HeroHeader({ screen, headingRef, headingId }) {
   const uploads = window.CHIME_UPLOADS_BASE || "../../uploads";
   return (
     <header className="hero-section feel-section" style={{ fontFamily: "var(--font-family-base)" }}>
@@ -1372,7 +1379,11 @@ function AsmtV4HeroHeader({ screen, headingRef }) {
           src={uploads + "/hf_20260712_215808_12876c8b-1eda-48be-9200-1414fa5686e7.mp4"}
           autoPlay muted loop playsInline
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
-        <div style={{
+        {/* Classed so the narrow-viewport rule in assessment2.html can deepen
+            the left end. The clip carries a baked-in "Chime Health" wordmark
+            on its left third and no crop can clear it at 390px — see the
+            .feel-scrim rule there for why. */}
+        <div className="feel-scrim" style={{
           position: "absolute", inset: 0, pointerEvents: "none",
           background: "linear-gradient(100deg, rgb(var(--glass-rgb) / 0.62) 0%, rgb(var(--glass-rgb) / 0.32) 48%, rgb(var(--glass-rgb) / 0.08) 100%)",
         }}></div>
@@ -1381,7 +1392,7 @@ function AsmtV4HeroHeader({ screen, headingRef }) {
           display: "flex", flexDirection: "column", justifyContent: "flex-end",
           padding: "var(--spacing-10)", gap: "var(--spacing-3)",
         }}>
-          <h2 ref={headingRef} tabIndex={-1} className="feel-title" style={{
+          <h2 id={headingId} ref={headingRef} tabIndex={-1} className="feel-title" style={{
             margin: 0, outline: "none", maxWidth: "14em",
             fontSize: "var(--text-5xl)", fontWeight: 300, lineHeight: 1.1,
             color: "var(--color-white)", textWrap: "balance",

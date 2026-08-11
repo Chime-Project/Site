@@ -20,9 +20,12 @@ function eq(name, actual, expected) {
   check(name + "  →  " + a + (a === e ? "" : "  (expected " + e + ")"), a === e);
 }
 
-// Convenient answer fragments.
-var A2_CLEAR = { A2: ["None of the above"] };
-var A2_DQ = { A2: ["Currently or possibly pregnant, or actively trying to become pregnant"] };
+// Convenient answer fragments. A2 is the legal team's verbatim Yes/No as of
+// v7 — a STRING, not the v4 multi-select array — and it is only ASKED when
+// A2G is Female, so both fixtures carry the gender that reaches it.
+var A2_CLEAR = { A2G: "Female", A2: "No" };
+var A2_DQ = { A2G: "Female", A2: "Yes" };
+var A2_MALE = { A2G: "Male" };
 function snap(lbs, ft, inch) { return { A6: { weightLbs: lbs, heightFt: ft, heightIn: inch } }; }
 function merge() {
   var out = {};
@@ -51,17 +54,87 @@ eq("multi-goal queues canonically + dedupes (advanced, GLP-1, longer, lose) → 
 // ---------------------------------------------------------------------------
 eq("base order, single B2 goal, no fork, no flag",
   g.asmtV4Queue(merge({ A1: ["Feel more energy"] }, A2_CLEAR)),
-  ["A1", "A2", "A3", "A4", "A5", "A6", "A7",
+  ["A1", "A3", "A2G", "A2", "A4", "A5", "A6", "A7",
    "B2.1", "B2.2", "B2.3", "B2.C",
    "C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
 
 // ---------------------------------------------------------------------------
+// Client request (v7) · pregnancy sits DIRECTLY after gender, which sits
+// directly after the Info Page it was split out of
+// ---------------------------------------------------------------------------
+check("A2 (pregnancy) immediately follows A2G (gender), which follows A3",
+  (function () {
+    var q = g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_CLEAR));
+    return q.indexOf("A2G") === q.indexOf("A3") + 1 &&
+      q.indexOf("A2") === q.indexOf("A2G") + 1;
+  })());
+
+// ---------------------------------------------------------------------------
+// A2G gates A2 · nobody who answered Male is asked about pregnancy
+// ---------------------------------------------------------------------------
+check("A2G 'Male' → the pregnancy question is not in the queue at all",
+  g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_MALE)).indexOf("A2") < 0);
+eq("A2G 'Male' → gender is followed straight by A4",
+  (function () {
+    var q = g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_MALE));
+    return q.slice(q.indexOf("A2G"), q.indexOf("A2G") + 2);
+  })(), ["A2G", "A4"]);
+check("A2G unanswered → pregnancy not asked yet either",
+  g.asmtV4Queue({ A1: ["Lose weight"] }).indexOf("A2") < 0);
+check("A2G 'Female' → it is asked", g.asmtV4AsksPregnancy(A2_CLEAR));
+check("A2G 'Male' → it is not asked", !g.asmtV4AsksPregnancy(A2_MALE));
+check("a stale 'Yes' can never disqualify someone the question was not put to",
+  g.asmtV4MedicationEligible({ A2G: "Male", A2: "Yes" }));
+check("switching Female+Yes to Male prunes both the answer and the fork",
+  (function () {
+    var pruned = g.asmtV4Prune({ A1: ["Lose weight"], A2G: "Male", A2: "Yes", A2F: "labs" });
+    return pruned.A2 === undefined && pruned.A2F === undefined;
+  })());
+check("Male keeps the full branch queue — no accidental fork reroute",
+  (function () {
+    var q = g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_MALE));
+    return q.indexOf("A2F") < 0 && q.indexOf("B1.1") >= 0;
+  })());
+check("gender is asked once — A3 no longer validates a sex field",
+  g.asmtV4ContactProblems({}).sex === undefined);
+check("a complete A3 no longer needs a sex value",
+  g.asmtV4ContactProblems({
+    firstName: "A", lastName: "B", email: "a@b.co", phone: "5551234567",
+    address1: "1 Main St", city: "Austin", zip: "78701", state: "TX", dob: "01/01/1990",
+  }) === null);
+
+// ---------------------------------------------------------------------------
+// Client request (v7) · single-select screens advance on the pick itself
+// ---------------------------------------------------------------------------
+check("every single-select screen carries autoAdvance",
+  (function () {
+    var single = { list: 1, gate: 1, dynlist: 1, listFree: 1 };
+    return g.CHIME_ASSESSMENT_V4.screens
+      .filter(function (s) { return single[s.type]; })
+      .every(function (s) { return s.autoAdvance === true; });
+  })());
+check("no MULTI-select screen carries autoAdvance (the second pick must stay reachable)",
+  (function () {
+    var multi = { cards: 1, checkboxes: 1, chips: 1 };
+    return g.CHIME_ASSESSMENT_V4.screens
+      .filter(function (s) { return multi[s.type]; })
+      .every(function (s) { return !s.autoAdvance; });
+  })());
+check("B1.3's free-text option is the one pick that must not jump",
+  g.CHIME_ASSESSMENT_V4.b13OtherValue === "Others");
+
+// ---------------------------------------------------------------------------
 // Rule 2 · A2 disqualification fork
 // ---------------------------------------------------------------------------
-check("A2 clear → medicationEligible", g.asmtV4MedicationEligible(A2_CLEAR));
-check("A2 disqualifying → NOT medicationEligible", !g.asmtV4MedicationEligible(A2_DQ));
-check("fork screen A2F enters the queue on disqualification",
-  g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_DQ)).indexOf("A2F") === 2);
+check("A2 'No' → medicationEligible", g.asmtV4MedicationEligible(A2_CLEAR));
+check("A2 'Yes' → NOT medicationEligible", !g.asmtV4MedicationEligible(A2_DQ));
+check("A2 unanswered stays eligible — the fork must not precede the question",
+  g.asmtV4MedicationEligible({ A1: ["Lose weight"] }));
+check("fork screen A2F enters the queue directly after A2",
+  (function () {
+    var q = g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_DQ));
+    return q.indexOf("A2F") === q.indexOf("A2") + 1;
+  })());
 check("no fork screen when A2 is clear",
   g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_CLEAR)).indexOf("A2F") < 0);
 eq("fork → Labs forces the branch queue to [B3] only",
@@ -70,7 +143,7 @@ eq("fork → Coaching skips Block B entirely",
   g.asmtV4BranchWalk(merge({ A1: ["Lose weight"] }, A2_DQ, { A2F: "coaching" })), []);
 eq("fork → Coaching: A7 still runs, then straight to Block C",
   g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_DQ, { A2F: "coaching" })),
-  ["A1", "A2", "A2F", "A3", "A4", "A5", "A6", "A7", "C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
+  ["A1", "A3", "A2G", "A2", "A2F", "A4", "A5", "A6", "A7", "C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
 
 // ---------------------------------------------------------------------------
 // Rule 5 · Conditional skips
@@ -273,8 +346,10 @@ eq("?product=GLP,NAD pre-selects two goals",
 eq("unknown product values are dropped, never guessed", g.asmtV4ProductGoals("?product=XYZ"), []);
 
 // Restore fallback.
-eq("first incomplete screen after A1+A2",
-  g.asmtV4FirstIncomplete(merge({ A1: ["Feel more energy"] }, A2_CLEAR)), "A3");
+eq("first incomplete screen after A1 is the Info Page",
+  g.asmtV4FirstIncomplete({ A1: ["Feel more energy"] }), "A3");
+eq("first incomplete screen after A1+A3 is the gender screen",
+  g.asmtV4FirstIncomplete({ A1: ["Feel more energy"], A3: { firstName: "A" } }), "A2G");
 
 // ---------------------------------------------------------------------------
 console.log("");

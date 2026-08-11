@@ -4,9 +4,11 @@
 // Loads AFTER assessment-v4-data.js — reads config through CHIME_ASSESSMENT_V4.
 //
 // Answer state shape (single object, persisted by the flow component):
-//   A1: [goal, …]            A2: [option, …]        A2F: "labs" | "coaching"
+//   A1: [goal, …]            A2G: "Female" | "Male"
+//   A2: "Yes" | "No"  (asked only when A2G is Female)
+//   A2F: "labs" | "coaching"
 //   A3: { firstName, lastName, email, phone, address1, address2, city, zip,
-//         state, sex, dob }
+//         state, dob }
 //   A4: [feeling, …]         A5: option             A6: { weightLbs, heightFt, heightIn }
 //   "B1.1": [..] · "B1.2": "Yes"/"No" · "B1.3": option · "B1.3_other": text ·
 //   "B1.4": dose · "B1.5": [..] · "B2.1".. etc. per screen id.
@@ -40,11 +42,28 @@
     return CFG().canonicalBranches.filter(function (b) { return want[b]; });
   }
 
-  // medicationEligible=false the moment A2 carries any disqualifying option.
+  // Is the pregnancy/breastfeeding gate (A2) even asked of this respondent?
+  // Only of those who answered `a2gAsksPregnancy` at A2G — asking someone who
+  // just answered "Male" whether they are pregnant is exactly the nonsense
+  // that splitting gender onto its own screen was meant to prevent.
+  function v4AsksPregnancy(answers) {
+    return answers.A2G === CFG().a2gAsksPregnancy;
+  }
+
+  // medicationEligible=false the moment the pregnancy gate answers "Yes".
+  //
+  // v7 replaced the v4 four-option checkbox screen with the legal team's
+  // verbatim Yes/No, so A2 is a STRING here, not an array. Unanswered stays
+  // eligible on purpose: the fork must not join the queue before the question
+  // has been asked. A pre-v7 saved answer (an array) is never seen — the store
+  // key moved with the shape change (ASMT_V4_STORE_KEY).
+  //
+  // The A2G guard is belt-and-braces. v4Prune already drops an A2 answer the
+  // moment A2G stops asking for it, but reading A2 unconditionally would mean
+  // that between the two calls a stale "Yes" could disqualify someone the
+  // question was never put to.
   function v4MedicationEligible(answers) {
-    var a2 = answers.A2 || [];
-    for (var i = 0; i < a2.length; i++) if (a2[i] !== "None of the above") return false;
-    return true;
+    return !(v4AsksPregnancy(answers) && answers.A2 === "Yes");
   }
 
   // Insertions triggered by a completed branch's answers.
@@ -112,10 +131,16 @@
   // -------------------------------------------------------------------------
   // The full ordered screen queue for an answer state
   // -------------------------------------------------------------------------
+  // Block A order is A1 → A3 (Info Page) → A2G (Gender) → A2 (pregnancy), per
+  // the client's request that the pregnancy/breastfeeding question sit directly
+  // after the gender question. A2/A2G keep their v4 ids while the rest of the
+  // v7 renumbering waits — the ids are load-bearing (stored answers,
+  // data-screen-label, analytics), so they move once, not twice.
   function v4Queue(answers) {
-    var ids = ["A1", "A2"];
+    var ids = ["A1", "A3", "A2G"];
+    if (v4AsksPregnancy(answers)) ids.push("A2");
     if (!v4MedicationEligible(answers)) ids.push("A2F");
-    ids = ids.concat(["A3", "A4", "A5", "A6"]);
+    ids = ids.concat(["A4", "A5", "A6"]);
     if (v4SnapshotTier(answers) === "flag") ids.push("A6P");
     ids.push("A7");
     v4BranchWalk(answers).forEach(function (b) {
@@ -258,7 +283,10 @@
       var names = {
         firstName: "first name", lastName: "last name", email: "email", phone: "phone number",
         address1: "street address", city: "city", zip: "ZIP code",
-        state: "the state your medication ships to", sex: "sex assigned at birth",
+        // Bare noun only — this map is interpolated into "Please add your …",
+        // so a phrase like "the state your medication ships to" renders as
+        // "Please add your the state …". The field LABEL carries the framing.
+        state: "state",
       };
       return "Please add your " + (names[field] || field) + ".";
     }
@@ -271,7 +299,9 @@
     return "";
   }
 
-  var V4_CONTACT_FIELDS = ["firstName", "lastName", "email", "phone", "address1", "address2", "city", "zip", "state", "sex", "dob"];
+  // No "sex" — it left the Info Page for its own screen (A2G) so that the
+  // pregnancy question could follow it directly.
+  var V4_CONTACT_FIELDS = ["firstName", "lastName", "email", "phone", "address1", "address2", "city", "zip", "state", "dob"];
 
   // { field: message } for every field that still needs attention.
   function v4ContactProblems(a3) {
@@ -454,6 +484,7 @@
 
   g.asmtV4ScreenById = v4ScreenById;
   g.asmtV4GoalBranches = v4GoalBranches;
+  g.asmtV4AsksPregnancy = v4AsksPregnancy;
   g.asmtV4MedicationEligible = v4MedicationEligible;
   g.asmtV4BranchWalk = v4BranchWalk;
   g.asmtV4BranchScreens = v4BranchScreens;
