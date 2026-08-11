@@ -1161,18 +1161,21 @@ function AsmtV4Phrase({ title, supportingLine, cta, onCta, headingRef, copyNeede
         </div>
         <div className="asmt-v4-phrase-media" ref={mediaRef}>
           {/* imageCutout is for sources with an alpha channel rather than a
-              full-bleed scene. `cover` would crop into the subject, and the
-              card's shadow would trace a rectangle around mostly-empty pixels.
-              Contain it on a white ground instead: same silhouette, radius and
-              shadow as the photo cards, read as a studio shot rather than a
-              broken one. */}
+              full-bleed scene. `cover` would crop into the subject, so contain
+              it and let it float on the page — no card at all.
+
+              The card treatment is all-or-nothing here, which is why several
+              properties move together: a radius and a shadow are drawn on the
+              element BOX, not on the visible pixels, so keeping either one
+              without a ground would outline a rectangle of mostly-transparent
+              image. The padding goes with them — it only existed to inset the
+              subject from the white card's edge, and there is no edge now. */}
           <img src={(window.CHIME_UPLOADS_BASE || "uploads") + "/" + image} alt={imageAlt || ""}
             decoding="async" style={{
               display: "block", width: "100%", aspectRatio: "3 / 4", boxSizing: "border-box",
               objectFit: imageCutout ? "contain" : "cover",
-              background: imageCutout ? "var(--color-white)" : undefined,
-              padding: imageCutout ? "var(--spacing-6)" : undefined,
-              borderRadius: "var(--radius-3xl)", boxShadow: "var(--shadow-lg, var(--shadow-md))",
+              borderRadius: imageCutout ? undefined : "var(--radius-3xl)",
+              boxShadow: imageCutout ? undefined : "var(--shadow-lg, var(--shadow-md))",
             }} />
         </div>
       </div>
