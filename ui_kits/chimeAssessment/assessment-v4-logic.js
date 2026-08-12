@@ -119,12 +119,15 @@
       }
       return ids.concat(["B1.5", "B1.C"]);
     }
-    if (branch === "B2") return ["B2.1", "B2.2", "B2.3", "B2.C"];
+    if (branch === "B2") return ["B2.1", "B2.3", "B2.C"]; // B2.2 deleted (Vf)
     if (branch === "B3") {
-      if (answers["B3.1"] === cfg.b31SkipValue) return ["B3.1"];
-      return ["B3.1", "B3.2", "B3.3", "B3.C"];
+      // B3.1 deleted (Vf); the exit option moved inline into B3.2, which is
+      // MULTI-select — so this tests membership, not equality.
+      var b32 = answers["B3.2"] || [];
+      if (b32.indexOf(cfg.b32SkipValue) >= 0) return ["B3.2"];
+      return ["B3.2", "B3.3", "B3.C"];
     }
-    if (branch === "B4") return ["B4.1", "B4.2", "B4.3", "B4.C"];
+    if (branch === "B4") return ["B4.2", "B4.3", "B4.C"]; // B4.1 deleted (Vf)
     return [];
   }
 
@@ -268,25 +271,20 @@
   // field id → gentle message, or "" when fine.
   function v4ContactFieldError(field, value, a3) {
     var v = String(value === undefined || value === null ? "" : value).trim();
-    if (field === "address2") return ""; // apartment is optional
-    if (field === "dob") {
-      if (!v) return "Please add your date of birth.";
-      var p = v4ParseDob(v);
-      if (!p) return "Please enter your date of birth as MM/DD/YYYY.";
-      if (p.y < 1900) return "Please double-check the birth year.";
-      var age = v4AgeFromDob(v);
-      if (age < 0) return "That date is in the future — mind double-checking it?";
+    // Vf replaces the exact date of birth with a plain Age field ("exact DOB
+    // deferred"). The 18+ floor is preserved; the upper bound only catches
+    // typos. Age is also what the future A2.3 GREEN LIGHT gate needs.
+    if (field === "age") {
+      if (!v) return "Please add your age.";
+      if (!/^\d{1,3}$/.test(v)) return "Please enter your age in years, as a number.";
+      var age = parseInt(v, 10);
       if (age < 18) return "You need to be at least 18 for this assessment."; // ASSUMPTION — matches live build; confirm
+      if (age > 120) return "That age looks high — mind double-checking it?";
       return "";
     }
     if (!v) {
       var names = {
         firstName: "first name", lastName: "last name", email: "email", phone: "phone number",
-        address1: "street address", city: "city", zip: "ZIP code",
-        // Bare noun only — this map is interpolated into "Please add your …",
-        // so a phrase like "the state your medication ships to" renders as
-        // "Please add your the state …". The field LABEL carries the framing.
-        state: "state",
       };
       return "Please add your " + (names[field] || field) + ".";
     }
@@ -294,14 +292,14 @@
       return "That email doesn’t look complete — mind double-checking it?";
     if (field === "phone" && v.replace(/\D/g, "").length < 10)
       return "That phone number looks short — mind double-checking it?";
-    if (field === "zip" && !/^\d{5}(-\d{4})?$/.test(v))
-      return "ZIP codes are 5 digits — mind double-checking it?";
     return "";
   }
 
   // No "sex" — it left the Info Page for its own screen (A2G) so that the
   // pregnancy question could follow it directly.
-  var V4_CONTACT_FIELDS = ["firstName", "lastName", "email", "phone", "address1", "address2", "city", "zip", "state", "dob"];
+  // Vf spec A2, verbatim and in order: First Name · Last Name · Age · E-mail ·
+  // Phone. Mailing address and exact DOB are deferred by the doc.
+  var V4_CONTACT_FIELDS = ["firstName", "lastName", "age", "email", "phone"];
 
   // { field: message } for every field that still needs attention.
   function v4ContactProblems(a3) {
@@ -375,14 +373,20 @@
 
     var b11 = answers["B1.1"] || [];
     var b15 = answers["B1.5"] || [];
-    var b22 = answers["B2.2"] || [];
     var b32 = answers["B3.2"] || [];
     var b43 = answers["B4.3"] || [];
 
     function journeyBullet() { return b11.length ? why.journey[b11[0]] : null; }
     function strugglesBullet() { return b15.length ? why.struggles.lead + v4JoinList(b15, true) + why.struggles.tail : null; }
-    function energyBullet() { return b22.length ? why.energyHelps.lead + v4JoinList(b22, true) + why.energyHelps.tail : null; }
-    function labsBullet() { return b32.length ? why.labAreas.lead + v4JoinList(b32, false) + why.labAreas.tail : null; }
+    // B2.2 is deleted (Vf), so the energy bullet has no source. Kept as a stub
+    // returning null — the order arrays below still list it, and re-sourcing it
+    // from A4 + B2.1 is a copy-team task (ASSESSMENT-VF-PLAN.md §2.2 row 4).
+    function energyBullet() { return null; }
+    // The exit option is never a lab "area" — it must not appear in the bullet.
+    function labsBullet() {
+      var areas = b32.filter(function (a) { return a !== CFG().b32SkipValue; });
+      return areas.length ? why.labAreas.lead + v4JoinList(areas, false) + why.labAreas.tail : null;
+    }
     function advancedBullets() {
       var bullets = [], generic = false;
       b43.forEach(function (area) {
@@ -417,11 +421,17 @@
   }
 
   // Labs tier from the number of B3.2 areas. ASSUMPTION — mapping not in doc.
+  // Vf cut B3.2 from 5 options to 4, one of which is the exit — so there are
+  // only THREE real areas a user can pick. The old 4+ threshold made the
+  // Executive tier unreachable; the ladder is rescaled to 1 / 2 / 3, and the
+  // exit option is excluded from the count so it can never score a tier.
   function v4LabsTier(answers) {
-    var n = (answers["B3.2"] || []).length, t = CFG().labsTiers;
+    var picked = answers["B3.2"] || [], t = CFG().labsTiers, skip = CFG().b32SkipValue;
+    var n = 0;
+    for (var i = 0; i < picked.length; i++) if (picked[i] !== skip) n++;
     if (!n) return null;
     if (n <= 1) return t.essential;
-    if (n <= 3) return t.complete;
+    if (n <= 2) return t.complete;
     return t.executive;
   }
 

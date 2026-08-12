@@ -12,6 +12,9 @@
 
 (function (g) {
 
+  // DEFERRED, not deleted. The Vf spec removes mailing address from the A2 info
+  // page ("Mailing Address and exact DOB … are deferred"), so nothing renders
+  // this today — it is retained for when address collection returns.
   var SHIPPING_STATES = [
     "AL","AZ","AR","CA","CO","CT","DE","FL","GA","ID","IL","IN","IA","KS","KY",
     "LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
@@ -38,6 +41,10 @@
       "Lose weight": "B1",
       "Feel more energy": "B2",
       "Understand my health better": "B3",
+      // Option removed from the A1 screen (Vf spec, 6 goals). The entry stays
+      // so a saved session from before the removal still routes. ⚠️ "Longevity"
+      // no longer appears anywhere on the goal screen even though the branch it
+      // fed is still called Energy & Longevity — raised with the client.
       "Live longer, age well": "B2",
       "I’m already on a GLP-1 and want better support": "B1",
       "Curious about advanced wellness options": "B4",
@@ -62,6 +69,8 @@
       "Strength": "Sermorelin", // source deck listed Tesamorelin — not on confirmed-available list; Sermorelin substitute pending confirmation
       "Focus": "NAD+",
       "Results": "Labs",
+      // Option removed from the A4 screen (Vf spec, 8 options). Entry kept so a
+      // saved answer still scores; "Results" keeps Labs reachable.
       "A better understanding of my body": "Labs",
     },
 
@@ -104,9 +113,14 @@
     // Sane-range validation bounds (kind tone, never alarm language).
     snapshotRanges: { weightMin: 50, weightMax: 700, heightInMin: 36, heightInMax: 96 },
 
-    // B1.5 → routing insertions ("Not seeing progress" / "Low energy or
-    // fatigue" add B2 if not already present or completed).
-    b15InsertValues: ["Not seeing progress", "Low energy or fatigue"],
+    // B1.5 → routing insertion (adds B2 if not already present or completed).
+    // Vf merged the former "Not seeing progress" + "Low energy or fatigue" into
+    // ONE option, so this list is now single-valued. Both legacy strings stay
+    // listed so a saved session from before the merge still inserts B2.
+    b15InsertValues: [
+      "Not seeing progress or feeling low on energy",
+      "Not seeing progress", "Low energy or fatigue", // legacy — saved sessions
+    ],
     b15InsertBranch: "B2",
 
     // B2.3 cross-sell → "Yes" or "Maybe" inserts B1 and/or B4 (deduped,
@@ -115,9 +129,12 @@
     b23InsertValues: ["Yes, I’m interested", "Maybe, tell me more"],
     b23InsertBranches: ["B1", "B4"],
 
-    // B3.1 → this answer skips the remainder of B3 (B3.2/B3.3) INCLUDING the
-    // ✦ closer (default; flagged in DECISIONS for team confirmation).
-    b31SkipValue: "Not interested right now",
+    // B3.2 → this answer skips the remainder of B3 (B3.3) INCLUDING the ✦
+    // closer (default; flagged in DECISIONS for team confirmation).
+    // Vf deleted the standalone B3.1 interest screen and moved its exit option
+    // inline into B3.2, so the skip is now keyed to a B3.2 selection. B3.2 is
+    // multi-select, so the check tests for membership, not equality.
+    b32SkipValue: "Not sure yet / not interested right now",
 
     // A2G → the pregnancy/breastfeeding gate (A2) is asked ONLY of this
     // answer. Keeping the trigger in config, beside the other routing values,
@@ -160,7 +177,6 @@
           { value: "Lose weight", icon: "scale" },
           { value: "Feel more energy", icon: "zap" },
           { value: "Understand my health better", icon: "search" },
-          { value: "Live longer, age well", icon: "heart" },
           { value: "I’m already on a GLP-1 and want better support", icon: "refresh" },
           { value: "Curious about advanced wellness options", icon: "sparkle" },
           { value: "Not sure yet, but I want to feel better", icon: "compass" },
@@ -168,9 +184,16 @@
       },
 
       {
+        // Vf spec A2: "Simplified per client request — replaces the legal Info
+        // Page's full field list." Exactly five fields:
+        //   First Name · Last Name · Age · E-mail · Phone
+        // Mailing address (street/apt/city/ZIP/state) and exact DOB are
+        // DEFERRED by the doc, not deleted — SHIPPING_STATES is kept above for
+        // when address collection returns.
+        // ⚠️ OPEN QUESTION for the client: with the address gone from here,
+        // something downstream still has to collect it for fulfilment.
         id: "A3", block: "A", type: "contact", label: "a3-about-you",
         title: "A Few Details About You",
-        shippingStates: SHIPPING_STATES,
       },
 
       {
@@ -223,9 +246,11 @@
         // fit inside a circle (B1.1's longest is 66 characters).
         bubbles: true,
         title: "What would you like to feel more of?",
+        // Supporting line is verbatim from the Vf spec's A3 row.
+        supportingLine: "Select all the options that feel right for you.",
         options: [
           "Energy", "Confidence", "Control", "Clarity", "Motivation",
-          "Strength", "Focus", "Results", "A better understanding of my body",
+          "Strength", "Focus", "Results",
         ],
       },
 
@@ -240,6 +265,10 @@
         options: [
           { value: "I don’t feel like myself anymore", icon: "user" },
           { value: "I’ve tried different things and nothing has felt sustainable", icon: "refresh" },
+          // Restored at position 3 per the Vf spec (7 options). It was removed
+          // on 2026-08-06; a5PersonaMap kept its `labsSeeker` entry throughout,
+          // so the persona lookup already resolves.
+          { value: "I know something feels off, but I’m not sure what", icon: "help" },
           { value: "I want to be proactive about my health", icon: "shield" },
           { value: "I want a more private and personalized experience", icon: "lock" },
           { value: "I want guidance from people who understand this journey", icon: "users" },
@@ -289,7 +318,6 @@
           "Tried many diets or lifestyle programs before",
           "Currently using Semaglutide or Tirzepatide and want better support",
           "Used Semaglutide or Tirzepatide before and stopped",
-          "Not sure what’s right for me",
         ],
       },
       {
@@ -361,11 +389,15 @@
         options: [
           { value: "Staying consistent", icon: "calendar" },
           { value: "Feeling hungry or craving food", icon: "utensils" },
-          { value: "Not seeing progress", icon: "trendingDown" },
-          { value: "Low energy or fatigue", icon: "batteryLow" },
+          // Vf merges the former "Not seeing progress" + "Low energy or
+          // fatigue" into this one option — see b15InsertValues, which still
+          // lists both legacy strings so saved sessions keep routing.
+          { value: "Not seeing progress or feeling low on energy", icon: "trendingDown" },
           { value: "Not having enough support", icon: "users" },
           { value: "Not knowing what’s right for my body", icon: "help" },
           { value: "Feeling judged or dismissed", icon: "heart" },
+          // New in Vf — no equivalent existed in the v4 build.
+          { value: "Managing side effects or questions", icon: "pill" },
           { value: "Losing weight but gaining it back", icon: "refresh" },
         ],
       },
@@ -398,21 +430,12 @@
           { value: "General wellness concerns", icon: "heart" },
         ],
       },
-      {
-        id: "B2.2", block: "B", branch: "B2", type: "chips", label: "b2-2-better-energy",
-        cards: true, // presentation only: A1-style option cards
-        title: "What would better energy help you do?",
-        options: [
-          { value: "Feel more productive", icon: "briefcase" },
-          { value: "Keep up with work and life", icon: "clock" },
-          { value: "Feel more present with my family", icon: "users" },
-          { value: "Stay consistent with my health goals", icon: "calendar" },
-          { value: "Feel more confident", icon: "sparkle" },
-          { value: "Exercise or recover better", icon: "dumbbell" },
-          { value: "Feel younger or more vital", icon: "sun" },
-          { value: "Improve my overall quality of life", icon: "heart" },
-        ],
-      },
+      // B2.2 ("What would better energy help you do?") is DELETED per the Vf
+      // spec — its intent is covered by A4 (Feel More Of), which already feeds
+      // the Result. ⚠️ The spec wants the energy path's "Why This Path May Fit"
+      // bullet re-sourced from A4 + B2.1; that needs copy-team wording, so for
+      // now the bullet is simply dropped and the remaining bullets + the
+      // <2-bullet fallback cover the screen. See ASSESSMENT-VF-PLAN.md §2.2.
       {
         id: "B2.3", block: "B", branch: "B2", type: "list", label: "b2-3-cross-sell",
         autoAdvance: true,
@@ -439,28 +462,20 @@
       },
 
       // ---- B3 · Labs & Health Insights Path ----
-      {
-        id: "B3.1", block: "B", branch: "B3", type: "list", label: "b3-1-interest",
-        autoAdvance: true,
-        cards: true, // presentation only: A1-style option cards
-        title: "How interested are you in understanding what’s happening beneath the surface?",
-        options: [
-          { value: "Very interested", icon: "signalHigh" },
-          { value: "Somewhat interested", icon: "signalMid" },
-          { value: "Curious but not sure", icon: "search" },
-          { value: "Not interested right now", icon: "ban" },
-        ],
-      },
+      // The standalone B3.1 interest screen is DELETED per the Vf spec: its
+      // only load-bearing answer was the exit option, which now lives inline
+      // as the last option on B3.2 (see b32SkipValue).
       {
         id: "B3.2", block: "B", branch: "B3", type: "chips", label: "b3-2-insight-areas",
         cards: true, // presentation only: A1-style option cards
         title: "Which areas would you most like more insight into?",
+        // Vf: 4 options. Hormones + Nutrient levels merge into one; "General
+        // health markers" is dropped; the exit option arrives from B3.1.
         options: [
           { value: "Biological Age", icon: "clock" },
           { value: "Inflammation", icon: "flame" },
-          { value: "Hormones", icon: "waves" },
-          { value: "Nutrient levels", icon: "droplet" },
-          { value: "General health markers", icon: "barChart" },
+          { value: "Hormones & Nutrient Levels", icon: "waves" },
+          { value: "Not sure yet / not interested right now", icon: "ban" },
         ],
       },
       {
@@ -484,26 +499,17 @@
       },
 
       // ---- B4 · Advanced Wellness Path ----
-      {
-        id: "B4.1", block: "B", branch: "B4", type: "list", label: "b4-1-familiarity",
-        autoAdvance: true,
-        cards: true, // presentation only: A1-style option cards
-        title: "How familiar are you with wellness therapies such as peptides or hormone-related support?",
-        options: [
-          { value: "Very familiar", icon: "signalHigh" },
-          { value: "Somewhat familiar", icon: "signalMid" },
-          { value: "I’ve heard of them but haven’t tried them", icon: "help" },
-          { value: "I’m new to this", icon: "sparkle" },
-        ],
-      },
+      // The B4.1 familiarity screen is DELETED per the Vf spec — it fed no
+      // routing, so nothing downstream referenced its answer.
       {
         id: "B4.2", block: "B", branch: "B4", type: "chips", label: "b4-2-matters-most",
         cards: true, // presentation only: A1-style option cards
         title: "What matters most to you when exploring advanced wellness options?",
+        // Vf: 6 options — "Safety and legitimacy" and "Avoiding unregulated
+        // sources" merge into one.
         options: [
           { value: "Product transparency", icon: "search" },
-          { value: "Safety and legitimacy", icon: "shield" },
-          { value: "Avoiding unregulated sources", icon: "ban" },
+          { value: "Safety, legitimacy, and avoiding unregulated sources", icon: "shield" },
           { value: "Personalized recommendations", icon: "user" },
           { value: "Privacy", icon: "lock" },
           { value: "Convenience", icon: "clock" },
@@ -521,7 +527,6 @@
           { value: "Hormone optimization", icon: "waves" },
           { value: "Sexual wellness", icon: "heart" },
           { value: "Healthy aging", icon: "sun" },
-          { value: "General wellness support", icon: "compass" },
         ],
       },
       {

@@ -23,7 +23,11 @@
 // A stale session would have restored an array onto a single-select screen:
 // nothing would look chosen, yet the answer reads as present, so Continue
 // would sail past an unanswered eligibility gate. Discarding beats migrating.
-const ASMT_V4_STORE_KEY = "chime_assessment_v4_2";
+// Bumped for the Vf option/screen changes: B1.2's old answers aside, screens
+// B2.2 / B3.1 / B4.1 no longer exist and A3 swapped dob+address for age, so a
+// session saved under the previous key could restore onto a deleted screen or
+// a field list that is gone. A new key retires those sessions cleanly.
+const ASMT_V4_STORE_KEY = "chime_assessment_v4_3";
 const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
 
 // Visual order of A3 fields, for focusing the first field needing attention.
@@ -31,12 +35,12 @@ const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
 // field with a problem, so an entry with no focusable target would leave the
 // user with just the toast. Every field here is a real <input>/<select> now
 // that sex has moved to its own screen (A2G).
+// Order matters: the toast focuses the FIRST field with a problem, so this must
+// track the render order in AsmtV4ContactFields. Vf trimmed the list to five.
 const ASMT_V4_FIELD_IDS = [
   ["firstName", "asmt-v4-first"], ["lastName", "asmt-v4-last"],
+  ["age", "asmt-v4-age"],
   ["email", "asmt-v4-email"], ["phone", "asmt-v4-phone"],
-  ["address1", "asmt-v4-address1"], ["city", "asmt-v4-city"],
-  ["zip", "asmt-v4-zip"], ["state", "asmt-v4-state"],
-  ["dob", "asmt-v4-dob"],
 ];
 
 function asmtV4InitState() {
@@ -370,8 +374,7 @@ function ChimeAssessmentFlowV4() {
         borderRadius: "var(--radius-xl)", padding: "var(--spacing-6)",
       }}>
         <AsmtV4ContactFields value={answers.A3} errors={contactErrors}
-          onField={(f, v) => setNested("A3", f, v)} onBlur={markTouched}
-          states={screen.shippingStates} maskDob={asmtV4MaskDob} />
+          onField={(f, v) => setNested("A3", f, v)} onBlur={markTouched} />
       </div>
     );
   else if (screen.type === "chips")

@@ -55,7 +55,7 @@ eq("multi-goal queues canonically + dedupes (advanced, GLP-1, longer, lose) → 
 eq("base order, single B2 goal, no fork, no flag",
   g.asmtV4Queue(merge({ A1: ["Feel more energy"] }, A2_CLEAR)),
   ["A1", "A3", "A2G", "A2", "A4", "A5", "A6", "A7",
-   "B2.1", "B2.2", "B2.3", "B2.C",
+   "B2.1", "B2.3", "B2.C",
    "C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
 
 // ---------------------------------------------------------------------------
@@ -97,11 +97,23 @@ check("Male keeps the full branch queue — no accidental fork reroute",
   })());
 check("gender is asked once — A3 no longer validates a sex field",
   g.asmtV4ContactProblems({}).sex === undefined);
-check("a complete A3 no longer needs a sex value",
+// Vf · A2 is exactly five fields: First · Last · Age · Email · Phone.
+check("a complete A3 is satisfied by the five Vf fields alone",
   g.asmtV4ContactProblems({
-    firstName: "A", lastName: "B", email: "a@b.co", phone: "5551234567",
-    address1: "1 Main St", city: "Austin", zip: "78701", state: "TX", dob: "01/01/1990",
+    firstName: "A", lastName: "B", age: "42", email: "a@b.co", phone: "5551234567",
   }) === null);
+check("A3 no longer validates the deferred address/DOB fields",
+  (function () {
+    var p = g.asmtV4ContactProblems({}) || {};
+    return p.address1 === undefined && p.city === undefined && p.zip === undefined &&
+           p.state === undefined && p.dob === undefined;
+  })());
+check("A3 requires age, and holds the 18+ floor",
+  (g.asmtV4ContactProblems({ firstName: "A", lastName: "B", email: "a@b.co", phone: "5551234567" }) || {}).age !== undefined &&
+  (g.asmtV4ContactProblems({ firstName: "A", lastName: "B", age: "17", email: "a@b.co", phone: "5551234567" }) || {}).age !== undefined &&
+  g.asmtV4ContactProblems({ firstName: "A", lastName: "B", age: "18", email: "a@b.co", phone: "5551234567" }) === null);
+check("A3 rejects a non-numeric age",
+  (g.asmtV4ContactProblems({ firstName: "A", lastName: "B", age: "forty", email: "a@b.co", phone: "5551234567" }) || {}).age !== undefined);
 
 // ---------------------------------------------------------------------------
 // Client request (v7) · single-select screens advance on the pick itself
@@ -158,10 +170,14 @@ eq("B1.3 'Semaglutide' → B1.4 dose screen shows",
 eq("B1.3 'Others' → skip B1.4",
   g.asmtV4BranchScreens("B1", { "B1.2": "Yes", "B1.3": "Others" }),
   ["B1.1", "B1.2", "B1.3", "B1.5", "B1.C"]);
-eq("B3.1 'Not interested right now' → remainder of B3 skipped, closer included in the skip",
-  g.asmtV4BranchScreens("B3", { "B3.1": "Not interested right now" }), ["B3.1"]);
-eq("B3.1 interested → full branch",
-  g.asmtV4BranchScreens("B3", { "B3.1": "Very interested" }), ["B3.1", "B3.2", "B3.3", "B3.C"]);
+// Vf · the standalone B3.1 interest screen is gone; its exit option now lives
+// inline on B3.2, which is multi-select — so the skip tests membership.
+eq("B3.2 exit option → remainder of B3 skipped, closer included in the skip",
+  g.asmtV4BranchScreens("B3", { "B3.2": ["Not sure yet / not interested right now"] }), ["B3.2"]);
+eq("B3.2 real area → full branch",
+  g.asmtV4BranchScreens("B3", { "B3.2": ["Biological Age"] }), ["B3.2", "B3.3", "B3.C"]);
+eq("B3 with no answer yet → full branch",
+  g.asmtV4BranchScreens("B3", {}), ["B3.2", "B3.3", "B3.C"]);
 
 // ---------------------------------------------------------------------------
 // Rule 4 · Dynamic insertions with dedupe, canonical order, before Block C
@@ -240,9 +256,9 @@ eq("prune: B1.3 away from 'Others' drops the free text",
 check("prune: dropping the Energy goal clears B2 answers (fixpoint: B2.3's insertions too)",
   (function () {
     var pruned = g.asmtV4Prune(merge(
-      { A1: ["Understand my health better"], "B2.1": ["Mental fog"], "B2.3": "Yes, I’m interested", "B4.1": "Very familiar" },
+      { A1: ["Understand my health better"], "B2.1": ["Mental fog"], "B2.3": "Yes, I’m interested", "B4.2": ["Privacy"] },
       A2_CLEAR));
-    return pruned["B2.1"] === undefined && pruned["B2.3"] === undefined && pruned["B4.1"] === undefined;
+    return pruned["B2.1"] === undefined && pruned["B2.3"] === undefined && pruned["B4.2"] === undefined;
   })());
 check("prune: clearing the A2 disqualifier drops the fork answer",
   g.asmtV4Prune(merge({ A1: ["Lose weight"] }, A2_CLEAR, { A2F: "labs" })).A2F === undefined);
@@ -287,7 +303,6 @@ check("bullets stay within 2–4",
       A1: ["Lose weight", "Feel more energy"], A5: "I want to be proactive about my health",
       "B1.1": ["Just starting to explore options"],
       "B1.5": ["Staying consistent", "Not seeing progress", "Low energy or fatigue"],
-      "B2.2": ["Feel more productive", "Feel more confident"],
     }, A2_CLEAR));
     return r.bullets.length >= 2 && r.bullets.length <= 4;
   })());
@@ -350,6 +365,71 @@ eq("first incomplete screen after A1 is the Info Page",
   g.asmtV4FirstIncomplete({ A1: ["Feel more energy"] }), "A3");
 eq("first incomplete screen after A1+A3 is the gender screen",
   g.asmtV4FirstIncomplete({ A1: ["Feel more energy"], A3: { firstName: "A" } }), "A2G");
+
+// ---------------------------------------------------------------------------
+// Vf spec · option lists, verbatim. These lock the counts AND the exact strings
+// the routing config keys off — a silent re-word is what breaks the branching.
+// ---------------------------------------------------------------------------
+function screen(id) {
+  return g.CHIME_ASSESSMENT_V4.screens.filter(function (s) { return s.id === id; })[0];
+}
+function optValues(id) {
+  return (screen(id).options || []).map(function (o) { return typeof o === "string" ? o : o.value; });
+}
+
+eq("A1 · 6 goals (Vf drops 'Live longer, age well')", optValues("A1").length, 6);
+check("A1 no longer offers the longevity goal",
+  optValues("A1").indexOf("Live longer, age well") < 0);
+check("goalBranchMap still resolves the retired goal for saved sessions",
+  g.asmtV4GoalBranches(["Live longer, age well"])[0] === "B2");
+
+eq("A4 · 8 options (Vf drops 'A better understanding of my body')", optValues("A4").length, 8);
+check("A4 carries the Vf supporting line",
+  screen("A4").supportingLine === "Select all the options that feel right for you.");
+
+eq("A5 · 7 options (Vf restores the 'something feels off' option)", optValues("A5").length, 7);
+check("A5's restored option sits at position 3 and resolves to the Labs Seeker persona",
+  optValues("A5")[2] === "I know something feels off, but I’m not sure what" &&
+  g.CHIME_ASSESSMENT_V4.a5PersonaMap["I know something feels off, but I’m not sure what"].id === "labsSeeker");
+
+eq("B1.1 · 4 options (Vf drops 'Not sure what’s right for me')", optValues("B1.1").length, 4);
+
+eq("B1.5 · still 8 options, but re-composed", optValues("B1.5").length, 8);
+check("B1.5 merges progress+energy into one option and adds the side-effects option",
+  optValues("B1.5").indexOf("Not seeing progress or feeling low on energy") >= 0 &&
+  optValues("B1.5").indexOf("Managing side effects or questions") >= 0 &&
+  optValues("B1.5").indexOf("Not seeing progress") < 0 &&
+  optValues("B1.5").indexOf("Low energy or fatigue") < 0);
+check("the merged B1.5 option still inserts the B2 branch",
+  g.asmtV4BranchWalk(merge({ A1: ["Lose weight"], "B1.5": ["Not seeing progress or feeling low on energy"] }, A2_CLEAR)).indexOf("B2") >= 0);
+
+eq("B3.2 · 4 options (merge + drop + inline exit)", optValues("B3.2").length, 4);
+check("B3.2 carries the merged and exit options, and drops General health markers",
+  optValues("B3.2").indexOf("Hormones & Nutrient Levels") >= 0 &&
+  optValues("B3.2").indexOf(g.CHIME_ASSESSMENT_V4.b32SkipValue) >= 0 &&
+  optValues("B3.2").indexOf("General health markers") < 0);
+
+eq("B4.2 · 6 options (safety options merged)", optValues("B4.2").length, 6);
+check("B4.2 carries the merged safety option",
+  optValues("B4.2").indexOf("Safety, legitimacy, and avoiding unregulated sources") >= 0);
+eq("B4.3 · 6 options (Vf drops 'General wellness support')", optValues("B4.3").length, 6);
+check("B4.3 keeps the compliance-named areas intact",
+  optValues("B4.3").indexOf("Hormone optimization") >= 0 && optValues("B4.3").indexOf("Sexual wellness") >= 0);
+
+check("screens deleted by Vf are gone: B2.2, B3.1, B4.1",
+  !screen("B2.2") && !screen("B3.1") && !screen("B4.1"));
+
+// The old ladder (1 / 2–3 / 4+) made Executive unreachable once B3.2 dropped to
+// 4 options with one of them an exit. Rescaled to 1 / 2 / 3.
+var LT = g.CHIME_ASSESSMENT_V4.labsTiers;
+eq("labs tier · 1 area → Essential",
+  g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": ["Biological Age"] }, A2_CLEAR)).offer.labsTier, LT.essential);
+eq("labs tier · 2 areas → Complete",
+  g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": ["Biological Age", "Inflammation"] }, A2_CLEAR)).offer.labsTier, LT.complete);
+eq("labs tier · all 3 real areas → Executive is reachable again",
+  g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": ["Biological Age", "Inflammation", "Hormones & Nutrient Levels"] }, A2_CLEAR)).offer.labsTier, LT.executive);
+check("the exit option never scores a labs tier on its own",
+  g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": [g.CHIME_ASSESSMENT_V4.b32SkipValue] }, A2_CLEAR)).offer.labsTier === null);
 
 // ---------------------------------------------------------------------------
 console.log("");
