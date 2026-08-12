@@ -9,8 +9,27 @@
      Amerilean theme — page-local brand palette (slate blue / mineral teal /
      mist blue / sandstone / soft terracotta on porcelain); color literals are
      duplicated in :root because this page loads no site stylesheet.
-     All product claims are verbatim from the reviewed copy in
-     "uploads/Upsell product pages.md" (NAD+ block) — do not strengthen them. -->
+     COPY SOURCE — read this before changing any wording.
+     Authority is the client's Google Doc "Upsell product pages", and it is NOT
+     unreadable: the /edit URL yields only the Docs UI shell, but /export returns
+     the text with no auth. Always re-read the real thing:
+       curl -sL "https://docs.google.com/document/d/1hpDx-BJYDJZUQ4w36vjiz6IYAtf4aThGrp1epXCHcQo/export?format=md"
+     uploads/ holds a cache of that export, re-fetched 2026-08-12.
+     Why this warning exists: on 2026-08-12 an Aug-4 cache was trusted instead of
+     the doc, and it had drifted on all six hero lines — every heading and every
+     subhead. The doc had been re-cut to an "Add X To Your Cart" pattern while the
+     cache still read "Add X To Support Your Y Goals". That produced a wrong
+     heading on two pages. Re-fetch; never audit copy against a cached file.
+     ⚠️ Typo in the doc, NOT reproduced: its NAD+ heading reads "Add NAD+ To Your
+     cart" (lower-case c) where Tesamorelin and Zofran both read "To Your Cart".
+     Set as "Cart" here for consistency. Flagged to the client.
+     Claims are verbatim from the doc — do not strengthen them.
+     ⚠️ ONE APPROVED DIVERGENCE: the doc says "Chime" in every closing-section
+     sentence ("your Chime plan/experience/journey"). These pages say AMERILEAN,
+     confirmed correct 2026-08-12 — the doc pre-dates the rebrand, and the footer
+     logo, the "Amerilean Experience" heading and the colour theme are all
+     Amerilean. The override covers the BRAND NAME ONLY; on every other word the
+     doc wins. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -182,8 +201,34 @@
   }
   /* The funnel stretches horizontally (preserveAspectRatio="none") because it is
      full-bleed decoration: the slices only have to stay aligned to the panel
-     columns above them, and its height is set here rather than by the viewBox. */
-  .funnel { display: none; width: 100%; height: clamp(68px, 6.4vw, 96px); }
+     columns above them, and its height is set here rather than by the viewBox.
+     Taper and base are SEPARATE elements on purpose. They used to be one svg,
+     but preserveAspectRatio="none" scales a viewBox uniformly — growing the base
+     to reach the section's bottom edge would have flattened the taper with it.
+     Split, each gets its own height. */
+  .funnel { display: none; width: 100%; height: clamp(40px, 3.8vw, 57px); }
+  /* 55% wide and centred, which is exactly the taper's neck (viewBox x 135-465
+     of 600), so the cells continue the slices above them. The height absorbs what
+     used to be the section's desktop padding-bottom plus the old in-svg base —
+     that is how the diagram reaches the slate band without the section growing. */
+  .funnel-base {
+    display: none; width: 55%; margin: 0 auto;
+    height: clamp(96px, 9.2vw, 133px);
+    grid-template-columns: repeat(6, 1fr);
+  }
+  /* 0.38 reproduces the white veil this used to paint inside the svg (1 - 0.62),
+     so the base is a faithful continuation of the taper's neck. Note the first
+     cell is all but invisible against the porcelain ground — mist-100 is already
+     a near-canvas tint, and raising the opacity does not fix it (0.48 moves that
+     cell by 2/255). Panel 1 above has exactly the same property. The only real
+     fix is starting the ramp on a darker colour, which is a palette decision. */
+  .funnel-base span { opacity: 0.38; }
+  .funnel-base span:nth-child(1) { background: var(--mist-100); }
+  .funnel-base span:nth-child(2) { background: var(--mist); }
+  .funnel-base span:nth-child(3) { background: var(--sand); }
+  .funnel-base span:nth-child(4) { background: var(--terra); }
+  .funnel-base span:nth-child(5) { background: var(--teal); }
+  .funnel-base span:nth-child(6) { background: var(--terra-800); }
   @media (min-width: 600px) { .benefit-cols { grid-template-columns: repeat(3, 1fr); } }
   @media (min-width: 768px) {
     /* Desktop only: the band no longer runs flush into the recap. Same
@@ -198,6 +243,11 @@
        they would point at nothing. */
     .benefit-cols { grid-template-columns: repeat(6, 1fr); }
     .funnel { display: block; }
+    .funnel-base { display: grid; }
+    /* The base occupies this space now — it has to end ON the slate band,
+       so nothing may sit under it. 768-899px keeps the padding, since
+       neither taper nor base renders there. */
+    .benefits { padding-bottom: 0; }
   }
   @media (max-width: 767px) {
     .benefits { margin-bottom: 56px; } /* desktop stays flush into the next band */
@@ -328,6 +378,13 @@
   <section class="hero" id="hero" aria-labelledby="hero-title">
     <div class="wrap-wide hero-grid">
       <div>
+        <!-- ⚠️ DO NOT "correct" these two lines against
+             uploads/Upsell product pages.md. That export is STALE (Aug 4) and says
+             the heading is "Add NAD+ To Support Your Energy & Wellness Goals".
+             The live Google Doc says "Add NAD+ To Your Cart" — confirmed by the
+             client on 2026-08-12, after exactly that bad edit was made and
+             reverted. The page is right and the export is old; the doc is the
+             authority. See the file header for the doc URL. -->
         <h1 id="hero-title">Add NAD+ To Your Cart</h1>
         <p class="sub">You&rsquo;ve already taken the first step. Now, improve your
           journey with NAD+ for just <span class="price" data-price>[PRICE]</span>.</p>
@@ -418,16 +475,18 @@
         <p class="benefit-title">Feeling more like themselves again</p>
       </div>
     </div>
-    <!-- The funnel. Six slices tile the trapezoid (0,0)-(600,0)-(465,64)-(135,64)
-         exactly, so ONE dark path over all of them darkens every slice by the
-         same amount — the diagram's shaded taper — instead of needing six
-         hand-mixed shades that would drift from the palette. The pale base row
-         gets the same trick in reverse with a white veil. Neck is 55% of the
-         width, matching the reference. -->
-    <svg class="funnel" viewBox="0 0 600 108" preserveAspectRatio="none"
+    <!-- The funnel, in two parts. The taper's 6 slices tile the trapezoid
+         (0,0)-(600,0)-(465,64)-(135,64) exactly, so ONE dark path over all of them
+         darkens every slice by the same amount — the diagram's shaded taper —
+         instead of needing 6 hand-mixed shades that would drift from the palette.
+         The pale base that follows is a plain grid rather than more svg, so it can
+         be as tall as it needs without flattening the taper; it runs to the
+         section's bottom edge, meeting the slate band. Both are 55% at the neck,
+         matching the reference. -->
+    <svg class="funnel" viewBox="0 0 600 64" preserveAspectRatio="none"
       aria-hidden="true" focusable="false">
       <g>
-        <polygon points="0,0 100,0 190,64 135,64"   fill="var(--mist-100)"/>
+        <polygon points="0,0 100,0 190,64 135,64" fill="var(--mist-100)"/>
         <polygon points="100,0 200,0 245,64 190,64" fill="var(--mist)"/>
         <polygon points="200,0 300,0 300,64 245,64" fill="var(--sand)"/>
         <polygon points="300,0 400,0 355,64 300,64" fill="var(--terra)"/>
@@ -435,23 +494,22 @@
         <polygon points="500,0 600,0 465,64 410,64" fill="var(--terra-800)"/>
       </g>
       <path d="M0 0 H600 L465 64 H135 Z" fill="#1E2A44" opacity="0.22"/>
-      <g>
-        <rect x="135" y="64" width="55" height="44" fill="var(--mist-100)"/>
-        <rect x="190" y="64" width="55" height="44" fill="var(--mist)"/>
-        <rect x="245" y="64" width="55" height="44" fill="var(--sand)"/>
-        <rect x="300" y="64" width="55" height="44" fill="var(--terra)"/>
-        <rect x="355" y="64" width="55" height="44" fill="var(--teal)"/>
-        <rect x="410" y="64" width="55" height="44" fill="var(--terra-800)"/>
-      </g>
-      <rect x="135" y="64" width="330" height="44" fill="#FFFFFF" opacity="0.62"/>
     </svg>
+    <div class="funnel-base" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </section>
 
   <!-- 5. Final offer recap -->
   <section class="recap on-dark" id="offer" aria-labelledby="offer-title">
     <div class="wrap">
       <h2 id="offer-title">Add NAD+</h2>
-      <p class="sub">Now, you may add NAD+ to your wellness plan for just
+      <p class="sub">Now, improve your journey with NAD+ for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
         <!-- Branded product shot. Web export of uploads/NAD+-Amerilean.png (1.5MB
