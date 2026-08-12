@@ -869,7 +869,7 @@ function AsmtV4SingleSelectList({ options, value, onSelect, bubbles, cards, labe
   );
 }
 
-// B1.4 — options injected from config based on the B1.3 answer.
+// B1.4 — options injected from config based on the B1.1_med answer.
 function AsmtV4DynamicSingleSelect({ ladders, dependsOn, value, onSelect, bubbles, cards, labelledBy }) {
   const options = ladders[dependsOn] || [];
   return <AsmtV4SingleSelectList options={options} value={value} onSelect={onSelect} bubbles={bubbles} cards={cards} labelledBy={labelledBy} />;
@@ -912,6 +912,53 @@ function AsmtV4SingleSelectWithFreeText({ options, freeValue, value, freeText, o
       {value === freeValue &&
         <AsmtV4Field id="asmt-v4-b13-other" label="Please tell us which medication" value={freeText}
           onChange={onFreeText} />}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// B1.1 · journey question with an INLINE conditional reveal (Vf C-WL.1).
+// One screen, two questions: picking a journey option that implies medication
+// use opens "Which medication?" underneath instead of routing to its own screen.
+//
+// The reveal is a real <section> with its own heading, not a visual afterthought
+// — a screen reader meets it as a second labelled group. aria-live announces its
+// arrival, because for a sighted user it appears in direct response to the tap
+// and a non-visual user would otherwise never learn the screen just grew.
+// ---------------------------------------------------------------------------
+function AsmtV4JourneyWithReveal({
+  options, value, onSelect, cards, labelledBy,
+  reveal, revealOpen, medValue, medOther, freeValue, onMedSelect, onMedOther,
+}) {
+  const headingId = "asmt-v4-b11-reveal-heading";
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-6)" }}>
+      <AsmtV4SingleSelectList options={options} value={value} onSelect={onSelect}
+        cards={cards} labelledBy={labelledBy} />
+
+      {/* aria-live on the WRAPPER, which is always mounted — announcing from an
+          element that only appears with the content is unreliable, since some
+          screen readers never see it become live. */}
+      <div aria-live="polite">
+        {revealOpen &&
+          <section aria-labelledby={headingId} className="asmt-v4-anim"
+            style={{
+              display: "flex", flexDirection: "column", gap: "var(--spacing-3)",
+              borderTop: "1px solid var(--border-subtle)", paddingTop: "var(--spacing-5)",
+            }}>
+            <h3 id={headingId} style={{
+              margin: 0, fontSize: "var(--text-lg)", lineHeight: 1.3,
+              fontWeight: "var(--font-weight-semibold)",
+              fontFamily: "var(--font-family-display, var(--font-family-base))",
+              color: "var(--text-default)",
+            }}>{reveal.title}</h3>
+            <AsmtV4SingleSelectList options={reveal.options} value={medValue}
+              onSelect={onMedSelect} cards={cards} labelledBy={headingId} />
+            {medValue === freeValue &&
+              <AsmtV4Field id="asmt-v4-b11-med-other" label="Please tell us which medication"
+                value={medOther} onChange={onMedOther} />}
+          </section>}
+      </div>
     </div>
   );
 }
@@ -1423,7 +1470,7 @@ function AsmtV4HeroHeader({ screen, headingRef, headingId }) {
 Object.assign(window, {
   AsmtV4Progress, AsmtV4MultiSelectCards, AsmtV4Checkboxes, AsmtV4Chips,
   AsmtV4SingleSelectList, AsmtV4SingleSelectCards, AsmtV4DynamicSingleSelect, AsmtV4YesNoGate,
-  AsmtV4SingleSelectWithFreeText, AsmtV4Field, AsmtV4Select,
+  AsmtV4SingleSelectWithFreeText, AsmtV4JourneyWithReveal, AsmtV4Field, AsmtV4Select,
   AsmtV4ContactShippingFields, AsmtV4ContactFields, AsmtV4Snapshot,
   AsmtV4Phrase, AsmtV4Placeholder, AsmtV4Fork, AsmtV4Result, AsmtV4HeroHeader,
   AsmtV4Button, AsmtV4GoalCard, AsmtV4PillCard, AsmtV4BubbleCard, AsmtV4BubbleField,

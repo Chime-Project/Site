@@ -27,7 +27,7 @@
 // B2.2 / B3.1 / B4.1 no longer exist and A3 swapped dob+address for age, so a
 // session saved under the previous key could restore onto a deleted screen or
 // a field list that is gone. A new key retires those sessions cleanly.
-const ASMT_V4_STORE_KEY = "chime_assessment_v4_3";
+const ASMT_V4_STORE_KEY = "chime_assessment_v4_4";
 const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
 
 // Visual order of A3 fields, for focusing the first field needing attention.
@@ -227,12 +227,31 @@ function ChimeAssessmentFlowV4() {
   const setSingle = (value, noAuto) => {
     setState((s) => {
       const a = { ...s.answers, [s.screenId]: value };
-      // A changed B1.3 answer switches the dose ladder — the old dose would be
-      // from the wrong ladder, so it never survives the change.
-      if (s.screenId === "B1.3" && s.answers["B1.3"] !== value) delete a["B1.4"];
       return { ...s, answers: asmtV4Prune(a) };
     });
     if (screen.autoAdvance && !noAuto) scheduleAdvance();
+  };
+
+  // B1.1 · the journey pick. It behaves as a normal auto-advancing single-select
+  // EXCEPT when the chosen option opens the inline "Which medication?" reveal —
+  // advancing there would carry the sub-question off-screen before it could be
+  // answered. So the jump is suppressed for exactly those two options.
+  const setJourney = (value) => {
+    const opensReveal = cfg.b11RevealValues.indexOf(value) >= 0;
+    setState((s) => ({ ...s, answers: asmtV4Prune({ ...s.answers, "B1.1": value }) }));
+    if (!opensReveal) scheduleAdvance();
+  };
+
+  // A changed medication answer switches the dose ladder, so the old dose would
+  // be from the wrong ladder and never survives the change. "Others" opens a
+  // free-text field, so that one pick must not jump either.
+  const setJourneyMed = (value) => {
+    setState((s) => {
+      const a = { ...s.answers, "B1.1_med": value };
+      if (s.answers["B1.1_med"] !== value) delete a["B1.4"];
+      return { ...s, answers: asmtV4Prune(a) };
+    });
+    if (value !== cfg.b11OtherValue) scheduleAdvance();
   };
 
   const chooseFork = (value) => {
@@ -308,10 +327,16 @@ function ChimeAssessmentFlowV4() {
       if (!answers.A6 || asmtV4SnapshotTier(answers) === null)
         return say("Please add your height and weight to continue.");
     }
-    if ((t === "list" || t === "gate" || t === "dynlist" || t === "listFree") && !answers[screenId])
+    if ((t === "list" || t === "gate" || t === "dynlist" || t === "listFree" || t === "journey") && !answers[screenId])
       return say("Please choose an option to continue.");
-    if (t === "listFree" && answers[screenId] === cfg.b13OtherValue && !String(answers["B1.3_other"] || "").trim())
-      return say("Please tell us which medication — or choose another option.");
+    // B1.1's inline reveal is part of the SAME screen, so Continue must not pass
+    // while it sits open and unanswered — otherwise the merge would quietly lose
+    // the medication answer the two old screens used to guarantee.
+    if (t === "journey" && cfg.b11RevealValues.indexOf(answers[screenId]) >= 0) {
+      if (!answers["B1.1_med"]) return say("Please tell us which medication to continue.");
+      if (answers["B1.1_med"] === cfg.b11OtherValue && !String(answers["B1.1_med_other"] || "").trim())
+        return say("Please tell us which medication — or choose another option.");
+    }
     setState(stepForward);
   };
 
@@ -398,17 +423,20 @@ function ChimeAssessmentFlowV4() {
           labelledBy={headingId} />
       : <AsmtV4YesNoGate options={screen.options} value={answers[screenId]} onSelect={setSingle}
           bubbles={screen.bubbles} labelledBy={headingId} />;
-  else if (screen.type === "listFree")
+  else if (screen.type === "journey")
     body = (
-      <AsmtV4SingleSelectWithFreeText options={screen.options} freeValue={cfg.b13OtherValue}
-        value={answers[screenId]} freeText={answers["B1.3_other"]}
-        onSelect={(v) => setSingle(v, v === cfg.b13OtherValue)} bubbles={screen.bubbles} cards={screen.cards}
-        labelledBy={headingId}
-        onFreeText={(v) => setState((s) => ({ ...s, answers: { ...s.answers, "B1.3_other": v } }))} />
+      <AsmtV4JourneyWithReveal options={screen.options} value={answers[screenId]}
+        onSelect={setJourney} cards={screen.cards} labelledBy={headingId}
+        reveal={screen.reveal}
+        revealOpen={cfg.b11RevealValues.indexOf(answers[screenId]) >= 0}
+        medValue={answers["B1.1_med"]} medOther={answers["B1.1_med_other"]}
+        freeValue={cfg.b11OtherValue}
+        onMedSelect={setJourneyMed}
+        onMedOther={(v) => setState((s) => ({ ...s, answers: { ...s.answers, "B1.1_med_other": v } }))} />
     );
   else if (screen.type === "dynlist")
     body = (
-      <AsmtV4DynamicSingleSelect ladders={screen.ladders} dependsOn={answers["B1.3"]}
+      <AsmtV4DynamicSingleSelect ladders={screen.ladders} dependsOn={answers["B1.1_med"]}
         value={answers[screenId]} onSelect={setSingle} bubbles={screen.bubbles} cards={screen.cards}
         labelledBy={headingId} />
     );
@@ -434,7 +462,7 @@ function ChimeAssessmentFlowV4() {
     );
 
   const showContinue = ["cards", "checkboxes", "contact", "chips", "snapshot",
-    "list", "gate", "listFree", "dynlist", "placeholder"].indexOf(screen.type) >= 0;
+    "list", "gate", "listFree", "dynlist", "journey", "placeholder"].indexOf(screen.type) >= 0;
   const showBack = idx > 0 && screen.type !== "result";
 
   return (

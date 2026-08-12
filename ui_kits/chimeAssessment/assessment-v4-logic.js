@@ -10,7 +10,7 @@
 //   A3: { firstName, lastName, email, phone, address1, address2, city, zip,
 //         state, dob }
 //   A4: [feeling, …]         A5: option             A6: { weightLbs, heightFt, heightIn }
-//   "B1.1": [..] · "B1.2": "Yes"/"No" · "B1.3": option · "B1.3_other": text ·
+//   "B1.1": option (single-select) · "B1.1_med": option · "B1.1_med_other": text ·
 //   "B1.4": dose · "B1.5": [..] · "B2.1".. etc. per screen id.
 //   Phrase/placeholder screens store `true` when their CTA is pressed, so
 //   restore can land on the first incomplete screen.
@@ -107,16 +107,16 @@
   }
 
   // Screens of one branch given the current answers (conditional skips live
-  // here: B1.2 "No" → B1.5 · B1.3 "Others" → skip B1.4 · B3.1 skip value →
-  // remainder of B3 including the ✦ closer).
+  // here: B1.1 without a medication answer → skip B1.4 · B1.1_med "Others" →
+  // skip B1.4 · B3.2 skip value → remainder of B3 including the ✦ closer).
   function v4BranchScreens(branch, answers) {
     var cfg = CFG();
     if (branch === "B1") {
-      var ids = ["B1.1", "B1.2"];
-      if (answers["B1.2"] === cfg.b12ShowValue) {
-        ids.push("B1.3");
-        if (answers["B1.3"] && answers["B1.3"] !== cfg.b13OtherValue) ids.push("B1.4");
-      }
+      // B1.2 / B1.3 are merged INTO B1.1 as an inline reveal (Vf C-WL.1), so
+      // the only screen the medication answer can still add is the dose ladder.
+      var ids = ["B1.1"];
+      var med = answers["B1.1_med"];
+      if (med && med !== cfg.b11OtherValue) ids.push("B1.4");
       return ids.concat(["B1.5", "B1.C"]);
     }
     if (branch === "B2") return ["B2.1", "B2.3", "B2.C"]; // B2.2 deleted (Vf)
@@ -161,12 +161,20 @@
     for (var pass = 0; pass < 8; pass++) {
       var queue = v4Queue(out), changed = false;
       for (k in out) {
-        var screenKey = k === "B1.3_other" ? "B1.3" : k;
+        // B1.1's inline reveal stores two satellite answers against the B1.1
+        // screen; both live or die with it.
+        var screenKey = (k === "B1.1_med" || k === "B1.1_med_other") ? "B1.1" : k;
         if (!v4ScreenById(screenKey)) continue; // not a screen-keyed answer
         if (queue.indexOf(screenKey) < 0) { delete out[k]; changed = true; }
       }
-      if (out["B1.3_other"] !== undefined && out["B1.3"] !== CFG().b13OtherValue) {
-        delete out["B1.3_other"]; changed = true;
+      // The reveal is closed unless the journey answer is one that opens it —
+      // so a medication answer left behind by a changed pick cannot survive.
+      if (out["B1.1_med"] !== undefined &&
+          CFG().b11RevealValues.indexOf(out["B1.1"]) < 0) {
+        delete out["B1.1_med"]; changed = true;
+      }
+      if (out["B1.1_med_other"] !== undefined && out["B1.1_med"] !== CFG().b11OtherValue) {
+        delete out["B1.1_med_other"]; changed = true;
       }
       if (!changed) break;
     }
@@ -371,12 +379,15 @@
   function v4WhyBullets(answers, pathId) {
     var why = CFG().why, out = [];
 
-    var b11 = answers["B1.1"] || [];
+    // B1.1 is SINGLE-select as of Vf C-WL.1, so this is a string, not an array.
+    // Reading it by index (the old b11[0]) would return the first CHARACTER and
+    // silently drop the bullet.
+    var b11 = answers["B1.1"] || "";
     var b15 = answers["B1.5"] || [];
     var b32 = answers["B3.2"] || [];
     var b43 = answers["B4.3"] || [];
 
-    function journeyBullet() { return b11.length ? why.journey[b11[0]] : null; }
+    function journeyBullet() { return b11 ? (why.journey[b11] || null) : null; }
     function strugglesBullet() { return b15.length ? why.struggles.lead + v4JoinList(b15, true) + why.struggles.tail : null; }
     // B2.2 is deleted (Vf), so the energy bullet has no source. Kept as a stub
     // returning null — the order arrays below still list it, and re-sourcing it

@@ -141,9 +141,18 @@
     // means a change to the A2G option list can't silently strand the rule.
     a2gAsksPregnancy: "Female",
 
-    // B1.2 gate / B1.3 free-text + dose-skip values.
-    b12ShowValue: "Yes",
-    b13OtherValue: "Others",
+    // B1.1's inline medication reveal (Vf C-WL.1). Picking either of these two
+    // journey answers opens the "Which medication?" sub-question ON THE SAME
+    // SCREEN — they are the two options that already state the person has used
+    // Semaglutide/Tirzepatide, which is why the old B1.2 Yes/No gate is gone.
+    // These strings must stay identical to the B1.1 options they name.
+    b11RevealValues: [
+      "Currently using Semaglutide or Tirzepatide and want better support",
+      "Used Semaglutide or Tirzepatide before and stopped",
+    ],
+    // The sub-question's free-text option. Selecting it must NOT auto-advance,
+    // or the text field it opens would leave with the screen.
+    b11OtherValue: "Others",
 
     // B4.3 compliance gate: ONLY these two may be named in results. Every
     // other area gets the generic message until compliance clears BPC-157,
@@ -308,51 +317,54 @@
 
       // ---- B1 · Weight Loss Path ----
       {
-        id: "B1.1", block: "B", branch: "B1", type: "chips", label: "b1-1-journey",
-        // presentation only: circular options with soda-bubble motion, as A4.
-        bubbles: true,
+        // Vf C-WL.1 — "Single-select, with an inline conditional reveal".
+        // SINGLE-select now (it was multi-select chips), so the answer is a
+        // STRING, not an array — see journeyBullet() in the logic, which reads
+        // it directly rather than by index.
+        //
+        // The former B1.2 ("Have you tried any weight-loss medication before?")
+        // and B1.3 ("What medications have you taken in the past?") are DELETED
+        // and merged in here: the last two options already state that the person
+        // has used medication, so the Yes/No gate asked nothing new.
+        //
+        // autoAdvance is deliberately ABSENT. A single-select screen normally
+        // jumps on the pick (client request 2), but here a pick can OPEN the
+        // reveal — jumping would take the sub-question away before it could be
+        // answered. The flow advances only on the non-revealing options; see
+        // setSingle's b11RevealValues check.
+        id: "B1.1", block: "B", branch: "B1", type: "journey", label: "b1-1-journey",
+        cards: true, // presentation only: A1-style option cards
         title: "What best describes your weight loss journey so far?",
         // Brand-name clarifiers (Ozempic/Wegovy/Zepbound/Mounjaro) pending legal approval — leave out.
         options: [
-          "Just starting to explore options",
-          "Tried many diets or lifestyle programs before",
-          "Currently using Semaglutide or Tirzepatide and want better support",
-          "Used Semaglutide or Tirzepatide before and stopped",
+          { value: "Just starting to explore options", icon: "compass" },
+          { value: "Tried many diets or lifestyle programs before", icon: "refresh" },
+          { value: "Currently using Semaglutide or Tirzepatide and want better support", icon: "syringe" },
+          { value: "Used Semaglutide or Tirzepatide before and stopped", icon: "pill" },
         ],
-      },
-      {
-        id: "B1.2", block: "B", branch: "B1", type: "gate", label: "b1-2-med-gate",
-        autoAdvance: true,
-        // presentation only: A1-style icon cards. `value` stays the bare string
-        // the routing compares against (b12ShowValue === "Yes").
-        cards: true,
-        title: "Have you tried any weight-loss medication before?",
-        options: [
-          { value: "Yes", icon: "checkCircle" },
-          { value: "No", icon: "ban" },
-        ],
-      },
-      {
-        id: "B1.3", block: "B", branch: "B1", type: "listFree", label: "b1-3-past-meds",
-        // "Others" opens a free-text field, so that one option must NOT jump —
-        // the flow passes noAuto for it (AssessmentV4Flow.jsx, setSingle).
-        autoAdvance: true,
-        cards: true, // presentation only: A1-style option cards
-        title: "What medications have you taken in the past?",
-        options: [
-          { value: "Semaglutide", icon: "syringe" },
-          { value: "Tirzepatide", icon: "syringe" },
-          { value: "Another GLP-based medication (GLP-Squared, Retatrutide)", icon: "pill" }, // verify product name against source doc
-          { value: "Others", icon: "help" },
-        ],
+        // The inline reveal. Rendered on this same screen, below the options,
+        // whenever the selected value is in b11RevealValues.
+        reveal: {
+          title: "Which medication?",
+          options: [
+            { value: "Semaglutide", icon: "syringe" },
+            { value: "Tirzepatide", icon: "syringe" },
+            { value: "Another GLP-based medication (GLP-Squared, Retatrutide)", icon: "pill" }, // verify product name against source doc
+            { value: "Others", icon: "help" },
+          ],
+        },
       },
       {
         id: "B1.4", block: "B", branch: "B1", type: "dynlist", label: "b1-4-dose",
         autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
         title: "Which dose most closely matches your most recent weekly dose?",
+        // KEPT ON PURPOSE. Vf moves the dose question to C-WL.9 (an 11-option
+        // verbatim ladder) inside the legal screening block, which cannot be
+        // built yet — deleting this now would drop dose capture with nothing
+        // replacing it. Re-gated on B1.1's inline medication answer.
         // Ladder values not in the doc — clearly-labeled placeholders, trivial
-        // to swap. Keyed by the B1.3 answer.
+        // to swap. Keyed by the B1.1_med answer.
         // ASSUMPTION — the doc names a Semaglutide ladder and a GLP-Squared/
         // Retatrutide ladder only; Tirzepatide gets its own placeholder ladder.
         ladders: {
