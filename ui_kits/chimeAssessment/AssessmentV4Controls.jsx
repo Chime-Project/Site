@@ -1013,7 +1013,7 @@ function AsmtV4ContactShippingFields({ value, errors, onField, onBlur, states })
 // Height and weight are NOT here — they live in A6. Sex is no longer here
 // either: it became its own screen (A2G) so the pregnancy question could sit
 // directly after it, per the client's request.
-function AsmtV4ContactFields({ value, errors, onField, onBlur, states, maskDob }) {
+function AsmtV4ContactFields({ value, errors, onField, onBlur }) {
   const d = value || {}, e = errors || {};
   return (
     <div className="asmt-v4-grid2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-4)" }}>
@@ -1021,12 +1021,14 @@ function AsmtV4ContactFields({ value, errors, onField, onBlur, states, maskDob }
         value={d.firstName} error={e.firstName} onChange={(v) => onField("firstName", v)} onBlur={() => onBlur("firstName")} />
       <AsmtV4Field id="asmt-v4-last" label="Last name" autoComplete="family-name" required
         value={d.lastName} error={e.lastName} onChange={(v) => onField("lastName", v)} onBlur={() => onBlur("lastName")} />
-
-      <AsmtV4ContactShippingFields value={d} errors={e} onField={onField} onBlur={onBlur} states={states} />
-
-      <AsmtV4Field id="asmt-v4-dob" label="Date of Birth" placeholder="MM/DD/YYYY" inputMode="numeric"
-        autoComplete="bday" required
-        value={d.dob} error={e.dob} onChange={(v) => onField("dob", maskDob(v))} onBlur={() => onBlur("dob")} />
+      {/* Age, not date of birth — Vf defers the exact DOB. Digits only, so the
+          numeric keypad opens on mobile and the value parses without masking. */}
+      <AsmtV4Field id="asmt-v4-age" label="Age" type="number" inputMode="numeric" placeholder="42" required
+        value={d.age} error={e.age} onChange={(v) => onField("age", v)} onBlur={() => onBlur("age")} />
+      <AsmtV4Field id="asmt-v4-email" label="Email" type="email" autoComplete="email" required
+        value={d.email} error={e.email} onChange={(v) => onField("email", v)} onBlur={() => onBlur("email")} />
+      <AsmtV4Field id="asmt-v4-phone" label="Phone" type="tel" inputMode="tel" autoComplete="tel" required
+        value={d.phone} error={e.phone} onChange={(v) => onField("phone", v)} onBlur={() => onBlur("phone")} />
     </div>
   );
 }
