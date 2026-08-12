@@ -153,7 +153,7 @@ function ChimeSimplePathSection({ theme = "default", title = "A Simple Path Forw
           ) : null}
         </div>
         {ctaLabel ? (
-          <a href="assessment.html"
+          <a href="chimeAssessment.html"
             onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
             onMouseEnter={() => setLinkHover(true)}
             onMouseLeave={() => setLinkHover(false)}

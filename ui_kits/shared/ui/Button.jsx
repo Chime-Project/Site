@@ -2,8 +2,8 @@
 //   variant: "primary" | "secondary" | "ghost"
 //   tone:    "onLight" (default) | "onDark"  — the surface the button sits on
 //   size:    "tiny" | "compact" | "small" | "cta" | "default" | "large"
-//   onClick: handler → renders <button>; omit → <a href="assessment.html"> (the assessment;
-//   via window.openChimeAssessment() so assessment.html can scroll instead of reload)
+//   onClick: handler → renders <button>; omit → <a href="chimeAssessment.html"> (the assessment;
+//   via window.openChimeAssessment() so chimeAssessment.html can scroll instead of reload)
 // Colors bind to --accent-* + --text-*/neutral only, so buttons follow the page theme.
 
 const BTN_SIZE = {
@@ -40,7 +40,7 @@ function Button({ label, variant = "primary", tone = "onLight", size = "cta", on
   const Tag = onClick ? "button" : "a";
   const tagProps = onClick
     ? { onClick }
-    : { href: "assessment.html", onClick: (e) => { if (window.openChimeAssessment) { e.preventDefault(); window.openChimeAssessment(); } } };
+    : { href: "chimeAssessment.html", onClick: (e) => { if (window.openChimeAssessment) { e.preventDefault(); window.openChimeAssessment(); } } };
   return (
     <Tag {...tagProps}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}

@@ -366,7 +366,7 @@ function NadOffer() {
             borderTop: "2px dashed var(--border-default)",
             margin: "var(--spacing-6) calc(-1 * var(--spacing-8))",
           }} />
-          <a href="assessment.html" onClick={goAssessment} style={{
+          <a href="chimeAssessment.html" onClick={goAssessment} style={{
             display: "block", background: "var(--primary-default)",
             color: "var(--text-on-primary)", textDecoration: "none",
             borderRadius: "var(--radius-4xl)", padding: "16px 24px",

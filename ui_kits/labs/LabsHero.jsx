@@ -25,7 +25,7 @@ function openChimeAssessmentModal() {
 function ChimeLabsHeroButton({ label }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <a href="assessment.html"
+    <a href="chimeAssessment.html"
       onClick={(e) => { e.preventDefault(); openChimeAssessmentModal(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
