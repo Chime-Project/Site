@@ -8,16 +8,35 @@
      embedded CSS + vanilla JS, no build step, no libraries. Amerilean theme;
      color literals are duplicated in :root because this page loads no site
      stylesheet.
-     All product claims are verbatim from the reviewed copy in
-     "uploads/Upsell product pages.md" (Zofran block) — do not strengthen them.
+     COPY SOURCE — read this before changing any wording.
+     Authority is the client's Google Doc "Upsell product pages", and it is NOT
+     unreadable: the /edit URL yields only the Docs UI shell, but /export returns
+     the text with no auth. Always re-read the real thing:
+       curl -sL "https://docs.google.com/document/d/1hpDx-BJYDJZUQ4w36vjiz6IYAtf4aThGrp1epXCHcQo/export?format=md"
+     uploads/ holds a cache of that export, re-fetched 2026-08-12.
+     Why this warning exists: on 2026-08-12 an Aug-4 cache was trusted instead of
+     the doc, and it had drifted on all six hero lines — every heading and every
+     subhead. The doc had been re-cut to an "Add X To Your Cart" pattern while the
+     cache still read "Add X To Support Your Y Goals". That produced a wrong
+     heading on two pages. Re-fetch; never audit copy against a cached file.
+     ⚠️ Typo in the doc, NOT reproduced: its NAD+ heading reads "Add NAD+ To Your
+     cart" (lower-case c) where Tesamorelin and Zofran both read "To Your Cart".
+     Set as "Cart" here for consistency. Flagged to the client.
+     Claims are verbatim from the doc — do not strengthen them.
+     ⚠️ ONE APPROVED DIVERGENCE: the doc says "Chime" in every closing-section
+     sentence ("your Chime plan/experience/journey"). These pages say AMERILEAN,
+     confirmed correct 2026-08-12 — the doc pre-dates the rebrand, and the footer
+     logo, the "Amerilean Experience" heading and the colour theme are all
+     Amerilean. The override covers the BRAND NAME ONLY; on every other word the
+     doc wins.
      Zofran differs from the other two upsells in three ways that matter:
        1. It has FIVE benefits, not six. The .benefit nth-child ramp still lands
           correctly (panel 5 = teal, light ink) and the funnel is cut to five
           slices — do not pad it to six.
        2. It is an ORAL TABLET, so there is no vial — do NOT drop one in. Both
           product slots (hero + recap) show the client's tablet render. That
-          render carries the AMERILEAN mark, not Zofran's own imprint, which is
-          a trade-dress question rather than a design one. LEGAL MUST CONFIRM.
+          render carries the AMERILEAN mark, not Zofran's own imprint, which is a
+          trade-dress question rather than a design one. LEGAL MUST CONFIRM.
        3. The NAD+ page's DSHEA footer sentence ("not evaluated by the Food and
           Drug Administration ... not intended to diagnose, treat, cure") is a
           DIETARY-SUPPLEMENT disclaimer and is plainly wrong on an FDA-approved
@@ -197,8 +216,33 @@
   }
   /* The funnel stretches horizontally (preserveAspectRatio="none") because it is
      full-bleed decoration: the slices only have to stay aligned to the panel
-     columns above them, and its height is set here rather than by the viewBox. */
-  .funnel { display: none; width: 100%; height: clamp(68px, 6.4vw, 96px); }
+     columns above them, and its height is set here rather than by the viewBox.
+     Taper and base are SEPARATE elements on purpose. They used to be one svg,
+     but preserveAspectRatio="none" scales a viewBox uniformly — growing the base
+     to reach the section's bottom edge would have flattened the taper with it.
+     Split, each gets its own height. */
+  .funnel { display: none; width: 100%; height: clamp(40px, 3.8vw, 57px); }
+  /* 55% wide and centred, which is exactly the taper's neck (viewBox x 135-465
+     of 600), so the cells continue the slices above them. The height absorbs what
+     used to be the section's desktop padding-bottom plus the old in-svg base —
+     that is how the diagram reaches the slate band without the section growing. */
+  .funnel-base {
+    display: none; width: 55%; margin: 0 auto;
+    height: clamp(96px, 9.2vw, 133px);
+    grid-template-columns: repeat(5, 1fr);
+  }
+  /* 0.38 reproduces the white veil this used to paint inside the svg (1 - 0.62),
+     so the base is a faithful continuation of the taper's neck. Note the first
+     cell is all but invisible against the porcelain ground — mist-100 is already
+     a near-canvas tint, and raising the opacity does not fix it (0.48 moves that
+     cell by 2/255). Panel 1 above has exactly the same property. The only real
+     fix is starting the ramp on a darker colour, which is a palette decision. */
+  .funnel-base span { opacity: 0.38; }
+  .funnel-base span:nth-child(1) { background: var(--mist-100); }
+  .funnel-base span:nth-child(2) { background: var(--mist); }
+  .funnel-base span:nth-child(3) { background: var(--sand); }
+  .funnel-base span:nth-child(4) { background: var(--terra); }
+  .funnel-base span:nth-child(5) { background: var(--teal); }
   @media (min-width: 600px) { .benefit-cols { grid-template-columns: repeat(3, 1fr); } }
   @media (min-width: 768px) {
     /* Desktop only: the band no longer runs flush into the recap. Same
@@ -214,6 +258,11 @@
     .benefit-cols { grid-template-columns: repeat(5, 1fr); }
     .benefit:last-child { grid-column: auto; }
     .funnel { display: block; }
+    .funnel-base { display: grid; }
+    /* The base occupies this space now — it has to end ON the slate band,
+       so nothing may sit under it. 768-899px keeps the padding, since
+       neither taper nor base renders there. */
+    .benefits { padding-bottom: 0; }
   }
   @media (max-width: 767px) {
     .benefits { margin-bottom: 56px; } /* desktop stays flush into the next band */
@@ -344,9 +393,9 @@
   <section class="hero" id="hero" aria-labelledby="hero-title">
     <div class="wrap-wide hero-grid">
       <div>
-        <h1 id="hero-title">Add Zofran For Nausea Support</h1>
+        <h1 id="hero-title">Add Zofran To Your Cart</h1>
         <p class="sub">Some people experience nausea as their body adjusts to a new
-          treatment plan. Zofran is available as an added support option for just
+          treatment plan. Zofran is available for just
           <span class="price" data-price>[PRICE]</span>.</p>
         <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add Zofran To My Plan</button>
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
@@ -442,13 +491,15 @@
         <p class="benefit-title">Peace of mind if nausea becomes a concern</p>
       </div>
     </div>
-    <!-- The funnel. 5 slices tile the trapezoid
-         (0,0)-(600,0)-(465,64)-(135,64) exactly, so ONE dark path over
-         all of them darkens every slice by the same amount — the diagram's shaded
-         taper — instead of needing 5 hand-mixed shades that would drift from the
-         palette. The pale base row gets the same trick in reverse with a white
-         veil. Neck is 55% of the width, matching the reference. -->
-    <svg class="funnel" viewBox="0 0 600 108" preserveAspectRatio="none"
+    <!-- The funnel, in two parts. The taper's 5 slices tile the trapezoid
+         (0,0)-(600,0)-(465,64)-(135,64) exactly, so ONE dark path over all of them
+         darkens every slice by the same amount — the diagram's shaded taper —
+         instead of needing 5 hand-mixed shades that would drift from the palette.
+         The pale base that follows is a plain grid rather than more svg, so it can
+         be as tall as it needs without flattening the taper; it runs to the
+         section's bottom edge, meeting the slate band. Both are 55% at the neck,
+         matching the reference. -->
+    <svg class="funnel" viewBox="0 0 600 64" preserveAspectRatio="none"
       aria-hidden="true" focusable="false">
       <g>
         <polygon points="0,0 120,0 201,64 135,64" fill="var(--mist-100)"/>
@@ -458,22 +509,21 @@
         <polygon points="480,0 600,0 465,64 399,64" fill="var(--teal)"/>
       </g>
       <path d="M0 0 H600 L465 64 H135 Z" fill="#1E2A44" opacity="0.22"/>
-      <g>
-        <rect x="135" y="64" width="66" height="44" fill="var(--mist-100)"/>
-        <rect x="201" y="64" width="66" height="44" fill="var(--mist)"/>
-        <rect x="267" y="64" width="66" height="44" fill="var(--sand)"/>
-        <rect x="333" y="64" width="66" height="44" fill="var(--terra)"/>
-        <rect x="399" y="64" width="66" height="44" fill="var(--teal)"/>
-      </g>
-      <rect x="135" y="64" width="330" height="44" fill="#FFFFFF" opacity="0.62"/>
     </svg>
+    <div class="funnel-base" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </section>
 
   <!-- 5. Final offer recap -->
   <section class="recap on-dark" id="offer" aria-labelledby="offer-title">
     <div class="wrap">
       <h2 id="offer-title">Add Zofran</h2>
-      <p class="sub">Zofran is available as an added support option for just
+      <p class="sub">Zofran is available for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
         <!-- Real tablet render, delivered 2026-08-12 — this replaces the
