@@ -162,7 +162,7 @@ function TestimonialStatCTA({ delay }) {
   const [ref, revealStyle] = useReveal(delay);
   const [hover, setHover] = React.useState(false);
   return (
-    <a ref={ref} href="assessment.html"
+    <a ref={ref} href="chimeAssessment.html"
       onClick={function (e) { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={function () { setHover(true); }}
       onMouseLeave={function () { setHover(false); }}

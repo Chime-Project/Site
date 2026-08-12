@@ -8,7 +8,7 @@ const NAV_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
   "Health, Energy & Wellness": "wellness.html",
   "Labs": "labs.html",
-  "Assessment": "assessment.html",
+  "Assessment": "chimeAssessment.html",
 };
 const navHref = (label) => NAV_HREFS[label] || "#";
 

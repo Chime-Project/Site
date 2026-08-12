@@ -10,7 +10,7 @@ const FOOTER_HREFS = window.CHIME_NAV_HREFS || {
   "Weight Loss": "weight-loss.html",
   "Health, Energy & Wellness": "wellness.html",
   "Labs": "labs.html",
-  "Assessment": "assessment.html",
+  "Assessment": "chimeAssessment.html",
 };
 // FAQs lives outside FOOTER_HREFS: pages override CHIME_NAV_HREFS for the
 // product nav, and that override must not be able to drop the FAQ link.
@@ -134,7 +134,7 @@ function FooterCta({ label }) {
   const [hover, setHover] = React.useState(false);
   return (
     <a
-      href="assessment.html"
+      href="chimeAssessment.html"
       onClick={(e) => { if (window.openChimeAssessment) { e.preventDefault(); window.openChimeAssessment(); } }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}

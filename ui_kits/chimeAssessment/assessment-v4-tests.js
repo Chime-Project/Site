@@ -1,5 +1,5 @@
 // Chime Health — Assessment v4 routing/scoring tests.
-// Run:  node ui_kits/assessment2/assessment-v4-tests.js
+// Run:  node ui_kits/chimeAssessment/assessment-v4-tests.js
 // No framework: data + logic attach to globalThis (they are DOM-free), and a
 // tiny check() wrapper counts passes/failures, prints a summary, and exits
 // non-zero on any failure.

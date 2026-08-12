@@ -59,7 +59,7 @@ function FaqItem({ item, open, onToggle, last }) {
               return <FaqBlock key={bi} block={block} />;
             })}
             {item.cta ? (
-              <a href="assessment.html"
+              <a href="chimeAssessment.html"
                 onClick={(e) => { if (window.openChimeAssessment) { e.preventDefault(); window.openChimeAssessment(); } }}
                 style={{
                   fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",
@@ -181,7 +181,7 @@ function ChimeFaqBrowser({ theme = "default" }) {
               fontSize: "var(--text-base)", lineHeight: 1.6, color: "var(--fg-muted)",
             }}>{closing.body}</p>
             {Btn ? <Btn label={closing.cta} /> : (
-              <a href="assessment.html"
+              <a href="chimeAssessment.html"
                 onClick={(e) => { if (window.openChimeAssessment) { e.preventDefault(); window.openChimeAssessment(); } }}
                 style={{
                   fontSize: "var(--text-base)", fontWeight: "var(--font-weight-semibold)",

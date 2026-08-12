@@ -247,9 +247,10 @@ function asmtV4CardHover(el, entering) {
 }
 
 // Animated Back/Continue. A separate component ON PURPOSE: the v1 AsmtButton
-// it mirrors is shared with the live assessment.html, so adding motion there
-// would ship animation to production. Same rest styling, so the two pages still
-// look identical when neither is hovered.
+// it mirrors lives in ui_kits/assessment/AssessmentControls.jsx, which this page
+// still loads and assessment.html shares, so adding motion there would change
+// both. Same rest styling, so the two pages still look identical when neither
+// is hovered.
 function asmtV4BtnMotion(btn, fill, entering, disabled) {
   const g = window.gsap;
   if (disabled || !g || typeof matchMedia !== "function") return;
@@ -1151,7 +1152,7 @@ function AsmtV4Phrase({ title, supportingLine, cta, onCta, headingRef, copyNeede
   // and the photo RIGHT on purpose: the subject is looking down and to her
   // left, so from that side her gaze falls into the message rather than off
   // the edge of the screen. On narrow viewports the columns stack and the
-  // photo takes the lead (see .asmt-v4-phrase-media order in assessment2.html)
+  // photo takes the lead (see .asmt-v4-phrase-media order in chimeAssessment.html)
   // — the mood should land before the words on a phone.
   return (
     <div style={{ ...shell, padding: "var(--spacing-10) var(--spacing-2)", display: "block" }}>
@@ -1382,7 +1383,7 @@ function AsmtV4HeroHeader({ screen, headingRef, headingId }) {
           src={uploads + "/assesstV1-web.mp4"}
           autoPlay muted loop playsInline
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
-        {/* Classed so the narrow-viewport rule in assessment2.html can deepen
+        {/* Classed so the narrow-viewport rule in chimeAssessment.html can deepen
             the left end. The clip carries a baked-in "Chime Health" wordmark
             on its left third and no crop can clear it at 390px — see the
             .feel-scrim rule there for why. */}

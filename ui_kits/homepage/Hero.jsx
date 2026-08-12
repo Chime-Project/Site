@@ -54,7 +54,7 @@ function ChimeHero() {
 function ProductHeroCard({ slotId, brand, product, price, src }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <a href="assessment.html" data-theme="default" className="hero-product-card"
+    <a href="chimeAssessment.html" data-theme="default" className="hero-product-card"
       onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -101,7 +101,7 @@ function ProductHeroCard({ slotId, brand, product, price, src }) {
 function TreatmentPathCard({ slotId, src }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <a href="assessment.html" data-theme="default"
+    <a href="chimeAssessment.html" data-theme="default" className="hero-path-card"
       onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -189,7 +189,7 @@ function CategoryCard({ slotId, theme, pre, accent, accentColor, hoverBg, hoverB
 function StartHereCard({ slotId, src }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <a href="assessment.html"
+    <a href="chimeAssessment.html"
       onClick={(e) => { e.preventDefault(); window.openChimeAssessment && window.openChimeAssessment(); }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
