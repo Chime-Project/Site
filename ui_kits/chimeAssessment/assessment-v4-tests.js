@@ -132,8 +132,10 @@ check("no MULTI-select screen carries autoAdvance (the second pick must stay rea
       .filter(function (s) { return multi[s.type]; })
       .every(function (s) { return !s.autoAdvance; });
   })());
-check("B1.3's free-text option is the one pick that must not jump",
-  g.CHIME_ASSESSMENT_V4.b13OtherValue === "Others");
+check("B1.1's reveal free-text option is the one pick that must not jump",
+  g.CHIME_ASSESSMENT_V4.b11OtherValue === "Others");
+check("B1.1 carries no autoAdvance — a pick may open the inline reveal",
+  !g.CHIME_ASSESSMENT_V4.screens.filter(function (x) { return x.id === "B1.1"; })[0].autoAdvance);
 
 // ---------------------------------------------------------------------------
 // Rule 2 · A2 disqualification fork
@@ -160,16 +162,31 @@ eq("fork → Coaching: A7 still runs, then straight to Block C",
 // ---------------------------------------------------------------------------
 // Rule 5 · Conditional skips
 // ---------------------------------------------------------------------------
-eq("B1.2 'No' → skip directly to B1.5",
-  g.asmtV4BranchScreens("B1", { "B1.2": "No" }), ["B1.1", "B1.2", "B1.5", "B1.C"]);
-eq("B1.2 'Yes', B1.3 unanswered → B1.3 shows, dose waits",
-  g.asmtV4BranchScreens("B1", { "B1.2": "Yes" }), ["B1.1", "B1.2", "B1.3", "B1.5", "B1.C"]);
-eq("B1.3 'Semaglutide' → B1.4 dose screen shows",
-  g.asmtV4BranchScreens("B1", { "B1.2": "Yes", "B1.3": "Semaglutide" }),
-  ["B1.1", "B1.2", "B1.3", "B1.4", "B1.5", "B1.C"]);
-eq("B1.3 'Others' → skip B1.4",
-  g.asmtV4BranchScreens("B1", { "B1.2": "Yes", "B1.3": "Others" }),
-  ["B1.1", "B1.2", "B1.3", "B1.5", "B1.C"]);
+// Vf C-WL.1 · B1.2 + B1.3 are merged into B1.1 as an inline reveal, so the
+// medication answer no longer adds screens of its own — only the dose ladder.
+eq("B1.1 non-reveal answer → straight to B1.5, no medication screens at all",
+  g.asmtV4BranchScreens("B1", { "B1.1": "Just starting to explore options" }), ["B1.1", "B1.5", "B1.C"]);
+eq("B1.1 reveal answer, medication unanswered → still one screen, dose waits",
+  g.asmtV4BranchScreens("B1", { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support" }), ["B1.1", "B1.5", "B1.C"]);
+eq("B1.1_med 'Semaglutide' → B1.4 dose screen shows",
+  g.asmtV4BranchScreens("B1", { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Semaglutide" }),
+  ["B1.1", "B1.4", "B1.5", "B1.C"]);
+eq("B1.1_med 'Others' → skip B1.4 (free text, no ladder to show)",
+  g.asmtV4BranchScreens("B1", { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Others" }),
+  ["B1.1", "B1.5", "B1.C"]);
+check("both reveal-triggering options are real B1.1 options",
+  (function () {
+    var opts = g.CHIME_ASSESSMENT_V4.screens.filter(function (x) { return x.id === "B1.1"; })[0]
+      .options.map(function (o) { return o.value; });
+    return g.CHIME_ASSESSMENT_V4.b11RevealValues.every(function (v) { return opts.indexOf(v) >= 0; });
+  })());
+check("the reveal offers exactly the four medications the doc lists",
+  (function () {
+    var r = g.CHIME_ASSESSMENT_V4.screens.filter(function (x) { return x.id === "B1.1"; })[0].reveal;
+    return r.title === "Which medication?" && r.options.length === 4 &&
+      r.options[0].value === "Semaglutide" && r.options[1].value === "Tirzepatide" &&
+      r.options[3].value === "Others";
+  })());
 // Vf · the standalone B3.1 interest screen is gone; its exit option now lives
 // inline on B3.2, which is multi-select — so the skip tests membership.
 eq("B3.2 exit option → remainder of B3 skipped, closer included in the skip",
@@ -247,12 +264,20 @@ check("gentle out-of-range message, no alarm language",
 // ---------------------------------------------------------------------------
 // Rule 7 · Recompute forward + prune stale answers
 // ---------------------------------------------------------------------------
-eq("prune: flipping B1.2 to 'No' drops B1.3/B1.4 answers",
-  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.2": "No", "B1.3": "Semaglutide", "B1.4": "PLACEHOLDER 0.25 mg" }, A2_CLEAR))["B1.3"],
+eq("prune: switching B1.1 to a non-reveal answer drops the medication answer",
+  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Just starting to explore options", "B1.1_med": "Semaglutide", "B1.4": "PLACEHOLDER 0.25 mg" }, A2_CLEAR))["B1.1_med"],
   undefined);
-eq("prune: B1.3 away from 'Others' drops the free text",
-  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.2": "Yes", "B1.3": "Semaglutide", "B1.3_other": "stale" }, A2_CLEAR))["B1.3_other"],
+eq("prune: …and the dose that hung off it",
+  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Just starting to explore options", "B1.1_med": "Semaglutide", "B1.4": "PLACEHOLDER 0.25 mg" }, A2_CLEAR))["B1.4"],
   undefined);
+eq("prune: B1.1_med away from 'Others' drops the free text",
+  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Semaglutide", "B1.1_med_other": "stale" }, A2_CLEAR))["B1.1_med_other"],
+  undefined);
+check("prune: a reveal answer and its free text survive when the pick still opens the reveal",
+  (function () {
+    var out = g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Others", "B1.1_med_other": "compounded" }, A2_CLEAR));
+    return out["B1.1_med"] === "Others" && out["B1.1_med_other"] === "compounded";
+  })());
 check("prune: dropping the Energy goal clears B2 answers (fixpoint: B2.3's insertions too)",
   (function () {
     var pruned = g.asmtV4Prune(merge(
@@ -415,6 +440,20 @@ check("B4.2 carries the merged safety option",
 eq("B4.3 · 6 options (Vf drops 'General wellness support')", optValues("B4.3").length, 6);
 check("B4.3 keeps the compliance-named areas intact",
   optValues("B4.3").indexOf("Hormone optimization") >= 0 && optValues("B4.3").indexOf("Sexual wellness") >= 0);
+
+// B1.1 went from multi-select (array) to single-select (string). The old
+// journeyBullet did why.journey[b11[0]] — on a string that reads the first
+// CHARACTER, so the bullet would vanish silently rather than error.
+check("the journey bullet resolves from the single-select string answer",
+  (function () {
+    var rec = g.asmtV4Recommendation(merge({
+      A1: ["Lose weight"], "B1.1": "Just starting to explore options",
+    }, A2_CLEAR));
+    return rec.bullets.indexOf(g.CHIME_ASSESSMENT_V4.why.journey["Just starting to explore options"]) >= 0;
+  })());
+check("every remaining B1.1 option has a why.journey bullet",
+  g.CHIME_ASSESSMENT_V4.screens.filter(function (x) { return x.id === "B1.1"; })[0]
+    .options.every(function (o) { return !!g.CHIME_ASSESSMENT_V4.why.journey[o.value]; }));
 
 check("screens deleted by Vf are gone: B2.2, B3.1, B4.1",
   !screen("B2.2") && !screen("B3.1") && !screen("B4.1"));
