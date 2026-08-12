@@ -99,7 +99,7 @@
     background: var(--sand); border-radius: var(--radius-lg);
     overflow: hidden; box-shadow: 0 10px 30px rgba(30, 42, 68, 0.10);
   }
-  .hero-media video { display: block; width: 100%; }
+  .hero-media video { display: block; width: 100%; height: auto; }
   @media (min-width: 768px) {
     .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 400px); gap: 56px; }
   }
@@ -129,7 +129,7 @@
     font-size: clamp(24px, 3.2vw, 34px); line-height: 1.3; margin: 18px 0 0;
   }
   .what-photo {
-    width: 100%; display: block; border-radius: var(--radius-lg);
+    width: 100%; height: auto; display: block; border-radius: var(--radius-lg);
     box-shadow: 0 10px 30px rgba(30, 42, 68, 0.10);
   }
   @media (min-width: 768px) {
@@ -218,7 +218,17 @@
     background: var(--card); color: var(--ink); border-radius: var(--radius-lg);
     padding: 34px 28px 28px; max-width: 440px; margin: 0 auto; overflow: hidden;
   }
-  .recap-card img { height: 180px; display: block; margin: 0 auto 14px; filter: drop-shadow(0 16px 22px rgba(0,0,0,0.16)); }
+  /* The product shot is a photograph standing on its own studio ground, not a
+     transparent cut-out, so it takes the .hero-media treatment (clipped tile,
+     its gray field reading against the white card) instead of a drop-shadow —
+     which on an opaque rectangle would just outline the crop. aspect-ratio +
+     cover keep the tile honest if a non-4:3 render replaces it later. */
+  .recap-card img {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: var(--radius); margin: 0 auto 18px;
+    background: var(--mist-100);
+  }
   .recap-card .name { font-weight: 700; font-size: 26px; }
   .recap-card .note { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -330,7 +340,11 @@
       <p class="sub">Now, you may add NAD+ to your wellness plan for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <img src="uploads/vials/nad-plus.webp" alt="NAD+ vial">
+        <!-- Branded product shot. Web export of uploads/NAD+-Amerilean.png (1.5MB
+             source stays untracked); the file name drops the "+" because a literal
+             plus in a path is ambiguous once anything re-encodes the URL. -->
+        <img src="uploads/products/nad-plus-amerilean.webp" width="900" height="675"
+          alt="A vial of compounded NAD+, 2 mL multiple-dose, prescription only">
         <div class="name">NAD+</div>
         <div class="note">Guided by providers, designed around your goals</div>
         <div class="tear"></div>

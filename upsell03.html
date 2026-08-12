@@ -13,8 +13,10 @@
      Zofran differs from the other two upsells in three ways that matter:
        1. It has FIVE benefits, not six. The .strip nth-child ramp still lands
           correctly (strip 5 = teal, light ink) — do not pad it to six.
-       2. It is an ORAL TABLET, so there is no vial. The recap art is an inline
-          SVG tablet placeholder, not a product photo. Do NOT drop a vial in.
+       2. It is an ORAL TABLET, so there is no vial — do NOT drop one in. Both
+          product slots (hero + recap) show the client's tablet render. That
+          render carries the AMERILEAN mark, not Zofran's own imprint, which is
+          a trade-dress question rather than a design one. LEGAL MUST CONFIRM.
        3. The NAD+ page's DSHEA footer sentence ("not evaluated by the Food and
           Drug Administration ... not intended to diagnose, treat, cure") is a
           DIETARY-SUPPLEMENT disclaimer and is plainly wrong on an FDA-approved
@@ -107,7 +109,7 @@
     background: var(--sand); border-radius: var(--radius-lg);
     overflow: hidden; box-shadow: 0 10px 30px rgba(30, 42, 68, 0.10);
   }
-  .hero-media video, .hero-media img { display: block; width: 100%; }
+  .hero-media video, .hero-media img { display: block; width: 100%; height: auto; }
   @media (min-width: 768px) {
     .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 400px); gap: 56px; }
   }
@@ -137,14 +139,14 @@
     font-size: clamp(24px, 3.2vw, 34px); line-height: 1.3; margin: 18px 0 0;
   }
   .what-photo {
-    width: 100%; display: block; border-radius: var(--radius-lg);
+    width: 100%; height: auto; display: block; border-radius: var(--radius-lg);
     box-shadow: 0 10px 30px rgba(30, 42, 68, 0.10);
   }
-  /* No photo in this band on the Zofran page — its "What Is" copy runs to two
-     paragraphs and fills the measure on its own. Cap in px, not em: .lede scales
-     to 34px, so an em cap set against the 17px body size would collapse the
-     measure to roughly fifteen characters a line. */
-  .what-grid { max-width: 820px; }
+  @media (min-width: 768px) {
+    /* 420px, the same cap as upsell01: the beach photo is landscape there too,
+       and needs the width to balance the lede. */
+    .what-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 64px; }
+  }
   .what p.body { color: var(--ink-2); margin: 20px 0 0; max-width: 34em; }
 
   /* ---- Benefits strips (option 1's vertical color-band moment) ---- */
@@ -227,10 +229,17 @@
     background: var(--card); color: var(--ink); border-radius: var(--radius-lg);
     padding: 34px 28px 28px; max-width: 440px; margin: 0 auto; overflow: hidden;
   }
-  .recap-card img { height: 180px; display: block; margin: 0 auto 14px; filter: drop-shadow(0 16px 22px rgba(0,0,0,0.16)); }
-  /* Flat placeholder illustration — matches the photo's footprint but takes no
-     drop-shadow, which would read as a fake product cut-out. */
-  .recap-card .tablet-art { height: 180px; display: block; margin: 0 auto 14px; }
+  /* The product shot is a photograph standing on its own studio ground, not a
+     transparent cut-out, so it takes the .hero-media treatment (clipped tile,
+     its gray field reading against the white card) instead of a drop-shadow —
+     which on an opaque rectangle would just outline the crop. aspect-ratio +
+     cover keep the tile honest if a non-4:3 render replaces it later. */
+  .recap-card img {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: var(--radius); margin: 0 auto 18px;
+    background: var(--mist-100);
+  }
   .recap-card .name { font-weight: 700; font-size: 26px; }
   .recap-card .note { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -300,8 +309,12 @@
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
       </div>
       <div class="hero-media">
-        <img src="uploads/wellness-aa5b5325.jpg"
-          alt="A woman sitting calmly on an exercise mat on the beach at sunrise">
+        <!-- Product-first hero, following upsell01. Web export of
+             uploads/Zofran-Pill-Amerilean.png (1.3MB source stays untracked).
+             Same trade-dress caveat as the recap card below: the tablet carries
+             the AMERILEAN mark, not Zofran's own imprint. LEGAL MUST CONFIRM. -->
+        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
+          alt="Zofran, shown as an oral tablet embossed with the Amerilean mark">
       </div>
     </div>
   </section>
@@ -317,6 +330,13 @@
           sometimes make it harder to stay consistent, feel comfortable, or move
           through the first stages of care with confidence.</p>
       </div>
+      <!-- The beach photo moved down from the hero when the product shot took
+           that slot, so it now sits beside the lede as upsell01's does.
+           ⚠️ 600x387 is the only source we have — it fills a 420px slot at 1.4x,
+           so it is soft on a 2x display. Ask the client for a larger export. -->
+      <img class="what-photo reveal" src="uploads/wellness-aa5b5325.jpg"
+        width="600" height="387"
+        alt="A woman sitting calmly on an exercise mat on the beach at sunrise">
     </div>
   </section>
 
@@ -344,22 +364,18 @@
       <p class="sub">Zofran is available as an added support option for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <!-- PLACEHOLDER PRODUCT ART: Zofran is an oral tablet, so there is no
-             vial render to reuse — and dropping one of the peptide vials in here
-             would misrepresent the product. This is a deliberately diagrammatic
-             blister-pack mark, not a photo. Swap for the real product shot. -->
-        <svg class="tablet-art" viewBox="0 0 200 180" role="img"
-          aria-label="Illustration of a tablet blister pack, product photography to come">
-          <rect x="18" y="26" width="164" height="128" rx="14" fill="#E3EAEF" stroke="#CBD8DF" stroke-width="2"/>
-          <g fill="#FFFFFF" stroke="#B9CAD3" stroke-width="2">
-            <circle cx="60" cy="70" r="20"/><circle cx="100" cy="70" r="20"/><circle cx="140" cy="70" r="20"/>
-            <circle cx="60" cy="115" r="20"/><circle cx="100" cy="115" r="20"/><circle cx="140" cy="115" r="20"/>
-          </g>
-          <g stroke="#C98F7A" stroke-width="2.5" stroke-linecap="round">
-            <path d="M52 70h16M60 62v16"/><path d="M92 70h16M100 62v16"/><path d="M132 70h16M140 62v16"/>
-            <path d="M52 115h16M60 107v16"/><path d="M92 115h16M100 107v16"/><path d="M132 115h16M140 107v16"/>
-          </g>
-        </svg>
+        <!-- Real tablet render, delivered 2026-08-12 — this replaces the
+             diagrammatic blister-pack SVG placeholder. Web export of
+             uploads/Zofran-Pill-Amerilean.png (1.3MB source stays untracked),
+             cropped tighter than the vials so the tablet reads at a comparable
+             scale (66% of frame height vs the vials' 74%).
+             ⚠️ The tablet is embossed with the AMERILEAN mark, not Zofran's own
+             imprint. Zofran is GSK/Novartis brand-name ondansetron; showing it as
+             an own-branded tablet is a trade-dress question, not a design one.
+             LEGAL MUST CONFIRM — same review as this page's footer wording. The
+             alt text deliberately says "shown as", not "a Zofran tablet". -->
+        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
+          alt="Zofran, shown as an oral tablet embossed with the Amerilean mark">
         <div class="name">Zofran</div>
         <div class="note">Subject to provider review and personalized care guidance</div>
         <div class="tear"></div>
