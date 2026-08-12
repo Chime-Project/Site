@@ -138,33 +138,69 @@
     .what-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 64px; }
   }
 
-  /* ---- Benefits strips (option 1's vertical color-band moment) ---- */
-  .benefits { padding-bottom: 0; } /* strips run flush into the next band */
+  /* ---- Benefits: panel row + funnel, after uploads/diagram.jpg ----
+     Replaces the earlier full-bleed vertical strips (rotated labels, hover
+     flex-grow). The diagram's structure is a row of colour panels, each with a
+     line icon over a centred title, tapering through a funnel into a pale base.
+     The COLOURS are unchanged — same six-step Amerilean ramp the strips used,
+     and the same nth-child(n+5) ink flip, which is where the AA work lives:
+     ink on panels 1-4 is 11.8 / 8.5 / 8.6 / 5.2:1, white on 5-6 is 4.6 / 7.2:1.
+     Re-order the panels and you break that, because the flip is positional. */
+  /* 0 here is the mobile case only — below 768px the bottom gap comes from
+     margin-bottom instead (see the max-width block at the end of this group). */
+  .benefits { padding-bottom: 0; }
   .benefits-intro { max-width: 26em; font-size: clamp(22px, 2.8vw, 30px); margin: 14px 0 36px; }
-  .strips { display: flex; align-items: stretch; height: 74vh; }
-  .strip {
-    flex: 1 1 0; display: flex; align-items: flex-start; justify-content: center;
-    padding: 28px 0; overflow: hidden; color: var(--ink);
-    transition: flex-grow .5s cubic-bezier(.2, .7, .2, 1);
+  .benefit-cols { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .benefit {
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    gap: 18px; text-align: center; color: var(--ink);
+    /* Asymmetric on purpose. With no body paragraph the panels are short, and
+       the diagram's proportion — a tall panel row over a shallow funnel — is
+       what makes the taper read as a footing rather than a second band. Extra
+       padding under the title buys that height back. */
+    /* 18px sides, not 14: at the 3-up breakpoint "Feeling more like themselves
+       again" fits on one line and ran within a hair of the panel edge. */
+    padding: clamp(34px, 4vw, 56px) 18px clamp(38px, 4.6vw, 64px);
   }
-  .strip:hover { flex-grow: 2.2; }
-  .strip:nth-child(1) { background: var(--mist-100); }
-  .strip:nth-child(2) { background: var(--mist); }
-  .strip:nth-child(3) { background: var(--sand); }
-  .strip:nth-child(4) { background: var(--terra); }
-  .strip:nth-child(5) { background: var(--teal); }
-  .strip:nth-child(6) { background: var(--terra-800); }
-  .strip:nth-child(n+5) { color: var(--card); } /* deep strips flip to light ink */
-  .strip-label {
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    font-weight: 700; font-size: clamp(20px, 2.4vw, 40px);
-    letter-spacing: -0.01em; line-height: 1.15; max-height: 100%;
+  .benefit:nth-child(1) { background: var(--mist-100); }
+  .benefit:nth-child(2) { background: var(--mist); }
+  .benefit:nth-child(3) { background: var(--sand); }
+  .benefit:nth-child(4) { background: var(--terra); }
+  .benefit:nth-child(5) { background: var(--teal); }
+  .benefit:nth-child(6) { background: var(--terra-800); }
+  .benefit:nth-child(n+5) { color: var(--card); } /* deep panels flip to light ink */
+  /* currentColor is the point: the icons ride the same ink flip as the titles,
+     so no icon needs its own colour rule. */
+  .benefit-icon {
+    width: clamp(28px, 2.6vw, 36px); height: auto; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.6;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .benefit-title {
+    margin: 0; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25;
+    font-size: clamp(15px, 1.35vw, 20px);
+  }
+  /* The funnel stretches horizontally (preserveAspectRatio="none") because it is
+     full-bleed decoration: the slices only have to stay aligned to the panel
+     columns above them, and its height is set here rather than by the viewBox. */
+  .funnel { display: none; width: 100%; height: clamp(68px, 6.4vw, 96px); }
+  @media (min-width: 600px) { .benefit-cols { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 768px) {
+    /* Desktop only: the band no longer runs flush into the recap. Same
+       clamp(56px, 9vw, 96px) every other section on the page uses for its
+       vertical padding, so the funnel sits on the page's normal rhythm rather
+       than a one-off value. Mobile keeps its 56px margin-bottom below. */
+    .benefits { padding-bottom: clamp(56px, 9vw, 96px); }
+  }
+  @media (min-width: 900px) {
+    /* The funnel appears only once the panels are actually six across — its six
+       slices are cut to line up with six columns, and under a 2- or 3-up grid
+       they would point at nothing. */
+    .benefit-cols { grid-template-columns: repeat(6, 1fr); }
+    .funnel { display: block; }
   }
   @media (max-width: 767px) {
     .benefits { margin-bottom: 56px; } /* desktop stays flush into the next band */
-    .strips { flex-direction: column; height: auto; }
-    .strip { min-height: 76px; align-items: center; justify-content: flex-start; padding: 20px; }
-    .strip-label { writing-mode: horizontal-tb; transform: none; font-size: 24px; }
   }
 
   /* ---- Wellness path / provider trust ---- */
@@ -209,8 +245,12 @@
 
   /* ---- Final recap ---- */
   .recap { background: var(--slate); color: var(--canvas); text-align: center; }
-  /* The recap now follows the benefit strips, and strip 6 is also slate — a
-     hairline keeps the last strip reading as a list item, not the recap's title */
+  /* Kept, but its job has changed. This hairline was originally what stopped
+     panel 6 (terra-800) from reading as one continuous dark mass where the
+     benefits band ran flush into the slate field. Nothing is flush any more —
+     desktop has padding-bottom, mobile a margin — so what it does now is soften
+     the hard canvas-to-slate edge: one row of rgb(66 76 98) at the top of the
+     band. Drop it if you want that edge dead sharp. */
   .benefits + .recap { border-top: 1px solid rgb(255 255 255 / 0.16); }
   .recap h2 { font-size: clamp(34px, 5vw, 52px); }
   .recap .sub { color: var(--mist); margin: 14px auto 36px; max-width: 26em; }
@@ -268,8 +308,6 @@
     .quote-card, footer .wrap { text-align: center; }
     .hero h1, .hero .sub, .benefits-intro, .path p,
     .btn, .footer-logo { margin-left: auto; margin-right: auto; }
-    .strip { justify-content: center; }
-    .strip-label { text-align: center; }
     .quote-card figcaption { justify-content: center; }
   }
 </style>
@@ -317,20 +355,96 @@
     </div>
   </section>
 
-  <!-- 4. Why add NAD+ — benefit strips, same treatment as option 1 (nad.html) -->
+  <!-- 4. Why add NAD+ — panel row + funnel, after uploads/diagram.jpg.
+       Two departures from that reference, both deliberate:
+         1. SIX panels, not the diagram's five. The benefit list is verbatim from
+            the reviewed copy and is six items long — do not pad or trim it to
+            match a template.
+         2. NO body paragraph under each title. The diagram gives every panel a
+            sentence of description, and there is no reviewed copy for those.
+            Writing six would mean inventing six NAD+ claims, which is exactly
+            what this page's copy lock exists to prevent. The slot is left out
+            rather than filled with lorem; drop <p class="benefit-copy"> in if
+            approved copy arrives.
+       Icons are all feather, one lineage. CLAUDE.md §5 notes the wider site
+       mixes feather and lucide artwork for the same concepts — don't start that
+       here by borrowing a lucide glyph (its lightbulb is the tempting one). -->
   <section id="benefits" class="benefits" aria-labelledby="benefits-title">
     <div class="wrap-wide">
       <p class="eyebrow reveal" id="benefits-title">Why Add NAD+?</p>
       <h2 class="benefits-intro reveal">NAD+ may be a good fit for people who want to support:</h2>
     </div>
-    <div class="strips" role="list">
-      <div class="strip" role="listitem"><span class="strip-label">Daily energy</span></div>
-      <div class="strip" role="listitem"><span class="strip-label">Mental clarity</span></div>
-      <div class="strip" role="listitem"><span class="strip-label">Recovery</span></div>
-      <div class="strip" role="listitem"><span class="strip-label">Healthy aging</span></div>
-      <div class="strip" role="listitem"><span class="strip-label">Overall vitality</span></div>
-      <div class="strip" role="listitem"><span class="strip-label">Feeling more like themselves again</span></div>
+    <div class="benefit-cols" role="list">
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <p class="benefit-title">Daily energy</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <p class="benefit-title">Mental clarity</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <polyline points="23 4 23 10 17 10"/>
+          <polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        <p class="benefit-title">Recovery</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <p class="benefit-title">Healthy aging</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <p class="benefit-title">Overall vitality</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <path d="M9 9h.01M15 9h.01"/>
+        </svg>
+        <p class="benefit-title">Feeling more like themselves again</p>
+      </div>
     </div>
+    <!-- The funnel. Six slices tile the trapezoid (0,0)-(600,0)-(465,64)-(135,64)
+         exactly, so ONE dark path over all of them darkens every slice by the
+         same amount — the diagram's shaded taper — instead of needing six
+         hand-mixed shades that would drift from the palette. The pale base row
+         gets the same trick in reverse with a white veil. Neck is 55% of the
+         width, matching the reference. -->
+    <svg class="funnel" viewBox="0 0 600 108" preserveAspectRatio="none"
+      aria-hidden="true" focusable="false">
+      <g>
+        <polygon points="0,0 100,0 190,64 135,64"   fill="var(--mist-100)"/>
+        <polygon points="100,0 200,0 245,64 190,64" fill="var(--mist)"/>
+        <polygon points="200,0 300,0 300,64 245,64" fill="var(--sand)"/>
+        <polygon points="300,0 400,0 355,64 300,64" fill="var(--terra)"/>
+        <polygon points="400,0 500,0 410,64 355,64" fill="var(--teal)"/>
+        <polygon points="500,0 600,0 465,64 410,64" fill="var(--terra-800)"/>
+      </g>
+      <path d="M0 0 H600 L465 64 H135 Z" fill="#1E2A44" opacity="0.22"/>
+      <g>
+        <rect x="135" y="64" width="55" height="44" fill="var(--mist-100)"/>
+        <rect x="190" y="64" width="55" height="44" fill="var(--mist)"/>
+        <rect x="245" y="64" width="55" height="44" fill="var(--sand)"/>
+        <rect x="300" y="64" width="55" height="44" fill="var(--terra)"/>
+        <rect x="355" y="64" width="55" height="44" fill="var(--teal)"/>
+        <rect x="410" y="64" width="55" height="44" fill="var(--terra-800)"/>
+      </g>
+      <rect x="135" y="64" width="330" height="44" fill="#FFFFFF" opacity="0.62"/>
+    </svg>
   </section>
 
   <!-- 5. Final offer recap -->
