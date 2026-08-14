@@ -72,7 +72,10 @@ function CartBack({ label, onClick, href }) {
   return (
     <Tag {...props} className="cart-back" aria-label={label} style={{
       display: "inline-flex", alignItems: "center", gap: "var(--spacing-2)",
-      background: "none", border: 0, padding: "var(--spacing-2)", margin: "0 0 0 calc(var(--spacing-2) * -1)",
+      // spacing-3, not spacing-2: at 8px the 22px icon gave a 38px target, under
+      // the 44px touch recommendation (it cleared WCAG 2.5.8's 24px floor, but
+      // this is the only way back on a phone). 12px takes it to 46px.
+      background: "none", border: 0, padding: "var(--spacing-3)", margin: "0 0 0 calc(var(--spacing-3) * -1)",
       cursor: "pointer", color: "var(--text-secondary)", font: "inherit", textDecoration: "none",
     }}>
       <Icon size={22} strokeWidth={1.8}>
@@ -105,11 +108,15 @@ function CartStep({ n, title, sub, id }) {
 }
 
 // ---- Step 1: treatment ---------------------------------------------------
-// A radio, not a button: two mutually exclusive choices where the whole card is
-// the hit target. role="radio" + the arrow-key handling in the flow keep that
-// honest for keyboard and screen-reader users, which a div-with-onClick would
-// not — the selected state has to be announced, and it has to be reachable
-// without a mouse.
+// A CHECKBOX, not a radio: a basket can hold more than one treatment. That is
+// also why the indicator is a square with a tick rather than the mockup's
+// circle — a ring of round dots is the one shape every interface on earth uses
+// to mean "pick exactly one", so leaving it round would promise single-select
+// and then behave otherwise. The whole card stays the hit target.
+//
+// Each checkbox is its own tab stop (tabIndex 0), unlike the roving tabindex a
+// radiogroup needs — arrow keys no longer move selection, because in a checkbox
+// group they do not select anything.
 function CartTreatmentCard({ product, meta, selected, onSelect, onKeyDown, innerRef }) {
   const uploads = window.CHIME_UPLOADS_BASE || "uploads";
   const rootRef = React.useRef(null);
@@ -121,7 +128,7 @@ function CartTreatmentCard({ product, meta, selected, onSelect, onKeyDown, inner
     if (selected) cartSelectPop(rootRef.current);
   }, [selected]);
   return (
-    <div role="radio" aria-checked={selected} tabIndex={selected ? 0 : -1}
+    <div role="checkbox" aria-checked={selected} tabIndex={0}
       ref={(el) => { rootRef.current = el; if (innerRef) innerRef(el); }}
       onMouseEnter={() => cartCardHover(rootRef.current, true, -3)}
       onMouseLeave={() => cartCardHover(rootRef.current, false)}
@@ -139,13 +146,20 @@ function CartTreatmentCard({ product, meta, selected, onSelect, onKeyDown, inner
       }}>
       <span aria-hidden="true" style={{
         position: "absolute", top: "var(--spacing-4)", right: "var(--spacing-4)",
-        width: 20, height: 20, borderRadius: "var(--radius-4xl)",
+        width: 20, height: 20, borderRadius: "var(--radius-md)",
         border: "1.5px solid " + (selected ? "var(--accent-default)" : "var(--border-strong)"),
-        background: "var(--bg-elevated)", display: "flex", alignItems: "center", justifyContent: "center",
+        background: selected ? "var(--accent-default)" : "var(--bg-elevated)",
+        color: "var(--color-white)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "background var(--transition-base) var(--ease-in-out)",
       }}>
-        {selected && <span data-radio-dot style={{
-          width: 10, height: 10, borderRadius: "var(--radius-4xl)", background: "var(--accent-default)",
-        }} />}
+        {/* Filled box + white tick, so the checked state reads at a glance and
+            not only by the 1.5px border changing colour.
+            CLAUDE.md §5 — this path ends at (20, 7). Do NOT merge it with the
+            similar `M4 12.5l5 5 11-12`, which ends at (20, 5.5). */}
+        {selected && <span data-check-tick style={{ display: "flex" }}>
+          <Icon size={13} strokeWidth={3}><path d="M4 12.5l5 5L20 7" /></Icon>
+        </span>}
       </span>
 
       <div style={{ minWidth: 0 }}>
@@ -174,93 +188,113 @@ function CartTreatmentCard({ product, meta, selected, onSelect, onKeyDown, inner
   );
 }
 
-// ---- Step 2: plan --------------------------------------------------------
-// Dark glass card whose CTA pill straddles the bottom edge. The pill is
-// position:absolute and the card carries matching bottom padding to reserve its
-// room — laying it out in flow instead would let a long price string change the
-// card's height and break the 2×2 grid's alignment.
-function CartPlanCard({ plan, selected, onSelect }) {
-  const [hover, setHover] = React.useState(false);
-  const rootRef = React.useRef(null);
-  // "Most Popular" gets the standard recommended-plan treatment, which every
-  // pricing-page guide describes as STACKED cues rather than one — badge plus a
-  // distinct ground plus a taller card plus elevation (UX Planet, Smashing,
-  // htmlburger). Measured here, one cue alone would not have carried it: the
-  // featured ground against its siblings is only 2.34:1, well under the 3.0 a
-  // non-text UI distinction needs, so colour by itself is invisible to anyone
-  // with reduced colour vision. Four cues together are unmissable:
-  //   1. a full-width ribbon header, not a pill floating on the card's edge —
-  //      the pill version measured 1.26:1 against the cream page behind it,
-  //      i.e. it disappeared exactly where it overhung the card
-  //   2. --accent-strong ground where the others are near-black glass
-  //   3. the card sits 14px proud of the row and is 14px taller for it
-  //   4. shadow-lg against the siblings' flat ground, and an inverted white CTA
-  // The guides also warn against making this feel like pressure, so the ribbon
-  // stays a plain label — no flame, no countdown, no colour outside the palette.
-  const featured = plan.badge === "Most Popular";
+// ---- Step 2: one configurator per chosen treatment -----------------------
+// This replaces the old ladder of large plan cards. That ladder worked for a
+// single treatment and fell apart at two: six near-identical cards, 973px
+// between the step heading and the button that ends it, and the same chrome
+// repeated for every term. Measured before the change, with both treatments in
+// the basket.
+//
+// The research all points the same way (see the plan doc):
+//   · Shopify's subscription guidance — show every option when there are four
+//     or fewer, stack them, and never hide the option names. Our ladders are 2
+//     and 4 terms, so all of them stay visible; what changes is that a term is
+//     now an OPTION, not a card.
+//   · NN/g on stating differences explicitly — our terms differ on duration and
+//     price alone. Everything else the old card repeated (blurb, layout, the
+//     includes) is shared, and the shared copy already lives once at the bottom
+//     of the step.
+//   · Per-unit pricing (Baymard) and per-month framing (RevenueCat) — the rate
+//     per month is the only figure that compares two terms honestly, and it was
+//     the one figure the old cards never showed.
+//
+// So: term picker up top carrying the comparable rate, and full detail for the
+// SELECTED term only.
+function CartTermOption({ plan, selected, badge, onSelect }) {
   return (
-    <div className={"cart-plan" + (featured ? " is-featured" : "")} ref={rootRef}
-      onMouseEnter={() => cartCardHover(rootRef.current, true, -6)}
-      onMouseLeave={() => cartCardHover(rootRef.current, false)}
-      style={{ position: "relative", paddingBottom: 22, marginTop: featured ? -14 : 0 }}>
-      <div style={{
-        background: featured ? "var(--accent-strong)" : "var(--glass-solid)",
-        borderRadius: "var(--radius-xl)", overflow: "hidden",
-        // White, not accent: this ring has to read on BOTH grounds, and an
-        // accent ring on the accent-strong featured card would vanish into it.
-        outline: selected ? "2px solid var(--color-white)" : "2px solid transparent",
-        outlineOffset: 2,
-        boxShadow: featured ? "var(--shadow-lg)" : "none",
-        minHeight: 178, display: "flex", flexDirection: "column",
-        color: "var(--color-white)",
-        transition: "outline-color var(--transition-base) var(--ease-in-out)",
-      }}>
-        {plan.badge && <div style={{
-          background: featured ? "var(--accent-subtle)" : "var(--bg-secondary)",
-          color: featured ? "var(--accent-onSubtle)" : "var(--text-default)",
-          padding: "var(--spacing-2) var(--spacing-3)", textAlign: "center",
-          fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-bold)",
-          letterSpacing: "0.1em", textTransform: "uppercase",
-        }}>{plan.badge}</div>}
+    <button type="button" role="radio" aria-checked={selected}
+      tabIndex={selected ? 0 : -1} onClick={onSelect}
+      className={"cart-term" + (selected ? " is-on" : "")}>
+      <span className="cart-term-name">{plan.term}</span>
+      {/* The comparable figure, on every option, so the terms can be read
+          against each other without selecting each one in turn. */}
+      <span className="cart-term-rate">{plan.perMonthLabel}<i>/mo</i></span>
+      {badge && <span className="cart-term-badge">{badge}</span>}
+    </button>
+  );
+}
 
-        <div style={{
-          flex: 1, padding: "var(--spacing-6) var(--spacing-5) 46px",
-          display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
-        }}>
-          <div style={{
-            fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)",
-            opacity: 0.8, marginBottom: "var(--spacing-3)",
-          }}>{plan.supplyWeeks} Week Supply</div>
-          <div style={{
-            fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-bold)",
-            lineHeight: 1.2, marginBottom: "var(--spacing-3)",
-          }}>{plan.title}</div>
-          <p style={{
-            margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, opacity: 0.85, maxWidth: "18em",
-          }}>{plan.blurb}</p>
+// `badges` maps a plan key to the superlative this panel may show, and it is
+// RESOLVED BY THE CALLER before render (see chimeCartBadges). An earlier pass
+// threaded a shared Set through the panels and mutated it while rendering,
+// which is a side effect in render: React is free to render a component more
+// than once, and the second pass found the badge already claimed and printed
+// nothing at all. The component tests caught it — the live page hid it, because
+// the parent rebuilt the Set on every render.
+function CartTreatmentConfig({ entry, badges, onPlan, onRemove }) {
+  const uploads = window.CHIME_UPLOADS_BASE || "uploads";
+  const { product, meta, plans, plan } = entry;
+  const rootRef = React.useRef(null);
+  const listRef = React.useRef(null);
+
+  // Arrow keys move between terms — these ARE mutually exclusive, so unlike the
+  // treatment checkboxes above, the radiogroup pattern is the correct one here.
+  const onKey = (e) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!step || !plans.length) return;
+    e.preventDefault();
+    const at = plans.findIndex((p) => plan && p.key === plan.key);
+    const next = plans[((at < 0 ? 0 : at) + step + plans.length) % plans.length];
+    onPlan(next.key);
+    const btns = listRef.current ? listRef.current.querySelectorAll(".cart-term") : [];
+    const idx = plans.indexOf(next);
+    if (btns[idx]) btns[idx].focus();
+  };
+
+  return (
+    <div className="cart-config" ref={rootRef}>
+      <div className="cart-config-head">
+        <img className="cart-config-vial" src={uploads + "/" + product.img}
+          alt="" width="440" height="800" aria-hidden="true" />
+        <div className="cart-config-id">
+          <h3 className="cart-config-name">{product.name}</h3>
+          <p className="cart-config-claim">{meta.claim}</p>
         </div>
+        <button type="button" className="cart-config-remove" onClick={onRemove}>
+          Remove<span className="visually-hidden"> {product.name} from your order</span>
+        </button>
       </div>
 
-      <button type="button" onClick={onSelect}
-        onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-        style={{
-          position: "absolute", left: "50%", bottom: 0, transform: "translateX(-50%)",
-          width: "min(88%, 260px)", cursor: "pointer", border: 0,
-          // Inverted on the featured card: a blue pill on the blue ground would
-          // be the one element that got LESS prominent by being featured.
-          background: featured
-            ? "var(--color-white)"
-            : (hover ? "var(--accent-hover)" : "var(--accent-default)"),
-          color: featured ? "var(--accent-strong)" : "var(--color-white)",
-          borderRadius: "var(--radius-4xl)",
-          padding: "var(--spacing-2) var(--spacing-4)",
-          font: "var(--font-weight-semibold) var(--text-xs)/1.35 var(--font-family-base)",
-          boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
-          transition: "background var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out)",
-        }}>
-        <span style={{ display: "block" }}>Select Plan</span>
-        <span style={{ display: "block" }}>{plan.ctaPrice}</span>
-      </button>
+      <div className="cart-terms" role="radiogroup" ref={listRef} onKeyDown={onKey}
+        aria-label={"Membership term for " + product.name}>
+        {plans.map((p) => (
+          <CartTermOption key={p.key} plan={p} badge={(badges || {})[p.key] || null}
+            selected={!!plan && p.key === plan.key} onSelect={() => onPlan(p.key)} />
+        ))}
+      </div>
+
+      {plan ? (
+        // Detail for the chosen term only — and ONLY what the option above does
+        // not already say. An earlier pass repeated the per-month rate here at
+        // display size, which is the exact duplication this rework exists to
+        // remove: the selected option already carries that figure, in accent, on
+        // a highlighted ground. What is left is the commitment itself — the sum
+        // actually charged (a per-month figure without it is the dishonest half
+        // of that framing), the free month, and the saving in dollars rather
+        // than a percentage, checkable against the rate on the option.
+        <p className="cart-config-detail">
+          Billed as <b>{plan.totalLabel}</b>
+          {plan.freeMonths > 0 && <React.Fragment>
+            {" · "}<b className="is-free">{plan.freeMonths} month{plan.freeMonths > 1 ? "s" : ""} free</b>
+          </React.Fragment>}
+          {plan.savings > 0.005 && <React.Fragment>
+            {" · "}<b className="is-save">Save {plan.savingsLabel}</b>
+            <span className="cart-config-vs"> vs {plan.listRateLabel}/mo month to month</span>
+          </React.Fragment>}
+        </p>
+      ) : (
+        <p className="cart-config-prompt">Choose a term for {product.name}.</p>
+      )}
     </div>
   );
 }
@@ -321,7 +355,7 @@ function PayRow({ brands, style }) {
 // shows only a placeholder, because a placeholder is not a label: it vanishes
 // on the first keystroke and is skipped by some screen readers.
 function CartField({ id, label, placeholder, type = "text", value, onChange,
-  autoComplete, inputMode, showLabel, trailing, required, style }) {
+  autoComplete, inputMode, showLabel, trailing, required, invalid, errorId, style }) {
   return (
     <div style={Object.assign({ display: "flex", flexDirection: "column", gap: "var(--spacing-1)" }, style)}>
       <label htmlFor={id} className={showLabel ? undefined : "visually-hidden"} style={{
@@ -331,9 +365,14 @@ function CartField({ id, label, placeholder, type = "text", value, onChange,
         {/* The real `required` attribute, not just a JS check: it is what the
             error styling keys off (so the optional address line never reddens)
             and what assistive tech announces. The form carries noValidate, so
-            it does not also trigger the browser's own bubble. */}
+            it does not also trigger the browser's own bubble.
+            aria-invalid is what makes the failure perceivable without sight: the
+            red border is the ONLY other signal, and "complete the highlighted
+            fields" is useless to someone who cannot see the highlight. */}
         <input id={id} type={type} placeholder={placeholder} value={value}
           onChange={(e) => onChange(e.target.value)} required={!!required}
+          aria-invalid={invalid ? "true" : undefined}
+          aria-describedby={invalid && errorId ? errorId : undefined}
           autoComplete={autoComplete} inputMode={inputMode} className="cart-input"
           style={{
             width: "100%", boxSizing: "border-box",
@@ -363,8 +402,63 @@ function CartSummaryRow({ label, value, was }) {
   );
 }
 
+// ---- Hold sticker --------------------------------------------------------
+// The reserved-hold countdown, drawn as a die-cut discount seal. Built as a
+// polygon rather than a stack of rotated squares or a conic-gradient: one
+// <polygon> is a single paint at any size, and the spikes stay crisp when the
+// sticker scales, where a gradient's edges alias.
+//
+// 24 spikes, outer 50 / inner 41.5 on a 100-unit box. Fewer spikes read as a
+// star (a rating, not a price tag); a shallower inner radius reads as a gear.
+const CART_STICKER_POINTS = (() => {
+  const spikes = 24;
+  const pts = [];
+  for (let i = 0; i < spikes * 2; i++) {
+    const r = i % 2 ? 41.5 : 50;
+    const a = (Math.PI / spikes) * i - Math.PI / 2;
+    pts.push((50 + r * Math.cos(a)).toFixed(2) + "," + (50 + r * Math.sin(a)).toFixed(2));
+  }
+  return pts.join(" ");
+})();
+
+// `time` arrives preformatted — the clock lives in CartFlow with the state that
+// drives it, so this stays presentational like everything else in this file.
+//
+// The whole sticker is one role="timer", whose implicit live setting is off:
+// the accessible name is rebuilt every second, but silently. Announcing each
+// tick would make the card unusable with a screen reader on, and the inner
+// text is aria-hidden so the digits are never read twice.
+function CartHoldSticker({ time, expired }) {
+  return (
+    <div className={"cart-sticker" + (expired ? " is-expired" : "")}
+      role="timer" aria-live="off"
+      aria-label={expired
+        ? "Your hold has expired"
+        : "Your discount is reserved for " + time + " minutes"}>
+      <svg className="cart-sticker-burst" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <polygon points={CART_STICKER_POINTS} />
+      </svg>
+      <span className="cart-sticker-text" aria-hidden="true">
+        {expired ? (
+          <React.Fragment>
+            <b className="cart-sticker-lead">HOLD</b>
+            <b className="cart-sticker-time is-word">EXPIRED</b>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <b className="cart-sticker-lead">RESERVED</b>
+            <b className="cart-sticker-time">{time}</b>
+            <b className="cart-sticker-foot">MIN LEFT</b>
+          </React.Fragment>
+        )}
+      </span>
+    </div>
+  );
+}
+
 Object.assign(window, {
-  CartHeader, CartBack, CartStep, CartTreatmentCard, CartPlanCard,
-  CartCheckLine, PayMark, PayRow, CartField, CartSummaryRow,
+  CartHeader, CartBack, CartStep, CartTreatmentCard,
+  CartTermOption, CartTreatmentConfig,
+  CartCheckLine, PayMark, PayRow, CartField, CartSummaryRow, CartHoldSticker,
   cartReduced, cartCanHover, cartCardHover, cartSelectPop,
 });

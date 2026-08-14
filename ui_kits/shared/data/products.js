@@ -36,14 +36,33 @@ window.CHIME_PRODUCTS = [
       { key: "6mo", term: "6 Months", price: "$1,914.00", permo: "$319" },
       { key: "1yr", term: "1 Year", price: "$3,588.00", permo: "$299" },
     ] },
+  // ⚠️ Repriced 2026-08-14 so the ladder reads correctly PER MONTH OF SUPPLY.
+  // `permo` here is the BILLED rate (price ÷ months billed). The cart divides by
+  // months of SUPPLY instead, and the 3-month tier ships a free 4th month — so
+  // the old ladder inverted once you did that division: $209 → $156.75 → $199 →
+  // $179, making 6 months dearer per month than both its neighbours and leaving
+  // no customer for whom it was the right answer.
+  // These numbers are built backwards from the effective rate:
+  //   1 month $200 · 3 month $150 · 6 month $130 · 1 year $110
+  //
+  // Two constraints hold this shape together, and both bite if you nudge a
+  // single figure:
+  //  1. Billed rates stay whole multiples of 4, so the 3-month tier's ÷4 lands
+  //     on a round number rather than a half-cent.
+  //  2. Steps between multi-month tiers must exceed $20. JOIN120 is a FLAT $120,
+  //     so per month it is worth $30 off the 3-month tier, $20 off the 6-month
+  //     and $10 off the year — it favours shorter terms. At $10 steps every tier
+  //     landed on exactly $120/mo after the code and "Best Deal" stopped being
+  //     true the moment it was applied. $20 steps keep the ladder descending
+  //     both before and after the discount.
   { id: "prod-glp-1", name: "GLP-1", category: "Weight Loss", theme: "weight-loss",
     img: "vials/glp-1.webp", status: "In stock", badge: null,
-    start: "$179.00", price: "From $179/mo",
+    start: "$110.00", price: "From $110/mo",
     plans: [
-      { key: "1mo", term: "1 Month", price: "From $179.00" },
-      { key: "3mo", term: "3 Months", price: "$627.00", permo: "$209" },
-      { key: "6mo", term: "6 Months", price: "$1,194.00", permo: "$199" },
-      { key: "1yr", term: "1 Year", price: "$2,148.00", permo: "$179" },
+      { key: "1mo", term: "1 Month", price: "From $110.00" },
+      { key: "3mo", term: "3 Months", price: "$600.00", permo: "$200" },
+      { key: "6mo", term: "6 Months", price: "$780.00", permo: "$130" },
+      { key: "1yr", term: "1 Year", price: "$1,320.00", permo: "$110" },
     ] },
   { id: "prod-semaglutide", name: "Semaglutide", category: "Weight Loss", theme: "weight-loss",
     img: "vials/semaglutide.webp", status: "In stock", badge: null,
@@ -65,12 +84,16 @@ window.CHIME_PRODUCTS = [
     ] },
 
   // ---- Energy & Wellness ----
+  // Repriced with GLP-1 above. Its old $209 month-to-month was identical to
+  // GLP-1's, which made the two products' 1-month cards render character for
+  // character the same in the cart. NAD+ is marketed as the more affordable of
+  // the two, so it now sits a clear step below: $160 → $105 per month of supply.
   { id: "prod-nad", name: "NAD+", category: "Energy & Wellness", theme: "energy-wellness",
     img: "vials/nad-plus.webp", status: "In stock", badge: null,
-    start: "$149.00", price: "From $149/mo",
+    start: "$140.00", price: "From $140/mo",
     plans: [
-      { key: "1mo", term: "1 Month", price: "$209.00" },
-      { key: "3mo", term: "3 Months", price: "$447.00", permo: "$149" },
+      { key: "1mo", term: "1 Month", price: "$160.00" },
+      { key: "3mo", term: "3 Months", price: "$420.00", permo: "$140" },
     ] },
   { id: "prod-glow-stack", name: "Glow Stack", category: "Energy & Wellness", theme: "energy-wellness",
     img: "vials/glow-stack.webp", status: "In stock", badge: null,
