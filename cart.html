@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Checkout</title>
+<!-- Shopping cart: plan selection → checkout.
+     Layout + copy source: uploads/Shopping01.png, uploads/Shopping02.png.
+     Prices are NOT from those mockups — they are derived from the real catalog
+     (ui_kits/shared/data/products.js); see chimeCartPlans() in cart-data.js for
+     why the list rate is derived rather than read off the "1 Month" row.
+     Chrome is deliberately bare (logo only, no nav, no footer) — both mockups
+     draw it that way, and every link is an exit from a funnel the user is
+     already inside.
+     ⚠️ Three things need sign-off before this page takes real money; each is
+     flagged at its source in cart-data.js: the scarcity countdown + "discounts
+     left" figure, the rewritten legal block, and the "N patients chose this
+     today" counts. -->
+<link rel="stylesheet" href="styles.css?v=20260843">
+<script src="tailwind.setup.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg-elevated); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  /* ---- Screen transition ----
+     The clip MUST sit on this wrapper, not on the sliding element: overflow
+     clips an element's contents, never its own transform. The assessment hit
+     exactly this (see chimeAssessment.html) — with the rule on the moving node
+     the offset frames still widened the page past the viewport at 390px.
+     `clip` rather than `hidden` so overflow-y stays visible and nothing traps
+     the page scroll. */
+  .cart-viewport { overflow-x: clip; }
+  @supports not (overflow-x: clip) { .cart-viewport { overflow-x: hidden; } }
+  /* Fallback only — used when GSAP fails to load; reduced motion drops it. */
+  .cart-anim { animation: cartIn 460ms var(--ease-in-out, ease) both; }
+  @keyframes cartIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cart-anim { animation: none; } }
+
+  .cart-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--spacing-5); }
+  .cart-section { padding: clamp(48px, 7vw, 88px) 0; }
+  /* Step 1 and Step 2 are one continuous choice, so the gap between them is one
+     band of air rather than both sections' full padding stacked — 176px read as
+     a page break, not as a step. */
+  .cart-section + .cart-section { padding-top: clamp(24px, 3.5vw, 44px); }
+  .cart-h2 {
+    margin: 0 0 var(--spacing-6); text-align: center;
+    font-size: var(--text-3xl); font-weight: var(--font-weight-medium);
+    letter-spacing: -0.01em; color: var(--text-default);
+  }
+  /* Checkout stacks four titled blocks inside one .cart-wrap, so the air between
+     them has to come from the heading — there is no section wrapper to carry it.
+     :not(:first-child) keeps the first heading tight against the section padding
+     instead of doubling it. */
+  .cart-h2:not(:first-child) { margin-top: clamp(48px, 6vw, 80px); }
+  .cart-h2-sub {
+    /* Pulls up by exactly the h2's own margin-bottom, so the sub reads as part
+       of the heading rather than as the block's first paragraph. */
+    margin: calc(var(--spacing-6) * -1) 0 var(--spacing-6);
+    text-align: center; font-size: var(--text-sm); color: var(--text-muted);
+  }
+  .cart-back:focus-visible, .cart-input:focus-visible,
+  .cart-treatment:focus-visible, .cart-method:focus-within {
+    outline: 3px solid var(--focus-ring); outline-offset: 2px;
+  }
+  .cart-input:focus-visible { border-color: var(--accent-default); }
+
+  /* ---- Hero bento (screen 1) ----
+     Mirrors .wlh-bento / .wnh-bento on the Weight Loss and Wellness landings:
+     same 1280 max-width, 12-column grid, --spacing-3 gap and 2xl tile radius,
+     so the cart's first screen sits in the same furniture as the rest of the
+     site. See the note in CartFlow.jsx for the one intentional divergence
+     (--accent-strong ground, for AA on the sub and note lines). */
+  .cart-hero-back { max-width: 1280px; margin: 0 auto; padding: var(--spacing-4) var(--spacing-6) 0; }
+  .cart-bento {
+    max-width: 1280px; margin: 0 auto;
+    padding: var(--spacing-2) var(--spacing-6) 0;
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--spacing-3);
+  }
+  .cart-tile-text {
+    grid-column: span 8; box-sizing: border-box;
+    background: var(--accent-strong); border-radius: var(--radius-2xl);
+    padding: var(--spacing-10) var(--spacing-8);
+    display: flex; flex-direction: column; justify-content: space-between;
+    align-items: flex-start; gap: var(--spacing-6);
+  }
+  .cart-tile-text h1 {
+    margin: 0; font-size: var(--text-5xl); font-weight: 300;
+    line-height: 1.12; color: var(--color-white); max-width: 14em; text-wrap: pretty;
+  }
+  .cart-hero-sub {
+    margin: var(--spacing-4) 0 0; font-size: var(--text-xl);
+    line-height: 1.5; color: var(--accent-subtle); max-width: 22em;
+  }
+  .cart-hero-note { margin: 0; font-size: var(--text-sm); color: var(--accent-subtle); }
+  /* 5:4, not the WL/Wellness 3:4 — the media tile sets the row height, and this
+     tile's text column carries three lines rather than their four-part stack
+     (headline · sub · CTA · fine print). At 3:4 the copy occupied about a third
+     of its own panel. */
+  .cart-tile-media {
+    grid-column: span 4; position: relative; aspect-ratio: 5 / 4;
+    background: var(--accent-subtle); border-radius: var(--radius-2xl); overflow: hidden;
+  }
+  /* The asset is a transparent cut-out, so the tile's own tint becomes her
+     background — the mockup's composition, no masking needed.
+     Anchored to the TOP, not the bottom, and allowed to overrun the tile: the
+     tile clips her lower body the way the WL hero's model is clipped mid-calf,
+     which is what lets her fill the width. Anchor her at the bottom instead and
+     the overflow lands on her head. `contain` was the other option and it fits
+     the whole figure, but a 0.60 portrait inside a 3:4 tile then leaves wide
+     tint gutters and she reads as a thumbnail. */
+  .cart-hero-model {
+    position: absolute; left: 50%; top: var(--spacing-4); transform: translateX(-50%);
+    /* 68%, down from 86%: the tile is shorter now, so a wide figure would be
+       clipped at the collarbone. Narrower keeps the crop below her folded arms,
+       which is where the pose reads. */
+    width: 68%; height: auto; max-width: none;
+    filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.18));
+  }
+
+  /* ---- Step 1: treatments ---- */
+  .cart-treatments {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-4); max-width: 720px; margin: 0 auto;
+  }
+
+  /* ---- Step 2: plans ----
+     auto-fit rather than a fixed 2×2: NAD+ quotes only two terms, and a
+     hardcoded grid would leave two empty cells.
+     The row gap covers the CTA overhanging each card's bottom edge plus the
+     14px the featured card rides above the row. It used to be spacing-10 to
+     clear a badge that straddled the top edge; that badge is now a ribbon
+     inside the card, so the row can close up. */
+  .cart-plans {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-8) var(--spacing-6);
+    max-width: 620px; margin: 0 auto;
+  }
+
+  .cart-includes { margin: clamp(56px, 7vw, 88px) auto 0; max-width: 560px; text-align: center; }
+  .cart-includes h3, .cart-how h3 {
+    margin: 0 0 var(--spacing-5); font-size: var(--text-base);
+    font-weight: var(--font-weight-bold); color: var(--text-default);
+  }
+  .cart-includes ul {
+    list-style: none; margin: 0; padding: 0; text-align: left;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-3) var(--spacing-6);
+  }
+  .cart-how { margin: clamp(40px, 5vw, 64px) auto 0; max-width: 520px; text-align: center; }
+  .cart-how p { margin: 0; font-size: var(--text-sm); line-height: 1.7; color: var(--text-secondary); }
+
+  .cart-trust { margin: clamp(40px, 5vw, 64px) auto 0; max-width: 520px; text-align: center; }
+  .cart-trust-label {
+    margin: 0 0 var(--spacing-3); font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold); color: var(--text-default);
+  }
+  .cart-hsa {
+    display: flex; align-items: center; justify-content: center; gap: var(--spacing-2);
+    margin: var(--spacing-6) 0 0; font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold); color: var(--text-default);
+  }
+
+  /* ---- Checkout: summary card ----
+     Screen 2 has no hero, so it keeps the tinted band the comp draws behind the
+     treatment card rather than borrowing the bento. */
+  .cart-band {
+    background: linear-gradient(100deg, var(--accent-subtle) 0%, var(--color-white) 100%);
+    padding: var(--spacing-5) 0 0;
+  }
+  .cart-band-inner { max-width: 1180px; margin: 0 auto; padding: 0 var(--spacing-5); }
+  .cart-band-checkout { padding-bottom: var(--spacing-10); }
+  .cart-summary {
+    /* border-box, or max-width caps the CONTENT and the card renders 478px —
+       its 24px side padding added on twice. This page has no global reset, so
+       every element that pads and constrains has to say so itself. */
+    max-width: 430px; box-sizing: border-box; margin: var(--spacing-6) auto 0;
+    background: var(--glass-solid); color: var(--color-white);
+    border-radius: var(--radius-2xl); box-shadow: var(--shadow-xl);
+    overflow: hidden; padding: var(--spacing-8) var(--spacing-6) 0; text-align: center;
+  }
+  /* Carried over from the plan card the user chose — same colours, same
+     full-width band, same uppercase label. Negative margins take it out of the
+     card's own padding and up to its top edge, the same trick .cart-due uses to
+     reach the bottom one; the card's overflow: hidden clips it to the radius. */
+  .cart-summary-ribbon {
+    margin: calc(var(--spacing-8) * -1) calc(var(--spacing-6) * -1) var(--spacing-6);
+    padding: var(--spacing-2) var(--spacing-3);
+    background: var(--bg-secondary); color: var(--text-default);
+    font-size: var(--text-xs); font-weight: var(--font-weight-bold);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .cart-summary-ribbon.is-featured {
+    background: var(--accent-subtle); color: var(--accent-onSubtle);
+  }
+  .cart-summary-title {
+    margin: 0 0 var(--spacing-6); font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium); letter-spacing: -0.01em;
+  }
+  .cart-summary-panel {
+    display: grid; grid-template-columns: 92px minmax(0, 1fr);
+    gap: var(--spacing-4); align-items: center; text-align: left;
+    /* A lighter inset on the same ink, so the panel separates from the card
+       without introducing a second color. */
+    background: rgb(255 255 255 / 0.09);
+    border-radius: var(--radius-xl); padding: var(--spacing-4);
+  }
+  .cart-summary-panel img { display: block; width: 100%; height: auto; }
+  .cart-saving-line {
+    margin: var(--spacing-5) 0 0; font-size: var(--text-sm); line-height: 1.5;
+  }
+  .cart-code {
+    display: inline-block; margin: var(--spacing-4) 0 0;
+    background: var(--accent-subtle); color: var(--accent-onSubtle);
+    border-radius: var(--radius-lg); padding: var(--spacing-2) var(--spacing-5);
+    font-size: var(--text-base); font-weight: var(--font-weight-semibold); letter-spacing: 0.02em;
+  }
+  .cart-hold {
+    margin: var(--spacing-4) 0 0; font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+  }
+  .cart-assurances {
+    list-style: none; margin: var(--spacing-6) 0 0; padding: 0;
+    font-size: var(--text-sm); line-height: 1.5;
+  }
+  .cart-assurances li { padding: var(--spacing-3) 0; border-top: 1px solid var(--glass-border); }
+  .cart-assurances li:first-child { border-top: 0; }
+  .cart-due {
+    background: rgb(255 255 255 / 0.10); margin: var(--spacing-6) calc(var(--spacing-6) * -1) 0;
+    padding: var(--spacing-5) var(--spacing-6);
+  }
+  .cart-due-title { margin: 0; font-size: var(--text-xl); font-weight: var(--font-weight-bold); }
+  .cart-due-note { margin: var(--spacing-1) 0 0; font-size: var(--text-xs); opacity: 0.85; }
+  .cart-hipaa {
+    margin: var(--spacing-5) 0 0; text-align: right;
+    font-size: var(--text-xs); color: var(--text-muted);
+  }
+
+  /* ---- Checkout: form ---- */
+  .cart-methods {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-5); max-width: 620px; margin: 0 auto;
+  }
+  .cart-method {
+    display: flex; flex-direction: column; align-items: center; gap: var(--spacing-3);
+    background: var(--accent-subtle); border: 2px solid transparent;
+    border-radius: var(--radius-xl); padding: var(--spacing-5); cursor: pointer;
+    transition: border-color var(--transition-base) var(--ease-in-out);
+  }
+  .cart-method.is-on { border-color: var(--accent-default); }
+  .cart-method-title {
+    font-size: var(--text-sm); font-weight: var(--font-weight-bold); color: var(--text-default);
+  }
+  .cart-form {
+    display: flex; flex-direction: column; gap: var(--spacing-3);
+    max-width: 400px; margin: 0 auto;
+  }
+  .cart-form-card { max-width: 400px; }
+  .cart-row-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-3); }
+  /* Errors are marked on the field, not just announced once: :placeholder-shown
+     is a proxy for "still empty", so a field the user fills clears itself
+     without another submit. :required is load-bearing — without it the optional
+     "Address line 2" reddens alongside the fields that are genuinely missing.
+     !important is equally load-bearing: CartField sets the `border` shorthand
+     inline, which otherwise wins and leaves this rule matching but invisible. */
+  .cart-form.has-error .cart-input:required:placeholder-shown {
+    border-color: var(--error-default) !important;
+  }
+  .cart-error {
+    max-width: 400px; margin: var(--spacing-4) auto 0; text-align: center;
+    font-size: var(--text-sm); color: var(--error-default);
+  }
+  .cart-check {
+    display: flex; align-items: center; gap: var(--spacing-2); margin-top: var(--spacing-2);
+    font-size: var(--text-sm); color: var(--text-secondary); cursor: pointer;
+  }
+  .cart-check input { accent-color: var(--accent-default); width: 16px; height: 16px; }
+  .cart-fine, .cart-bnpl-note {
+    margin: var(--spacing-4) auto 0; max-width: 34em; text-align: center;
+    font-size: var(--text-xs); line-height: 1.6; color: var(--text-muted);
+  }
+  .cart-submit { margin-top: var(--spacing-10); text-align: center; }
+  .cart-secure { margin: var(--spacing-3) 0 0; font-size: var(--text-xs); color: var(--text-muted); }
+  .cart-legal {
+    margin: clamp(40px, 5vw, 64px) auto 0; max-width: 640px; text-align: center;
+    font-size: 11px; line-height: 1.6; color: var(--text-muted);
+  }
+  .cart-placed { text-align: center; max-width: 480px; }
+  .cart-placed h2 {
+    margin: var(--spacing-4) 0 var(--spacing-3); font-size: var(--text-3xl);
+    font-weight: var(--font-weight-medium); color: var(--text-default);
+  }
+  .cart-placed p { margin: 0 0 var(--spacing-4); font-size: var(--text-sm); line-height: 1.6; color: var(--text-secondary); }
+  .cart-placed-sum { font-weight: var(--font-weight-bold); color: var(--text-default) !important; }
+
+  /* ---- Payment brand marks ----
+     Third-party trademark colors. They live here, not in the JSX, because they
+     are page configuration rather than component color decisions — which is
+     also what keeps ui_kits/cart at zero theme-guard warnings.
+     TODO(brand): typographic stand-ins. Replace with each network's official
+     artwork before launch; their brand guidelines require the real mark. */
+  .pay-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 26px; min-width: 42px; padding: 0 7px; box-sizing: border-box;
+    border-radius: var(--radius-sm); background: var(--color-white);
+    border: 1px solid var(--border-default);
+    font-family: var(--font-family-base); font-size: 9px;
+    font-weight: var(--font-weight-bold); letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .pay-visa    { color: #1A1F71; font-size: 13px; font-style: italic; letter-spacing: -0.02em; }
+  .pay-amex    { background: #006FCF; border-color: #006FCF; color: var(--color-white); }
+  .pay-discover{ color: #4D4D4D; font-size: 7.5px; }
+  .pay-applepay{ color: #000000; font-size: 11px; }
+  .pay-gpay    { color: #5F6368; font-size: 11px; }
+  .pay-afterpay{ background: #B2FCE4; border-color: #B2FCE4; color: #000000; font-size: 10px; }
+  .pay-klarna  { background: #FFB3C7; border-color: #FFB3C7; color: #0B051D; font-size: 10px; }
+  .pay-affirm  { color: #4A4AF4; font-size: 11px; }
+  .pay-mc { position: relative; display: block; width: 26px; height: 16px; }
+  .pay-mc i { position: absolute; top: 0; width: 16px; height: 16px; border-radius: 50%; }
+  .pay-mc i:first-child { left: 0; background: #EB001B; }
+  /* multiply gives the overlap its darker orange without a third element */
+  .pay-mc i:last-child  { right: 0; background: #F79E1B; mix-blend-mode: multiply; }
+
+  /* ---- Narrow viewports ---- */
+  /* Same breakpoint the WL/Wellness bentos collapse at, so all three heroes
+     change shape together rather than at three different widths. */
+  @media (max-width: 960px) {
+    .cart-bento > div { grid-column: span 12 !important; }
+    .cart-tile-text { padding: var(--spacing-8) var(--spacing-6); }
+    .cart-tile-text h1 { font-size: var(--text-4xl); }
+    /* The media tile leads on a stacked layout: the photograph sets the mood
+       before the offer, and a 3:4 portrait below a full-width text tile would
+       otherwise push the first plan card most of a screen further down. */
+    .cart-tile-media { order: -1; aspect-ratio: 4 / 3; }
+    .cart-hipaa { text-align: center; }
+  }
+  @media (max-width: 560px) {
+    /* Squarer again — at 390px a 4:3 tile is still 290px of chrome before the
+       headline, and the figure is legible well below that. */
+    .cart-tile-media { aspect-ratio: 1 / 1; }
+    .cart-tile-text h1 { font-size: var(--text-3xl); }
+    .cart-hero-sub { font-size: var(--text-lg); }
+  }
+  @media (max-width: 620px) {
+    .cart-treatments { grid-template-columns: 1fr; max-width: 420px; }
+    .cart-includes ul { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
+    .cart-plans { max-width: 340px; }
+    .cart-summary-panel { grid-template-columns: 72px minmax(0, 1fr); gap: var(--spacing-3); }
+  }
+  @media (max-width: 380px) {
+    /* State/ZIP and Expiry/CVC stop fitting side by side once the field's own
+       padding eats the column. */
+    .cart-row-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Shared catalog + cart config load first (plain scripts), then the
+     primitives, then the controls and the flow. -->
+<script src="ui_kits/shared/data/products.js?v=20260823"></script>
+<script src="ui_kits/cart/cart-data.js?v=20260843"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260840"></script>
+<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260843"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260843"></script>
+<script type="text/babel">
+function ChimeCartPage() {
+  return (
+    <React.Fragment>
+      <CartHeader />
+      <ChimeCartFlow />
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<ChimeCartPage />);
+</script>
+</body>
+</html>
