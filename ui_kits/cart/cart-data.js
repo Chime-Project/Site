@@ -26,19 +26,21 @@
 
   // ---- Step 2: plan ladder presentation ------------------------------------
   // Keyed by the catalog's plan.key. `supplyMonths` is months of PRODUCT
-  // delivered, which is not always the number of months billed: the 3-month
-  // membership ships a 4th month free, which is why the mockup labels it
-  // "16 Week Supply" and prices the button "/ 4 Month Membership". That single
-  // field is what makes the hero promise ("get the 4th month for free") and the
-  // savings math agree — change it and both drift.
+  // delivered; `billedMonths` is what the customer PAYS for. They differ on one
+  // row — the 3-month membership ships a free 4th month — which is why the
+  // mockup labels it "16 Week Supply" and prices the button "/ 4 Month
+  // Membership". That gap is the offer's whole hook, and holding it as two
+  // fields is what makes the hero promise, the savings math and the UI's
+  // "1 month free" all derive from the same numbers instead of drifting apart
+  // in copy. Change one and check the other.
   window.CHIME_CART_PLAN_META = {
-    "1mo": { title: "1 Month Membership", supplyMonths: 1, badge: null,
+    "1mo": { title: "1 Month Membership", supplyMonths: 1, billedMonths: 1, badge: null,
       blurb: "A one-time plan delivered to your door" },
-    "3mo": { title: "3 Month Membership", supplyMonths: 4, badge: "Most Popular",
+    "3mo": { title: "3 Month Membership", supplyMonths: 4, billedMonths: 3, badge: "Most Popular",
       blurb: "Buy a 3-month supply and get the 4th month for free" },
-    "6mo": { title: "6 Month Membership", supplyMonths: 6, badge: null,
+    "6mo": { title: "6 Month Membership", supplyMonths: 6, billedMonths: 6, badge: null,
       blurb: "Your ultimate membership to guarantee success and consistency" },
-    "1yr": { title: "12 Month Membership", supplyMonths: 12, badge: "Best Deal",
+    "1yr": { title: "12 Month Membership", supplyMonths: 12, billedMonths: 12, badge: "Best Deal",
       blurb: "Commit to a year of progress and get the best deal" },
   };
 
@@ -82,7 +84,7 @@
     // ⚠️ The amount and the code NAME must be changed together — "JOIN120"
     // reads as $120 to a customer, so a silent change to one is a false claim.
     discount: 120,
-    // The 1-month plan is excluded: $120 off a $209 month-to-month order is a
+    // The 1-month plan is excluded: $120 off a $200 month-to-month order is a
     // 57% discount, which is not what a join incentive is for. Expressed as a
     // supply threshold rather than a key list so it survives catalog changes —
     // the 3-month plan clears it on its 4 months of supply.
@@ -157,7 +159,7 @@
   // savings the two screens display.
   //
   // ⚠️ Why the list rate is DERIVED rather than read from the "1 Month" row.
-  // The four Weight Loss products carry a 1-month price of "From $179.00" —
+  // Most Weight Loss products carry a 1-month price of the "From $X" shape —
   // a marketing floor equal to their 1-YEAR per-month rate, not a real
   // month-to-month price. Taken literally it makes the 1-month plan the
   // cheapest per month and every longer plan a markup, which inverts the whole
@@ -189,10 +191,12 @@
       // catalog already prints.
       var total = p.key === "1mo" ? listRate : cartMoney(p.price);
       var perMonth = total / m.supplyMonths;
+      var billed = m.billedMonths || m.supplyMonths;
       return {
         key: p.key, term: p.term, title: m.title, blurb: m.blurb, badge: m.badge,
         metaBadge: m.badge,
         supplyMonths: m.supplyMonths, supplyWeeks: m.supplyMonths * 4,
+        billedMonths: billed, freeMonths: m.supplyMonths - billed,
         total: total, totalLabel: cartUSD(total),
         perMonth: perMonth, perMonthLabel: cartUSD(perMonth),
         listRate: listRate, listRateLabel: cartUSD(listRate),
@@ -208,14 +212,16 @@
       };
     }).filter(Boolean);
 
-    // "Best Deal" is EARNED, not assigned. The mockup pins it to the 12-month
-    // card, but the free 4th month makes the 3-month plan the cheapest per
-    // month under real catalog pricing ($156.75 vs $179 on GLP-1) — three
-    // 3-month packages buy a year for $1,881 against the annual plan's $2,148.
-    // Labelling the dearer card "Best Deal" would be a false price claim on a
-    // checkout, so the badge follows the arithmetic: it goes to the lowest
-    // per-month plan, and only if that card is not already badged. When the
-    // cheapest plan is the "Most Popular" one, no card claims Best Deal at all.
+    // "Best Deal" is EARNED, not assigned: it goes to the lowest per-month plan,
+    // and only if that card is not already badged. Labelling a dearer card
+    // "Best Deal" would be a false price claim on a checkout.
+    //
+    // This rule looked redundant for a long time and was not. Under the pre-2026-08-14
+    // catalog the free 4th month made the 3-month plan the cheapest per month
+    // on EVERY product, so the badge the mockup pins to the 12-month card was
+    // never once rendered — the rule was silently suppressing a false claim on
+    // every page load. The reprice made the ladder descend properly, the year
+    // became genuinely cheapest, and the badge now appears for the first time.
     // ("Most Popular" is an editorial claim about uptake, not price, so it is
     // left where the mockup puts it — but see CART_REVIEW: it needs backing.)
     var cheapest = built.reduce(function (a, b) { return b.perMonth < a.perMonth ? b : a; }, built[0]);
@@ -262,6 +268,89 @@
     });
   }
 
+  // ---- Order: more than one treatment -------------------------------------
+  // A basket holds several treatments, each on its OWN membership term. Terms
+  // are not shared, because the ladders genuinely differ: NAD+ quotes 1 and 3
+  // months where GLP-1 quotes 1, 3, 6 and 12. One shared term could only ever
+  // offer what EVERY chosen treatment offers, so adding NAD+ would silently
+  // delete GLP-1's two best deals — the customer would watch the 6- and
+  // 12-month cards disappear with no explanation.
+  //
+  // The code is an ORDER-level discount, taken once no matter how many
+  // treatments are in the basket. "JOIN120" reads to a customer as $120 off
+  // joining; charging it per line would quietly make it $240 on a two-treatment
+  // order, which is a different offer than the name states.
+  //
+  // Qualification sums supply across the basket rather than asking any one line
+  // to clear the bar. That keeps the rule it replaces intact — don't hand $120
+  // off a $200 month-to-month order — while letting a genuinely large basket
+  // qualify. With every 1-month plan worth 1 supply month, unlocking it still
+  // takes a real multi-month commitment.
+  //
+  // Lines take UNDISCOUNTED plans (straight from chimeCartPlans). The reduction
+  // belongs to the order, so it is reported once here rather than smeared across
+  // the lines, and every line still shows the ladder price it was chosen at.
+  function chimeCartOrder(lines, promo) {
+    promo = promo || window.CHIME_CART_PROMO || {};
+    var rows = (lines || []).filter(function (l) { return l && l.product && l.plan; });
+    var subtotal = 0, listTotal = 0, supplyMonths = 0;
+    rows.forEach(function (l) {
+      subtotal += l.plan.total;
+      listTotal += l.plan.listTotal;
+      supplyMonths += l.plan.supplyMonths;
+    });
+    var off = Number(promo.discount) || 0;
+    var applied = !!promo.enabled
+      && off > 0
+      && rows.length > 0
+      && supplyMonths >= (promo.minSupplyMonths || 0)
+      // Same guard as the single-plan path: a flat discount must never reach the
+      // subtotal. A $0 order is a bug, not an offer, and a negative one is worse.
+      && off < subtotal;
+    var discount = applied ? off : 0;
+    var total = subtotal - discount;
+    return {
+      lines: rows, count: rows.length, supplyMonths: supplyMonths,
+      subtotal: subtotal, subtotalLabel: cartUSD(subtotal),
+      listTotal: listTotal, listTotalLabel: cartUSD(listTotal),
+      ladderSavings: listTotal - subtotal, ladderSavingsLabel: cartUSD(listTotal - subtotal),
+      promoApplied: applied, promoCode: promo.code,
+      promoDiscount: discount, promoDiscountLabel: cartUSD(discount),
+      total: total, totalLabel: cartUSD(total),
+      // One figure the customer can check: list price minus what they pay,
+      // ladder savings and code savings folded together.
+      totalSavings: listTotal - total, totalSavingsLabel: cartUSD(listTotal - total),
+    };
+  }
+
+  // ---- Badges: one superlative per SCREEN, not per ladder -------------------
+  // Each treatment carries its own ladder, and both ladders badge their 3-month
+  // tier "Most Popular" — so a two-treatment basket used to claim it twice. A
+  // superlative that appears twice is not one.
+  //
+  // Takes the basket in display order and returns { treatmentId: { planKey:
+  // badge } }, spending each distinct badge on the FIRST tier that wants it. A
+  // different superlative ("Best Deal" on the year) is unaffected.
+  //
+  // Lives here, as a pure function over the basket, precisely so the UI does not
+  // have to resolve it while rendering: doing that meant mutating shared state
+  // mid-render, and React re-rendering a panel then consumed the badge a second
+  // time and displayed nothing.
+  function chimeCartBadges(basket) {
+    var claimed = {};
+    var out = {};
+    (basket || []).forEach(function (b) {
+      if (!b || !b.id) return;
+      out[b.id] = {};
+      (b.plans || []).forEach(function (p) {
+        if (!p.badge || claimed[p.badge]) return;
+        claimed[p.badge] = true;
+        out[b.id][p.key] = p.badge;
+      });
+    });
+    return out;
+  }
+
   function chimeCartProduct(id) {
     return (window.CHIME_PRODUCTS || []).filter(function (p) { return p.id === id; })[0] || null;
   }
@@ -269,6 +358,8 @@
   Object.assign(window, {
     chimeCartPlans: chimeCartPlans,
     chimeCartApplyPromo: chimeCartApplyPromo,
+    chimeCartOrder: chimeCartOrder,
+    chimeCartBadges: chimeCartBadges,
     chimeCartProduct: chimeCartProduct,
     chimeCartMoney: cartMoney,
     chimeCartUSD: cartUSD,

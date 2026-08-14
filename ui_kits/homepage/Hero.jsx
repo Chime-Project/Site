@@ -19,11 +19,17 @@ function ChimeHero() {
           }}>
             <span style={{ whiteSpace: "nowrap" }}>Health That is</span><br />In Tune With You
           </h1>
+          {/* Read from the catalog, not typed here. It was hardcoded at
+              "$179.00" and silently went stale the moment GLP-1 was repriced —
+              the homepage advertised a floor the cart no longer honoured.
+              Falls back to the old string only if the catalog fails to load, so
+              the hero never renders a blank price. */}
           <ProductHeroCard
             slotId="hero-weight-loss"
             brand={<span style={{ color: "#fff" }}>GLP-1</span>}
             product=""
-            price="Start from $179.00"
+            price={"Start from " + (((window.CHIME_PRODUCTS || [])
+              .filter((p) => p.id === "prod-glp-1")[0] || {}).start || "$179.00")}
             src={HERO_UPLOADS + "/pen.webp"}
           />
         </div>

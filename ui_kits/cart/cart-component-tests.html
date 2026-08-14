@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chime Cart — React component tests</title>
+<!-- React component tests for the cart UI kit.
+     RUN:  serve the repo, open /ui_kits/cart/cart-component-tests.html
+     Headless: the runner sets window.__CART_TEST_DONE and window.__CART_TEST,
+     so a driver can poll for done and read {pass, fail, failures}.
+
+     WHY NOT JEST / VITEST / TESTING-LIBRARY: this repo has no package.json and
+     no node_modules — every dependency is a CDN <script> and every page is
+     compiled by in-browser Babel at runtime. Adding a bundler + jsdom to run
+     these would introduce a toolchain the project has deliberately avoided, and
+     jsdom would be a WORSE fidelity match than what happens here: this harness
+     loads the same React 18 UMD build, the same Babel, and the same component
+     files the live page loads, and asserts against a real layout engine.
+     The pure pricing logic is covered separately by cart-tests.js under node.
+
+     GSAP is deliberately NOT loaded. Every component guards on window.gsap, so
+     leaving it out takes the non-animated path and keeps assertions
+     deterministic — the same reason Testing Library does not animate. The GSAP
+     paths are verified in-browser against the real page instead. -->
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script>
+  window.CHIME_UPLOADS_BASE = "../../uploads";
+  window.CHIME_ASSETS_BASE = "../../assets";
+</script>
+<style>
+  body { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; margin: 0; padding: 24px; background: #fff; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .summary { padding: 10px 14px; border-radius: 6px; margin: 14px 0; font-weight: 700; }
+  .summary.ok { background: #DCFCE7; color: #016630; }
+  .summary.bad { background: #FFE2E2; color: #9F0712; }
+  .t { padding: 2px 0; }
+  .t.p::before { content: "PASS  "; color: #00A63E; }
+  .t.f::before { content: "FAIL  "; color: #E7000B; font-weight: 700; }
+  .t.f { color: #9F0712; }
+  .why { padding-left: 6em; color: #62748E; white-space: pre-wrap; }
+  .grp { margin-top: 14px; font-weight: 700; color: #314158; }
+  /* The components under test are mounted here. Kept on-screen but out of the
+     way: a display:none sandbox would zero every getBoundingClientRect and make
+     any layout assertion meaningless. */
+  #sandbox { position: absolute; left: -10000px; top: 0; width: 1200px; }
+</style>
+</head>
+<body>
+<h1>Chime Cart — React component tests</h1>
+<div id="out"></div>
+<div id="sandbox"></div>
+
+<!-- ?v= on every source, bumped with cart.html's.
+     These were unversioned, and it cost real debugging time TWICE: the browser
+     served a cached products.js / Button.jsx and the suite reported failures
+     against code that was no longer on disk — the worst kind of red, because
+     the source you are reading is already correct. Bump these together with the
+     tags in cart.html. -->
+<script src="../shared/data/products.js?v=20260854"></script>
+<script src="cart-data.js?v=20260854"></script>
+<script type="text/babel" src="../shared/ui/Icon.jsx?v=20260854"></script>
+<script type="text/babel" src="../shared/ui/Button.jsx?v=20260854"></script>
+<script type="text/babel" src="CartControls.jsx?v=20260854"></script>
+<script type="text/babel" src="CartFlow.jsx?v=20260854"></script>
+
+<script type="text/babel">
+// The runner is one async IIFE, so ANY throw inside it becomes an unhandled
+// rejection that never reaches the console and simply stops the suite with a
+// half-drawn page. Report it instead — a harness that can hang silently is
+// worse than no harness.
+window.addEventListener("error", (e) => { window.__CART_TEST_CRASH = String(e.message); });
+window.addEventListener("unhandledrejection", (e) => {
+  window.__CART_TEST_CRASH = String((e.reason && e.reason.stack) || e.reason);
+});
+(async function () {
+  "use strict";
+
+  // ---- tiny runner ------------------------------------------------------
+  const out = document.getElementById("out");
+  const sandbox = document.getElementById("sandbox");
+  let pass = 0; const failures = [];
+  const tick = (n = 0) => new Promise((r) => setTimeout(r, n));
+
+  function group(name) {
+    const d = document.createElement("div");
+    d.className = "grp"; d.textContent = name; out.appendChild(d);
+  }
+  function record(name, okFlag, why) {
+    const d = document.createElement("div");
+    d.className = "t " + (okFlag ? "p" : "f");
+    d.textContent = name;
+    out.appendChild(d);
+    if (okFlag) { pass++; return; }
+    failures.push(name + (why ? " — " + why : ""));
+    const w = document.createElement("div");
+    w.className = "why"; w.textContent = why || "";
+    out.appendChild(w);
+  }
+  // Assertions routinely compare DOM nodes (activeElement, querySelector
+  // results). JSON.stringify on one throws on React's circular fiber back-refs,
+  // which crashed the whole suite the first time this ran — and the crash
+  // happened inside the FAILURE path, so a single soft failure took everything
+  // with it. Describe nodes structurally instead of serialising them.
+  function show(v) {
+    if (v && v.nodeType === 1) {
+      return "<" + v.tagName.toLowerCase()
+        + (v.id ? "#" + v.id : "")
+        + (v.className && typeof v.className === "string" ? "." + v.className.trim().split(/\s+/).join(".") : "")
+        + ">";
+    }
+    try { return JSON.stringify(v); } catch (e) { return String(v); }
+  }
+  const ok = (name, v, why) => record(name, !!v, why || "expected truthy, got " + show(v));
+  const eq = (name, a, b) => record(name, a === b,
+    "expected " + show(b) + ", got " + show(a));
+  const has = (name, hay, needle) => record(name,
+    String(hay == null ? "" : hay).indexOf(needle) !== -1,
+    "expected to contain " + JSON.stringify(needle) + ", got " + JSON.stringify(String(hay).slice(0, 160)));
+
+  // Mount into a real root. Returns the host plus an unmount, and every test
+  // unmounts so timers (the promo countdown's setInterval) do not accumulate.
+  async function mount(element) {
+    const host = document.createElement("div");
+    sandbox.appendChild(host);
+    const root = ReactDOM.createRoot(host);
+    root.render(element);
+    await tick();
+    return {
+      host,
+      $: (sel) => host.querySelector(sel),
+      $$: (sel) => Array.from(host.querySelectorAll(sel)),
+      text: () => host.textContent,
+      unmount: () => { root.unmount(); host.remove(); },
+    };
+  }
+
+  // React tracks the input's value on the DOM node, so a plain `.value = x`
+  // is swallowed as a no-op. Go through the prototype setter, then fire the
+  // event React actually listens for. This is the same trick Testing Library
+  // uses internally.
+  function typeInto(input, value) {
+    const setter = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype, "value").set;
+    setter.call(input, value);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+  const key = (el, k) => el.dispatchEvent(
+    new KeyboardEvent("keydown", { key: k, bubbles: true }));
+
+  const glpPlans = window.chimeCartPlans(window.chimeCartProduct("prod-glp-1"));
+  const planBy = (k) => glpPlans.filter((p) => p.key === k)[0];
+  const nad = window.chimeCartProduct("prod-nad");
+  const glp = window.chimeCartProduct("prod-glp-1");
+  const meta = window.CHIME_CART_TREATMENTS[1]; // GLP-1's marketing lines
+
+  // The try opens HERE, after the reporter exists — a catch that cannot see
+  // `failures` cannot report anything, which is exactly how this failed first.
+  try {
+
+  // ================= CartTreatmentCard =================
+  group("CartTreatmentCard");
+  {
+    let picked = null;
+    const c = await mount(
+      <CartTreatmentCard product={glp} meta={meta} selected={false}
+        onSelect={() => { picked = "yes"; }} />);
+    // A checkbox, not a radio: a basket can hold more than one treatment.
+    const box = c.$('[role="checkbox"]');
+    ok("renders a checkbox role", box);
+    eq("it is NOT a radio", c.$('[role="radio"]'), null);
+    eq("unselected reports aria-checked=false", box.getAttribute("aria-checked"), "false");
+    // Every checkbox is its own tab stop — the roving tabindex a radiogroup
+    // needs would strand a keyboard user on whichever card happened to be first.
+    eq("unselected is still in the tab order", box.getAttribute("tabindex"), "0");
+    has("renders the product name", c.text(), "GLP-1");
+    has("renders the claim line", c.text(), meta.claim);
+    has("renders the highlight line", c.text(), meta.highlight);
+    has("renders the social-proof line", c.text(), meta.proof);
+    eq("no tick when unselected", c.$("[data-check-tick]"), null);
+    has("resolves the vial art from CHIME_UPLOADS_BASE", c.$("img").getAttribute("src"), glp.img);
+    eq("vial art is decorative (empty alt)", c.$("img").getAttribute("alt"), "");
+    box.click();
+    await tick();
+    eq("clicking the card toggles it", picked, "yes");
+    c.unmount();
+  }
+  {
+    const c = await mount(
+      <CartTreatmentCard product={nad} meta={window.CHIME_CART_TREATMENTS[0]}
+        selected={true} onSelect={() => {}} />);
+    const box = c.$('[role="checkbox"]');
+    eq("selected reports aria-checked=true", box.getAttribute("aria-checked"), "true");
+    eq("selected is in the tab order too", box.getAttribute("tabindex"), "0");
+    ok("renders the tick when selected", c.$("[data-check-tick]"));
+    c.unmount();
+  }
+
+  // ================= CartTermOption =================
+  // Replaces the old CartPlanCard. A term is an option now, not a card — see
+  // the note on CartTreatmentConfig for what that fixed.
+  group("CartTermOption");
+  {
+    const p = planBy("3mo");
+    let picked = 0;
+    const c = await mount(
+      <CartTermOption plan={p} selected={false} badge={p.badge} onSelect={() => { picked++; }} />);
+    const opt = c.$('[role="radio"]');
+    ok("renders a radio role", opt);
+    eq("unselected reports aria-checked=false", opt.getAttribute("aria-checked"), "false");
+    has("names the term", c.text(), p.term);
+    // The comparable figure has to be ON every option — comparing terms was
+    // impossible when the cards only quoted lump sums.
+    has("carries the per-month rate", c.text(), p.perMonthLabel);
+    has("renders the badge it was handed", c.text(), "Most Popular");
+    // The old ribbon carried textTransform inline; this badge is uppercased by
+    // cart.html's stylesheet, which this harness does not load. So assert the
+    // invariant that rule depends on: the STRING is untouched by the JS.
+    eq("the badge string is not pre-uppercased in JS",
+      c.$(".cart-term-badge").textContent, "Most Popular");
+    opt.click();
+    await tick();
+    eq("clicking the option fires onSelect once", picked, 1);
+    c.unmount();
+  }
+  {
+    // A badge the step has already spent is passed as null, and the option must
+    // then render none — this is the mechanism that stops "Most Popular"
+    // appearing once per ladder on a multi-treatment basket.
+    const c = await mount(
+      <CartTermOption plan={planBy("3mo")} selected={true} badge={null} onSelect={() => {}} />);
+    eq("a withheld badge renders nothing", c.$(".cart-term-badge"), null);
+    eq("selected reports aria-checked=true", c.$('[role="radio"]').getAttribute("aria-checked"), "true");
+    ok("selected is marked on", c.$(".cart-term").className.indexOf("is-on") !== -1);
+    c.unmount();
+  }
+
+  // ================= CartTreatmentConfig =================
+  group("CartTreatmentConfig");
+  {
+    const glpPlansAll = window.chimeCartPlans(glp);
+    const entry = { id: glp.id, product: glp, meta: window.CHIME_CART_TREATMENTS[1],
+      plans: glpPlansAll, plan: null };
+    let chosen = null; let removed = false;
+    const c = await mount(<CartTreatmentConfig entry={entry} badges={window.chimeCartBadges([entry])[entry.id]}
+      onPlan={(k) => { chosen = k; }} onRemove={() => { removed = true; }} />);
+    has("names the treatment", c.text(), "GLP-1");
+    eq("renders one option per term", c.$$(".cart-term").length, glpPlansAll.length);
+    eq("the terms are one radiogroup", c.$$('[role="radiogroup"]').length, 1);
+    // Nothing chosen yet, so there is no detail to show — only the prompt.
+    eq("no detail before a term is chosen", c.$(".cart-config-detail"), null);
+    has("prompts for a term", c.$(".cart-config-prompt").textContent, "GLP-1");
+    c.$$(".cart-term")[2].click();
+    await tick();
+    eq("choosing an option reports its key", chosen, glpPlansAll[2].key);
+    c.$(".cart-config-remove").click();
+    await tick();
+    eq("Remove reports up", removed, true);
+    c.unmount();
+  }
+  {
+    // The detail states ONLY what the option does not: the sum charged, the free
+    // month, the saving. Repeating the rate here is the duplication the rework
+    // removed, so assert it is gone.
+    const p = planBy("3mo");
+    const entry = { id: glp.id, product: glp, meta: window.CHIME_CART_TREATMENTS[1],
+      plans: window.chimeCartPlans(glp), plan: p };
+    const c = await mount(<CartTreatmentConfig entry={entry} badges={window.chimeCartBadges([entry])[entry.id]}
+      onPlan={() => {}} onRemove={() => {}} />);
+    const detail = c.$(".cart-config-detail").textContent;
+    has("states the billed total", detail, p.totalLabel);
+    has("states the free month from the data", detail, p.freeMonths + " month free");
+    has("states the saving in dollars", detail, p.savingsLabel);
+    has("names the rate it is measured against", detail, p.listRateLabel);
+    eq("no prompt once a term is chosen", c.$(".cart-config-prompt"), null);
+    c.unmount();
+  }
+  {
+    // A term with no free month must not invent one.
+    const p = planBy("1yr");
+    const entry = { id: glp.id, product: glp, meta: window.CHIME_CART_TREATMENTS[1],
+      plans: window.chimeCartPlans(glp), plan: p };
+    const c = await mount(<CartTreatmentConfig entry={entry} badges={window.chimeCartBadges([entry])[entry.id]}
+      onPlan={() => {}} onRemove={() => {}} />);
+    eq("no free-month claim on a term without one", p.freeMonths, 0);
+    eq("and none is printed", c.$(".cart-config-detail").textContent.indexOf("free"), -1);
+    c.unmount();
+  }
+  {
+    // The shared `claimed` set is what makes the badge a STEP-level rule. Two
+    // panels built from the same set must not both print the same superlative.
+    const mk = (product) => ({ id: product.id, product, meta: window.CHIME_CART_TREATMENTS[0],
+      plans: window.chimeCartPlans(product), plan: null });
+    const basket = [mk(nad), mk(glp)];
+    const resolved = window.chimeCartBadges(basket);
+    const a = await mount(<CartTreatmentConfig entry={basket[0]} badges={resolved[nad.id]}
+      onPlan={() => {}} onRemove={() => {}} />);
+    const b = await mount(<CartTreatmentConfig entry={basket[1]} badges={resolved[glp.id]}
+      onPlan={() => {}} onRemove={() => {}} />);
+    const badgesA = a.$$(".cart-term-badge").map((e) => e.textContent);
+    const badgesB = b.$$(".cart-term-badge").map((e) => e.textContent);
+    has("the first panel claims Most Popular", badgesA.join(","), "Most Popular");
+    eq("the second panel does NOT repeat it",
+      badgesB.filter((t) => /Most Popular/i.test(t)).length, 0);
+    // A DIFFERENT superlative is still allowed through.
+    has("a distinct badge still renders", badgesB.join(","), "Best Deal");
+    a.unmount(); b.unmount();
+  }
+
+  // ================= CartField =================
+  group("CartField");
+  {
+    let val = "";
+    const c = await mount(
+      <CartField id="t-name" label="Full name" placeholder="Full name" required
+        value={val} onChange={(v) => { val = v; }} />);
+    const input = c.$("input");
+    const label = c.$("label");
+    eq("label is bound to the input", label.getAttribute("for"), "t-name");
+    ok("label text is present for screen readers even when unseen",
+      label.textContent === "Full name");
+    ok("label is visually hidden by default", label.className.indexOf("visually-hidden") !== -1);
+    eq("required is a real attribute", input.required, true);
+    eq("valid field carries no aria-invalid", input.getAttribute("aria-invalid"), null);
+    eq("valid field carries no aria-describedby", input.getAttribute("aria-describedby"), null);
+    typeInto(input, "Jamie");
+    await tick();
+    eq("typing reports the value up", val, "Jamie");
+    c.unmount();
+  }
+  {
+    const c = await mount(
+      <CartField id="t-zip" label="ZIP" placeholder="ZIP" required invalid
+        errorId="the-error" value="" onChange={() => {}} />);
+    const input = c.$("input");
+    eq("an invalid field exposes aria-invalid", input.getAttribute("aria-invalid"), "true");
+    eq("an invalid field points at the error text", input.getAttribute("aria-describedby"), "the-error");
+    c.unmount();
+  }
+  {
+    const c = await mount(
+      <CartField id="t-card" label="Card number" showLabel placeholder="1234"
+        value="" onChange={() => {}} />);
+    eq("showLabel renders the label visibly",
+      c.$("label").className.indexOf("visually-hidden"), -1);
+    eq("a field is optional unless asked otherwise", c.$("input").required, false);
+    c.unmount();
+  }
+
+  // ================= Small parts =================
+  group("CartStep / CartSummaryRow / PayMark");
+  {
+    const c = await mount(<CartStep n={2} title="Select Your Membership" sub="Lock in your savings" id="x" />);
+    has("renders the step number", c.text(), "Step 2");
+    has("renders the step title", c.text(), "Select Your Membership");
+    has("renders the optional sub", c.text(), "Lock in your savings");
+    eq("the title is an h2, under the page h1", c.$("h2").id, "x");
+    c.unmount();
+  }
+  {
+    const c = await mount(<CartSummaryRow label="Monthly Price" value="$126.75" was="$209" />);
+    has("renders the label", c.text(), "Monthly Price");
+    has("renders the live value", c.text(), "$126.75");
+    has("renders the struck list price", c.text(), "$209");
+    const struck = c.$$("span").filter((s) => getComputedStyle(s).textDecorationLine === "line-through");
+    eq("exactly one figure is struck through", struck.length, 1);
+    eq("the struck figure is the OLD price", struck[0].textContent.trim(), "$209");
+    c.unmount();
+  }
+  {
+    const c = await mount(<PayRow brands={["mastercard", "visa", "afterpay"]} />);
+    const marks = c.$$('[role="img"]');
+    eq("renders one mark per brand", marks.length, 3);
+    eq("mastercard has an accessible name", marks[0].getAttribute("aria-label"), "Mastercard");
+    eq("visa has an accessible name", marks[1].getAttribute("aria-label"), "Visa");
+    eq("afterpay has an accessible name", marks[2].getAttribute("aria-label"), "Afterpay");
+    eq("mastercard draws its two discs", c.$$(".pay-mc i").length, 2);
+    c.unmount();
+  }
+
+  // ================= CartSelectScreen =================
+  group("CartSelectScreen");
+  {
+    const treatments = window.CHIME_CART_TREATMENTS
+      .map((t) => Object.assign({}, t, { product: window.chimeCartProduct(t.id) }));
+    let chosenPlan = null; let checkedOut = false;
+    // Mirrors ChimeCartFlow's basket derivation: ids in pick order, each with
+    // its OWN ladder and its own chosen term.
+    function Harness() {
+      const [ids, setIds] = React.useState(["prod-nad"]);
+      const [keys, setKeys] = React.useState({});
+      const basket = ids.map((id) => {
+        const t = treatments.filter((x) => x.id === id)[0];
+        const plans = window.chimeCartPlans(t.product);
+        return { id, meta: t, product: t.product, plans,
+          plan: plans.filter((p) => p.key === keys[id])[0] || null };
+      });
+      const ready = basket.length > 0 && basket.every((b) => b.plan);
+      return <CartSelectScreen treatments={treatments} basket={basket} ready={ready}
+        order={window.chimeCartOrder(basket.filter((b) => b.plan))}
+        onToggle={(id) => setIds((v) => (v.indexOf(id) >= 0 ? v.filter((x) => x !== id) : v.concat([id])))}
+        onPlan={(id, k) => { chosenPlan = id + ":" + k; setKeys((m) => Object.assign({}, m, { [id]: k })); }}
+        onCheckout={() => { checkedOut = true; }} />;
+    }
+    const cta = (c) => c.$$("button").filter((b) => /Continue to checkout/.test(b.textContent))[0];
+
+    const c = await mount(<Harness />);
+    eq("both treatments render as checkboxes", c.$$('[role="group"] [role="checkbox"]').length, 2);
+    // The treatments are a plain group; the only radiogroups on the step are
+    // the per-treatment term pickers, where the options ARE exclusive.
+    eq("treatments are not a radiogroup", c.$('[role="group"][role="radiogroup"]'), null);
+    eq("one term radiogroup per panel",
+      c.$$('[role="radiogroup"]').length, c.$$(".cart-config").length);
+    eq("NAD+ starts checked", c.$$('[role="checkbox"]')[0].getAttribute("aria-checked"), "true");
+    // NAD+ quotes two terms; GLP-1 quotes four. The ladder is data-driven, so
+    // this is the assertion that a hardcoded 2x2 grid would break.
+    eq("one panel, showing NAD+'s two terms", c.$$(".cart-term").length, 2);
+    eq("one treatment renders one panel", c.$$(".cart-config").length, 1);
+    ok("Continue is disabled with no term chosen", cta(c).disabled);
+
+    // Adding a treatment must ADD a ladder, not replace the first one — the bug
+    // a single-product model would reintroduce.
+    c.$$('[role="checkbox"]')[1].click();
+    await tick();
+    eq("both treatments are now checked",
+      c.$$('[role="checkbox"]').filter((b) => b.getAttribute("aria-checked") === "true").length, 2);
+    eq("two panels now render", c.$$(".cart-config").length, 2);
+    eq("each panel keeps its own terms (2 + 4)", c.$$(".cart-term").length, 6);
+    eq("each panel is named", c.$$(".cart-config-name").length, 2);
+
+    // A term chosen for one treatment must not satisfy the other.
+    c.$$(".cart-config")[0].querySelectorAll(".cart-term")[0].click();
+    await tick();
+    eq("Select Plan reports the treatment AND the term", chosenPlan, "prod-nad:1mo");
+    ok("Continue stays disabled while a treatment has no term", cta(c).disabled);
+    has("it names the treatment still missing a term",
+      c.$(".cart-continue-note").textContent, "GLP-1");
+
+    c.$$(".cart-config")[1].querySelectorAll(".cart-term")[0].click();
+    await tick();
+    eq("Continue enables once every treatment has a term", cta(c).disabled, false);
+    eq("the hint clears", c.$(".cart-continue-note"), null);
+    cta(c).click();
+    await tick();
+    eq("Continue advances the flow", checkedOut, true);
+
+    // Unchecking drops the ladder and its term with it.
+    c.$$('[role="checkbox"]')[1].click();
+    await tick();
+    eq("unchecking removes that panel", c.$$(".cart-config").length, 1);
+    eq("and leaves only its terms", c.$$(".cart-term").length, 2);
+    c.unmount();
+  }
+
+  // ================= CartCheckoutScreen =================
+  group("CartCheckoutScreen");
+  // `plan` keeps the single-line shorthand these tests were written against;
+  // `lines` takes a full basket for the multi-treatment cases.
+  function CheckoutHarness({ plan, lines, onBack }) {
+    const [form, setForm] = React.useState({
+      name: "", line1: "", line2: "", city: "", state: "", zip: "", phone: "",
+      card: "", exp: "", cvc: "",
+    });
+    const [method, setMethod] = React.useState("card");
+    const [sameBilling, setSameBilling] = React.useState(true);
+    const [placed, setPlaced] = React.useState(false);
+    const order = window.chimeCartOrder(lines || [{ product: glp, plan }]);
+    return <CartCheckoutScreen order={order} onBack={onBack || (() => {})}
+      entry={{ form, setForm, method, setMethod, sameBilling, setSameBilling, placed, setPlaced }} />;
+  }
+  {
+    const p = planBy("3mo");
+    const o = window.chimeCartOrder([{ product: glp, plan: p }]);
+    const c = await mount(<CheckoutHarness plan={p} />);
+    const panel = c.$(".cart-summary-panel").textContent;
+    has("summary names the medication", panel, "GLP-1");
+    has("summary names the plan", panel, "3 Month Plan");
+    // The line quotes the LADDER price it was chosen at. The code is an
+    // order-level discount, so smearing it across lines would print a
+    // per-treatment total no plan card ever showed.
+    has("the line keeps its ladder total", panel, p.totalLabel);
+    const totals = c.$(".cart-order").textContent;
+    has("the order shows the post-code total", totals, o.totalLabel);
+    has("the order strikes the list total", totals, o.listTotalLabel);
+    has("the order shows stacked savings", totals, o.totalSavingsLabel);
+    has("shipping is stated", totals, "FREE");
+    eq("a single-line order shows no subtotal row", totals.indexOf("Subtotal"), -1);
+    ok("Most Popular ribbon carries to screen 2", c.$(".cart-summary-ribbon.is-featured"));
+    has("the applied code is named", c.text(), window.CHIME_CART_PROMO.code);
+    // Every price the page shows must reconcile by subtraction.
+    eq("struck minus live equals the stated saving",
+      Math.round((o.listTotal - o.total) * 100) / 100,
+      Math.round(o.totalSavings * 100) / 100);
+    c.unmount();
+  }
+  {
+    // Two treatments, each on its own term.
+    const lines = [
+      { product: nad, plan: window.chimeCartPlans(nad).filter((x) => x.key === "3mo")[0] },
+      { product: glp, plan: window.chimeCartPlans(glp).filter((x) => x.key === "1yr")[0] },
+    ];
+    const o = window.chimeCartOrder(lines);
+    const c = await mount(<CheckoutHarness lines={lines} />);
+    eq("one summary panel per treatment", c.$$(".cart-summary-panel").length, 2);
+    has("the first panel names NAD+", c.$$(".cart-summary-panel")[0].textContent, "NAD+");
+    has("the second panel names GLP-1", c.$$(".cart-summary-panel")[1].textContent, "GLP-1");
+    const totals = c.$(".cart-order").textContent;
+    has("a multi-line order shows a subtotal", totals, "Subtotal");
+    has("the subtotal sums the lines", totals, o.subtotalLabel);
+    has("the code is deducted once", totals, o.promoDiscountLabel);
+    has("the order total is shown", totals, o.totalLabel);
+    // The ribbon speaks for one plan; with two lines it would claim for both.
+    eq("no ribbon on a multi-treatment order", c.$(".cart-summary-ribbon"), null);
+    eq("struck minus live still equals the stated saving",
+      Math.round((o.listTotal - o.total) * 100) / 100,
+      Math.round(o.totalSavings * 100) / 100);
+    c.unmount();
+  }
+  {
+    // The 1-month plan is excluded from the code and has no ladder saving, so
+    // the page must claim nothing at all rather than show a $0 discount.
+    const c = await mount(<CheckoutHarness plan={planBy("1mo")} />);
+    eq("no savings row on an undiscounted plan", c.text().indexOf("Total Savings"), -1);
+    eq("no CODE APPLIED chip when the code does not apply", c.$(".cart-code"), null);
+    eq("no countdown when no code is applied", c.$(".cart-hold"), null);
+    eq("no ribbon on an unbadged plan", c.$(".cart-summary-ribbon"), null);
+    eq("nothing is struck through", c.$$("span").filter((s) =>
+      getComputedStyle(s).textDecorationLine === "line-through").length, 0);
+    c.unmount();
+  }
+  {
+    const c = await mount(<CheckoutHarness plan={planBy("3mo")} />);
+    ok("card fields render for the card method", c.$("#cart-card"));
+    const bnpl = c.$$(".cart-method")[1];
+    bnpl.querySelector("input").click();
+    await tick();
+    eq("choosing Buy Now Pay Later drops the card fields", c.$("#cart-card"), null);
+    has("BNPL explains the handoff", c.text(), "Nothing is charged today");
+    c.unmount();
+  }
+  {
+    const c = await mount(<CheckoutHarness plan={planBy("3mo")} />);
+    c.$(".cart-submit button, .cart-submit a").click();
+    await tick();
+    ok("empty submit is blocked", !c.$(".cart-placed"));
+    ok("empty submit raises an alert", c.$('[role="alert"]'));
+    eq("the alert carries the id the fields reference", c.$('[role="alert"]').id, "cart-form-error");
+    eq("every empty required field is flagged to AT", c.$$('[aria-invalid="true"]').length, 9);
+    eq("the optional address line is NOT flagged",
+      c.$("#cart-line2").getAttribute("aria-invalid"), null);
+    eq("focus moves to the first offending field", document.activeElement.id, "cart-name");
+
+    ["cart-name", "cart-line1", "cart-city", "cart-state", "cart-zip",
+      "cart-phone", "cart-card", "cart-exp", "cart-cvc"].forEach((id) => typeInto(c.$("#" + id), "x"));
+    await tick();
+    c.$(".cart-submit button, .cart-submit a").click();
+    await tick();
+    ok("a complete form submits", c.$(".cart-placed"));
+    has("confirmation states nothing was charged", c.text(), "Nothing has been charged");
+    has("confirmation restates the plan and the ORDER total", c.$(".cart-placed-sum").textContent,
+      window.chimeCartOrder([{ product: glp, plan: planBy("3mo") }]).totalLabel);
+    eq("the confirmation is announced", c.$(".cart-placed").getAttribute("role"), "status");
+    c.unmount();
+  }
+
+  // ================= ChimeCartFlow =================
+  group("ChimeCartFlow");
+  {
+    const c = await mount(<ChimeCartFlow />);
+    ok("opens on the plan-selection screen", c.$(".cart-bento"));
+    eq("no checkout summary yet", c.$(".cart-summary"), null);
+    ok("a live region exists for screen changes", c.$('[role="status"][aria-live="polite"]'));
+    eq("the hero heading can take programmatic focus",
+      c.$("h1").getAttribute("tabindex"), "-1");
+
+    const flowCta = () => c.$$("button").filter((b) => /Continue to checkout/.test(b.textContent))[0];
+
+    // Choosing a plan no longer advances — with a basket, one plan click settles
+    // one line. The step's own Continue is what moves the flow on.
+    c.$$(".cart-term")[1].click();
+    await tick(60);
+    eq("choosing a plan does NOT advance on its own", c.$(".cart-summary"), null);
+    ok("Continue is enabled once the only treatment has a term", !flowCta().disabled);
+    flowCta().click();
+    await tick(60);
+    ok("Continue advances to checkout", c.$(".cart-summary"));
+    has("the live region announces the new screen",
+      c.$('[role="status"][aria-live="polite"]').textContent, "Step 2 of 2");
+
+    // Data typed on screen 2 must outlive a trip back to screen 1 — the whole
+    // reason the entry state lives in the flow rather than in the screen.
+    typeInto(c.$("#cart-name"), "Jamie Rivera");
+    await tick();
+    c.$(".cart-back").click();
+    await tick(60);
+    ok("Back returns to plan selection", c.$(".cart-bento"));
+    has("the live region announces the return",
+      c.$('[role="status"][aria-live="polite"]').textContent, "Step 1 of 2");
+    eq("the chosen treatment is still checked",
+      c.$$('[role="checkbox"]')[0].getAttribute("aria-checked"), "true");
+    ok("its chosen term survived too", !flowCta().disabled);
+
+    flowCta().click();
+    await tick(60);
+    eq("typed data survived the round trip", c.$("#cart-name").value, "Jamie Rivera");
+    c.unmount();
+  }
+  {
+    // The basket survives the round trip as a WHOLE — the regression a
+    // single-product model would reintroduce the moment someone went Back.
+    const c = await mount(<ChimeCartFlow />);
+    const flowCta = () => c.$$("button").filter((b) => /Continue to checkout/.test(b.textContent))[0];
+    c.$$('[role="checkbox"]')[1].click();
+    await tick();
+    eq("a second treatment adds a second panel", c.$$(".cart-config").length, 2);
+    c.$$(".cart-config")[0].querySelectorAll(".cart-term")[1].click();
+    await tick();
+    c.$$(".cart-config")[1].querySelectorAll(".cart-term")[1].click();
+    await tick();
+    flowCta().click();
+    await tick(60);
+    eq("checkout lists both treatments", c.$$(".cart-summary-panel").length, 2);
+    c.$(".cart-back").click();
+    await tick(60);
+    eq("both treatments are still checked",
+      c.$$('[role="checkbox"]').filter((b) => b.getAttribute("aria-checked") === "true").length, 2);
+    eq("both panels are still there", c.$$(".cart-config").length, 2);
+    ok("and both terms survived", !flowCta().disabled);
+    c.unmount();
+  }
+
+  } catch (err) {
+    // A crash mid-suite is itself a failure, and the stack is the finding.
+    failures.push("SUITE CRASHED: " + ((err && err.stack) || err));
+    record("suite ran to completion", false, String((err && err.stack) || err));
+  }
+
+  // ---- report -----------------------------------------------------------
+  const s = document.createElement("div");
+  s.className = "summary " + (failures.length ? "bad" : "ok");
+  s.textContent = failures.length
+    ? "FAIL — " + pass + " passed, " + failures.length + " failed"
+    : "PASS — " + pass + " checks";
+  out.insertBefore(s, out.firstChild);
+  window.__CART_TEST = { pass: pass, fail: failures.length, failures: failures };
+  window.__CART_TEST_DONE = true;
+})();
+</script>
+</body>
+</html>

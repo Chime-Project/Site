@@ -47,33 +47,28 @@ const CART_IN = 0.9;
 const CART_SHIFT = 64; // px of horizontal travel each way
 
 // ---- Screen 1 ------------------------------------------------------------
-function CartSelectScreen({ treatments, product, meta, plans, planKey, onProduct, onPlan }) {
+function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, onCheckout }) {
   const copy = window.CHIME_CART_COPY;
   const pay = window.CHIME_CART_PAYMENT;
   const uploads = window.CHIME_UPLOADS_BASE || "uploads";
+  // Resolved once per basket change, never during a panel's render.
+  const badges = React.useMemo(() => window.chimeCartBadges(basket), [basket]);
 
-  // Left/right arrows move between the two treatment cards, per the WAI-ARIA
-  // radiogroup pattern — a radio group is one tab stop, not two.
+  // Space/Enter toggle, per the WAI-ARIA checkbox pattern. Arrow keys are gone
+  // on purpose — they move selection in a RADIO group, and doing that here
+  // would tick and untick boxes as someone merely navigated past them.
   const cardRefs = React.useRef([]);
   const onCardKey = (e, i) => {
-    if (e.key === " " || e.key === "Enter") { e.preventDefault(); onProduct(treatments[i].id); return; }
-    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-    if (!step) return;
-    e.preventDefault();
-    const next = (i + step + treatments.length) % treatments.length;
-    onProduct(treatments[next].id);
-    // Focus moves WITH selection. Roving tabindex means the card just left
-    // becomes tabindex="-1"; leaving the ring parked on it strands the user,
-    // and a second arrow press would fire from the wrong index.
-    if (cardRefs.current[next]) cardRefs.current[next].focus();
+    if (e.key === " " || e.key === "Enter") { e.preventDefault(); onToggle(treatments[i].id); }
   };
 
-  // The ladder is rebuilt when the treatment changes — four cards for GLP-1,
-  // two for NAD+ — so it re-enters on a stagger rather than snapping. This is
-  // the animation that carries the CONSEQUENCE of choosing a treatment; the pop
-  // on the card itself only acknowledges the click.
+  // Each treatment's ladder animates in when that treatment is added — four
+  // cards for GLP-1, two for NAD+. Keyed by the basket's shape rather than one
+  // product id, so adding a second treatment staggers only the ladder that
+  // actually appeared instead of replaying every ladder on screen.
   const plansRef = React.useRef(null);
   const plansMounted = React.useRef(false);
+  const basketKey = basket.map((b) => b.id).join(",");
   React.useLayoutEffect(() => {
     const box = plansRef.current;
     if (!box) return undefined;
@@ -81,12 +76,12 @@ function CartSelectScreen({ treatments, product, meta, plans, planKey, onProduct
     // the screen's own enter tween, and stacking the two double-fades them.
     if (!plansMounted.current) { plansMounted.current = true; return undefined; }
     if (!window.gsap || window.cartReduced()) return undefined;
-    const tween = window.gsap.fromTo(box.querySelectorAll(".cart-plan"),
+    const tween = window.gsap.fromTo(box.querySelectorAll(".cart-config"),
       { y: 20, autoAlpha: 0 },
       { y: 0, autoAlpha: 1, duration: 0.55, ease: "power2.out", stagger: 0.08,
         clearProps: "transform,opacity,visibility" });
     return () => tween.kill();
-  }, [product.id]);
+  }, [basketKey]);
 
   return (
     <React.Fragment>
@@ -132,13 +127,15 @@ function CartSelectScreen({ treatments, product, meta, plans, planKey, onProduct
       <section className="cart-section" id="cart-step-1" data-screen-label="Cart Step 1"
         aria-labelledby="cart-step1-title">
         <div className="cart-wrap">
-          <CartStep n={1} title="Select Treatment" id="cart-step1-title" />
-          <div className="cart-treatments" role="radiogroup" aria-labelledby="cart-step1-title">
+          <CartStep n={1} title="Select Treatments" id="cart-step1-title"
+            sub="Add as many as you want — each one gets its own membership term." />
+          {/* A group, not a radiogroup: more than one may be checked. */}
+          <div className="cart-treatments" role="group" aria-labelledby="cart-step1-title">
             {treatments.map((t, i) => (
               <CartTreatmentCard key={t.id} product={t.product} meta={t}
-                selected={t.id === product.id}
+                selected={basket.some((b) => b.id === t.id)}
                 innerRef={(el) => { cardRefs.current[i] = el; }}
-                onSelect={() => onProduct(t.id)}
+                onSelect={() => onToggle(t.id)}
                 onKeyDown={(e) => onCardKey(e, i)} />
             ))}
           </div>
@@ -149,15 +146,59 @@ function CartSelectScreen({ treatments, product, meta, plans, planKey, onProduct
         <div className="cart-wrap">
           <CartStep n={2} title="Select Your Membership" id="cart-step2-title"
             sub={"Lock in your savings without a big upfront payment — use free financing or pay in full with your card."} />
-          {/* Data-driven, so the ladder is however many terms the catalog quotes
-              for this product: four for GLP-1, two for NAD+. The grid is
-              auto-fit, not a hardcoded 2×2, precisely so a short ladder still
-              centres instead of leaving a hole. */}
-          <div className="cart-plans" ref={plansRef}>
-            {plans.map((p) => (
-              <CartPlanCard key={p.key} plan={p} selected={p.key === planKey}
-                onSelect={() => onPlan(p.key)} />
+          {/* One configurator per chosen treatment. Badges are resolved across
+              the WHOLE step first (see chimeCartBadges), which is what makes
+              "one superlative per screen" a rule rather than a per-ladder
+              accident — and keeps the resolution out of render. */}
+          <div className="cart-configs" ref={plansRef}>
+            {basket.length === 0 && <p className="cart-empty">
+              Pick at least one treatment above to see its membership options.
+            </p>}
+            {basket.map((b) => (
+              <CartTreatmentConfig key={b.id} entry={b} badges={badges[b.id]}
+                onPlan={(k) => onPlan(b.id, k)} onRemove={() => onToggle(b.id)} />
             ))}
+          </div>
+
+          {/* Running order, so the basket reads as one order before checkout and
+              the button that ends the step is not a screen away from the prices
+              it commits to.
+              NO promo code here on purpose: the code is revealed on screen 2
+              where "CODE APPLIED" explains it. Discounting the subtotal here
+              would advertise a price this screen never accounts for — the same
+              reason chimeCartPlans() keeps the ladder undiscounted. */}
+          <div className="cart-checkout-bar">
+            {order.count > 0 && <React.Fragment>
+              <h3 className="cart-running-title">Your order</h3>
+              <ul className="cart-running-lines">
+                {order.lines.map((l) => (
+                  <li key={l.product.id}>
+                    <span>{l.product.name} · {l.plan.title.replace("Membership", "Plan")}</span>
+                    <b>{l.plan.totalLabel}</b>
+                  </li>
+                ))}
+              </ul>
+            </React.Fragment>}
+            {/* Total and button share one row. Stacking them put the figure a
+                further 100px from the action it authorises, which was the
+                opposite of the point. */}
+            <div className="cart-bar-foot">
+              {order.count > 0 && <p className="cart-running-total">
+                <span>{order.count === 1 ? "Total" : order.count + " treatments"}</span>
+                <b>{order.subtotalLabel}</b>
+              </p>}
+              {/* onClick is passed even when disabled: omitting it makes Button
+                  render its anchor form, which links to the assessment. */}
+              <Button label="Continue to checkout"
+                size="cta" type="button" onClick={onCheckout} disabled={!ready} />
+            </div>
+            {!ready && <p className="cart-continue-note">
+              {basket.length === 0
+                ? "Select a treatment to continue."
+                : "Choose a membership for "
+                  + basket.filter((b) => !b.plan).map((b) => b.product.name).join(" and ")
+                  + " to continue."}
+            </p>}
           </div>
 
           <div className="cart-includes">
@@ -193,29 +234,28 @@ function CartSelectScreen({ treatments, product, meta, plans, planKey, onProduct
 // ---- Screen 2 ------------------------------------------------------------
 // `ladderPlan` is the plan as screen 1 quoted it; everything shown here is the
 // post-code version, because this is the screen that announces the code.
-function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
+// `entry` holds every field the user has typed. It lives in ChimeCartFlow, NOT
+// here: this component unmounts whenever the flow returns to screen 1, so local
+// state would drop the whole address the moment someone went back to compare a
+// plan. Errors stay local on purpose — stale validation from a previous visit is
+// noise, and it re-derives on the next submit.
+function CartCheckoutScreen({ order, onBack, entry }) {
   const copy = window.CHIME_CART_COPY;
   const promo = window.CHIME_CART_PROMO;
   const pay = window.CHIME_CART_PAYMENT;
   const uploads = window.CHIME_UPLOADS_BASE || "uploads";
-  const plan = React.useMemo(() => window.chimeCartApplyPromo(ladderPlan), [ladderPlan]);
 
-  const [method, setMethod] = React.useState("card");
-  const [sameBilling, setSameBilling] = React.useState(true);
+  const { form, setForm, method, setMethod, sameBilling, setSameBilling, placed, setPlaced } = entry;
   const [errors, setErrors] = React.useState({});
-  const [placed, setPlaced] = React.useState(false);
-  const [form, setForm] = React.useState({
-    name: "", line1: "", line2: "", city: "", state: "", zip: "", phone: "",
-    card: "", exp: "", cvc: "",
-  });
   const set = (k) => (v) => setForm((f) => Object.assign({}, f, { [k]: v }));
 
   const hold = useCartHold(promo.holdSeconds, promo.enabled);
   // Float math on parsed currency: compare against half a cent, never === 0.
-  // totalSavings, not savings — it is ladder + code, i.e. exactly the gap
-  // between the struck figures and the live ones, so the two strikethroughs and
-  // the "Total Savings" row can never disagree.
-  const saves = plan.totalSavings > 0.005;
+  // totalSavings, not ladder savings — it is ladder + code, i.e. exactly the gap
+  // between the struck figures and the live ones, so the strikethroughs and the
+  // "Total Savings" row can never disagree.
+  const saves = order.totalSavings > 0.005;
+  const multi = order.count > 1;
 
   // Card fields are only required when paying by card — a BNPL handoff collects
   // them on the provider's side, so demanding them here would block that path.
@@ -238,9 +278,12 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
     // confirmation. Card fields are intentionally NOT logged — never send raw
     // PAN through anything but the payment processor's own SDK/iframe.
     console.log("[cart] submit", {
-      product: product.id, plan: plan.key, method: method,
-      listTotal: plan.total, code: plan.promoApplied ? plan.promoCode : null,
-      discount: plan.promoDiscount, total: plan.finalTotal,
+      lines: order.lines.map((l) => ({
+        product: l.product.id, plan: l.plan.key, total: l.plan.total,
+      })),
+      method: method, subtotal: order.subtotal,
+      code: order.promoApplied ? order.promoCode : null,
+      discount: order.promoDiscount, total: order.total,
       ship: { city: form.city, state: form.state, zip: form.zip },
     });
     setPlaced(true);
@@ -251,49 +294,84 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
       <section className="cart-band cart-band-checkout">
         <div className="cart-band-inner">
           <CartBack label="Back to plan selection" onClick={onBack} />
+          {/* Two rows. Row 1 sets the summary beside the form so the plan being
+              bought stays on screen while the card is typed — stacked, the pay
+              button sat about 1,200px below the price it charges. Row 2 is the
+              disclaimer, spanning both columns because it is the one block that
+              belongs to the whole transaction rather than to either side. */}
+          <div className="cart-checkout-grid">
           <div className="cart-summary">
             {/* The badge travels with the choice. Whatever ribbon was on the card
                 the user clicked reappears here, in the same colours and the same
                 position, so screen 2 confirms the plan they picked rather than
                 describing an unlabelled one.
+                Only on a single-line order: with two treatments the ribbon would
+                have to speak for both, and one plan's "Most Popular" is not a
+                claim the other line earned.
                 The card's GROUND deliberately does not follow the featured plan
                 card's --accent-strong: that colour earned its keep on screen 1 by
                 contrasting with three sibling cards, and there are no siblings
                 here — against this screen's light blue band a lighter card would
                 only lose separation. The ribbon is the part that carries
                 recognition, so the ribbon is the part that travels. */}
-            {plan.badge && <div className={"cart-summary-ribbon"
-              + (plan.badge === "Most Popular" ? " is-featured" : "")}>{plan.badge}</div>}
+            {!multi && order.lines[0] && order.lines[0].plan.badge && <div className={"cart-summary-ribbon"
+              + (order.lines[0].plan.badge === "Most Popular" ? " is-featured" : "")}>
+              {order.lines[0].plan.badge}</div>}
             <h1 className="cart-summary-title" tabIndex={-1}>Your Treatment Details</h1>
 
-            <div className="cart-summary-panel">
-              <img src={uploads + "/" + product.img} alt="" width="440" height="800" aria-hidden="true" />
-              <div>
-                <CartSummaryRow label="Medication" value={product.name} />
-                <CartSummaryRow label="Delivery Plan" value={plan.title.replace("Membership", "Plan")} />
-                {saves && <CartSummaryRow label="Total Savings" value={plan.totalSavingsLabel} />}
-                <CartSummaryRow label="Shipping" value="FREE" />
-                <CartSummaryRow label="Monthly Price" value={plan.finalPerMonthLabel}
-                  was={saves ? plan.listRateLabel : null} />
-                <CartSummaryRow label="Total if prescribed" value={plan.finalTotalLabel}
-                  was={saves ? plan.listTotalLabel : null} />
+            {/* One panel per line. Per-line figures stay at the LADDER price the
+                line was chosen at — the code is an order-level discount, so
+                spreading it across the lines would print per-treatment totals
+                that no plan card ever quoted and that do not sum to the order. */}
+            {order.lines.map((l) => (
+              <div className="cart-summary-panel" key={l.product.id}>
+                <img src={uploads + "/" + l.product.img} alt="" width="440" height="800" aria-hidden="true" />
+                <div>
+                  <CartSummaryRow label="Medication" value={l.product.name} />
+                  <CartSummaryRow label="Delivery Plan" value={l.plan.title.replace("Membership", "Plan")} />
+                  <CartSummaryRow label="Monthly Price" value={l.plan.perMonthLabel}
+                    was={l.plan.savings > 0.005 ? l.plan.listRateLabel : null} />
+                  <CartSummaryRow label={multi ? "Treatment total" : "Total if prescribed"}
+                    value={l.plan.totalLabel}
+                    was={l.plan.savings > 0.005 ? l.plan.listTotalLabel : null} />
+                </div>
+              </div>
+            ))}
+
+            {/* The order block only earns its place once the lines no longer add
+                up on their own — with one treatment its subtotal IS that line. */}
+            <div className="cart-order">
+              {multi && <CartSummaryRow label="Subtotal" value={order.subtotalLabel} />}
+              {saves && <CartSummaryRow label="Total Savings" value={order.totalSavingsLabel} />}
+              <CartSummaryRow label="Shipping" value="FREE" />
+              {order.promoApplied && <CartSummaryRow
+                label={"Code " + order.promoCode} value={"−" + order.promoDiscountLabel} />}
+              <div className="cart-order-total">
+                <CartSummaryRow label="Total if prescribed" value={order.totalLabel}
+                  was={saves ? order.listTotalLabel : null} />
               </div>
             </div>
 
             {saves && <p className="cart-saving-line">
-              You are saving <strong>{plan.totalSavingsLabel}</strong> vs monthly with your exclusive plan
+              You are saving <strong>{order.totalSavingsLabel}</strong> vs monthly with your exclusive plan
             </p>}
 
             {/* The chip is gated on the code actually having been applied, not
                 on the promo merely being switched on — announcing "CODE APPLIED"
                 over a total the code did not touch (the 1-month plan, which the
                 offer excludes) is exactly the claim this page must not make. */}
-            {plan.promoApplied && <React.Fragment>
-              <p className="cart-code">CODE APPLIED: {plan.promoCode}</p>
+            {order.promoApplied && <React.Fragment>
+              <p className="cart-code">CODE APPLIED: {order.promoCode}</p>
+              {/* The clock was a run of bold text inside the sentence below,
+                  which put the one figure on this card that changes at the same
+                  weight as the ones that do not. It reads as a seal instead —
+                  the digits carry the emphasis, and the sentence keeps the
+                  claims (stock count, what expiry actually costs the user). */}
+              <CartHoldSticker time={cartClock(hold)} expired={hold === 0} />
               <p className="cart-hold">
                 Only {promo.discountsLeft} discounts left.{" "}
                 {hold > 0
-                  ? <React.Fragment>Yours is reserved for <span aria-live="off">{cartClock(hold)}</span> minutes</React.Fragment>
+                  ? "Yours is held until the timer runs out."
                   : "Your hold has expired — pricing may change."}
               </p>
             </React.Fragment>}
@@ -307,13 +385,8 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
               <p className="cart-due-note">{copy.dueTodayNote}</p>
             </div>
           </div>
-          <p className="cart-hipaa">{copy.hipaaNote}</p>
-        </div>
-      </section>
-
       {placed ? (
-        <section className="cart-section">
-          <div className="cart-wrap cart-placed" role="status">
+        <div className="cart-placed" role="status">
             <span aria-hidden="true" style={{ color: "var(--success-default)", display: "flex", justifyContent: "center" }}>
               <Icon size={44} strokeWidth={1.8}>
                 <circle cx="12" cy="12" r="10" /><path d="M8 12.5l2.5 2.5L16 9.5" />
@@ -324,15 +397,19 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
               A licensed provider will review your intake. Nothing has been charged
               — your card is only charged if your prescription is approved.
             </p>
-            <p className="cart-placed-sum">
-              {product.name} · {plan.title} · {plan.finalTotalLabel}
-            </p>
+            {/* One line per treatment, then the order total — a single joined
+                string would run to three products' worth of text and bury the
+                figure that matters. */}
+            <div className="cart-placed-sum">
+              {order.lines.map((l) => (
+                <p key={l.product.id}>{l.product.name} · {l.plan.title}</p>
+              ))}
+              <p><strong>{order.totalLabel}</strong></p>
+            </div>
             <Button label="Back to home" onClick={() => { window.location.href = "index.html"; }} />
-          </div>
-        </section>
+        </div>
       ) : (
-        <form className="cart-section" onSubmit={onSubmit} noValidate>
-          <div className="cart-wrap">
+        <form className="cart-formcol" onSubmit={onSubmit} noValidate>
             <h2 className="cart-h2" id="cart-pay-title">Choose Payment Method</h2>
             {/* Two exclusive options, so radios again — and the wrapping <label>
                 means the whole tile is the hit target without any extra JS. */}
@@ -354,21 +431,21 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
             <h2 className="cart-h2">Enter Your Shipping Address</h2>
             <p className="cart-h2-sub">Your privacy guaranteed</p>
             <div className={"cart-form" + (Object.keys(errors).length ? " has-error" : "")}>
-              <CartField required id="cart-name" label="Full name" placeholder="Full name"
+              <CartField required id="cart-name" invalid={!!errors.name} errorId="cart-form-error" label="Full name" placeholder="Full name"
                 value={form.name} onChange={set("name")} autoComplete="name" />
-              <CartField required id="cart-line1" label="Address line 1" placeholder="Address line 1"
+              <CartField required id="cart-line1" invalid={!!errors.line1} errorId="cart-form-error" label="Address line 1" placeholder="Address line 1"
                 value={form.line1} onChange={set("line1")} autoComplete="address-line1" />
               <CartField id="cart-line2" label="Address line 2 (optional)" placeholder="Address line 2"
                 value={form.line2} onChange={set("line2")} autoComplete="address-line2" />
-              <CartField required id="cart-city" label="City" placeholder="City"
+              <CartField required id="cart-city" invalid={!!errors.city} errorId="cart-form-error" label="City" placeholder="City"
                 value={form.city} onChange={set("city")} autoComplete="address-level2" />
               <div className="cart-row-2">
-                <CartField required id="cart-state" label="State" placeholder="State"
+                <CartField required id="cart-state" invalid={!!errors.state} errorId="cart-form-error" label="State" placeholder="State"
                   value={form.state} onChange={set("state")} autoComplete="address-level1" />
-                <CartField required id="cart-zip" label="ZIP" placeholder="ZIP"
+                <CartField required id="cart-zip" invalid={!!errors.zip} errorId="cart-form-error" label="ZIP" placeholder="ZIP"
                   value={form.zip} onChange={set("zip")} autoComplete="postal-code" inputMode="numeric" />
               </div>
-              <CartField required id="cart-phone" label="Phone number" placeholder="Phone number"
+              <CartField required id="cart-phone" invalid={!!errors.phone} errorId="cart-form-error" label="Phone number" placeholder="Phone number"
                 value={form.phone} onChange={set("phone")} autoComplete="tel" type="tel" inputMode="tel" />
             </div>
 
@@ -376,13 +453,13 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
               <React.Fragment>
                 <h2 className="cart-h2">Enter Your Card Details</h2>
                 <div className={"cart-form cart-form-card" + (Object.keys(errors).length ? " has-error" : "")}>
-                  <CartField required id="cart-card" label="Card number" showLabel placeholder="1234 1234 1234 1234"
+                  <CartField required id="cart-card" invalid={!!errors.card} errorId="cart-form-error" label="Card number" showLabel placeholder="1234 1234 1234 1234"
                     value={form.card} onChange={set("card")} autoComplete="cc-number" inputMode="numeric"
                     trailing={pay.cards.map((b) => <PayMark key={b} brand={b} />)} />
                   <div className="cart-row-2">
-                    <CartField required id="cart-exp" label="Expiration Date" showLabel placeholder="MM / YY"
+                    <CartField required id="cart-exp" invalid={!!errors.exp} errorId="cart-form-error" label="Expiration Date" showLabel placeholder="MM / YY"
                       value={form.exp} onChange={set("exp")} autoComplete="cc-exp" inputMode="numeric" />
-                    <CartField required id="cart-cvc" label="Security Code" showLabel placeholder="CVC"
+                    <CartField required id="cart-cvc" invalid={!!errors.cvc} errorId="cart-form-error" label="Security Code" showLabel placeholder="CVC"
                       value={form.cvc} onChange={set("cvc")} autoComplete="cc-csc" inputMode="numeric" />
                   </div>
                   <label className="cart-check">
@@ -402,7 +479,7 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
               </p>
             )}
 
-            {!!Object.keys(errors).length && <p className="cart-error" role="alert">
+            {!!Object.keys(errors).length && <p className="cart-error" id="cart-form-error" role="alert">
               Please complete the highlighted fields.
             </p>}
 
@@ -410,11 +487,19 @@ function CartCheckoutScreen({ product, plan: ladderPlan, onBack }) {
               <Button label="Continue" onClick={onSubmit} />
               <p className="cart-secure">Your payment information is secure and encrypted.</p>
             </div>
-
-            <p className="cart-legal">{window.CHIME_CART_LEGAL}</p>
-          </div>
         </form>
       )}
+          </div>
+
+          {/* Row 2. The legal block is what the Continue button binds the user
+              to, so it stays out while the order is already placed. The HIPAA
+              line covers the page either way and always shows. */}
+          <div className="cart-disclaimer">
+            {!placed && <p className="cart-legal">{window.CHIME_CART_LEGAL}</p>}
+            <p className="cart-hipaa">{copy.hipaaNote}</p>
+          </div>
+        </div>
+      </section>
     </React.Fragment>
   );
 }
@@ -430,13 +515,45 @@ function ChimeCartFlow() {
   ), []);
 
   const [step, setStep] = React.useState(1);
-  const [productId, setProductId] = React.useState(treatments.length ? treatments[0].id : null);
-  const [planKey, setPlanKey] = React.useState(null);
+  // A basket, not a single choice. `selectedIds` keeps picker order so the
+  // summary lists treatments the way they were chosen; `planKeys` maps each
+  // chosen treatment to ITS OWN term, because the ladders differ per product
+  // (see chimeCartOrder in cart-data.js).
+  const [selectedIds, setSelectedIds] = React.useState(treatments.length ? [treatments[0].id] : []);
+  const [planKeys, setPlanKeys] = React.useState({});
 
-  const entry = treatments.filter((t) => t.id === productId)[0] || treatments[0];
-  const product = entry && entry.product;
-  const plans = React.useMemo(() => (product ? window.chimeCartPlans(product) : []), [product]);
-  const plan = plans.filter((p) => p.key === planKey)[0] || null;
+  // Checkout entry state lives here so it outlives CartCheckoutScreen, which
+  // unmounts on every return to screen 1. See the note on that component.
+  const [form, setForm] = React.useState({
+    name: "", line1: "", line2: "", city: "", state: "", zip: "", phone: "",
+    card: "", exp: "", cvc: "",
+  });
+  const [method, setMethod] = React.useState("card");
+  const [sameBilling, setSameBilling] = React.useState(true);
+  const [placed, setPlaced] = React.useState(false);
+  const checkoutEntry = {
+    form, setForm, method, setMethod, sameBilling, setSameBilling, placed, setPlaced,
+  };
+
+  // One entry per chosen treatment: the treatment, its OWN ladder, and the term
+  // picked from that ladder (null until the user picks one).
+  const basket = React.useMemo(() => selectedIds.map((id) => {
+    const t = treatments.filter((x) => x.id === id)[0];
+    if (!t) return null;
+    const plans = window.chimeCartPlans(t.product);
+    return {
+      id: id, meta: t, product: t.product, plans: plans,
+      plan: plans.filter((p) => p.key === planKeys[id])[0] || null,
+    };
+  }).filter(Boolean), [treatments, selectedIds, planKeys]);
+
+  // Nothing to check out until every chosen treatment has a term. Half-filled
+  // baskets are the failure mode multi-select introduces — the user picks two
+  // treatments, sets one plan, and would otherwise be sent to a checkout quoting
+  // an order that is missing a line.
+  const ready = basket.length > 0 && basket.every((b) => b.plan);
+  const order = React.useMemo(
+    () => window.chimeCartOrder(basket.filter((b) => b.plan)), [basket]);
 
   const screenRef = React.useRef(null);
   const dirRef = React.useRef(1);      // 1 = forward, -1 = back
@@ -445,10 +562,6 @@ function ChimeCartFlow() {
   const navigatedRef = React.useRef(false);
   const [announce, setAnnounce] = React.useState("");
   stepRef.current = step;
-
-  // Switching treatment clears the plan: NAD+ has no 6-month or 1-year term, so
-  // a key carried over from GLP-1 would silently resolve to nothing.
-  const onProduct = (id) => { setProductId(id); setPlanKey(null); };
 
   // Animate the current screen out, swap, then let the layout effect below
   // bring the next one in. `apply` runs at the hinge, while nothing is visible.
@@ -489,8 +602,28 @@ function ChimeCartFlow() {
     animateTo(next, dir, apply);
   }
 
-  const onPlan = (key) => goTo(2, 1, () => setPlanKey(key));
+  // Picking a plan no longer advances. With several treatments in the basket a
+  // plan click is one line item settled, not the end of the step — the user has
+  // to be able to choose NAD+'s term and then GLP-1's. Screen 1 carries its own
+  // Continue button instead, which is what moves the flow on.
+  const onPlan = (id, key) => setPlanKeys((m) => Object.assign({}, m, { [id]: key }));
+  const onCheckout = () => goTo(2, 1, () => setPlaced(false));
   const onBack = () => goTo(1, -1);
+
+  // Deselecting drops that treatment's term too — leaving it behind would let a
+  // stale key resurface if the same treatment were re-added later, quietly
+  // re-selecting a plan the user never picked this time round.
+  const onToggle = (id) => {
+    setSelectedIds((ids) => (ids.indexOf(id) >= 0
+      ? ids.filter((x) => x !== id)
+      : ids.concat([id])));
+    setPlanKeys((m) => {
+      if (!(id in m)) return m;
+      const next = Object.assign({}, m);
+      delete next[id];
+      return next;
+    });
+  };
 
   // Back/Forward. popstate must NOT push again — it is reporting a move the
   // browser has already made.
@@ -537,14 +670,24 @@ function ChimeCartFlow() {
   // Only after a real navigation — stealing focus on first paint would yank a
   // visitor past the hero they have not read yet.
   React.useEffect(() => {
-    if (!navigatedRef.current || !screenRef.current) return;
-    const h = screenRef.current.querySelector("h1");
-    // preventScroll: the swap has already put the page at the top, and letting
-    // focus scroll again fights that.
-    if (h) h.focus({ preventScroll: true });
+    if (!navigatedRef.current || !screenRef.current) return undefined;
+    // The delay is load-bearing, not a guess. The enter tween starts at
+    // autoAlpha 0, and GSAP implements that as visibility: hidden — focus() on
+    // anything inside a hidden subtree is silently dropped, which is exactly how
+    // this failed the first time. One tick in, opacity is above 0, GSAP has
+    // restored visibility, and the heading can take focus. 60ms matches the
+    // assessment's own post-transition focus delay.
+    const t = setTimeout(() => {
+      const el = screenRef.current;
+      const h = el && el.querySelector("h1");
+      // preventScroll: the swap already put the page at the top; letting focus
+      // scroll again fights that.
+      if (h) h.focus({ preventScroll: true });
+    }, 60);
+    return () => clearTimeout(t);
   }, [step]);
 
-  if (!product) {
+  if (!treatments.length) {
     return <p style={{ padding: "var(--spacing-16)", textAlign: "center" }}>
       No treatments are available right now.
     </p>;
@@ -556,10 +699,12 @@ function ChimeCartFlow() {
           a live region that is itself moved and faded by GSAP can be missed. */}
       <p className="visually-hidden" role="status" aria-live="polite">{announce}</p>
       <div ref={screenRef} className={window.gsap ? "cart-screen" : "cart-screen cart-anim"}>
-        {step === 2 && plan
-          ? <CartCheckoutScreen product={product} plan={plan} onBack={onBack} />
-          : <CartSelectScreen treatments={treatments} product={product} meta={entry}
-              plans={plans} planKey={planKey} onProduct={onProduct} onPlan={onPlan} />}
+        {/* `ready`, not a single plan: screen 2 quotes the whole order, so it
+            may only mount once EVERY chosen treatment has a term. */}
+        {step === 2 && ready
+          ? <CartCheckoutScreen order={order} onBack={onBack} entry={checkoutEntry} />
+          : <CartSelectScreen treatments={treatments} basket={basket} ready={ready}
+              order={order} onToggle={onToggle} onPlan={onPlan} onCheckout={onCheckout} />}
       </div>
     </main>
   );

@@ -16,7 +16,7 @@
      flagged at its source in cart-data.js: the scarcity countdown + "discounts
      left" figure, the rewritten legal block, and the "N patients chose this
      today" counts. -->
-<link rel="stylesheet" href="styles.css?v=20260843">
+<link rel="stylesheet" href="styles.css?v=20260844">
 <script src="tailwind.setup.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -134,17 +134,123 @@
     gap: var(--spacing-4); max-width: 720px; margin: 0 auto;
   }
 
-  /* ---- Step 2: plans ----
-     auto-fit rather than a fixed 2×2: NAD+ quotes only two terms, and a
-     hardcoded grid would leave two empty cells.
-     The row gap covers the CTA overhanging each card's bottom edge plus the
-     14px the featured card rides above the row. It used to be spacing-10 to
-     clear a badge that straddled the top edge; that badge is now a ribbon
-     inside the card, so the row can close up. */
-  .cart-plans {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--spacing-8) var(--spacing-6);
-    max-width: 620px; margin: 0 auto;
+  /* ---- Step 2: treatment configurator ----
+     Replaces the ladder of big plan cards. One panel per chosen treatment; a
+     term is an option inside it, not a card of its own. See the note on
+     CartTreatmentConfig for what this fixes and why. */
+  .cart-configs { max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--spacing-5); }
+  .cart-config {
+    background: var(--bg-elevated); border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl); padding: var(--spacing-5);
+  }
+  .cart-config-head {
+    display: grid; grid-template-columns: 46px minmax(0, 1fr) auto;
+    align-items: center; gap: var(--spacing-3);
+  }
+  .cart-config-vial { display: block; width: 100%; height: auto; }
+  .cart-config-id { min-width: 0; }
+  .cart-config-name {
+    margin: 0; font-size: var(--text-lg); font-weight: var(--font-weight-bold);
+    color: var(--text-default); letter-spacing: -0.01em;
+  }
+  .cart-config-claim { margin: 2px 0 0; font-size: var(--text-xs); color: var(--text-muted); }
+  .cart-config-remove {
+    background: none; border: 0; cursor: pointer; padding: var(--spacing-2);
+    font: var(--font-weight-semibold) var(--text-xs)/1 var(--font-family-base);
+    color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .cart-config-remove:hover { color: var(--text-default); }
+
+  /* Every term visible, stacked in one row — the guidance is to show them all
+     at four or fewer, and four is our longest ladder. auto-fit so NAD+'s two
+     terms fill the row instead of leaving holes. */
+  .cart-terms {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    gap: var(--spacing-2); margin-top: var(--spacing-4);
+  }
+  .cart-term {
+    position: relative; cursor: pointer; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: var(--spacing-3) var(--spacing-2);
+    background: var(--bg-secondary); color: var(--text-default);
+    border: 2px solid transparent; border-radius: var(--radius-lg);
+    font-family: var(--font-family-base);
+    transition: border-color var(--transition-base) var(--ease-in-out),
+                background var(--transition-base) var(--ease-in-out);
+  }
+  .cart-term:hover { background: var(--accent-subtle); }
+  .cart-term.is-on { background: var(--accent-subtle); border-color: var(--accent-default); }
+  .cart-term:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+  .cart-term-name { font-size: var(--text-xs); font-weight: var(--font-weight-semibold); }
+  /* The comparable figure. tabular-nums so the rates line up as a column and
+     can actually be read against each other. */
+  .cart-term-rate {
+    font-size: var(--text-base); font-weight: var(--font-weight-bold);
+    color: var(--accent-strong); font-variant-numeric: tabular-nums;
+  }
+  .cart-term-rate i { font-style: normal; font-size: var(--text-xs); font-weight: var(--font-weight-semibold); }
+  .cart-term-badge {
+    margin-top: 2px; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: var(--font-weight-bold); color: var(--accent-onSubtle);
+    background: var(--bg-elevated); border-radius: var(--radius-4xl);
+    padding: 2px var(--spacing-2); white-space: nowrap;
+  }
+
+  .cart-config-detail {
+    margin: var(--spacing-3) 0 0; padding-top: var(--spacing-3);
+    border-top: 1px solid var(--border-default);
+    font-size: var(--text-sm); line-height: 1.6; color: var(--text-secondary);
+  }
+  .cart-config-detail b { color: var(--text-default); font-weight: var(--font-weight-bold); }
+  .cart-config-detail b.is-free { color: var(--accent-strong); }
+  .cart-config-detail b.is-save { color: var(--success-default); }
+  /* The comparison baseline earns less weight than the saving itself — it is
+     the reference, not the claim. */
+  .cart-config-vs { font-size: var(--text-xs); color: var(--text-muted); }
+  .cart-config-prompt {
+    margin: var(--spacing-4) 0 0; padding-top: var(--spacing-4);
+    border-top: 1px solid var(--border-default);
+    font-size: var(--text-sm); color: var(--text-muted);
+  }
+
+  /* ---- Step 2: running order + the step's CTA, in one bar ----
+     Merged deliberately. As two stacked blocks the total sat ~100px above the
+     button it authorises, which pushed Continue FURTHER from the step heading
+     than the old card ladder did — the opposite of what the rework was for. */
+  .cart-checkout-bar {
+    max-width: 620px; margin: clamp(28px, 4vw, 40px) auto 0;
+    padding: var(--spacing-4) var(--spacing-5);
+    background: var(--bg-secondary); border-radius: var(--radius-xl);
+  }
+  .cart-bar-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--spacing-4); flex-wrap: wrap;
+  }
+  /* With nothing chosen there is no total, so the lone button centres rather
+     than sitting hard left against an empty row. */
+  .cart-bar-foot:only-child { justify-content: center; }
+  .cart-running-title {
+    margin: 0 0 var(--spacing-3); font-size: var(--text-xs);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: var(--font-weight-bold); color: var(--text-muted);
+  }
+  .cart-running-lines { list-style: none; margin: 0; padding: 0; }
+  .cart-running-lines li,
+  .cart-running-total {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: var(--spacing-4); font-size: var(--text-sm); color: var(--text-secondary);
+  }
+  .cart-running-lines li { padding: var(--spacing-1) 0; }
+  .cart-running-lines b, .cart-running-total b { font-variant-numeric: tabular-nums; color: var(--text-default); }
+  .cart-running-total {
+    margin: 0; flex: 1 1 auto; min-width: 0;
+    font-size: var(--text-base); font-weight: var(--font-weight-bold); color: var(--text-default);
+  }
+  /* The rule sits on the bar's foot, not the total, so it still spans the full
+     width when the button shares the row. */
+  .cart-running-lines + .cart-bar-foot {
+    margin-top: var(--spacing-3); padding-top: var(--spacing-3);
+    border-top: 1px solid var(--border-default);
   }
 
   .cart-includes { margin: clamp(56px, 7vw, 88px) auto 0; max-width: 560px; text-align: center; }
@@ -180,6 +286,51 @@
   }
   .cart-band-inner { max-width: 1180px; margin: 0 auto; padding: 0 var(--spacing-5); }
   .cart-band-checkout { padding-bottom: var(--spacing-10); }
+  .cart-empty {
+    margin: 0; text-align: center; font-size: var(--text-sm); color: var(--text-muted);
+  }
+  .cart-continue-note {
+    margin: var(--spacing-3) 0 0; text-align: center;
+    font-size: var(--text-sm); color: var(--text-muted);
+  }
+
+  /* ---- Checkout: order totals ----
+     Sits under the per-treatment panels and carries what belongs to the ORDER
+     rather than to any one line: subtotal, the code, and the figure charged. */
+  .cart-order {
+    margin-top: var(--spacing-5); padding-top: var(--spacing-4);
+    border-top: 1px solid var(--glass-border); text-align: left;
+  }
+  .cart-order-total {
+    margin-top: var(--spacing-3); padding-top: var(--spacing-3);
+    border-top: 1px solid var(--glass-border);
+  }
+  .cart-summary-panel + .cart-summary-panel { margin-top: var(--spacing-3); }
+
+  /* ---- Checkout: two rows ----
+     Row 1 is the summary beside the form; row 2 is the disclaimer under both.
+     `align-items: start` matters — without it the summary card stretches down
+     the form's much taller column and its $0-due footer detaches from the card.
+     minmax(0, …) on both tracks, or the form's widest child (the card-number
+     row) sets an implicit min-content floor and pushes the grid past its
+     container instead of wrapping. */
+  .cart-checkout-grid {
+    display: grid; grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 64px); align-items: start;
+  }
+  .cart-formcol { min-width: 0; padding-top: var(--spacing-6); }
+  /* The form's first heading would otherwise take the 48–80px lead-in meant to
+     separate stacked blocks, starting the right column below the left one. */
+  .cart-formcol .cart-h2:first-child { margin-top: 0; }
+  .cart-disclaimer {
+    max-width: 900px; margin: clamp(32px, 5vw, 64px) auto 0;
+    padding-top: var(--spacing-6); border-top: 1px solid var(--border-default);
+  }
+  /* Right-aligned made sense when this line trailed the summary card; centred
+     under a centred legal block is what row 2 needs. */
+  .cart-disclaimer .cart-hipaa { text-align: center; margin-top: var(--spacing-4); }
+  .cart-disclaimer .cart-legal { margin-top: 0; }
+
   .cart-summary {
     /* border-box, or max-width caps the CONTENT and the card renders 478px —
        its 24px side padding added on twice. This page has no global reset, so
@@ -226,8 +377,54 @@
     font-size: var(--text-base); font-weight: var(--font-weight-semibold); letter-spacing: 0.02em;
   }
   .cart-hold {
-    margin: var(--spacing-4) 0 0; font-size: var(--text-xs);
+    margin: var(--spacing-2) 0 0; font-size: var(--text-xs);
     font-weight: var(--font-weight-bold);
+  }
+  /* ---- Checkout: hold sticker ----
+     One custom property drives the whole seal: the box is sized from it AND
+     font-size is set to it, so every label inside can be an em fraction and the
+     sticker scales as a unit. Changing it in the media query below is the only
+     responsive rule this component needs. */
+  .cart-sticker {
+    --cart-sticker-size: 132px;
+    position: relative; display: inline-grid; place-items: center;
+    width: var(--cart-sticker-size); height: var(--cart-sticker-size);
+    font-size: var(--cart-sticker-size); margin: var(--spacing-4) 0 0;
+    /* Individual `rotate`, not transform: the pulse below animates `scale`, and
+       a combined transform would have to restate the tilt in every keyframe. */
+    rotate: -8deg;
+    animation: cart-sticker-pulse 2.4s ease-in-out infinite;
+  }
+  /* Low amplitude and slow on purpose. This is the one element on a healthcare
+     checkout that counts down, so it gets enough motion to find and not enough
+     to nag — and none at all for anyone who asked for less. */
+  @keyframes cart-sticker-pulse { 50% { scale: 1.035; } }
+  .cart-sticker-burst {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.35));
+  }
+  .cart-sticker-burst polygon { fill: var(--warning-default); }
+  .cart-sticker-text {
+    position: relative; display: flex; flex-direction: column;
+    align-items: center; line-height: 1; color: var(--color-black);
+  }
+  .cart-sticker-lead { font-size: 0.076em; letter-spacing: 0.14em; font-weight: var(--font-weight-bold); }
+  .cart-sticker-time {
+    font-size: 0.227em; font-weight: var(--font-weight-bold); margin: 0.02em 0;
+    /* Tabular figures, or the seal twitches every second as the glyph widths
+       change under it — the one animation nobody asked for. */
+    font-variant-numeric: tabular-nums;
+  }
+  .cart-sticker-foot { font-size: 0.068em; letter-spacing: 0.14em; font-weight: var(--font-weight-bold); }
+  /* Spent, not alarming: the seal stays put and goes quiet rather than turning
+     red, because an expired hold is not an error the user made. */
+  .cart-sticker.is-expired { animation: none; }
+  .cart-sticker.is-expired .cart-sticker-burst { filter: none; }
+  .cart-sticker.is-expired polygon { fill: rgb(255 255 255 / 0.16); }
+  .cart-sticker.is-expired .cart-sticker-text { color: var(--color-white); opacity: 0.75; }
+  .cart-sticker-time.is-word { font-size: 0.115em; letter-spacing: 0.04em; }
+  @media (prefers-reduced-motion: reduce) {
+    .cart-sticker { animation: none; }
   }
   .cart-assurances {
     list-style: none; margin: var(--spacing-6) 0 0; padding: 0;
@@ -301,7 +498,12 @@
     font-weight: var(--font-weight-medium); color: var(--text-default);
   }
   .cart-placed p { margin: 0 0 var(--spacing-4); font-size: var(--text-sm); line-height: 1.6; color: var(--text-secondary); }
+  /* Now a block of one <p> per treatment plus the order total, not a single
+     joined line — the rule moves to the children so multi-line orders keep the
+     spacing the one-liner had. */
   .cart-placed-sum { font-weight: var(--font-weight-bold); color: var(--text-default) !important; }
+  .cart-placed-sum p { margin: var(--spacing-1) 0 0; }
+  .cart-placed-sum p:first-child { margin-top: 0; }
 
   /* ---- Payment brand marks ----
      Third-party trademark colors. They live here, not in the JSX, because they
@@ -343,6 +545,13 @@
        otherwise push the first plan card most of a screen further down. */
     .cart-tile-media { order: -1; aspect-ratio: 4 / 3; }
     .cart-hipaa { text-align: center; }
+    /* Row 1 collapses back to the original stack — a 430px summary next to a
+       form leaves neither enough width, and the form's own two-up rows
+       (State/ZIP, Expiry/CVC) break first. Same breakpoint as the bento above,
+       so the page changes shape once rather than twice. */
+    .cart-checkout-grid { grid-template-columns: minmax(0, 1fr); }
+    .cart-formcol { padding-top: 0; }
+    .cart-formcol .cart-h2:first-child { margin-top: clamp(48px, 6vw, 80px); }
   }
   @media (max-width: 560px) {
     /* Squarer again — at 390px a 4:3 tile is still 290px of chrome before the
@@ -354,8 +563,11 @@
   @media (max-width: 620px) {
     .cart-treatments { grid-template-columns: 1fr; max-width: 420px; }
     .cart-includes ul { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
-    .cart-plans { max-width: 340px; }
+    /* Two terms per row rather than four across — at 390px a 4-up row gives
+       each term about 78px, which clips "12 Months" and squeezes the rate. */
+    .cart-terms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .cart-summary-panel { grid-template-columns: 72px minmax(0, 1fr); gap: var(--spacing-3); }
+    .cart-sticker { --cart-sticker-size: 112px; }
   }
   @media (max-width: 380px) {
     /* State/ZIP and Expiry/CVC stop fitting side by side once the field's own
@@ -369,12 +581,12 @@
 
 <!-- Shared catalog + cart config load first (plain scripts), then the
      primitives, then the controls and the flow. -->
-<script src="ui_kits/shared/data/products.js?v=20260823"></script>
-<script src="ui_kits/cart/cart-data.js?v=20260843"></script>
+<script src="ui_kits/shared/data/products.js?v=20260852"></script>
+<script src="ui_kits/cart/cart-data.js?v=20260854"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
-<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260840"></script>
-<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260843"></script>
-<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260843"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
+<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260854"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260854"></script>
 <script type="text/babel">
 function ChimeCartPage() {
   return (
