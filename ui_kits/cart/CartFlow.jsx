@@ -383,9 +383,11 @@ function CartCheckoutScreen({ order, onBack, entry }) {
                   typed a code needs to see it took effect. The percentage is
                   named because a bare dollar figure gives them no way to check
                   it against what they were promised. */}
-              {order.codeApplied && <CartSummaryRow
-                label={"Code " + order.code + " (" + order.codePercent + "%)"}
-                value={"−" + order.codeDiscountLabel} />}
+              {order.codeApplied && <div className="cart-order-coderow">
+                <CartSummaryRow
+                  label={"Code " + order.code + " (" + order.codePercent + "%)"}
+                  value={"−" + order.codeDiscountLabel} />
+              </div>}
               {/* The figure the customer is actually charged, given the weight
                   that deserves. Every number on this card used to be 14px, so
                   the order total was set at exactly the size of "Shipping:
@@ -421,6 +423,23 @@ function CartCheckoutScreen({ order, onBack, entry }) {
                 on the promo merely being switched on — announcing "CODE APPLIED"
                 over a total the code did not touch (the 1-month plan, which the
                 offer excludes) is exactly the claim this page must not make. */}
+            {/* The code the CUSTOMER entered, acknowledged on its own terms.
+                It arrived here as one more 14px row while the automatic promo
+                below got a chip — the code someone had to know and type was the
+                quieter of the two, which is backwards. Success tone rather than
+                accent, so it reads as "this worked" and stays distinct from the
+                automatic chip beneath it; it states the percentage promised and
+                the money that came off, which is what makes the claim checkable. */}
+            {order.codeApplied && <p className="cart-code-win">
+              <span className="cart-code-win-tick" aria-hidden="true">
+                <Icon size={15} strokeWidth={3}><path d="M4 12.5l5 5L20 7" /></Icon>
+              </span>
+              <span>
+                <b>{order.code}</b> applied · {order.codePercent}% off
+                <span className="cart-code-win-amt">−{order.codeDiscountLabel}</span>
+              </span>
+            </p>}
+
             {order.promoApplied && <React.Fragment>
               <p className="cart-code">CODE APPLIED: {order.promoCode}</p>
               {/* The clock was a run of bold text inside the sentence below,

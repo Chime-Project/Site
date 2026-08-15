@@ -468,6 +468,34 @@
   .cart-saving-line {
     margin: var(--spacing-5) 0 0; font-size: var(--text-sm); line-height: 1.5;
   }
+  /* The entered code's row in the totals. Only the FIGURE greens up — the label
+     stays in the column's voice, so the row still scans with its neighbours
+     while the money that came off is unmistakable. */
+  .cart-order-coderow span:last-child { color: var(--success-default) !important; }
+
+  /* The entered code's confirmation. Success tone, not accent: it has to read
+     as "this worked" and stay distinct from the automatic CODE APPLIED chip
+     directly beneath it, which is a different kind of claim. */
+  .cart-code-win {
+    display: inline-flex; align-items: center; gap: var(--spacing-2);
+    margin: var(--spacing-4) 0 0; padding: var(--spacing-2) var(--spacing-4);
+    /* green-800 on green-100 measures 6.49:1. The system has --success-default
+       and --success-subtle but no --success-onSubtle to pair with them, so the
+       ink is named here rather than left to a fallback that would have applied
+       silently. Green is a semantic signal, not the accent, so it does not
+       follow data-theme and the theme contract is intact. */
+    background: var(--success-subtle); color: var(--color-green-800);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm); font-weight: var(--font-weight-semibold);
+    text-align: left;
+  }
+  .cart-code-win-tick { display: flex; flex: none; color: var(--success-default); }
+  .cart-code-win b { font-weight: var(--font-weight-bold); letter-spacing: 0.02em; }
+  .cart-code-win-amt {
+    margin-left: var(--spacing-2); font-weight: var(--font-weight-bold);
+    color: var(--success-default); font-variant-numeric: tabular-nums;
+  }
+
   .cart-code {
     display: inline-block; margin: var(--spacing-4) 0 0;
     background: var(--accent-subtle); color: var(--accent-onSubtle);
@@ -702,7 +730,7 @@
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
 <script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260858"></script>
-<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260860"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260861"></script>
 <script type="text/babel">
 function ChimeCartPage() {
   return (
