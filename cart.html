@@ -232,6 +232,65 @@
     padding: var(--spacing-4) var(--spacing-5);
     background: var(--bg-secondary); border-radius: var(--radius-xl);
   }
+  /* ---- Discount code ----
+     Kept quiet on purpose. A loud coupon field is a documented way to send
+     customers off the page hunting for a code they do not have; this one is a
+     line of text until someone who has a code opens it. */
+  .cart-code-slot {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--spacing-4); flex-wrap: wrap;
+    margin-top: var(--spacing-3); padding-top: var(--spacing-3);
+    border-top: 1px solid var(--border-default);
+  }
+  .cart-code-toggle,
+  .cart-code-clear {
+    background: none; border: 0; cursor: pointer; padding: 0;
+    /* 44px of hit area, matching the rest of the page's touch standard, with
+       the underline still on the word rather than stretched down the box. */
+    min-height: 44px; display: inline-flex; align-items: center;
+    font: var(--font-weight-semibold) var(--text-sm)/1 var(--font-family-base);
+    color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .cart-code-toggle:hover, .cart-code-clear:hover { color: var(--text-default); }
+  .cart-code-toggle:focus-visible, .cart-code-clear:focus-visible {
+    outline: 3px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--radius-md);
+  }
+  .cart-code-form { display: flex; flex-wrap: wrap; gap: var(--spacing-2); align-items: center; }
+  /* Both controls hold the 44px this page standardised on. The compact button
+     size renders 36px and the trimmed input 35px, which is over WCAG 2.5.8's
+     24px floor but under the bar the rest of the cart meets. */
+  .cart-code-form > button { min-height: 44px; }
+  /* The full field treatment has to be restated here. `.cart-input` is only a
+     focus hook — every other field on this page gets its border, ground and
+     type from inline styles in CartField, which this input does not use. Left
+     to the class alone it rendered as a raw browser input, taller than the
+     button beside it and in a different type family. */
+  .cart-code-input {
+    flex: 1 1 150px; min-width: 0; max-width: 220px;
+    box-sizing: border-box; min-height: 44px;
+    padding: var(--spacing-2) var(--spacing-3);
+    border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+    background: var(--bg-elevated); color: var(--text-default);
+    font: var(--font-weight-semibold) var(--text-sm)/1.4 var(--font-family-base);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .cart-code-input::placeholder {
+    color: var(--text-muted); font-weight: var(--font-weight-medium); letter-spacing: 0.02em;
+  }
+  .cart-code-input[aria-invalid="true"] { border-color: var(--error-default); }
+  .cart-code-error {
+    flex: 1 0 100%; margin: 0; font-size: var(--text-xs); color: var(--error-default);
+  }
+  .cart-code-on {
+    margin: 0; display: flex; align-items: center; gap: var(--spacing-3);
+    flex-wrap: wrap; font-size: var(--text-sm); color: var(--text-secondary);
+  }
+  .cart-code-on b { color: var(--success-default); font-weight: var(--font-weight-bold); }
+  .cart-running-note {
+    margin: var(--spacing-2) 0 0; text-align: right;
+    font-size: var(--text-xs); color: var(--text-muted);
+  }
+
   .cart-bar-foot {
     display: flex; align-items: center; justify-content: space-between;
     gap: var(--spacing-4); flex-wrap: wrap;
@@ -257,8 +316,13 @@
     font-size: var(--text-base); font-weight: var(--font-weight-bold); color: var(--text-default);
   }
   /* The rule sits on the bar's foot, not the total, so it still spans the full
-     width when the button shares the row. */
-  .cart-running-lines + .cart-bar-foot {
+     width when the button shares the row.
+     Both selectors are needed: the code slot slides in between the lines and
+     the foot when there is an order to discount, and an adjacent-sibling rule
+     naming only the lines silently stopped matching — leaving the subtotal
+     touching the code field. */
+  .cart-running-lines + .cart-bar-foot,
+  .cart-code-slot + .cart-bar-foot {
     margin-top: var(--spacing-3); padding-top: var(--spacing-3);
     border-top: 1px solid var(--border-default);
   }
@@ -634,11 +698,11 @@
 <!-- Shared catalog + cart config load first (plain scripts), then the
      primitives, then the controls and the flow. -->
 <script src="ui_kits/shared/data/products.js?v=20260852"></script>
-<script src="ui_kits/cart/cart-data.js?v=20260856"></script>
+<script src="ui_kits/cart/cart-data.js?v=20260858"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
-<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260855"></script>
-<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260857"></script>
+<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260858"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260860"></script>
 <script type="text/babel">
 function ChimeCartPage() {
   return (

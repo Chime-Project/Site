@@ -255,6 +255,60 @@ eq("a two-line basket quotes NO order per-month", twoLines.perMonth, null);
 eq("and no label for it either", twoLines.perMonthLabel, null);
 eq("an empty basket quotes none", order().perMonth, null);
 
+// ---- Customer-entered discount codes -------------------------------------
+// Matching has to survive what people actually paste: wrong case, stray spaces.
+eq("a code resolves case-insensitively",
+  sandbox.chimeCartResolveCode("discount01").code, "DISCOUNT01");
+eq("and through surrounding whitespace",
+  sandbox.chimeCartResolveCode("  DISCOUNT01  ").code, "DISCOUNT01");
+eq("and through interior spaces", sandbox.chimeCartResolveCode("dis count01").code, "DISCOUNT01");
+eq("an unknown code resolves to null", sandbox.chimeCartResolveCode("NOPE"), null);
+eq("an empty code resolves to null", sandbox.chimeCartResolveCode("   "), null);
+eq("a null input does not throw", sandbox.chimeCartResolveCode(null), null);
+
+const code01 = sandbox.chimeCartResolveCode("DISCOUNT01");
+const withEntered = sandbox.chimeCartOrder([line("prod-nad", "3mo")], null, code01);
+// NAD+ 3-month: $420 ladder, less the automatic $120, THEN 24% of the $300 that
+// is left. The percentage is taken off the final price, not the subtotal — a
+// customer reading "24% off" applies it to what they were about to pay.
+eq("the entered code is applied", withEntered.codeApplied, true);
+eq("it names the code it matched", withEntered.code, "DISCOUNT01");
+eq("it reports its percentage", withEntered.codePercent, 24);
+eq("the percentage comes off the POST-promo figure", withEntered.codeDiscount, 72);
+eq("the total is subtotal, less promo, less the code", withEntered.total, 420 - 120 - 72);
+eq("savings still reconcile against list",
+  withEntered.totalSavings, withEntered.listTotal - withEntered.total);
+eq("the per-month equivalent follows the discounted total",
+  withEntered.perMonth, (420 - 120 - 72) / 4);
+
+// An order with no code must be untouched by the new path.
+eq("no code leaves codeApplied false", oneLine.codeApplied, false);
+eq("no code takes nothing off", oneLine.codeDiscount, 0);
+eq("no code total is unchanged", oneLine.total, 300);
+
+// A code the customer got wrong must change nothing at all.
+const badCode = sandbox.chimeCartOrder([line("prod-nad", "3mo")], null,
+  sandbox.chimeCartResolveCode("WRONG"));
+eq("an unknown code discounts nothing", badCode.codeDiscount, 0);
+eq("and leaves the total alone", badCode.total, 300);
+
+// Percentages are rounded to the cent, so the figure shown is the figure
+// charged — a two-treatment basket is where the fraction would otherwise show.
+const twoWithCode = sandbox.chimeCartOrder(
+  [line("prod-nad", "3mo"), line("prod-glp-1", "1yr")], null, code01);
+eq("percentage discounts round to the cent",
+  Math.round(twoWithCode.codeDiscount * 100) / 100, twoWithCode.codeDiscount);
+eq("a two-line basket discounts off its post-promo total",
+  twoWithCode.codeDiscount, Math.round((1740 - 120) * 24) / 100);
+eq("and totals correctly", twoWithCode.total, 1740 - 120 - 388.8);
+
+// Guards: a code must never zero or invert an order.
+const wild = sandbox.chimeCartOrder([line("prod-nad", "3mo")], null, { code: "X", percent: 100 });
+eq("a 100% code is refused", wild.codeApplied, false);
+eq("and the order still charges", wild.total, 300);
+eq("a code on an empty basket is refused",
+  sandbox.chimeCartOrder([], null, code01).codeApplied, false);
+
 // Degenerate baskets must not produce a discount, a negative total, or a throw.
 eq("an empty order has no discount", order().promoApplied, false);
 eq("an empty order totals zero", order().total, 0);
