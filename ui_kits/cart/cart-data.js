@@ -309,8 +309,16 @@
       && off < subtotal;
     var discount = applied ? off : 0;
     var total = subtotal - discount;
+    // A per-month equivalent for the ORDER is only honest on a single-line
+    // basket. With two treatments on different terms the customer buys 4 months
+    // of one and 12 of the other, so dividing the order total by the summed
+    // supply months would quote a monthly cost for a duration that does not
+    // exist — and understate the early months, when both are being paid for.
+    // Null on multi-line baskets; every line still states its own rate.
+    var perMonth = rows.length === 1 ? total / rows[0].plan.supplyMonths : null;
     return {
       lines: rows, count: rows.length, supplyMonths: supplyMonths,
+      perMonth: perMonth, perMonthLabel: perMonth == null ? null : cartUSD(perMonth),
       subtotal: subtotal, subtotalLabel: cartUSD(subtotal),
       listTotal: listTotal, listTotalLabel: cartUSD(listTotal),
       ladderSavings: listTotal - subtotal, ladderSavingsLabel: cartUSD(listTotal - subtotal),
