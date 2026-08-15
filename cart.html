@@ -154,12 +154,22 @@
     color: var(--text-default); letter-spacing: -0.01em;
   }
   .cart-config-claim { margin: 2px 0 0; font-size: var(--text-xs); color: var(--text-muted); }
+  /* 44px min-height, not the 28px this started at. Measured on a phone it was
+     63x28 — over WCAG 2.5.8's 24px floor but under the 44px this page already
+     holds itself to (see the back button), and it is the one control here that
+     throws work away. The underline is on the text, not the button, so the
+     larger hit area does not drag a 44px-tall rule across the panel. */
   .cart-config-remove {
-    background: none; border: 0; cursor: pointer; padding: var(--spacing-2);
+    background: none; border: 0; cursor: pointer;
+    /* inline-flex + centred, so the 44px is hit area only — text-decoration
+       follows the TEXT, not the box, so the underline stays on the word. */
+    min-height: 44px; display: inline-flex; align-items: center;
+    padding: 0 var(--spacing-2); margin-right: calc(var(--spacing-2) * -1);
     font: var(--font-weight-semibold) var(--text-xs)/1 var(--font-family-base);
     color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px;
   }
   .cart-config-remove:hover { color: var(--text-default); }
+  .cart-config-remove:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--radius-md); }
 
   /* Every term visible, stacked in one row — the guidance is to show them all
      at four or fewer, and four is our longest ladder. auto-fit so NAD+'s two
@@ -477,11 +487,17 @@
     max-width: 400px; margin: var(--spacing-4) auto 0; text-align: center;
     font-size: var(--text-sm); color: var(--error-default);
   }
+  /* min-height 44px: the label IS the hit target (the box itself is 16px), and
+     measured on a phone this row was 335x22 — under WCAG 2.5.8's 24px floor,
+     let alone the 44px the rest of this page holds to. The margin absorbs the
+     extra height so the field above does not gain 22px of air. */
   .cart-check {
-    display: flex; align-items: center; gap: var(--spacing-2); margin-top: var(--spacing-2);
+    display: flex; align-items: center; gap: var(--spacing-2);
+    min-height: 44px; margin-top: calc(var(--spacing-2) - 11px);
     font-size: var(--text-sm); color: var(--text-secondary); cursor: pointer;
   }
-  .cart-check input { accent-color: var(--accent-default); width: 16px; height: 16px; }
+  .cart-check input { accent-color: var(--accent-default); width: 16px; height: 16px; flex: none; }
+  .cart-check:focus-within { outline: 3px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--radius-md); }
   .cart-fine, .cart-bnpl-note {
     margin: var(--spacing-4) auto 0; max-width: 34em; text-align: center;
     font-size: var(--text-xs); line-height: 1.6; color: var(--text-muted);
@@ -566,6 +582,18 @@
     /* Two terms per row rather than four across — at 390px a 4-up row gives
        each term about 78px, which clips "12 Months" and squeezes the rate. */
     .cart-terms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* The bar's row wraps at this width, which left the button stranded and
+       left-aligned under a full-width total. Full-width is the phone
+       convention for the action that ends a step, and it is a bigger target. */
+    .cart-bar-foot { flex-direction: column; align-items: stretch; gap: var(--spacing-3); }
+    .cart-bar-foot > button { width: 100%; }
+    /* The four card marks INSIDE the card field repeat the ones on the payment
+       tile a hundred pixels above, and at 390px they take 207px of a 335px
+       field — enough that the placeholder is cut mid-digit ("1234 1234 1234
+       123"). Drop them on phones; the tile above still says which cards are
+       taken. !important because the padding they reserve is an inline style. */
+    .cart-input-marks { display: none !important; }
+    .cart-input.has-marks { padding-right: var(--spacing-4) !important; }
     .cart-summary-panel { grid-template-columns: 72px minmax(0, 1fr); gap: var(--spacing-3); }
     .cart-sticker { --cart-sticker-size: 112px; }
   }
@@ -585,7 +613,7 @@
 <script src="ui_kits/cart/cart-data.js?v=20260854"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
-<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260854"></script>
+<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260855"></script>
 <script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260854"></script>
 <script type="text/babel">
 function ChimeCartPage() {

@@ -373,16 +373,20 @@ function CartField({ id, label, placeholder, type = "text", value, onChange,
           onChange={(e) => onChange(e.target.value)} required={!!required}
           aria-invalid={invalid ? "true" : undefined}
           aria-describedby={invalid && errorId ? errorId : undefined}
-          autoComplete={autoComplete} inputMode={inputMode} className="cart-input"
+          autoComplete={autoComplete} inputMode={inputMode}
+          className={"cart-input" + (trailing ? " has-marks" : "")}
           style={{
             width: "100%", boxSizing: "border-box",
             padding: "var(--spacing-3) var(--spacing-4)",
+            // Inline, so cart.html's phone rule has to override it with
+            // !important — same pattern MembershipPanel documents for its
+            // mobile collapse. The marks are dropped below 620px; see there.
             paddingRight: trailing ? 132 : undefined,
             borderRadius: "var(--radius-lg)", border: "1px solid var(--border-default)",
             background: "var(--bg-elevated)", color: "var(--text-default)",
             font: "var(--font-weight-medium) var(--text-sm)/1.4 var(--font-family-base)",
           }} />
-        {trailing && <span style={{
+        {trailing && <span className="cart-input-marks" style={{
           position: "absolute", right: "var(--spacing-2)", display: "flex", gap: 4, pointerEvents: "none",
         }}>{trailing}</span>}
       </div>
