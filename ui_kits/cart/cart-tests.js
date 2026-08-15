@@ -241,6 +241,20 @@ eq("two 1-month plans still do not qualify",
 eq("mixing a 1-month plan with a qualifying one still discounts once",
   order(line("prod-nad", "1mo"), line("prod-glp-1", "3mo")).promoDiscount, 120);
 
+// The order's per-month equivalent is only meaningful on ONE line. Across two
+// treatments on different terms the customer buys 4 months of one and 12 of the
+// other, so dividing by the summed supply months would quote a rate for a
+// duration nobody is buying — and understate the early months, when both are
+// being paid for at once. It must come back null rather than plausible.
+// NAD+ 3-month: $420 ladder − $120 code = $300, over 4 months of supply.
+eq("a single line quotes a per-month equivalent", oneLine.perMonth, 300 / 4);
+eq("and labels it", oneLine.perMonthLabel, "$75");
+eq("single-line per-month is total over its supply",
+  oneLine.perMonth, oneLine.total / oneLine.lines[0].plan.supplyMonths);
+eq("a two-line basket quotes NO order per-month", twoLines.perMonth, null);
+eq("and no label for it either", twoLines.perMonthLabel, null);
+eq("an empty basket quotes none", order().perMonth, null);
+
 // Degenerate baskets must not produce a discount, a negative total, or a throw.
 eq("an empty order has no discount", order().promoApplied, false);
 eq("an empty order totals zero", order().total, 0);

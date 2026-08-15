@@ -331,7 +331,13 @@ function CartCheckoutScreen({ order, onBack, entry }) {
                   <CartSummaryRow label="Delivery Plan" value={l.plan.title.replace("Membership", "Plan")} />
                   <CartSummaryRow label="Monthly Price" value={l.plan.perMonthLabel}
                     was={l.plan.savings > 0.005 ? l.plan.listRateLabel : null} />
-                  <CartSummaryRow label={multi ? "Treatment total" : "Total if prescribed"}
+                  {/* Always "Treatment total", never "Total if prescribed".
+                      This label used to switch to the order's wording on a
+                      single-line basket, which put two rows reading "Total if
+                      prescribed" on one card with DIFFERENT figures — the line
+                      at its ladder price, the order after the code. Read
+                      straight down, the card contradicted itself. */}
+                  <CartSummaryRow label="Treatment total"
                     value={l.plan.totalLabel}
                     was={l.plan.savings > 0.005 ? l.plan.listTotalLabel : null} />
                 </div>
@@ -342,19 +348,44 @@ function CartCheckoutScreen({ order, onBack, entry }) {
                 up on their own — with one treatment its subtotal IS that line. */}
             <div className="cart-order">
               {multi && <CartSummaryRow label="Subtotal" value={order.subtotalLabel} />}
-              {saves && <CartSummaryRow label="Total Savings" value={order.totalSavingsLabel} />}
+              {/* "vs paying monthly" carries the baseline the saving is measured
+                  against, which the bare row never said and the deleted prose
+                  line did. */}
+              {saves && <CartSummaryRow label="Total Savings vs paying monthly"
+                value={order.totalSavingsLabel} />}
               <CartSummaryRow label="Shipping" value="FREE" />
               {order.promoApplied && <CartSummaryRow
                 label={"Code " + order.promoCode} value={"−" + order.promoDiscountLabel} />}
+              {/* The figure the customer is actually charged, given the weight
+                  that deserves. Every number on this card used to be 14px, so
+                  the order total was set at exactly the size of "Shipping:
+                  FREE" — NN/g's point about highlighting what matters, failed
+                  in the plainest way. It is a label, a struck list price, the
+                  live figure at display size, and the per-month equivalent
+                  underneath (RevenueCat: the rate, with the sum charged beside
+                  it — a per-month figure alone is the dishonest half). */}
               <div className="cart-order-total">
-                <CartSummaryRow label="Total if prescribed" value={order.totalLabel}
-                  was={saves ? order.listTotalLabel : null} />
+                <p className="cart-order-label">Total if prescribed</p>
+                <p className="cart-order-figure">
+                  {saves && <span className="cart-order-was">{order.listTotalLabel}</span>}
+                  <b>{order.totalLabel}</b>
+                </p>
+                {order.perMonthLabel && <p className="cart-order-permo">
+                  {order.perMonthLabel} per month over {order.supplyMonths} months
+                </p>}
               </div>
             </div>
 
-            {saves && <p className="cart-saving-line">
-              You are saving <strong>{order.totalSavingsLabel}</strong> vs monthly with your exclusive plan
-            </p>}
+            {/* The "You are saving $X vs monthly" sentence used to sit here and
+                is gone. With the total block above it, that figure was stated
+                three times within about forty pixels — as the Total Savings
+                row, as the struck list price beside the live one, and again in
+                prose. NN/g's rule is to merge what is shared and show the
+                difference once; the row scans and the strikethrough shows it,
+                so the sentence was the third telling. It also split the total
+                from the code chip that explains it.
+                The one thing it said that the rows do not is what the saving is
+                measured AGAINST — that now rides on the row itself. */}
 
             {/* The chip is gated on the code actually having been applied, not
                 on the promo merely being switched on — announcing "CODE APPLIED"
