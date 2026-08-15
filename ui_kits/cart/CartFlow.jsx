@@ -47,7 +47,8 @@ const CART_IN = 0.9;
 const CART_SHIFT = 64; // px of horizontal travel each way
 
 // ---- Screen 1 ------------------------------------------------------------
-function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, onCheckout }) {
+function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, onCheckout,
+  codeError, onApplyCode, onClearCode }) {
   const copy = window.CHIME_CART_COPY;
   const pay = window.CHIME_CART_PAYMENT;
   const uploads = window.CHIME_UPLOADS_BASE || "uploads";
@@ -179,12 +180,30 @@ function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, 
                 ))}
               </ul>
             </React.Fragment>}
+            {/* Sits between the lines and the total, where the figure it moves
+                is — and below the lines, so it never competes with choosing a
+                treatment. Only offered once there is an order to discount. */}
+            {order.count > 0 && <div className="cart-code-slot">
+              {/* Confirms the code is RECOGNISED and states its percentage, but
+                  deliberately shows no dollar figure. The reduction is computed
+                  on the post-JOIN120 price, and JOIN120 is not revealed until
+                  checkout — so a "−$72" here would be a number with no visible
+                  basis, sitting directly above a subtotal it does not match. */}
+              <CartCodeField applied={order.codeApplied ? order.code : null}
+                percent={order.codePercent} error={codeError}
+                onApply={onApplyCode} onClear={onClearCode} />
+            </div>}
+
             {/* Total and button share one row. Stacking them put the figure a
                 further 100px from the action it authorises, which was the
                 opposite of the point. */}
             <div className="cart-bar-foot">
+              {/* "Subtotal", never "Total". This row quotes the ladder price;
+                  the automatic promo and any entered code both come off at
+                  checkout, so calling it the total understated by $120 even
+                  before codes existed. The note says where the rest goes. */}
               {order.count > 0 && <p className="cart-running-total">
-                <span>{order.count === 1 ? "Total" : order.count + " treatments"}</span>
+                <span>{order.count === 1 ? "Subtotal" : order.count + " treatments"}</span>
                 <b>{order.subtotalLabel}</b>
               </p>}
               {/* onClick is passed even when disabled: omitting it makes Button
@@ -192,6 +211,9 @@ function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, 
               <Button label="Continue to checkout"
                 size="cta" type="button" onClick={onCheckout} disabled={!ready} />
             </div>
+            {ready && (order.promoApplied || order.codeApplied) && <p className="cart-running-note">
+              Your discounts are applied at checkout.
+            </p>}
             {!ready && <p className="cart-continue-note">
               {basket.length === 0
                 ? "Select a treatment to continue."
@@ -356,6 +378,14 @@ function CartCheckoutScreen({ order, onBack, entry }) {
               <CartSummaryRow label="Shipping" value="FREE" />
               {order.promoApplied && <CartSummaryRow
                 label={"Code " + order.promoCode} value={"−" + order.promoDiscountLabel} />}
+              {/* The entered code is its own row, never folded into the
+                  automatic one: they are different offers, and a customer who
+                  typed a code needs to see it took effect. The percentage is
+                  named because a bare dollar figure gives them no way to check
+                  it against what they were promised. */}
+              {order.codeApplied && <CartSummaryRow
+                label={"Code " + order.code + " (" + order.codePercent + "%)"}
+                value={"−" + order.codeDiscountLabel} />}
               {/* The figure the customer is actually charged, given the weight
                   that deserves. Every number on this card used to be 14px, so
                   the order total was set at exactly the size of "Shipping:
@@ -552,6 +582,25 @@ function ChimeCartFlow() {
   // (see chimeCartOrder in cart-data.js).
   const [selectedIds, setSelectedIds] = React.useState(treatments.length ? [treatments[0].id] : []);
   const [planKeys, setPlanKeys] = React.useState({});
+  // The entered discount code lives here, not in the field, so it survives the
+  // trip to checkout and back — the same reason the address does.
+  const [codeObj, setCodeObj] = React.useState(null);
+  const [codeError, setCodeError] = React.useState("");
+  const onApplyCode = (raw) => {
+    const found = window.chimeCartResolveCode(raw);
+    if (!found) {
+      setCodeObj(null);
+      // Names what was typed, so someone who fat-fingered a character can see
+      // it rather than being told "invalid" about an input they cannot see.
+      setCodeError(String(raw || "").trim()
+        ? "“" + String(raw).trim() + "” is not a valid code."
+        : "Enter a discount code.");
+      return;
+    }
+    setCodeObj(found);
+    setCodeError("");
+  };
+  const onClearCode = () => { setCodeObj(null); setCodeError(""); };
 
   // Checkout entry state lives here so it outlives CartCheckoutScreen, which
   // unmounts on every return to screen 1. See the note on that component.
@@ -584,7 +633,7 @@ function ChimeCartFlow() {
   // an order that is missing a line.
   const ready = basket.length > 0 && basket.every((b) => b.plan);
   const order = React.useMemo(
-    () => window.chimeCartOrder(basket.filter((b) => b.plan)), [basket]);
+    () => window.chimeCartOrder(basket.filter((b) => b.plan), null, codeObj), [basket, codeObj]);
 
   const screenRef = React.useRef(null);
   const dirRef = React.useRef(1);      // 1 = forward, -1 = back
@@ -735,7 +784,8 @@ function ChimeCartFlow() {
         {step === 2 && ready
           ? <CartCheckoutScreen order={order} onBack={onBack} entry={checkoutEntry} />
           : <CartSelectScreen treatments={treatments} basket={basket} ready={ready}
-              order={order} onToggle={onToggle} onPlan={onPlan} onCheckout={onCheckout} />}
+              order={order} onToggle={onToggle} onPlan={onPlan} onCheckout={onCheckout}
+              codeError={codeError} onApplyCode={onApplyCode} onClearCode={onClearCode} />}
       </div>
     </main>
   );

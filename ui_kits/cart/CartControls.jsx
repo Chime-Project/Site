@@ -394,6 +394,67 @@ function CartField({ id, label, placeholder, type = "text", value, onChange,
   );
 }
 
+// ---- Discount code -------------------------------------------------------
+// Collapsed behind a plain text toggle, deliberately. Baymard's repeated
+// finding on coupon fields is that a prominent one sends customers OFF the
+// page to hunt for a code they do not have, and a good share never come back —
+// so the field is available to anyone who has one and invisible to everyone
+// else. It sits with the order total rather than at the top of the step,
+// because that is where the figure it changes lives.
+//
+// The applied state replaces the form outright: leaving an editable field
+// beside an applied code invites a second submission and raises the question
+// of whether codes stack, which they do not (one entered code at a time).
+function CartCodeField({ applied, percent, error, onApply, onClear }) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const inputRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (open && inputRef.current) inputRef.current.focus();
+  }, [open]);
+
+  if (applied) {
+    return (
+      <p className="cart-code-on">
+        <span>
+          <b>{applied}</b> applied — {percent}% off
+        </span>
+        <button type="button" className="cart-code-clear" onClick={() => { setValue(""); onClear(); }}>
+          Remove<span className="visually-hidden"> discount code {applied}</span>
+        </button>
+      </p>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button type="button" className="cart-code-toggle" onClick={() => setOpen(true)}>
+        Have a discount code?
+      </button>
+    );
+  }
+
+  return (
+    // A real <form>, so Enter submits — typing a code and pressing return is
+    // the whole interaction, and a div would swallow it.
+    <form className="cart-code-form" onSubmit={(e) => { e.preventDefault(); onApply(value); }}>
+      <label className="visually-hidden" htmlFor="cart-code">Discount code</label>
+      <input id="cart-code" ref={inputRef} className="cart-input cart-code-input"
+        value={value} onChange={(e) => setValue(e.target.value)}
+        placeholder="Enter code" autoComplete="off" autoCapitalize="characters"
+        spellCheck="false"
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={error ? "cart-code-error" : undefined} />
+      <Button label="Apply" size="compact" variant="secondary" type="submit"
+        onClick={() => onApply(value)} />
+      {/* role=alert, because a failed code is only otherwise signalled by the
+          field's red border — useless to anyone not looking at it. */}
+      {error && <p className="cart-code-error" id="cart-code-error" role="alert">{error}</p>}
+    </form>
+  );
+}
+
 // One "Label: value" line in the checkout summary panel. `was` renders the
 // struck list figure ahead of the live one.
 function CartSummaryRow({ label, value, was }) {
@@ -462,7 +523,7 @@ function CartHoldSticker({ time, expired }) {
 
 Object.assign(window, {
   CartHeader, CartBack, CartStep, CartTreatmentCard,
-  CartTermOption, CartTreatmentConfig,
+  CartTermOption, CartTreatmentConfig, CartCodeField,
   CartCheckLine, PayMark, PayRow, CartField, CartSummaryRow, CartHoldSticker,
   cartReduced, cartCanHover, cartCardHover, cartSelectPop,
 });

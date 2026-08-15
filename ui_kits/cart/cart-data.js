@@ -93,6 +93,32 @@
     holdSeconds: 234, // 3:54, as drawn
   };
 
+  // ---- Customer-entered discount codes -------------------------------------
+  // Distinct from CHIME_CART_PROMO above, which is AUTOMATIC — the customer
+  // never types it and it is simply revealed at checkout. These are codes
+  // someone has to know and enter, so they need matching, validation and an
+  // error path the automatic promo never needed.
+  //
+  // ⚠️ Client-side only, and that is a placeholder, not a design. Anyone can
+  // read this file and find every code, and nothing here stops a code being
+  // reused or applied to an order it was not meant for. Real codes have to be
+  // validated server-side against the order before this page takes money.
+  //
+  // `percent` is taken off the FINAL price — after the automatic promo — so the
+  // two stack. See chimeCartOrder for what that costs on a real basket.
+  window.CHIME_CART_CODES = {
+    DISCOUNT01: { code: "DISCOUNT01", percent: 24 },
+  };
+
+  // Normalises what the customer typed: trims, upper-cases, and tolerates the
+  // spaces people paste in from an email. Returns null for anything unknown, so
+  // the caller has one thing to test rather than a string to re-parse.
+  function chimeCartResolveCode(input) {
+    var key = String(input == null ? "" : input).trim().toUpperCase().replace(/\s+/g, "");
+    if (!key) return null;
+    return (window.CHIME_CART_CODES || {})[key] || null;
+  }
+
   // ---- Payment methods -----------------------------------------------------
   // `brand` keys map to the --pay-* custom properties declared in cart.html;
   // third-party brand colors are page config, not component color decisions, so
@@ -290,7 +316,18 @@
   // Lines take UNDISCOUNTED plans (straight from chimeCartPlans). The reduction
   // belongs to the order, so it is reported once here rather than smeared across
   // the lines, and every line still shows the ladder price it was chosen at.
-  function chimeCartOrder(lines, promo) {
+  // `entered` is a resolved code object from chimeCartResolveCode, or null. It
+  // is applied AFTER the automatic promo — a percentage off the price the
+  // customer would otherwise pay — because that is what "% off your order"
+  // means to the person typing it.
+  //
+  // ⚠️ THE TWO STACK, and the combined figure is much larger than either looks.
+  // On NAD+'s 3-month plan: $420 ladder, less $120 automatic, less 24% of the
+  // $300 remainder = $228 paid against a $640 list price — a 64% total
+  // reduction. On a two-treatment basket it is 59%. That is a pricing decision,
+  // not a technical one; if the two should be exclusive rather than cumulative,
+  // this is the line to change.
+  function chimeCartOrder(lines, promo, entered) {
     promo = promo || window.CHIME_CART_PROMO || {};
     var rows = (lines || []).filter(function (l) { return l && l.product && l.plan; });
     var subtotal = 0, listTotal = 0, supplyMonths = 0;
@@ -309,6 +346,13 @@
       && off < subtotal;
     var discount = applied ? off : 0;
     var total = subtotal - discount;
+
+    // Percentage off what is left, rounded to the cent so the figure shown and
+    // the figure charged cannot drift apart by a fraction.
+    var pct = entered && Number(entered.percent) > 0 ? Number(entered.percent) : 0;
+    var codeOk = pct > 0 && pct < 100 && rows.length > 0 && total > 0;
+    var codeOff = codeOk ? Math.round(total * pct) / 100 : 0;
+    total = total - codeOff;
     // A per-month equivalent for the ORDER is only honest on a single-line
     // basket. With two treatments on different terms the customer buys 4 months
     // of one and 12 of the other, so dividing the order total by the summed
@@ -324,6 +368,9 @@
       ladderSavings: listTotal - subtotal, ladderSavingsLabel: cartUSD(listTotal - subtotal),
       promoApplied: applied, promoCode: promo.code,
       promoDiscount: discount, promoDiscountLabel: cartUSD(discount),
+      codeApplied: codeOk, code: codeOk ? entered.code : null,
+      codePercent: codeOk ? pct : 0,
+      codeDiscount: codeOff, codeDiscountLabel: cartUSD(codeOff),
       total: total, totalLabel: cartUSD(total),
       // One figure the customer can check: list price minus what they pay,
       // ladder savings and code savings folded together.
@@ -368,6 +415,7 @@
     chimeCartApplyPromo: chimeCartApplyPromo,
     chimeCartOrder: chimeCartOrder,
     chimeCartBadges: chimeCartBadges,
+    chimeCartResolveCode: chimeCartResolveCode,
     chimeCartProduct: chimeCartProduct,
     chimeCartMoney: cartMoney,
     chimeCartUSD: cartUSD,
