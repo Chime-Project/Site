@@ -3,26 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chime Health — Add Tesamorelin To Your Plan</title>
-<!-- Tesamorelin upsell — CHIME theme. Structural twin of upsell02.html
-     (Amerilean) and same shell as ChimeUpsell01.html; only the brand layer and
-     the product differ.
+<title>Chime Health — Add NAD+ To Your Plan</title>
+<!-- NAD+ upsell — CHIME theme. Structural twin of upsell01.html (Amerilean);
+     same sections, same copy, same JS. Only the brand layer differs.
 
      ⚠️ CASE-SENSITIVE FILENAME. GitHub Pages URLs are case-sensitive even though
-     macOS's filesystem is not, so `chimeupsell02.html` will work locally and 404
-     in production. Link to this file as ChimeUpsell02.html, exactly. Same trap
+     macOS's filesystem is not, so `chimeupsell01.html` will work locally and 404
+     in production. Link to this file as chimeUpsell01.html, exactly. Same trap
      documented for chimeAssessment.html in CLAUDE.md §4a.
-
-     🚧 PLACEHOLDER PRODUCT ART — THE ONLY THING BLOCKING LAUNCH.
-     Both product slots on this page show uploads/products/tesamorelin-amerilean.webp,
-     which is the AMERILEAN render: a mineral-teal label, off-palette for Chime, on
-     a grey studio ground. No Chime-branded Tesamorelin shot exists — uploads/vials/
-     holds Chime renders for NAD+, GLP-1, semaglutide, tirzepatide, sermorelin,
-     PT-141, TB-500, GHK-Cu and the two stacks, but not this one. Do NOT substitute
-     uploads/vials/sermorelin.webp to close the gap: it is on-brand and visually
-     right and it is a DIFFERENT DRUG, so the page would ship a vial labelled
-     Sermorelin under a Tesamorelin heading. Commission the render instead; when it
-     lands, drop it in both slots and delete this block.
 
      THEME WIRING — this page is NOT self-contained, and that is the difference
      from its Amerilean twin. It links styles.css and every colour, font, radius
@@ -64,23 +52,14 @@
      cart" (lower-case c) where Tesamorelin and Zofran both read "To Your Cart".
      Set as "Cart" here for consistency. Flagged to the client.
      Claims are verbatim from the doc — do not strengthen them.
-     (The doc used to carry a copy/paste error on this page — its Tesamorelin
-     subhead said "add NAD+". Fixed upstream as of 2026-08-12; no local
-     correction needed.)
 
      ✅ NO BRAND OVERRIDE ON THIS PAGE. The Amerilean twin carries one approved
      divergence: the doc says "Chime" in every closing-section sentence ("your
      Chime plan/experience/journey") and those pages say AMERILEAN instead,
      because the doc pre-dates that rebrand. On a Chime page the doc's own word is
      correct, so the override is simply absent and the copy is verbatim. If you
-     are diffing this file against upsell02.html, the Chime/Amerilean word swaps
-     in §6 and §7 are the intended difference, not drift.
-
-     ⚠️ LEGAL MUST CONFIRM (carried over from the Amerilean twin). The NAD+ page's
-     DSHEA footer sentence ("not evaluated by the Food and Drug Administration ...
-     not intended to diagnose, treat, cure") is a DIETARY-SUPPLEMENT disclaimer and
-     is wrong on a prescription peptide. It is deliberately absent below and
-     replaced with provider-review language. -->
+     are diffing this file against upsell01.html, the Chime/Amerilean word swaps
+     in §6 and §7 are the intended difference, not drift. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="styles.css?v=20260862">
@@ -218,7 +197,7 @@
   }
   .on-dark .decline { color: var(--on-dark-2); } /* 9.90:1 on the slate band */
 
-  /* ---- What is Tesamorelin ---- */
+  /* ---- What is NAD+ ---- */
   .what { background: var(--band-cream); }
   .what-grid { display: grid; gap: 36px; align-items: center; }
   .what p.lede {
@@ -229,15 +208,10 @@
     width: 100%; height: auto; display: block; border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-lg);
   }
-  /* The model shot is a transparent WebP, so here it reads as a figure standing
-     on the cream band rather than a framed photo — .what-photo's radius and
-     shadow would trace an invisible box around her. */
-  .what-photo.cutout { border-radius: 0; box-shadow: none; }
   @media (min-width: 768px) {
-    /* 340px, not ChimeUpsell01's 420px: that cap was set for a landscape photo,
-       and this cut-out is portrait (1100x1189) — the same width would buy it 1.6x
-       the height and let it tower over the lede. */
-    .what-grid { grid-template-columns: minmax(0, 1fr) minmax(260px, 340px); gap: 64px; }
+    /* 420px, not the molecule's 300px: the photo is landscape and needs the
+       width to balance the lede */
+    .what-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 64px; }
   }
 
   /* ---- Benefits: panel row + funnel, after uploads/diagram.jpg ----
@@ -257,8 +231,8 @@
        the diagram's proportion — a tall panel row over a shallow funnel — is
        what makes the taper read as a footing rather than a second band. Extra
        padding under the title buys that height back. */
-    /* 18px sides, not 14: at the 3-up breakpoint "Continued momentum beyond weight
-       loss alone" fits on one line and ran within a hair of the panel edge. */
+    /* 18px sides, not 14: at the 3-up breakpoint "Feeling more like themselves
+       again" fits on one line and ran within a hair of the panel edge. */
     padding: clamp(34px, 4vw, 56px) 18px clamp(38px, 4.6vw, 64px);
   }
   .benefit:nth-child(1) { background: var(--ramp-1); }
@@ -392,10 +366,17 @@
     border-radius: var(--radius-xl); margin: 0 auto 18px;
     background: var(--band-mist);
   }
-  /* No .cutout variant here — ChimeUpsell01 needs one because the Chime NAD+ vial
-     is a transparent portrait cut-out, but the placeholder render this page shows
-     is a 4:3 photograph on its own studio ground and takes the rule above as-is.
-     Copy that rule across if the commissioned Tesamorelin shot arrives cut-out. */
+  /* The Chime vial ships as a TRANSPARENT portrait cut-out (422x800), not a
+     photograph on its own studio ground like the Amerilean render. Every part of
+     the rule above is wrong for it: object-fit:cover would crop a 2:1 vial into a
+     4:3 window, the tinted tile would paint a visible box behind a shape that has
+     no background of its own, and the radius would round corners nothing reaches.
+     So the cut-out opts out of all four and is sized by height instead. */
+  .recap-card img.cutout {
+    width: auto; height: clamp(210px, 34vw, 280px);
+    aspect-ratio: auto; object-fit: contain;
+    background: none; border-radius: 0;
+  }
   .recap-card .name { font-weight: var(--font-weight-semibold); font-size: var(--text-2xl); }
   .recap-card .note { font-size: var(--text-sm); color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -461,82 +442,83 @@
       <div>
         <!-- ⚠️ DO NOT "correct" these two lines against
              uploads/Upsell product pages.md. That export is STALE (Aug 4) and says
-             the heading is "Add Tesamorelin To Support Your Body Composition
-             Goals". The live Google Doc says "Add Tesamorelin To Your Cart" —
-             confirmed by the client on 2026-08-12, after exactly that bad edit was
-             made and reverted. The page is right and the export is old; the doc is
-             the authority. See the file header for the doc URL. -->
-        <h1 id="hero-title">Add Tesamorelin To Your Cart</h1>
-        <p class="sub">You&rsquo;ve already taken the first step. Now, boost your
-          journey with Tesamorelin for just
-          <span class="price" data-price>[PRICE]</span>.</p>
-        <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add Tesamorelin To My Plan</button>
+             the heading is "Add NAD+ To Support Your Energy & Wellness Goals".
+             The live Google Doc says "Add NAD+ To Your Cart" — confirmed by the
+             client on 2026-08-12, after exactly that bad edit was made and
+             reverted. The page is right and the export is old; the doc is the
+             authority. See the file header for the doc URL. -->
+        <h1 id="hero-title">Add NAD+ To Your Cart</h1>
+        <p class="sub">You&rsquo;ve already taken the first step. Now, improve your
+          journey with NAD+ for just <span class="price" data-price>[PRICE]</span>.</p>
+        <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add NAD+ To My Plan</button>
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
       </div>
       <div class="hero-media">
-        <!-- 🚧 PLACEHOLDER — AMERILEAN RENDER ON A CHIME PAGE. The label is mineral
-             teal, which is not in the Chime palette, and the vial carries the wrong
-             brand. Kept only because no Chime Tesamorelin shot exists; see the
-             file header for why sermorelin.webp is not a substitute. -->
-        <img src="uploads/products/tesamorelin-amerilean.webp" width="900" height="675"
-          alt="A vial of compounded Tesamorelin, 2 mL multiple-dose, prescription only">
+        <!-- On-brand as-is: the vial turning in this animation carries the CHIME
+             deep-slate-blue label, not the Amerilean teal one. Verified frame by
+             frame 2026-08-17 — it is the same render as uploads/vials/nad-plus.webp
+             below, so no Chime-specific re-export is needed here. -->
+        <video src="uploads/nadanivi-web.mp4" autoplay muted loop playsinline aria-label="NAD+ animation"></video>
       </div>
     </div>
   </section>
 
-  <!-- 3. What is Tesamorelin -->
+  <!-- 3. What is NAD+ -->
   <section class="what" id="what-is" aria-labelledby="what-title">
     <div class="wrap-wide what-grid">
       <div class="reveal">
-        <p class="eyebrow" id="what-title">What Is Tesamorelin?</p>
-        <p class="lede">Tesamorelin is a peptide therapy that may be recommended for
-          individuals looking for additional support with body composition,
-          metabolic health, and wellness optimization.</p>
+        <p class="eyebrow" id="what-title">What Is NAD+?</p>
+        <p class="lede">NAD+ is one of the most discussed wellness therapies among
+          individuals focused on energy, recovery, and healthy aging.</p>
       </div>
-      <!-- The model cut-out sits beside the lede exactly as ChimeUpsell01's photo
-           does. Transparent WebP — hence .cutout. Brand-neutral lifestyle
-           imagery, shared with the Amerilean twin on purpose. -->
-      <img class="what-photo cutout reveal" src="uploads/model_weight.webp"
-        width="1100" height="1189"
-        alt="A smiling woman in athletic wear carrying a rolled exercise mat">
+      <!-- powerC-web.jpg is the web export of uploads/powerC.png (3.7MB source
+           stays untracked; ship the 290KB 1400px JPEG instead). Brand-neutral
+           lifestyle photography — shared with the Amerilean twin on purpose. -->
+      <img class="what-photo reveal" src="uploads/powerC-web.jpg"
+        alt="A smiling couple holding hands while walking together in a sunlit park">
     </div>
   </section>
 
-  <!-- 4. Why add Tesamorelin — panel row + funnel, after uploads/diagram.jpg,
-       matching ChimeUpsell01. Two departures from that reference, both deliberate:
+  <!-- 4. Why add NAD+ — panel row + funnel, after uploads/diagram.jpg.
+       Two departures from that reference, both deliberate:
          1. SIX panels, not the diagram's five. The benefit list is verbatim from
             the reviewed copy and is six items long — do not pad or trim it to
             match a template.
          2. NO body paragraph under each title. The diagram gives every panel a
             sentence of description, and there is no reviewed copy for those.
-            Writing six would mean inventing six Tesamorelin claims, which is
-            exactly what this page's copy lock exists to prevent. The slot is
-            left out rather than filled with lorem; drop <p class="benefit-copy">
-            in if approved copy arrives.
-       Icons are all feather, one lineage: target, activity, clock, trending-up,
-       layers, chevrons-right. "Healthy aging" shares ChimeUpsell01's clock on
-       purpose — the same label should not draw twice.
-       CLAUDE.md §5 notes the wider site mixes feather and lucide artwork for the
-       same concepts — don't start that here by borrowing a lucide glyph. -->
+            Writing six would mean inventing six NAD+ claims, which is exactly
+            what this page's copy lock exists to prevent. The slot is left out
+            rather than filled with lorem; drop <p class="benefit-copy"> in if
+            approved copy arrives.
+       Icons are all feather, one lineage. CLAUDE.md §5 notes the wider site
+       mixes feather and lucide artwork for the same concepts — don't start that
+       here by borrowing a lucide glyph (its lightbulb is the tempting one). -->
   <section id="benefits" class="benefits" aria-labelledby="benefits-title">
     <div class="wrap-wide">
-      <p class="eyebrow reveal" id="benefits-title">Why Add Tesamorelin?</p>
-      <h2 class="benefits-intro reveal">Tesamorelin may help support:</h2>
+      <p class="eyebrow reveal" id="benefits-title">Why Add NAD+?</p>
+      <h2 class="benefits-intro reveal">NAD+ may be a good fit for people who want to support:</h2>
     </div>
     <div class="benefit-cols" role="list">
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
-          <circle cx="12" cy="12" r="2"/>
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
         </svg>
-        <p class="benefit-title">Body composition goals</p>
+        <p class="benefit-title">Daily energy</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
-        <p class="benefit-title">Metabolic wellness</p>
+        <p class="benefit-title">Mental clarity</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <polyline points="23 4 23 10 17 10"/>
+          <polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        <p class="benefit-title">Recovery</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -547,25 +529,17 @@
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-          <polyline points="17 6 23 6 23 12"/>
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
-        <p class="benefit-title">Fitness and lifestyle progress</p>
+        <p class="benefit-title">Overall vitality</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-          <polyline points="2 17 12 22 22 17"/>
-          <polyline points="2 12 12 17 22 12"/>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <path d="M9 9h.01M15 9h.01"/>
         </svg>
-        <p class="benefit-title">A more comprehensive wellness plan</p>
-      </div>
-      <div class="benefit" role="listitem">
-        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <polyline points="13 17 18 12 13 7"/>
-          <polyline points="6 17 11 12 6 7"/>
-        </svg>
-        <p class="benefit-title">Continued momentum beyond weight loss alone</p>
+        <p class="benefit-title">Feeling more like themselves again</p>
       </div>
     </div>
     <!-- The funnel, in two parts. The taper's 6 slices tile the trapezoid
@@ -601,18 +575,20 @@
   <!-- 5. Final offer recap -->
   <section class="recap on-dark" id="offer" aria-labelledby="offer-title">
     <div class="wrap">
-      <h2 id="offer-title">Ready To Add Tesamorelin?</h2>
-      <p class="sub">Now, boost your journey with Tesamorelin for just
+      <h2 id="offer-title">Add NAD+</h2>
+      <p class="sub">Now, improve your journey with NAD+ for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <!-- 🚧 PLACEHOLDER — same Amerilean render as the hero, same reason.
-             Replace both slots together when the Chime shot lands. -->
-        <img src="uploads/products/tesamorelin-amerilean.webp" width="900" height="675"
-          alt="A vial of compounded Tesamorelin, 2 mL multiple-dose, prescription only">
-        <div class="name">Tesamorelin</div>
-        <div class="note">Provider oversight, designed around your individual needs</div>
+        <!-- The real CHIME product shot — the same vial the site's other kits use,
+             not the Amerilean render its twin page carries. It is a transparent
+             cut-out, hence .cutout; see that rule for why it cannot take the
+             default .recap-card img treatment. -->
+        <img class="cutout" src="uploads/vials/nad-plus.webp" width="422" height="800"
+          alt="A vial of compounded NAD+, 2 mL multiple-dose, prescription only">
+        <div class="name">NAD+</div>
+        <div class="note">Guided by providers, designed around your goals</div>
         <div class="tear"></div>
-        <button class="btn" type="button" data-accept data-source="recap" data-analytics="recap-cta">Add Tesamorelin To My Cart</button>
+        <button class="btn" type="button" data-accept data-source="recap" data-analytics="recap-cta">Add NAD+ To My Cart</button>
       </div>
       <a class="decline" href="index.html" data-decline data-source="recap" data-analytics="recap-decline">Continue Without Adding</a>
     </div>
@@ -621,13 +597,12 @@
   <!-- 6. A more complete wellness path -->
   <section class="path" id="path" aria-labelledby="path-title">
     <div class="wrap">
-      <p class="eyebrow reveal" id="path-title">A More Personalized Approach</p>
-      <h2 class="reveal">Your health journey is not one-size-fits-all.</h2>
-      <p class="reveal">Adding Tesamorelin may help support a more complete approach
-        to your goals, especially if you are focused on long-term progress,
-        wellness, and how your body changes over time.</p>
-      <p class="reveal">Like every part of your Chime experience, this option is
-        guided with provider oversight and designed around your individual needs.</p>
+      <p class="eyebrow reveal" id="path-title">A More Complete Wellness Path</p>
+      <h2 class="reveal">Your wellness journey is personal.</h2>
+      <p class="reveal">Adding NAD+ may help support the way you want to feel as you
+        move forward with your Chime plan.</p>
+      <p class="reveal">Like every part of your Chime experience, your care is guided by
+        providers and designed around your individual goals.</p>
       <span class="provider-badge reveal">
         <svg class="badge-spin" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
           <defs><path id="badge-arc" fill="none" d="M26,26 m-19,0 a19,19 0 1,1 38,0 a19,19 0 1,1 -38,0"/></defs>
@@ -688,8 +663,8 @@
 
 <!-- 8. Sticky mobile CTA -->
 <div class="sticky-bar" id="sticky-bar">
-  <span class="sticky-price">Tesamorelin · <span class="price" data-price>[PRICE]</span></span>
-  <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add Tesamorelin</button>
+  <span class="sticky-price">NAD+ · <span class="price" data-price>[PRICE]</span></span>
+  <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add NAD+</button>
 </div>
 
 <!-- 9. Footer disclaimer -->
@@ -699,13 +674,11 @@
          filter: brightness(0) invert(1) to it because their grounds are dark;
          this footer sits on the light canvas, so it must NOT be inverted. -->
     <img class="footer-logo" src="assets/logo-main.svg" alt="Chime Health" width="1095" height="138">
-    <!-- LEGAL REVIEW REQUIRED. The NAD+ page's DSHEA sentence ("not evaluated by
-         the Food and Drug Administration...") is a dietary-supplement disclaimer
-         and does not belong on a prescription peptide, so it is deliberately
-         absent here. Confirm the wording below before launch. -->
-    <p>Individual results vary. Tesamorelin is a prescription therapy available only
-      following provider review, and is not guaranteed to be prescribed. This offer
-      does not affect your existing order.</p>
+    <p>Individual results vary. NAD+ is available subject to provider review and is
+      not guaranteed to be prescribed. These statements have not been evaluated by
+      the Food and Drug Administration. This product is not intended to diagnose,
+      treat, cure, or prevent any disease. This offer does not affect your existing
+      order.</p>
     <p>&copy; 2026 Chime Health</p>
   </div>
 </footer>
@@ -724,18 +697,18 @@
   // so this is a shorter hop than it was for the Amerilean twin — wire it to the
   // ui_kits/cart basket rather than reinventing a payload.
   function onAccept(source) {
-    console.log("[upsell] accept", { product: "tesamorelin", source: source });
+    console.log("[upsell] accept", { product: "nad-plus", source: source });
     document.querySelectorAll("[data-accept]").forEach(function (btn) {
       btn.classList.add("done");
       btn.disabled = true;
       btn.textContent = "Added to your plan ✓";
     });
-    announce("Tesamorelin added to your plan.");
+    announce("NAD+ added to your plan.");
   }
 
   // TODO(decline): post the decline to the take-rate endpoint before redirecting.
   function onDecline(source, href) {
-    console.log("[upsell] decline", { product: "tesamorelin", source: source });
+    console.log("[upsell] decline", { product: "nad-plus", source: source });
     announce("No problem — your original order is unchanged.");
     setTimeout(function () { window.location.href = href; }, 900);
   }

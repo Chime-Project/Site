@@ -3,14 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chime Health — Add NAD+ To Your Plan</title>
-<!-- NAD+ upsell — CHIME theme. Structural twin of upsell01.html (Amerilean);
-     same sections, same copy, same JS. Only the brand layer differs.
+<title>Chime Health — Add Zofran To Your Plan</title>
+<!-- Zofran upsell — CHIME theme. Structural twin of upsell03.html (Amerilean)
+     and same shell as chimeUpsell01.html; only the brand layer and the product
+     differ.
 
      ⚠️ CASE-SENSITIVE FILENAME. GitHub Pages URLs are case-sensitive even though
-     macOS's filesystem is not, so `chimeupsell01.html` will work locally and 404
-     in production. Link to this file as ChimeUpsell01.html, exactly. Same trap
+     macOS's filesystem is not, so `chimeupsell03.html` will work locally and 404
+     in production. Link to this file as chimeUpsell03.html, exactly. Same trap
      documented for chimeAssessment.html in CLAUDE.md §4a.
+
+     🚧🚧 PLACEHOLDER PRODUCT ART, AND IT IS WORSE HERE THAN ON chimeUpsell02.
+     Both product slots show uploads/products/zofran-tablet-amerilean.webp — a
+     tablet EMBOSSED WITH THE AMERILEAN "A" MARK. On an Amerilean page that was a
+     trade-dress question. On a Chime page it is that AND a visibly foreign logo
+     pressed into the product, so this render must not go live here under any
+     reading. There is no Chime tablet asset of any kind; uploads/vials/ is all
+     injectables. Commission the render, then replace both slots and delete this
+     block. LEGAL MUST CONFIRM either way — see the footer note.
 
      THEME WIRING — this page is NOT self-contained, and that is the difference
      from its Amerilean twin. It links styles.css and every colour, font, radius
@@ -58,8 +68,19 @@
      Chime plan/experience/journey") and those pages say AMERILEAN instead,
      because the doc pre-dates that rebrand. On a Chime page the doc's own word is
      correct, so the override is simply absent and the copy is verbatim. If you
-     are diffing this file against upsell01.html, the Chime/Amerilean word swaps
-     in §6 and §7 are the intended difference, not drift. -->
+     are diffing this file against upsell03.html, the Chime/Amerilean word swaps
+     in §6 and §7 are the intended difference, not drift.
+
+     ZOFRAN DIFFERS FROM THE OTHER TWO UPSELLS IN THREE WAYS THAT MATTER:
+       1. FIVE benefits, not six. The ramp still lands correctly (panel 5 =
+          --ramp-5, light ink) and the funnel is cut to five slices — do not pad
+          it to six. Below 900px the last panel spans two columns so five items
+          do not leave a hole; see .benefit:last-child.
+       2. It is an ORAL TABLET, so there is no vial — do NOT drop one in.
+       3. The NAD+ page's DSHEA footer sentence ("not evaluated by the Food and
+          Drug Administration ... not intended to diagnose, treat, cure") is a
+          DIETARY-SUPPLEMENT disclaimer and is plainly wrong on an FDA-approved
+          prescription antiemetic. Replaced. LEGAL MUST CONFIRM. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="styles.css?v=20260862">
@@ -197,20 +218,23 @@
   }
   .on-dark .decline { color: var(--on-dark-2); } /* 9.90:1 on the slate band */
 
-  /* ---- What is NAD+ ---- */
+  /* ---- What is Zofran ---- */
   .what { background: var(--band-cream); }
   .what-grid { display: grid; gap: 36px; align-items: center; }
   .what p.lede {
     font-weight: var(--weight-display); letter-spacing: normal;
     font-size: clamp(24px, 3.2vw, 34px); line-height: 1.3; margin: 18px 0 0;
   }
+  /* Zofran is the only one of the three with a second paragraph of reviewed copy
+     under the lede — the doc gives it context the other two do not have. */
+  .what p.body { color: var(--ink-2); margin: 20px 0 0; max-width: 34em; }
   .what-photo {
     width: 100%; height: auto; display: block; border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-lg);
   }
   @media (min-width: 768px) {
-    /* 420px, not the molecule's 300px: the photo is landscape and needs the
-       width to balance the lede */
+    /* 420px, the same cap as chimeUpsell01: the beach photo is landscape too,
+       and needs the width to balance the lede. */
     .what-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 64px; }
   }
 
@@ -231,17 +255,24 @@
        the diagram's proportion — a tall panel row over a shallow funnel — is
        what makes the taper read as a footing rather than a second band. Extra
        padding under the title buys that height back. */
-    /* 18px sides, not 14: at the 3-up breakpoint "Feeling more like themselves
-       again" fits on one line and ran within a hair of the panel edge. */
+    /* 18px sides, not 14: at the 3-up breakpoint "Better consistency with your
+       treatment journey" fits on one line and ran within a hair of the panel
+       edge. */
     padding: clamp(34px, 4vw, 56px) 18px clamp(38px, 4.6vw, 64px);
   }
+  /* Five panels, so the ramp stops at --ramp-5 and --ramp-6 goes unused on this
+     page. The flip still fires on exactly one panel because nth-child(n+5) is
+     positional — the same rule, one fewer target. */
   .benefit:nth-child(1) { background: var(--ramp-1); }
   .benefit:nth-child(2) { background: var(--ramp-2); }
   .benefit:nth-child(3) { background: var(--ramp-3); }
   .benefit:nth-child(4) { background: var(--ramp-4); }
   .benefit:nth-child(5) { background: var(--ramp-5); }
-  .benefit:nth-child(6) { background: var(--ramp-6); }
   .benefit:nth-child(n+5) { color: var(--card); } /* deep panels flip to light ink */
+  /* Five panels leave an empty cell in the last row at both 2-up and 3-up.
+     Spanning the final panel fills the row in both cases — at 3-up it lands in
+     columns 2-3 — and is reset once all five are across. */
+  .benefit:last-child { grid-column: span 2; }
   /* currentColor is the point: the icons ride the same ink flip as the titles,
      so no icon needs its own colour rule. */
   .benefit-icon {
@@ -268,7 +299,7 @@
   .funnel-base {
     display: none; width: 55%; margin: 0 auto;
     height: clamp(96px, 9.2vw, 133px);
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   /* 0.38 reproduces the white veil this used to paint inside the svg (1 - 0.62),
      so the base is a faithful continuation of the taper's neck. On the Chime ramp
@@ -281,7 +312,6 @@
   .funnel-base span:nth-child(3) { background: var(--ramp-3); }
   .funnel-base span:nth-child(4) { background: var(--ramp-4); }
   .funnel-base span:nth-child(5) { background: var(--ramp-5); }
-  .funnel-base span:nth-child(6) { background: var(--ramp-6); }
   @media (min-width: 600px) { .benefit-cols { grid-template-columns: repeat(3, 1fr); } }
   @media (min-width: 768px) {
     /* Desktop only: the band no longer runs flush into the recap. Same
@@ -291,10 +321,11 @@
     .benefits { padding-bottom: clamp(56px, 9vw, 96px); }
   }
   @media (min-width: 900px) {
-    /* The funnel appears only once the panels are actually six across — its six
-       slices are cut to line up with six columns, and under a 2- or 3-up grid
+    /* The funnel appears only once the panels are actually five across — its five
+       slices are cut to line up with five columns, and under a 2- or 3-up grid
        they would point at nothing. */
-    .benefit-cols { grid-template-columns: repeat(6, 1fr); }
+    .benefit-cols { grid-template-columns: repeat(5, 1fr); }
+    .benefit:last-child { grid-column: auto; }
     .funnel { display: block; }
     .funnel-base { display: grid; }
     /* The base occupies this space now — it has to end ON the slate band,
@@ -366,17 +397,10 @@
     border-radius: var(--radius-xl); margin: 0 auto 18px;
     background: var(--band-mist);
   }
-  /* The Chime vial ships as a TRANSPARENT portrait cut-out (422x800), not a
-     photograph on its own studio ground like the Amerilean render. Every part of
-     the rule above is wrong for it: object-fit:cover would crop a 2:1 vial into a
-     4:3 window, the tinted tile would paint a visible box behind a shape that has
-     no background of its own, and the radius would round corners nothing reaches.
-     So the cut-out opts out of all four and is sized by height instead. */
-  .recap-card img.cutout {
-    width: auto; height: clamp(210px, 34vw, 280px);
-    aspect-ratio: auto; object-fit: contain;
-    background: none; border-radius: 0;
-  }
+  /* No .cutout variant here — chimeUpsell01 needs one because the Chime NAD+ vial
+     is a transparent portrait cut-out, but the placeholder render this page shows
+     is a 4:3 photograph on its own studio ground and takes the rule above as-is.
+     Copy that rule across if the commissioned tablet shot arrives cut-out. */
   .recap-card .name { font-weight: var(--font-weight-semibold); font-size: var(--text-2xl); }
   .recap-card .note { font-size: var(--text-sm); color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -440,112 +464,106 @@
   <section class="hero" id="hero" aria-labelledby="hero-title">
     <div class="wrap-wide hero-grid">
       <div>
-        <!-- ⚠️ DO NOT "correct" these two lines against
-             uploads/Upsell product pages.md. That export is STALE (Aug 4) and says
-             the heading is "Add NAD+ To Support Your Energy & Wellness Goals".
-             The live Google Doc says "Add NAD+ To Your Cart" — confirmed by the
-             client on 2026-08-12, after exactly that bad edit was made and
-             reverted. The page is right and the export is old; the doc is the
-             authority. See the file header for the doc URL. -->
-        <h1 id="hero-title">Add NAD+ To Your Cart</h1>
-        <p class="sub">You&rsquo;ve already taken the first step. Now, improve your
-          journey with NAD+ for just <span class="price" data-price>[PRICE]</span>.</p>
-        <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add NAD+ To My Plan</button>
+        <h1 id="hero-title">Add Zofran To Your Cart</h1>
+        <p class="sub">Some people experience nausea as their body adjusts to a new
+          treatment plan. Zofran is available for just
+          <span class="price" data-price>[PRICE]</span>.</p>
+        <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add Zofran To My Plan</button>
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
       </div>
       <div class="hero-media">
-        <!-- On-brand as-is: the vial turning in this animation carries the CHIME
-             deep-slate-blue label, not the Amerilean teal one. Verified frame by
-             frame 2026-08-17 — it is the same render as uploads/vials/nad-plus.webp
-             below, so no Chime-specific re-export is needed here. -->
-        <video src="uploads/nadanivi-web.mp4" autoplay muted loop playsinline aria-label="NAD+ animation"></video>
+        <!-- 🚧 PLACEHOLDER — THE TABLET CARRIES THE AMERILEAN "A" MARK, embossed
+             into the pill itself, on a Chime page. See the file header. The alt
+             text deliberately says "shown as", not "a Zofran tablet". -->
+        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
+          alt="Zofran, shown as an oral tablet">
       </div>
     </div>
   </section>
 
-  <!-- 3. What is NAD+ -->
+  <!-- 3. What is Zofran -->
   <section class="what" id="what-is" aria-labelledby="what-title">
     <div class="wrap-wide what-grid">
       <div class="reveal">
-        <p class="eyebrow" id="what-title">What Is NAD+?</p>
-        <p class="lede">NAD+ is one of the most discussed wellness therapies among
-          individuals focused on energy, recovery, and healthy aging.</p>
+        <p class="eyebrow" id="what-title">What Is Zofran?</p>
+        <p class="lede">Zofran is a prescription medication commonly associated with
+          nausea and vomiting support.</p>
+        <p class="body">For individuals starting a weight-loss medication, nausea can
+          sometimes make it harder to stay consistent, feel comfortable, or move
+          through the first stages of care with confidence.</p>
       </div>
-      <!-- powerC-web.jpg is the web export of uploads/powerC.png (3.7MB source
-           stays untracked; ship the 290KB 1400px JPEG instead). Brand-neutral
-           lifestyle photography — shared with the Amerilean twin on purpose. -->
-      <img class="what-photo reveal" src="uploads/powerC-web.jpg"
-        alt="A smiling couple holding hands while walking together in a sunlit park">
+      <!-- Brand-neutral lifestyle photography, shared with the Amerilean twin.
+           ⚠️ 600x387 is the only source we have — it fills a 420px slot at 1.4x,
+           so it is soft on a 2x display. Ask the client for a larger export. -->
+      <img class="what-photo reveal" src="uploads/wellness-aa5b5325.jpg"
+        width="600" height="387"
+        alt="A woman sitting calmly on an exercise mat on the beach at sunrise">
     </div>
   </section>
 
-  <!-- 4. Why add NAD+ — panel row + funnel, after uploads/diagram.jpg.
-       Two departures from that reference, both deliberate:
-         1. SIX panels, not the diagram's five. The benefit list is verbatim from
-            the reviewed copy and is six items long — do not pad or trim it to
-            match a template.
-         2. NO body paragraph under each title. The diagram gives every panel a
+  <!-- 4. Why add Zofran — panel row + funnel, after uploads/diagram.jpg, matching
+       chimeUpsell01. Three things to know, all deliberate:
+         1. FIVE panels. That happens to equal the diagram's count, but the reason
+            is the reviewed copy, not the template — the funnel below is cut to
+            five slices to match, so padding this to six breaks the alignment as
+            well as the copy lock.
+         2. Because five items leave an empty cell at 2-up and 3-up, the last
+            panel spans two columns below 900px (see .benefit:last-child).
+         3. NO body paragraph under each title. The diagram gives every panel a
             sentence of description, and there is no reviewed copy for those.
-            Writing six would mean inventing six NAD+ claims, which is exactly
+            Writing five would mean inventing five Zofran claims, which is exactly
             what this page's copy lock exists to prevent. The slot is left out
             rather than filled with lorem; drop <p class="benefit-copy"> in if
             approved copy arrives.
-       Icons are all feather, one lineage. CLAUDE.md §5 notes the wider site
-       mixes feather and lucide artwork for the same concepts — don't start that
-       here by borrowing a lucide glyph (its lightbulb is the tempting one). -->
+       Icons are all feather, one lineage: shield, heart, life-buoy, calendar,
+       feather.
+       CLAUDE.md §5 notes the wider site mixes feather and lucide artwork for the
+       same concepts — don't start that here by borrowing a lucide glyph. -->
   <section id="benefits" class="benefits" aria-labelledby="benefits-title">
     <div class="wrap-wide">
-      <p class="eyebrow reveal" id="benefits-title">Why Add NAD+?</p>
-      <h2 class="benefits-intro reveal">NAD+ may be a good fit for people who want to support:</h2>
+      <p class="eyebrow reveal" id="benefits-title">Why Add Zofran?</p>
+      <h2 class="benefits-intro reveal">Zofran may help support:</h2>
     </div>
     <div class="benefit-cols" role="list">
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <p class="benefit-title">Daily energy</p>
-      </div>
-      <div class="benefit" role="listitem">
-        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="5"/>
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-        <p class="benefit-title">Mental clarity</p>
-      </div>
-      <div class="benefit" role="listitem">
-        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <polyline points="23 4 23 10 17 10"/>
-          <polyline points="1 20 1 14 7 14"/>
-          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-        </svg>
-        <p class="benefit-title">Recovery</p>
-      </div>
-      <div class="benefit" role="listitem">
-        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-        <p class="benefit-title">Healthy aging</p>
+        <p class="benefit-title">Nausea management</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
-        <p class="benefit-title">Overall vitality</p>
+        <p class="benefit-title">Greater comfort as your body adjusts</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <circle cx="12" cy="12" r="10"/>
-          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-          <path d="M9 9h.01M15 9h.01"/>
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M9.17 14.83l-4.24 4.24"/>
         </svg>
-        <p class="benefit-title">Feeling more like themselves again</p>
+        <p class="benefit-title">A more supported start to your plan</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+        <p class="benefit-title">Better consistency with your treatment journey</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+          <path d="M16 8L2 22M17.5 15H9"/>
+        </svg>
+        <p class="benefit-title">Peace of mind if nausea becomes a concern</p>
       </div>
     </div>
-    <!-- The funnel, in two parts. The taper's 6 slices tile the trapezoid
+    <!-- The funnel, in two parts. The taper's 5 slices tile the trapezoid
          (0,0)-(600,0)-(465,64)-(135,64) exactly, so ONE dark path over all of them
          darkens every slice by the same amount — the diagram's shaded taper —
-         instead of needing 6 hand-mixed shades that would drift from the palette.
+         instead of needing 5 hand-mixed shades that would drift from the palette.
          The pale base that follows is a plain grid rather than more svg, so it can
          be as tall as it needs without flattening the taper; it runs to the
          section's bottom edge, meeting the slate band. Both are 55% at the neck,
@@ -553,17 +571,15 @@
     <svg class="funnel" viewBox="0 0 600 64" preserveAspectRatio="none"
       aria-hidden="true" focusable="false">
       <g>
-        <polygon points="0,0 100,0 190,64 135,64" fill="var(--ramp-1)"/>
-        <polygon points="100,0 200,0 245,64 190,64" fill="var(--ramp-2)"/>
-        <polygon points="200,0 300,0 300,64 245,64" fill="var(--ramp-3)"/>
-        <polygon points="300,0 400,0 355,64 300,64" fill="var(--ramp-4)"/>
-        <polygon points="400,0 500,0 410,64 355,64" fill="var(--ramp-5)"/>
-        <polygon points="500,0 600,0 465,64 410,64" fill="var(--ramp-6)"/>
+        <polygon points="0,0 120,0 201,64 135,64" fill="var(--ramp-1)"/>
+        <polygon points="120,0 240,0 267,64 201,64" fill="var(--ramp-2)"/>
+        <polygon points="240,0 360,0 333,64 267,64" fill="var(--ramp-3)"/>
+        <polygon points="360,0 480,0 399,64 333,64" fill="var(--ramp-4)"/>
+        <polygon points="480,0 600,0 465,64 399,64" fill="var(--ramp-5)"/>
       </g>
       <path d="M0 0 H600 L465 64 H135 Z" fill="var(--slate)" opacity="0.22"/>
     </svg>
     <div class="funnel-base" aria-hidden="true">
-      <span></span>
       <span></span>
       <span></span>
       <span></span>
@@ -575,20 +591,19 @@
   <!-- 5. Final offer recap -->
   <section class="recap on-dark" id="offer" aria-labelledby="offer-title">
     <div class="wrap">
-      <h2 id="offer-title">Add NAD+</h2>
-      <p class="sub">Now, improve your journey with NAD+ for just
+      <h2 id="offer-title">Add Zofran</h2>
+      <p class="sub">Zofran is available for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <!-- The real CHIME product shot — the same vial the site's other kits use,
-             not the Amerilean render its twin page carries. It is a transparent
-             cut-out, hence .cutout; see that rule for why it cannot take the
-             default .recap-card img treatment. -->
-        <img class="cutout" src="uploads/vials/nad-plus.webp" width="422" height="800"
-          alt="A vial of compounded NAD+, 2 mL multiple-dose, prescription only">
-        <div class="name">NAD+</div>
-        <div class="note">Guided by providers, designed around your goals</div>
+        <!-- 🚧 PLACEHOLDER — same Amerilean-embossed tablet as the hero, same
+             reason. Cropped tighter than a vial would be so the tablet reads at a
+             comparable scale. Replace both slots together. -->
+        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
+          alt="Zofran, shown as an oral tablet">
+        <div class="name">Zofran</div>
+        <div class="note">Subject to provider review and personalized care guidance</div>
         <div class="tear"></div>
-        <button class="btn" type="button" data-accept data-source="recap" data-analytics="recap-cta">Add NAD+ To My Cart</button>
+        <button class="btn" type="button" data-accept data-source="recap" data-analytics="recap-cta">Add Zofran To My Cart</button>
       </div>
       <a class="decline" href="index.html" data-decline data-source="recap" data-analytics="recap-decline">Continue Without Adding</a>
     </div>
@@ -597,12 +612,12 @@
   <!-- 6. A more complete wellness path -->
   <section class="path" id="path" aria-labelledby="path-title">
     <div class="wrap">
-      <p class="eyebrow reveal" id="path-title">A More Complete Wellness Path</p>
-      <h2 class="reveal">Your wellness journey is personal.</h2>
-      <p class="reveal">Adding NAD+ may help support the way you want to feel as you
-        move forward with your Chime plan.</p>
-      <p class="reveal">Like every part of your Chime experience, your care is guided by
-        providers and designed around your individual goals.</p>
+      <p class="eyebrow reveal" id="path-title">Support For The Moments You May Need It</p>
+      <h2 class="reveal">Your Chime journey is designed to feel guided, thoughtful, and personal.</h2>
+      <p class="reveal">Adding Zofran may give you an additional layer of support as
+        you begin your plan.</p>
+      <p class="reveal">Like every part of your Chime experience, this option is
+        subject to provider review and personalized care guidance.</p>
       <span class="provider-badge reveal">
         <svg class="badge-spin" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
           <defs><path id="badge-arc" fill="none" d="M26,26 m-19,0 a19,19 0 1,1 38,0 a19,19 0 1,1 -38,0"/></defs>
@@ -663,8 +678,8 @@
 
 <!-- 8. Sticky mobile CTA -->
 <div class="sticky-bar" id="sticky-bar">
-  <span class="sticky-price">NAD+ · <span class="price" data-price>[PRICE]</span></span>
-  <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add NAD+</button>
+  <span class="sticky-price">Zofran · <span class="price" data-price>[PRICE]</span></span>
+  <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add Zofran</button>
 </div>
 
 <!-- 9. Footer disclaimer -->
@@ -674,11 +689,15 @@
          filter: brightness(0) invert(1) to it because their grounds are dark;
          this footer sits on the light canvas, so it must NOT be inverted. -->
     <img class="footer-logo" src="assets/logo-main.svg" alt="Chime Health" width="1095" height="138">
-    <p>Individual results vary. NAD+ is available subject to provider review and is
-      not guaranteed to be prescribed. These statements have not been evaluated by
-      the Food and Drug Administration. This product is not intended to diagnose,
-      treat, cure, or prevent any disease. This offer does not affect your existing
-      order.</p>
+    <!-- LEGAL REVIEW REQUIRED. Zofran (ondansetron) is an FDA-approved prescription
+         medication, so the NAD+ page's DSHEA sentence ("not evaluated by the Food
+         and Drug Administration ... not intended to diagnose, treat, cure") is
+         both inaccurate and self-contradictory here; it is deliberately absent.
+         Confirm the wording below, and whether side-effect / prescribing
+         information must appear on this page, before launch. -->
+    <p>Individual results vary. Zofran is a prescription medication available only
+      following provider review, and is not guaranteed to be prescribed. This offer
+      does not affect your existing order.</p>
     <p>&copy; 2026 Chime Health</p>
   </div>
 </footer>
@@ -697,18 +716,18 @@
   // so this is a shorter hop than it was for the Amerilean twin — wire it to the
   // ui_kits/cart basket rather than reinventing a payload.
   function onAccept(source) {
-    console.log("[upsell] accept", { product: "nad-plus", source: source });
+    console.log("[upsell] accept", { product: "zofran", source: source });
     document.querySelectorAll("[data-accept]").forEach(function (btn) {
       btn.classList.add("done");
       btn.disabled = true;
       btn.textContent = "Added to your plan ✓";
     });
-    announce("NAD+ added to your plan.");
+    announce("Zofran added to your plan.");
   }
 
   // TODO(decline): post the decline to the take-rate endpoint before redirecting.
   function onDecline(source, href) {
-    console.log("[upsell] decline", { product: "nad-plus", source: source });
+    console.log("[upsell] decline", { product: "zofran", source: source });
     announce("No problem — your original order is unchanged.");
     setTimeout(function () { window.location.href = href; }, 900);
   }

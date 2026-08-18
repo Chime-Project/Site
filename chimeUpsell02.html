@@ -3,24 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chime Health — Add Zofran To Your Plan</title>
-<!-- Zofran upsell — CHIME theme. Structural twin of upsell03.html (Amerilean)
-     and same shell as ChimeUpsell01.html; only the brand layer and the product
-     differ.
+<title>Chime Health — Add Tesamorelin To Your Plan</title>
+<!-- Tesamorelin upsell — CHIME theme. Structural twin of upsell02.html
+     (Amerilean) and same shell as chimeUpsell01.html; only the brand layer and
+     the product differ.
 
      ⚠️ CASE-SENSITIVE FILENAME. GitHub Pages URLs are case-sensitive even though
-     macOS's filesystem is not, so `chimeupsell03.html` will work locally and 404
-     in production. Link to this file as ChimeUpsell03.html, exactly. Same trap
+     macOS's filesystem is not, so `chimeupsell02.html` will work locally and 404
+     in production. Link to this file as chimeUpsell02.html, exactly. Same trap
      documented for chimeAssessment.html in CLAUDE.md §4a.
 
-     🚧🚧 PLACEHOLDER PRODUCT ART, AND IT IS WORSE HERE THAN ON ChimeUpsell02.
-     Both product slots show uploads/products/zofran-tablet-amerilean.webp — a
-     tablet EMBOSSED WITH THE AMERILEAN "A" MARK. On an Amerilean page that was a
-     trade-dress question. On a Chime page it is that AND a visibly foreign logo
-     pressed into the product, so this render must not go live here under any
-     reading. There is no Chime tablet asset of any kind; uploads/vials/ is all
-     injectables. Commission the render, then replace both slots and delete this
-     block. LEGAL MUST CONFIRM either way — see the footer note.
+     🚧 PLACEHOLDER PRODUCT ART — THE ONLY THING BLOCKING LAUNCH.
+     Both product slots on this page show uploads/products/tesamorelin-amerilean.webp,
+     which is the AMERILEAN render: a mineral-teal label, off-palette for Chime, on
+     a grey studio ground. No Chime-branded Tesamorelin shot exists — uploads/vials/
+     holds Chime renders for NAD+, GLP-1, semaglutide, tirzepatide, sermorelin,
+     PT-141, TB-500, GHK-Cu and the two stacks, but not this one. Do NOT substitute
+     uploads/vials/sermorelin.webp to close the gap: it is on-brand and visually
+     right and it is a DIFFERENT DRUG, so the page would ship a vial labelled
+     Sermorelin under a Tesamorelin heading. Commission the render instead; when it
+     lands, drop it in both slots and delete this block.
 
      THEME WIRING — this page is NOT self-contained, and that is the difference
      from its Amerilean twin. It links styles.css and every colour, font, radius
@@ -62,25 +64,23 @@
      cart" (lower-case c) where Tesamorelin and Zofran both read "To Your Cart".
      Set as "Cart" here for consistency. Flagged to the client.
      Claims are verbatim from the doc — do not strengthen them.
+     (The doc used to carry a copy/paste error on this page — its Tesamorelin
+     subhead said "add NAD+". Fixed upstream as of 2026-08-12; no local
+     correction needed.)
 
      ✅ NO BRAND OVERRIDE ON THIS PAGE. The Amerilean twin carries one approved
      divergence: the doc says "Chime" in every closing-section sentence ("your
      Chime plan/experience/journey") and those pages say AMERILEAN instead,
      because the doc pre-dates that rebrand. On a Chime page the doc's own word is
      correct, so the override is simply absent and the copy is verbatim. If you
-     are diffing this file against upsell03.html, the Chime/Amerilean word swaps
+     are diffing this file against upsell02.html, the Chime/Amerilean word swaps
      in §6 and §7 are the intended difference, not drift.
 
-     ZOFRAN DIFFERS FROM THE OTHER TWO UPSELLS IN THREE WAYS THAT MATTER:
-       1. FIVE benefits, not six. The ramp still lands correctly (panel 5 =
-          --ramp-5, light ink) and the funnel is cut to five slices — do not pad
-          it to six. Below 900px the last panel spans two columns so five items
-          do not leave a hole; see .benefit:last-child.
-       2. It is an ORAL TABLET, so there is no vial — do NOT drop one in.
-       3. The NAD+ page's DSHEA footer sentence ("not evaluated by the Food and
-          Drug Administration ... not intended to diagnose, treat, cure") is a
-          DIETARY-SUPPLEMENT disclaimer and is plainly wrong on an FDA-approved
-          prescription antiemetic. Replaced. LEGAL MUST CONFIRM. -->
+     ⚠️ LEGAL MUST CONFIRM (carried over from the Amerilean twin). The NAD+ page's
+     DSHEA footer sentence ("not evaluated by the Food and Drug Administration ...
+     not intended to diagnose, treat, cure") is a DIETARY-SUPPLEMENT disclaimer and
+     is wrong on a prescription peptide. It is deliberately absent below and
+     replaced with provider-review language. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="styles.css?v=20260862">
@@ -218,24 +218,26 @@
   }
   .on-dark .decline { color: var(--on-dark-2); } /* 9.90:1 on the slate band */
 
-  /* ---- What is Zofran ---- */
+  /* ---- What is Tesamorelin ---- */
   .what { background: var(--band-cream); }
   .what-grid { display: grid; gap: 36px; align-items: center; }
   .what p.lede {
     font-weight: var(--weight-display); letter-spacing: normal;
     font-size: clamp(24px, 3.2vw, 34px); line-height: 1.3; margin: 18px 0 0;
   }
-  /* Zofran is the only one of the three with a second paragraph of reviewed copy
-     under the lede — the doc gives it context the other two do not have. */
-  .what p.body { color: var(--ink-2); margin: 20px 0 0; max-width: 34em; }
   .what-photo {
     width: 100%; height: auto; display: block; border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-lg);
   }
+  /* The model shot is a transparent WebP, so here it reads as a figure standing
+     on the cream band rather than a framed photo — .what-photo's radius and
+     shadow would trace an invisible box around her. */
+  .what-photo.cutout { border-radius: 0; box-shadow: none; }
   @media (min-width: 768px) {
-    /* 420px, the same cap as ChimeUpsell01: the beach photo is landscape too,
-       and needs the width to balance the lede. */
-    .what-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 64px; }
+    /* 340px, not chimeUpsell01's 420px: that cap was set for a landscape photo,
+       and this cut-out is portrait (1100x1189) — the same width would buy it 1.6x
+       the height and let it tower over the lede. */
+    .what-grid { grid-template-columns: minmax(0, 1fr) minmax(260px, 340px); gap: 64px; }
   }
 
   /* ---- Benefits: panel row + funnel, after uploads/diagram.jpg ----
@@ -255,24 +257,17 @@
        the diagram's proportion — a tall panel row over a shallow funnel — is
        what makes the taper read as a footing rather than a second band. Extra
        padding under the title buys that height back. */
-    /* 18px sides, not 14: at the 3-up breakpoint "Better consistency with your
-       treatment journey" fits on one line and ran within a hair of the panel
-       edge. */
+    /* 18px sides, not 14: at the 3-up breakpoint "Continued momentum beyond weight
+       loss alone" fits on one line and ran within a hair of the panel edge. */
     padding: clamp(34px, 4vw, 56px) 18px clamp(38px, 4.6vw, 64px);
   }
-  /* Five panels, so the ramp stops at --ramp-5 and --ramp-6 goes unused on this
-     page. The flip still fires on exactly one panel because nth-child(n+5) is
-     positional — the same rule, one fewer target. */
   .benefit:nth-child(1) { background: var(--ramp-1); }
   .benefit:nth-child(2) { background: var(--ramp-2); }
   .benefit:nth-child(3) { background: var(--ramp-3); }
   .benefit:nth-child(4) { background: var(--ramp-4); }
   .benefit:nth-child(5) { background: var(--ramp-5); }
+  .benefit:nth-child(6) { background: var(--ramp-6); }
   .benefit:nth-child(n+5) { color: var(--card); } /* deep panels flip to light ink */
-  /* Five panels leave an empty cell in the last row at both 2-up and 3-up.
-     Spanning the final panel fills the row in both cases — at 3-up it lands in
-     columns 2-3 — and is reset once all five are across. */
-  .benefit:last-child { grid-column: span 2; }
   /* currentColor is the point: the icons ride the same ink flip as the titles,
      so no icon needs its own colour rule. */
   .benefit-icon {
@@ -299,7 +294,7 @@
   .funnel-base {
     display: none; width: 55%; margin: 0 auto;
     height: clamp(96px, 9.2vw, 133px);
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
   /* 0.38 reproduces the white veil this used to paint inside the svg (1 - 0.62),
      so the base is a faithful continuation of the taper's neck. On the Chime ramp
@@ -312,6 +307,7 @@
   .funnel-base span:nth-child(3) { background: var(--ramp-3); }
   .funnel-base span:nth-child(4) { background: var(--ramp-4); }
   .funnel-base span:nth-child(5) { background: var(--ramp-5); }
+  .funnel-base span:nth-child(6) { background: var(--ramp-6); }
   @media (min-width: 600px) { .benefit-cols { grid-template-columns: repeat(3, 1fr); } }
   @media (min-width: 768px) {
     /* Desktop only: the band no longer runs flush into the recap. Same
@@ -321,11 +317,10 @@
     .benefits { padding-bottom: clamp(56px, 9vw, 96px); }
   }
   @media (min-width: 900px) {
-    /* The funnel appears only once the panels are actually five across — its five
-       slices are cut to line up with five columns, and under a 2- or 3-up grid
+    /* The funnel appears only once the panels are actually six across — its six
+       slices are cut to line up with six columns, and under a 2- or 3-up grid
        they would point at nothing. */
-    .benefit-cols { grid-template-columns: repeat(5, 1fr); }
-    .benefit:last-child { grid-column: auto; }
+    .benefit-cols { grid-template-columns: repeat(6, 1fr); }
     .funnel { display: block; }
     .funnel-base { display: grid; }
     /* The base occupies this space now — it has to end ON the slate band,
@@ -397,10 +392,10 @@
     border-radius: var(--radius-xl); margin: 0 auto 18px;
     background: var(--band-mist);
   }
-  /* No .cutout variant here — ChimeUpsell01 needs one because the Chime NAD+ vial
+  /* No .cutout variant here — chimeUpsell01 needs one because the Chime NAD+ vial
      is a transparent portrait cut-out, but the placeholder render this page shows
      is a 4:3 photograph on its own studio ground and takes the rule above as-is.
-     Copy that rule across if the commissioned tablet shot arrives cut-out. */
+     Copy that rule across if the commissioned Tesamorelin shot arrives cut-out. */
   .recap-card .name { font-weight: var(--font-weight-semibold); font-size: var(--text-2xl); }
   .recap-card .note { font-size: var(--text-sm); color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -464,106 +459,119 @@
   <section class="hero" id="hero" aria-labelledby="hero-title">
     <div class="wrap-wide hero-grid">
       <div>
-        <h1 id="hero-title">Add Zofran To Your Cart</h1>
-        <p class="sub">Some people experience nausea as their body adjusts to a new
-          treatment plan. Zofran is available for just
+        <!-- ⚠️ DO NOT "correct" these two lines against
+             uploads/Upsell product pages.md. That export is STALE (Aug 4) and says
+             the heading is "Add Tesamorelin To Support Your Body Composition
+             Goals". The live Google Doc says "Add Tesamorelin To Your Cart" —
+             confirmed by the client on 2026-08-12, after exactly that bad edit was
+             made and reverted. The page is right and the export is old; the doc is
+             the authority. See the file header for the doc URL. -->
+        <h1 id="hero-title">Add Tesamorelin To Your Cart</h1>
+        <p class="sub">You&rsquo;ve already taken the first step. Now, boost your
+          journey with Tesamorelin for just
           <span class="price" data-price>[PRICE]</span>.</p>
-        <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add Zofran To My Plan</button>
+        <button class="btn" type="button" data-accept data-source="hero" data-analytics="hero-cta">Add Tesamorelin To My Plan</button>
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
       </div>
       <div class="hero-media">
-        <!-- 🚧 PLACEHOLDER — THE TABLET CARRIES THE AMERILEAN "A" MARK, embossed
-             into the pill itself, on a Chime page. See the file header. The alt
-             text deliberately says "shown as", not "a Zofran tablet". -->
-        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
-          alt="Zofran, shown as an oral tablet">
+        <!-- 🚧 PLACEHOLDER — AMERILEAN RENDER ON A CHIME PAGE. The label is mineral
+             teal, which is not in the Chime palette, and the vial carries the wrong
+             brand. Kept only because no Chime Tesamorelin shot exists; see the
+             file header for why sermorelin.webp is not a substitute. -->
+        <img src="uploads/products/tesamorelin-amerilean.webp" width="900" height="675"
+          alt="A vial of compounded Tesamorelin, 2 mL multiple-dose, prescription only">
       </div>
     </div>
   </section>
 
-  <!-- 3. What is Zofran -->
+  <!-- 3. What is Tesamorelin -->
   <section class="what" id="what-is" aria-labelledby="what-title">
     <div class="wrap-wide what-grid">
       <div class="reveal">
-        <p class="eyebrow" id="what-title">What Is Zofran?</p>
-        <p class="lede">Zofran is a prescription medication commonly associated with
-          nausea and vomiting support.</p>
-        <p class="body">For individuals starting a weight-loss medication, nausea can
-          sometimes make it harder to stay consistent, feel comfortable, or move
-          through the first stages of care with confidence.</p>
+        <p class="eyebrow" id="what-title">What Is Tesamorelin?</p>
+        <p class="lede">Tesamorelin is a peptide therapy that may be recommended for
+          individuals looking for additional support with body composition,
+          metabolic health, and wellness optimization.</p>
       </div>
-      <!-- Brand-neutral lifestyle photography, shared with the Amerilean twin.
-           ⚠️ 600x387 is the only source we have — it fills a 420px slot at 1.4x,
-           so it is soft on a 2x display. Ask the client for a larger export. -->
-      <img class="what-photo reveal" src="uploads/wellness-aa5b5325.jpg"
-        width="600" height="387"
-        alt="A woman sitting calmly on an exercise mat on the beach at sunrise">
+      <!-- The model cut-out sits beside the lede exactly as chimeUpsell01's photo
+           does. Transparent WebP — hence .cutout. Brand-neutral lifestyle
+           imagery, shared with the Amerilean twin on purpose. -->
+      <img class="what-photo cutout reveal" src="uploads/model_weight.webp"
+        width="1100" height="1189"
+        alt="A smiling woman in athletic wear carrying a rolled exercise mat">
     </div>
   </section>
 
-  <!-- 4. Why add Zofran — panel row + funnel, after uploads/diagram.jpg, matching
-       ChimeUpsell01. Three things to know, all deliberate:
-         1. FIVE panels. That happens to equal the diagram's count, but the reason
-            is the reviewed copy, not the template — the funnel below is cut to
-            five slices to match, so padding this to six breaks the alignment as
-            well as the copy lock.
-         2. Because five items leave an empty cell at 2-up and 3-up, the last
-            panel spans two columns below 900px (see .benefit:last-child).
-         3. NO body paragraph under each title. The diagram gives every panel a
+  <!-- 4. Why add Tesamorelin — panel row + funnel, after uploads/diagram.jpg,
+       matching chimeUpsell01. Two departures from that reference, both deliberate:
+         1. SIX panels, not the diagram's five. The benefit list is verbatim from
+            the reviewed copy and is six items long — do not pad or trim it to
+            match a template.
+         2. NO body paragraph under each title. The diagram gives every panel a
             sentence of description, and there is no reviewed copy for those.
-            Writing five would mean inventing five Zofran claims, which is exactly
-            what this page's copy lock exists to prevent. The slot is left out
-            rather than filled with lorem; drop <p class="benefit-copy"> in if
-            approved copy arrives.
-       Icons are all feather, one lineage: shield, heart, life-buoy, calendar,
-       feather.
+            Writing six would mean inventing six Tesamorelin claims, which is
+            exactly what this page's copy lock exists to prevent. The slot is
+            left out rather than filled with lorem; drop <p class="benefit-copy">
+            in if approved copy arrives.
+       Icons are all feather, one lineage: target, activity, clock, trending-up,
+       layers, chevrons-right. "Healthy aging" shares chimeUpsell01's clock on
+       purpose — the same label should not draw twice.
        CLAUDE.md §5 notes the wider site mixes feather and lucide artwork for the
        same concepts — don't start that here by borrowing a lucide glyph. -->
   <section id="benefits" class="benefits" aria-labelledby="benefits-title">
     <div class="wrap-wide">
-      <p class="eyebrow reveal" id="benefits-title">Why Add Zofran?</p>
-      <h2 class="benefits-intro reveal">Zofran may help support:</h2>
+      <p class="eyebrow reveal" id="benefits-title">Why Add Tesamorelin?</p>
+      <h2 class="benefits-intro reveal">Tesamorelin may help support:</h2>
     </div>
     <div class="benefit-cols" role="list">
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
         </svg>
-        <p class="benefit-title">Nausea management</p>
+        <p class="benefit-title">Body composition goals</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
         </svg>
-        <p class="benefit-title">Greater comfort as your body adjusts</p>
+        <p class="benefit-title">Metabolic wellness</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M9.17 14.83l-4.24 4.24"/>
+          <polyline points="12 6 12 12 16 14"/>
         </svg>
-        <p class="benefit-title">A more supported start to your plan</p>
+        <p class="benefit-title">Healthy aging</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <path d="M16 2v4M8 2v4M3 10h18"/>
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
         </svg>
-        <p class="benefit-title">Better consistency with your treatment journey</p>
+        <p class="benefit-title">Fitness and lifestyle progress</p>
       </div>
       <div class="benefit" role="listitem">
         <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-          <path d="M16 8L2 22M17.5 15H9"/>
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
         </svg>
-        <p class="benefit-title">Peace of mind if nausea becomes a concern</p>
+        <p class="benefit-title">A more comprehensive wellness plan</p>
+      </div>
+      <div class="benefit" role="listitem">
+        <svg class="benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <polyline points="13 17 18 12 13 7"/>
+          <polyline points="6 17 11 12 6 7"/>
+        </svg>
+        <p class="benefit-title">Continued momentum beyond weight loss alone</p>
       </div>
     </div>
-    <!-- The funnel, in two parts. The taper's 5 slices tile the trapezoid
+    <!-- The funnel, in two parts. The taper's 6 slices tile the trapezoid
          (0,0)-(600,0)-(465,64)-(135,64) exactly, so ONE dark path over all of them
          darkens every slice by the same amount — the diagram's shaded taper —
-         instead of needing 5 hand-mixed shades that would drift from the palette.
+         instead of needing 6 hand-mixed shades that would drift from the palette.
          The pale base that follows is a plain grid rather than more svg, so it can
          be as tall as it needs without flattening the taper; it runs to the
          section's bottom edge, meeting the slate band. Both are 55% at the neck,
@@ -571,15 +579,17 @@
     <svg class="funnel" viewBox="0 0 600 64" preserveAspectRatio="none"
       aria-hidden="true" focusable="false">
       <g>
-        <polygon points="0,0 120,0 201,64 135,64" fill="var(--ramp-1)"/>
-        <polygon points="120,0 240,0 267,64 201,64" fill="var(--ramp-2)"/>
-        <polygon points="240,0 360,0 333,64 267,64" fill="var(--ramp-3)"/>
-        <polygon points="360,0 480,0 399,64 333,64" fill="var(--ramp-4)"/>
-        <polygon points="480,0 600,0 465,64 399,64" fill="var(--ramp-5)"/>
+        <polygon points="0,0 100,0 190,64 135,64" fill="var(--ramp-1)"/>
+        <polygon points="100,0 200,0 245,64 190,64" fill="var(--ramp-2)"/>
+        <polygon points="200,0 300,0 300,64 245,64" fill="var(--ramp-3)"/>
+        <polygon points="300,0 400,0 355,64 300,64" fill="var(--ramp-4)"/>
+        <polygon points="400,0 500,0 410,64 355,64" fill="var(--ramp-5)"/>
+        <polygon points="500,0 600,0 465,64 410,64" fill="var(--ramp-6)"/>
       </g>
       <path d="M0 0 H600 L465 64 H135 Z" fill="var(--slate)" opacity="0.22"/>
     </svg>
     <div class="funnel-base" aria-hidden="true">
+      <span></span>
       <span></span>
       <span></span>
       <span></span>
@@ -591,19 +601,18 @@
   <!-- 5. Final offer recap -->
   <section class="recap on-dark" id="offer" aria-labelledby="offer-title">
     <div class="wrap">
-      <h2 id="offer-title">Add Zofran</h2>
-      <p class="sub">Zofran is available for just
+      <h2 id="offer-title">Ready To Add Tesamorelin?</h2>
+      <p class="sub">Now, boost your journey with Tesamorelin for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <!-- 🚧 PLACEHOLDER — same Amerilean-embossed tablet as the hero, same
-             reason. Cropped tighter than a vial would be so the tablet reads at a
-             comparable scale. Replace both slots together. -->
-        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
-          alt="Zofran, shown as an oral tablet">
-        <div class="name">Zofran</div>
-        <div class="note">Subject to provider review and personalized care guidance</div>
+        <!-- 🚧 PLACEHOLDER — same Amerilean render as the hero, same reason.
+             Replace both slots together when the Chime shot lands. -->
+        <img src="uploads/products/tesamorelin-amerilean.webp" width="900" height="675"
+          alt="A vial of compounded Tesamorelin, 2 mL multiple-dose, prescription only">
+        <div class="name">Tesamorelin</div>
+        <div class="note">Provider oversight, designed around your individual needs</div>
         <div class="tear"></div>
-        <button class="btn" type="button" data-accept data-source="recap" data-analytics="recap-cta">Add Zofran To My Cart</button>
+        <button class="btn" type="button" data-accept data-source="recap" data-analytics="recap-cta">Add Tesamorelin To My Cart</button>
       </div>
       <a class="decline" href="index.html" data-decline data-source="recap" data-analytics="recap-decline">Continue Without Adding</a>
     </div>
@@ -612,12 +621,13 @@
   <!-- 6. A more complete wellness path -->
   <section class="path" id="path" aria-labelledby="path-title">
     <div class="wrap">
-      <p class="eyebrow reveal" id="path-title">Support For The Moments You May Need It</p>
-      <h2 class="reveal">Your Chime journey is designed to feel guided, thoughtful, and personal.</h2>
-      <p class="reveal">Adding Zofran may give you an additional layer of support as
-        you begin your plan.</p>
+      <p class="eyebrow reveal" id="path-title">A More Personalized Approach</p>
+      <h2 class="reveal">Your health journey is not one-size-fits-all.</h2>
+      <p class="reveal">Adding Tesamorelin may help support a more complete approach
+        to your goals, especially if you are focused on long-term progress,
+        wellness, and how your body changes over time.</p>
       <p class="reveal">Like every part of your Chime experience, this option is
-        subject to provider review and personalized care guidance.</p>
+        guided with provider oversight and designed around your individual needs.</p>
       <span class="provider-badge reveal">
         <svg class="badge-spin" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
           <defs><path id="badge-arc" fill="none" d="M26,26 m-19,0 a19,19 0 1,1 38,0 a19,19 0 1,1 -38,0"/></defs>
@@ -678,8 +688,8 @@
 
 <!-- 8. Sticky mobile CTA -->
 <div class="sticky-bar" id="sticky-bar">
-  <span class="sticky-price">Zofran · <span class="price" data-price>[PRICE]</span></span>
-  <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add Zofran</button>
+  <span class="sticky-price">Tesamorelin · <span class="price" data-price>[PRICE]</span></span>
+  <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add Tesamorelin</button>
 </div>
 
 <!-- 9. Footer disclaimer -->
@@ -689,13 +699,11 @@
          filter: brightness(0) invert(1) to it because their grounds are dark;
          this footer sits on the light canvas, so it must NOT be inverted. -->
     <img class="footer-logo" src="assets/logo-main.svg" alt="Chime Health" width="1095" height="138">
-    <!-- LEGAL REVIEW REQUIRED. Zofran (ondansetron) is an FDA-approved prescription
-         medication, so the NAD+ page's DSHEA sentence ("not evaluated by the Food
-         and Drug Administration ... not intended to diagnose, treat, cure") is
-         both inaccurate and self-contradictory here; it is deliberately absent.
-         Confirm the wording below, and whether side-effect / prescribing
-         information must appear on this page, before launch. -->
-    <p>Individual results vary. Zofran is a prescription medication available only
+    <!-- LEGAL REVIEW REQUIRED. The NAD+ page's DSHEA sentence ("not evaluated by
+         the Food and Drug Administration...") is a dietary-supplement disclaimer
+         and does not belong on a prescription peptide, so it is deliberately
+         absent here. Confirm the wording below before launch. -->
+    <p>Individual results vary. Tesamorelin is a prescription therapy available only
       following provider review, and is not guaranteed to be prescribed. This offer
       does not affect your existing order.</p>
     <p>&copy; 2026 Chime Health</p>
@@ -716,18 +724,18 @@
   // so this is a shorter hop than it was for the Amerilean twin — wire it to the
   // ui_kits/cart basket rather than reinventing a payload.
   function onAccept(source) {
-    console.log("[upsell] accept", { product: "zofran", source: source });
+    console.log("[upsell] accept", { product: "tesamorelin", source: source });
     document.querySelectorAll("[data-accept]").forEach(function (btn) {
       btn.classList.add("done");
       btn.disabled = true;
       btn.textContent = "Added to your plan ✓";
     });
-    announce("Zofran added to your plan.");
+    announce("Tesamorelin added to your plan.");
   }
 
   // TODO(decline): post the decline to the take-rate endpoint before redirecting.
   function onDecline(source, href) {
-    console.log("[upsell] decline", { product: "zofran", source: source });
+    console.log("[upsell] decline", { product: "tesamorelin", source: source });
     announce("No problem — your original order is unchanged.");
     setTimeout(function () { window.location.href = href; }, 900);
   }
