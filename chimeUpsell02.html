@@ -13,16 +13,15 @@
      in production. Link to this file as chimeUpsell02.html, exactly. Same trap
      documented for chimeAssessment.html in CLAUDE.md §4a.
 
-     🚧 PLACEHOLDER PRODUCT ART — THE ONLY THING BLOCKING LAUNCH.
-     Both product slots on this page show uploads/products/tesamorelin-amerilean.webp,
-     which is the AMERILEAN render: a mineral-teal label, off-palette for Chime, on
-     a grey studio ground. No Chime-branded Tesamorelin shot exists — uploads/vials/
-     holds Chime renders for NAD+, GLP-1, semaglutide, tirzepatide, sermorelin,
-     PT-141, TB-500, GHK-Cu and the two stacks, but not this one. Do NOT substitute
-     uploads/vials/sermorelin.webp to close the gap: it is on-brand and visually
-     right and it is a DIFFERENT DRUG, so the page would ship a vial labelled
-     Sermorelin under a Tesamorelin heading. Commission the render instead; when it
-     lands, drop it in both slots and delete this block.
+     ✅ PRODUCT ART RESOLVED (2026-08-18). Both slots now show the commissioned
+     uploads/products/tesamorelin-chime.webp — a Chime-navy vial labelled
+     Tesamorelin / Compounded / Weight Loss / 2mL Multiple Dose Vial | Rx Only. It
+     replaces the Amerilean render, whose mineral-teal label was off-palette and
+     carried the wrong brand. The source PNG (uploads/Tesamorelin-chime.png, 1.4MB)
+     stays UNTRACKED, as the other heavy sources do; only the 21KB WebP ships.
+     The old warning here said not to substitute uploads/vials/sermorelin.webp to
+     close the gap. That still holds for any future gap: it is on-brand and
+     visually right and it is a DIFFERENT DRUG.
 
      THEME WIRING — this page is NOT self-contained, and that is the difference
      from its Amerilean twin. It links styles.css and every colour, font, radius
@@ -392,10 +391,20 @@
     border-radius: var(--radius-xl); margin: 0 auto 18px;
     background: var(--band-mist);
   }
-  /* No .cutout variant here — chimeUpsell01 needs one because the Chime NAD+ vial
-     is a transparent portrait cut-out, but the placeholder render this page shows
-     is a 4:3 photograph on its own studio ground and takes the rule above as-is.
-     Copy that rule across if the commissioned Tesamorelin shot arrives cut-out. */
+  /* The commissioned Chime render is PORTRAIT (900x1200) and carries its own studio
+     ground, so it falls between the two cases above. object-fit:cover is wrong:
+     it would squeeze a 3:4 frame into a 4:3 window and cut the vial's cap and base.
+     chimeUpsell01's .cutout rule is wrong too — it strips the radius and the tile
+     ground because a transparent cut-out has neither of its own, and this render
+     has both.
+     So it keeps the tile's radius and is sized by HEIGHT instead. width:auto plus
+     aspect-ratio:auto makes the box take the image's own ratio exactly, so
+     object-fit never has anything left to do and the --band-mist beneath is never
+     exposed — no seam where two different grounds meet. */
+  .recap-card img.portrait {
+    width: auto; height: clamp(230px, 36vw, 300px);
+    aspect-ratio: auto; object-fit: contain;
+  }
   .recap-card .name { font-weight: var(--font-weight-semibold); font-size: var(--text-2xl); }
   .recap-card .note { font-size: var(--text-sm); color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -474,11 +483,12 @@
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
       </div>
       <div class="hero-media">
-        <!-- 🚧 PLACEHOLDER — AMERILEAN RENDER ON A CHIME PAGE. The label is mineral
-             teal, which is not in the Chime palette, and the vial carries the wrong
-             brand. Kept only because no Chime Tesamorelin shot exists; see the
-             file header for why sermorelin.webp is not a substitute. -->
-        <img src="uploads/products/tesamorelin-amerilean.webp" width="900" height="675"
+        <!-- The commissioned Chime render. Portrait, so at the column's 400px cap
+             this tile is 533px tall where the 4:3 placeholder was 300 — taller
+             than the copy beside it, deliberately left uncapped. A max-height plus
+             object-fit:contain would letterbox --band-cream against the render's
+             own pale-grey ground, and cover would crop the vial's cap. -->
+        <img src="uploads/products/tesamorelin-chime.webp" width="900" height="1200"
           alt="A vial of compounded Tesamorelin, 2 mL multiple-dose, prescription only">
       </div>
     </div>
@@ -605,9 +615,9 @@
       <p class="sub">Now, boost your journey with Tesamorelin for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <!-- 🚧 PLACEHOLDER — same Amerilean render as the hero, same reason.
-             Replace both slots together when the Chime shot lands. -->
-        <img src="uploads/products/tesamorelin-amerilean.webp" width="900" height="675"
+        <!-- Same Chime render as the hero. .portrait, because the default tile
+             rule would crop this 3:4 vial into a 4:3 window. -->
+        <img class="portrait" src="uploads/products/tesamorelin-chime.webp" width="900" height="1200"
           alt="A vial of compounded Tesamorelin, 2 mL multiple-dose, prescription only">
         <div class="name">Tesamorelin</div>
         <div class="note">Provider oversight, designed around your individual needs</div>
