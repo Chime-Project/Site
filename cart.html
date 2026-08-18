@@ -315,17 +315,55 @@
     margin: 0; flex: 1 1 auto; min-width: 0;
     font-size: var(--text-base); font-weight: var(--font-weight-bold); color: var(--text-default);
   }
+  /* Once discounts are itemised above it, this row is what the customer pays —
+     given a step up in size so it reads as the conclusion of the column rather
+     than one more line in it.
+     `flex: 0 1 auto` overrides the base `1 1 auto` ONLY here. Grown, this row
+     pushes its figure to the right edge of whatever space the CTA leaves — which
+     lands ~240px short of the dollar column directly above it, so the total
+     looked like a column entry that had slipped its column. Shrunk to content,
+     label and figure read as one statement and there is no false column to
+     mis-align. Desktop only: the mobile rule below stretches the foot's children
+     full-width, where the total DOES line up with the rows it sums. */
+  .cart-running-total-final {
+    flex: 0 1 auto; font-size: var(--text-lg);
+  }
+  .cart-running-total-final b { color: var(--accent-strong); }
+
+  /* ---- Discount rows ----
+     Subtotal, then one row per reduction. Same grid as .cart-running-lines so
+     the dollar column stays aligned all the way down the bar. */
+  .cart-running-adjust {
+    list-style: none; margin: var(--spacing-3) 0 0; padding: var(--spacing-3) 0 0;
+    border-top: 1px solid var(--border-default);
+  }
+  .cart-running-adjust li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: var(--spacing-4); padding: var(--spacing-1) 0;
+    font-size: var(--text-sm); color: var(--text-secondary);
+  }
+  .cart-running-adjust b { font-variant-numeric: tabular-nums; color: var(--text-default); }
+  /* Money coming OFF, coloured as a gain rather than the neutral of the figure
+     it reduces. The minus sign carries it for anyone who cannot see the hue. */
+  .cart-adjust-off b { color: var(--success-default); }
+
   /* The rule sits on the bar's foot, not the total, so it still spans the full
      width when the button shares the row.
-     Both selectors are needed: the code slot slides in between the lines and
-     the foot when there is an order to discount, and an adjacent-sibling rule
-     naming only the lines silently stopped matching — leaving the subtotal
-     touching the code field. */
+     Every selector is needed — the block directly above the foot changes with
+     the order. The code slot slides in once there is something to discount, and
+     the adjust list slides in below THAT once a discount actually applies; an
+     adjacent-sibling rule naming only the lines silently stopped matching and
+     left the subtotal touching the code field. Add a selector here whenever a
+     new block can end up last before .cart-bar-foot.
+     .cart-running-adjust is the exception: it draws its own top border and the
+     foot follows it with no second rule, so the total is not fenced off from
+     the reductions that produce it. */
   .cart-running-lines + .cart-bar-foot,
   .cart-code-slot + .cart-bar-foot {
     margin-top: var(--spacing-3); padding-top: var(--spacing-3);
     border-top: 1px solid var(--border-default);
   }
+  .cart-running-adjust + .cart-bar-foot { margin-top: var(--spacing-2); }
 
   .cart-includes { margin: clamp(56px, 7vw, 88px) auto 0; max-width: 560px; text-align: center; }
   .cart-includes h3, .cart-how h3 {
@@ -730,7 +768,7 @@
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
 <script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260858"></script>
-<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260861"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260864"></script>
 <script type="text/babel">
 function ChimeCartPage() {
   return (

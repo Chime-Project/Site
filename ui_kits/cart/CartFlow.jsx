@@ -54,6 +54,11 @@ function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, 
   const uploads = window.CHIME_UPLOADS_BASE || "uploads";
   // Resolved once per basket change, never during a panel's render.
   const badges = React.useMemo(() => window.chimeCartBadges(basket), [basket]);
+  // Does anything actually come off this order? Both flags, because the two
+  // discounts are independent: the 1-month plan qualifies for neither, a
+  // 3-month plan gets the automatic one with no code typed, and a typed code
+  // can land on an order the automatic promo skipped.
+  const hasDiscount = order.promoApplied || order.codeApplied;
 
   // Space/Enter toggle, per the WAI-ARIA checkbox pattern. Arrow keys are gone
   // on purpose — they move selection in a RADIO group, and doing that here
@@ -184,35 +189,70 @@ function CartSelectScreen({ treatments, basket, ready, order, onToggle, onPlan, 
                 is — and below the lines, so it never competes with choosing a
                 treatment. Only offered once there is an order to discount. */}
             {order.count > 0 && <div className="cart-code-slot">
-              {/* Confirms the code is RECOGNISED and states its percentage, but
-                  deliberately shows no dollar figure. The reduction is computed
-                  on the post-JOIN120 price, and JOIN120 is not revealed until
-                  checkout — so a "−$72" here would be a number with no visible
-                  basis, sitting directly above a subtotal it does not match. */}
+              {/* Still no dollar figure here, but for a different reason than
+                  it once was: the reduction now has its own row a few lines
+                  below, stating the same percentage AND the amount. Repeating
+                  the amount in the control that removes it would print the same
+                  number twice within 60px. This is the control; that is the
+                  arithmetic. */}
               <CartCodeField applied={order.codeApplied ? order.code : null}
                 percent={order.codePercent} error={codeError}
                 onApply={onApplyCode} onClear={onClearCode} />
             </div>}
 
+            {/* Every reduction, itemised, so the figure in the foot is one the
+                customer can check: subtotal, less each row, equals total. This
+                screen used to quote the ladder subtotal and defer both discounts
+                to checkout — so someone who had just typed a valid code watched
+                the price not move, which reads as the code having failed.
+
+                It forces the automatic JOIN120 into the open here, and that is
+                not optional: the entered code's percentage is taken off the
+                POST-JOIN120 price, so a lone "−$72" row would not reconcile
+                against the subtotal directly above it. Only the arithmetic moves
+                forward — the countdown and the "discounts left" framing stay on
+                checkout, where they were signed off. */}
+            {order.count > 0 && hasDiscount && <ul className="cart-running-adjust">
+              <li>
+                <span>{order.count === 1 ? "Subtotal" : order.count + " treatments"}</span>
+                <b>{order.subtotalLabel}</b>
+              </li>
+              {order.promoApplied && <li className="cart-adjust-off">
+                <span>Code {order.promoCode}</span>
+                <b>&minus;{order.promoDiscountLabel}</b>
+              </li>}
+              {/* Named with its percentage, matching the checkout row: a bare
+                  dollar figure gives whoever typed the code no way to check it
+                  against what they were promised. */}
+              {order.codeApplied && <li className="cart-adjust-off">
+                <span>Code {order.code} &middot; {order.codePercent}% off</span>
+                <b>&minus;{order.codeDiscountLabel}</b>
+              </li>}
+            </ul>}
+
             {/* Total and button share one row. Stacking them put the figure a
                 further 100px from the action it authorises, which was the
                 opposite of the point. */}
             <div className="cart-bar-foot">
-              {/* "Subtotal", never "Total". This row quotes the ladder price;
-                  the automatic promo and any entered code both come off at
-                  checkout, so calling it the total understated by $120 even
-                  before codes existed. The note says where the rest goes. */}
-              {order.count > 0 && <p className="cart-running-total">
-                <span>{order.count === 1 ? "Subtotal" : order.count + " treatments"}</span>
-                <b>{order.subtotalLabel}</b>
+              {/* "Subtotal" only while it IS one. Once the rows above have taken
+                  the discounts off, this is the figure the customer pays, and
+                  calling that a subtotal understates nothing but explains
+                  nothing either. */}
+              {order.count > 0 && <p className={"cart-running-total" + (hasDiscount ? " cart-running-total-final" : "")}>
+                <span>{hasDiscount ? "Total" : (order.count === 1 ? "Subtotal" : order.count + " treatments")}</span>
+                <b>{hasDiscount ? order.totalLabel : order.subtotalLabel}</b>
               </p>}
               {/* onClick is passed even when disabled: omitting it makes Button
                   render its anchor form, which links to the assessment. */}
               <Button label="Continue to checkout"
                 size="cta" type="button" onClick={onCheckout} disabled={!ready} />
             </div>
-            {ready && (order.promoApplied || order.codeApplied) && <p className="cart-running-note">
-              Your discounts are applied at checkout.
+            {/* The old note said the discounts were "applied at checkout" —
+                true then, wrong now that they are applied here. What is left to
+                say is the one thing this total does NOT mean: that money moves
+                today. */}
+            {order.count > 0 && hasDiscount && <p className="cart-running-note">
+              Discounts included. {copy.dueTodayNote}
             </p>}
             {!ready && <p className="cart-continue-note">
               {basket.length === 0
