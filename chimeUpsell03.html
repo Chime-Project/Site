@@ -13,14 +13,15 @@
      in production. Link to this file as chimeUpsell03.html, exactly. Same trap
      documented for chimeAssessment.html in CLAUDE.md §4a.
 
-     🚧🚧 PLACEHOLDER PRODUCT ART, AND IT IS WORSE HERE THAN ON chimeUpsell02.
-     Both product slots show uploads/products/zofran-tablet-amerilean.webp — a
-     tablet EMBOSSED WITH THE AMERILEAN "A" MARK. On an Amerilean page that was a
-     trade-dress question. On a Chime page it is that AND a visibly foreign logo
-     pressed into the product, so this render must not go live here under any
-     reading. There is no Chime tablet asset of any kind; uploads/vials/ is all
-     injectables. Commission the render, then replace both slots and delete this
-     block. LEGAL MUST CONFIRM either way — see the footer note.
+     ✅ PRODUCT ART RESOLVED (2026-08-18). Both slots now show the commissioned
+     uploads/products/zofran-tablet-chime.webp — the tablet is embossed C, on a
+     warm cream ground. That clears the foreign-logo problem: the render this
+     replaces carried the AMERILEAN "A" pressed into the pill itself, which on a
+     Chime page was a trade-dress question AND a visibly foreign mark. The source
+     PNG (uploads/ZOFRAN-Pill-ChimeHealth.png, 1.5MB) stays UNTRACKED; only the
+     12KB WebP ships.
+     ⚠️ LEGAL STILL MUST CONFIRM — see the footer note. Swapping the mark answers
+     the branding half, not the question of depicting a named drug as a tablet.
 
      THEME WIRING — this page is NOT self-contained, and that is the difference
      from its Amerilean twin. It links styles.css and every colour, font, radius
@@ -397,10 +398,20 @@
     border-radius: var(--radius-xl); margin: 0 auto 18px;
     background: var(--band-mist);
   }
-  /* No .cutout variant here — chimeUpsell01 needs one because the Chime NAD+ vial
-     is a transparent portrait cut-out, but the placeholder render this page shows
-     is a 4:3 photograph on its own studio ground and takes the rule above as-is.
-     Copy that rule across if the commissioned tablet shot arrives cut-out. */
+  /* The commissioned Chime render is PORTRAIT (900x1125) and carries its own studio
+     ground, so it falls between the two cases above. object-fit:cover is wrong:
+     it would squeeze a 4:5 frame into a 4:3 window and cut the tablet's drop shadow.
+     chimeUpsell01's .cutout rule is wrong too — it strips the radius and the tile
+     ground because a transparent cut-out has neither of its own, and this render
+     has both.
+     So it keeps the tile's radius and is sized by HEIGHT instead. width:auto plus
+     aspect-ratio:auto makes the box take the image's own ratio exactly, so
+     object-fit never has anything left to do and the --band-mist beneath is never
+     exposed — no seam where two different grounds meet. */
+  .recap-card img.portrait {
+    width: auto; height: clamp(230px, 36vw, 300px);
+    aspect-ratio: auto; object-fit: contain;
+  }
   .recap-card .name { font-weight: var(--font-weight-semibold); font-size: var(--text-2xl); }
   .recap-card .note { font-size: var(--text-sm); color: var(--ink-2); margin-top: 4px; }
   .recap-card .tear { border-top: 2px dashed var(--line); margin: 24px -28px; }
@@ -472,10 +483,11 @@
         <a class="decline" href="index.html" data-decline data-source="hero" data-analytics="hero-decline">Continue Without Adding</a>
       </div>
       <div class="hero-media">
-        <!-- 🚧 PLACEHOLDER — THE TABLET CARRIES THE AMERILEAN "A" MARK, embossed
-             into the pill itself, on a Chime page. See the file header. The alt
-             text deliberately says "shown as", not "a Zofran tablet". -->
-        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
+        <!-- The commissioned Chime render: the tablet is embossed C, not the
+             Amerilean A. The alt text still says "shown as", not "a Zofran
+             tablet" — that wording is about the render being a depiction, and it
+             survives the art swap. -->
+        <img src="uploads/products/zofran-tablet-chime.webp" width="900" height="1125"
           alt="Zofran, shown as an oral tablet">
       </div>
     </div>
@@ -595,10 +607,10 @@
       <p class="sub">Zofran is available for just
         <span class="price" data-price>[PRICE]</span>.</p>
       <div class="recap-card reveal">
-        <!-- 🚧 PLACEHOLDER — same Amerilean-embossed tablet as the hero, same
-             reason. Cropped tighter than a vial would be so the tablet reads at a
-             comparable scale. Replace both slots together. -->
-        <img src="uploads/products/zofran-tablet-amerilean.webp" width="900" height="675"
+        <!-- Same Chime render as the hero. .portrait, because the default tile
+             rule would crop this 4:5 frame into a 4:3 window and take the
+             tablet's drop shadow with it. -->
+        <img class="portrait" src="uploads/products/zofran-tablet-chime.webp" width="900" height="1125"
           alt="Zofran, shown as an oral tablet">
         <div class="name">Zofran</div>
         <div class="note">Subject to provider review and personalized care guidance</div>
