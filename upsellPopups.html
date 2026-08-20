@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amerilean Health — Checkout Upgrade Pop-Ups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --canvas:    #FAFBFC;    --card:      #FFFFFF;
+    --mist-100:  #E3EAEF;    --mist:      #B9CAD3;
+    --line:      #CBD8DF;    --sand:      #D8C6B2;
+    --sand-100:  #F1E9DF;    --terra-100: #F5E4DC;
+    --terra-300: #E0B4A3;
+    --terra:     #C98F7A;
+    --terra-800: #7E4A38;    --teal:      #4E7C84;
+    --teal-800:  #2F4E54;    --slate:     #1E2A44;
+    --ink:       #1E2A44;    --ink-2:     #47536B;    --font: "Noto Serif", ui-serif, Georgia, "Times New Roman", serif;
+    --radius: 14px;
+    --radius-lg: 16px;
+    --radius-card: 24px;
+    --card-ease: cubic-bezier(.22, .95, .26, 1);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--canvas); color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px; font-weight: 500; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  img, svg { max-width: 100%; }
+  button { font: inherit; color: inherit; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--teal); outline-offset: 3px;
+  }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  .review-head {
+    background: var(--slate); color: #FFF;
+    padding: 18px 20px; text-align: center;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  }
+  .review-head img { height: 20px; width: auto; display: block; margin: 0 auto 12px;
+    filter: brightness(0) invert(1); opacity: .92; }
+  .review-head h1 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .review-head p { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: var(--mist); }
+
+  .stage-cap {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin: 0; padding: 14px 16px 0;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .replay {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink-2);
+    border-radius: 999px; padding: 5px 12px; cursor: pointer;
+    font: 600 11px/1 ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: .06em; text-transform: uppercase;
+  }
+  .replay:hover { background: var(--mist-100); }
+
+  .stages { display: block; }
+  .stage { position: relative; }
+  .screen {
+    position: relative; overflow: hidden;
+    width: 100%; height: 100dvh;
+    background: var(--canvas);
+    isolation: isolate;
+    container-type: inline-size; container-name: screen;
+  }
+  @supports not (height: 100dvh) { .screen { height: 100vh; } }
+
+  @media (min-width: 700px) {
+    .stage { display: flex; flex-direction: column; align-items: center; }
+    .phone {
+      padding: 10px; background: var(--slate); border-radius: 46px;
+      box-shadow: 0 24px 60px rgba(30, 42, 68, .28), 0 2px 6px rgba(30, 42, 68, .18);
+    }
+    .screen { width: 390px; height: 844px; border-radius: 36px; }
+    .stage-cap { padding: 0 0 16px; order: -1; }
+  }
+  @media (min-width: 1024px) {
+    .stages {
+      display: flex; justify-content: center; align-items: flex-start;
+      gap: clamp(32px, 5vw, 72px); padding: 40px 24px 8px; flex-wrap: wrap;
+    }
+  }
+  @media (max-width: 699px) {
+    html { scroll-snap-type: y proximity; }
+    .stage { scroll-snap-align: start; }
+    .stage-cap {
+      position: absolute; z-index: 5; top: 0; left: 0; right: 0;
+      padding: 9px 14px; color: #FFF;
+      background: rgba(30, 42, 68, .8);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      pointer-events: none;
+    }
+    .replay {
+      pointer-events: auto; color: #FFF;
+      background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .34);
+    }
+    .replay:hover { background: rgba(255, 255, 255, .26); }
+  }
+
+  .behind {
+    position: absolute; inset: 0; overflow: hidden;
+    display: flex; flex-direction: column;
+    background: var(--canvas);
+  }
+  .behind-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid var(--line); background: var(--card);
+    padding-top: max(14px, env(safe-area-inset-top));
+  }
+  .behind-bar img { height: 15px; width: auto; display: block; }
+  .behind-secure {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--teal-800);
+  }
+  .behind-body { padding: 20px 22px; }
+  .behind-check {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; margin: 0 auto 14px;
+    border-radius: 999px; background: var(--mist-100); color: var(--teal-800);
+  }
+  .behind-body h2 { text-align: center; font-size: 24px; }
+  .behind-body > p {
+    margin: 10px auto 22px; max-width: 24em; text-align: center;
+    font-size: 14px; line-height: 1.55; color: var(--ink-2);
+  }
+  .behind-order {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--card); padding: 16px 18px;
+  }
+  .behind-row {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    font-size: 14px; padding: 7px 0;
+  }
+  .behind-row + .behind-row { border-top: 1px solid var(--mist-100); }
+  .behind-row dt { color: var(--ink-2); }
+  .behind-row dd { margin: 0; font-weight: 700; text-align: right; }
+  .behind-total { border-top: 1.5px solid var(--line) !important; margin-top: 4px; padding-top: 11px; }
+  .behind-total dd { font-size: 18px; }
+
+  .scrim {
+    position: absolute; inset: 0; z-index: 2;
+    background: rgba(30, 42, 68, .58);
+    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    opacity: 0; transition: opacity .32s ease;
+  }
+  .is-open .scrim { opacity: 1; }
+
+  .modal-layer {
+    position: absolute; inset: 0; z-index: 3;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    pointer-events: none;
+  }
+  .card {
+    position: relative; pointer-events: auto;
+    width: 100%; max-height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    background: var(--card);
+    border-radius: var(--radius-card);
+    box-shadow: 0 26px 64px rgba(30, 42, 68, .34), 0 2px 8px rgba(30, 42, 68, .16);
+    opacity: 0; transform: translateY(16px) scale(.97);
+    transition: opacity .34s ease, transform .42s var(--card-ease);
+  }
+  .is-open .card { opacity: 1; transform: none; }
+  @container screen (min-width: 460px) {
+    .card { max-width: 420px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: opacity .01s linear; transform: none; }
+  }
+
+  .card-close {
+    position: absolute; z-index: 3; top: 12px; right: 12px;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    border: 0; border-radius: 999px; cursor: pointer;
+    background: rgba(255, 255, 255, .78); color: var(--ink-2);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .card-close:hover { background: #FFF; color: var(--ink); }
+  .card-body { padding: 18px 20px 16px; text-align: center; }
+
+  .eyebrow {
+    margin: 0 0 7px; font-size: 11px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--teal-800);
+  }
+  .card h2 { font-size: 23px; letter-spacing: -0.025em; text-wrap: balance; }
+  .card-sub {
+    margin: 9px auto 0; max-width: 25em;
+    font-size: 14.5px; line-height: 1.5; color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .benefits {
+    list-style: none; margin: 14px 0 0; padding: 0;
+    display: inline-block; text-align: left;
+  }
+  .benefits li {
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 5px 0; font-size: 14.5px; line-height: 1.4;
+  }
+  .benefits .tick {
+    flex: none; width: 21px; height: 21px; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 999px; background: var(--mist-100); color: var(--teal-800);
+  }
+
+  .btn {
+    display: block; width: 100%;
+    background: var(--terra-800); color: var(--card); border: 0; cursor: pointer;
+    border-radius: 999px; padding: 15px 24px;
+    font: 700 16.5px/1.25 var(--font); letter-spacing: .01em;
+    transition: background .2s ease;
+  }
+  .btn:hover { background: #6B3E2E; }
+  .decline {
+    display: block; width: 100%; margin-top: 11px;
+    background: none; border: 0; cursor: pointer;
+    color: var(--ink-2); font-size: 14.5px; font-weight: 500;
+    text-decoration: underline; text-underline-offset: 4px;
+  }
+  .decline:hover { color: var(--ink); }
+
+  .trust {
+    display: flex; align-items: flex-start; gap: 9px;
+    margin: 0; padding: 11px 18px; background: var(--mist-100);
+    text-align: left; font-size: 11px; line-height: 1.45; color: var(--ink-2);
+  }
+  .trust svg { flex: none; margin-top: 2px; color: var(--teal-800); }
+
+  .card-done { display: none; padding: 34px 26px 30px; text-align: center; }
+  .is-done .card-offer { display: none; }
+  .is-done .card-done { display: block; }
+  .done-check {
+    width: 54px; height: 54px; margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 999px; background: var(--terra-100); color: var(--terra-800);
+  }
+  .card-done h2 { font-size: 23px; }
+  .card-done p { margin: 10px 0 0; font-size: 14.5px; color: var(--ink-2); }
+
+  .pen-art {
+    position: relative; height: 94px;
+    overflow: visible;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    background: radial-gradient(120% 105% at 32% 20%, #FFF 0%, var(--mist-100) 60%, #D6E0E7 100%);
+  }
+  .pen-art img {
+    position: absolute; top: 50%; left: 50%;
+    height: 230px; width: auto;
+    transform: translate(-50%, -34%) rotate(68deg);
+    filter: drop-shadow(0 16px 20px rgba(30, 42, 68, .26));
+  }
+  .pen-art + .card-body { padding-top: 38px; }
+  @media (max-height: 730px) {
+    .pen-art { height: 68px; }
+    .pen-art img { height: 180px; }
+    .pen-art + .card-body { padding-top: 28px; padding-bottom: 12px; }
+    .swap-col { padding: 8px 12px; }
+    .swap-delta { margin-top: 7px; }
+    .benefits li { padding: 3px 0; }
+  }
+
+  .swap {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch;
+    margin-top: 14px; text-align: left;
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  }
+  .swap-col { padding: 10px 13px; }
+  .swap-col.is-now { background: #F2F6F8; }
+  .swap-col.is-new { background: var(--terra-100); }
+  .swap-arrow {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 9px; background: var(--card); color: var(--ink-2);
+    border-left: 1px solid var(--line); border-right: 1px solid var(--line);
+  }
+  .swap-tag {
+    margin: 0 0 3px; font-size: 9.5px; font-weight: 700; letter-spacing: .11em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .swap-col.is-new .swap-tag { color: var(--terra-800); }
+  .swap-name { margin: 0; font-size: 13px; line-height: 1.25; color: var(--ink); }
+  .swap-price {
+    margin: 3px 0 0; font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
+    color: var(--ink-2); white-space: nowrap;
+  }
+  .swap-col.is-new .swap-price { color: var(--terra-800); }
+  .swap-price span { font-size: 12px; font-weight: 500; color: var(--ink-2); }
+  .swap-delta {
+    margin: 9px 0 0; font-size: 11.5px; color: var(--ink-2);
+  }
+  .swap-delta strong { color: var(--terra-800); font-weight: 700; }
+
+  .save-panel {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    background: linear-gradient(168deg, #27364F 0%, var(--slate) 58%, #162034 100%), var(--slate);
+    color: #FFF; text-align: center; padding: 24px 20px 18px;
+  }
+  .save-panel .watermark {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 90%; height: auto; opacity: .11; pointer-events: none;
+    filter: brightness(0) invert(1);
+  }
+  .save-panel .eyebrow { position: relative; color: var(--mist); margin-bottom: 4px; }
+  .save-figure {
+    position: relative; margin: 0; font-size: 58px; font-weight: 700;
+    line-height: 1; letter-spacing: -0.045em;
+  }
+  .save-caption {
+    position: relative; margin: 8px 0 0; font-size: 13.5px; color: var(--mist);
+  }
+  .lock-rail { position: relative; margin: 17px 0 0; }
+  .rail-steps { display: flex; }
+  .rail-step {
+    flex: 1 1 0; min-width: 0; position: relative;
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+  }
+  .rail-step + .rail-step::before {
+    content: ""; position: absolute; top: 4px; left: -50%; right: 50%; height: 2px;
+    background: rgba(231, 237, 241, .55);
+  }
+  .rail-node {
+    width: 10px; height: 10px; border-radius: 999px; flex: none;
+    background: #E7EDF1; box-shadow: 0 0 0 3px rgba(231, 237, 241, .16);
+  }
+  .rail-label {
+    font-size: 10px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--mist); white-space: nowrap;
+  }
+  .rail-under { display: flex; margin-top: 9px; }
+  .rail-brace {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding-top: 7px; border-top: 1px solid rgba(185, 202, 211, .38);
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: #E7EDF1;
+  }
+  .rail-brace svg { flex: none; opacity: .9; }
+
+  @media (max-height: 730px) {
+    .save-panel { padding: 20px 22px 16px; }
+    .save-figure { font-size: 50px; }
+    .lock-rail { margin-top: 13px; }
+  }
+
+</style>
+</head>
+<body>
+
+<header class="review-head">
+  <img src="uploads/AmeriLean-logo.png" alt="AmeriLean" width="2500" height="610">
+  <h1>Checkout upgrade pop-ups</h1>
+  <p>Two variants, designed for mobile and shown at 390 &times; 844.
+    Both are live — tap the CTAs.</p>
+</header>
+
+<div class="stages">
+
+    <section class="stage" data-stage="pen" data-screen-label="Popup A — Injectable Pen">
+    <p class="stage-cap">
+      Pop-up 1 · Injectable pen
+      <button class="replay" type="button" data-replay>Replay</button>
+    </p>
+
+    <div class="phone">
+      <div class="screen">
+
+                <div class="behind" aria-hidden="true">
+          <div class="behind-bar">
+            <img src="uploads/AmeriLean-logo.png" alt="" width="2500" height="610">
+            <span class="behind-secure">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+              </svg>
+              Secure
+            </span>
+          </div>
+          <div class="behind-body">
+            <div class="behind-check">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/>
+              </svg>
+            </div>
+            <h2>Your request is in</h2>
+            <p>A licensed provider will review your intake. Nothing has been charged
+              — your card is only charged if your prescription is approved.</p>
+            <dl class="behind-order">
+              <div class="behind-row"><dt>GLP-1</dt><dd>3 Month Plan</dd></div>
+              <div class="behind-row"><dt>Monthly price</dt><dd>$200.00</dd></div>
+              <div class="behind-row"><dt>Shipping</dt><dd>FREE</dd></div>
+              <div class="behind-row behind-total"><dt>Total if prescribed</dt><dd>$600.00</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="scrim" data-scrim></div>
+
+                <div class="modal-layer">
+          <div class="card" role="dialog" aria-labelledby="pen-title" data-card>
+            <button class="card-close" type="button" data-decline aria-label="Close, continue without upgrade">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+
+            <div class="card-offer">
+              <div class="pen-art">
+                <img src="uploads/products/injectable-pen-amerilean.webp" width="83" height="600"
+                  alt="The Amerilean injectable pen — a slim white auto-injector with a slate cap and a mineral-teal GLP-1 label">
+              </div>
+
+              <div class="card-body">
+                <p class="eyebrow">Optional upgrade</p>
+                <h2 id="pen-title">Upgrade to the Injectable Pen</h2>
+                <p class="card-sub">A simpler, more convenient way to manage your treatment.</p>
+
+                <div class="swap">
+                  <div class="swap-col is-now">
+                    <p class="swap-tag">Now</p>
+                    <p class="swap-name">Vial + syringe</p>
+                    <p class="swap-price">$200<span>/mo</span></p>
+                  </div>
+                  <span class="swap-arrow" aria-hidden="true">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 12h15M13 6l6 6-6 6"/>
+                    </svg>
+                  </span>
+                  <div class="swap-col is-new">
+                    <p class="swap-tag">With the pen</p>
+                    <p class="swap-name">Injectable pen</p>
+                    <p class="swap-price">$250<span>/mo</span></p>
+                  </div>
+                </div>
+                <p class="swap-delta"><strong>+$50/month</strong> &middot; +$150 over your 3-month plan</p>
+
+                <ul class="benefits">
+                  <li><span class="tick" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+                  </span>Easy and convenient to use</li>
+                  <li><span class="tick" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+                  </span>Designed for a simpler injection experience</li>
+                  <li><span class="tick" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+                  </span>Convenient for travel and daily routines</li>
+                </ul>
+
+                <p style="margin: 15px 0 0;">
+                  <button class="btn" type="button" data-accept>Upgrade to Pen</button>
+                </p>
+                <button class="decline" type="button" data-decline>Continue Without Upgrade</button>
+              </div>
+
+              <p class="trust">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                </svg>
+                <span>This offer does not affect your existing order. Nothing is
+                  charged until a provider approves your prescription.</span>
+              </p>
+            </div>
+
+            <div class="card-done" role="status">
+              <div class="done-check" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/>
+                </svg>
+              </div>
+              <h2>Pen upgrade added</h2>
+              <p>Your provider will confirm the pen with your prescription.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+    <section class="stage" data-stage="lock" data-screen-label="Popup B — Lock In Pricing">
+    <p class="stage-cap">
+      Pop-up 2 · Lock in pricing
+      <button class="replay" type="button" data-replay>Replay</button>
+    </p>
+
+    <div class="phone">
+      <div class="screen">
+
+                <div class="behind" aria-hidden="true">
+          <div class="behind-bar">
+            <img src="uploads/AmeriLean-logo.png" alt="" width="2500" height="610">
+            <span class="behind-secure">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+              </svg>
+              Secure
+            </span>
+          </div>
+          <div class="behind-body">
+            <div class="behind-check">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/>
+              </svg>
+            </div>
+            <h2>Your request is in</h2>
+            <p>A licensed provider will review your intake. Nothing has been charged
+              — your card is only charged if your prescription is approved.</p>
+            <dl class="behind-order">
+              <div class="behind-row"><dt>GLP Squared</dt><dd>3 Month Plan</dd></div>
+              <div class="behind-row"><dt>Monthly price</dt><dd>$332.00</dd></div>
+              <div class="behind-row"><dt>Shipping</dt><dd>FREE</dd></div>
+              <div class="behind-row behind-total"><dt>Total if prescribed</dt><dd>$996.00</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="scrim" data-scrim></div>
+
+        <div class="modal-layer">
+          <div class="card" role="dialog" aria-labelledby="lock-title" data-card>
+            <button class="card-close" type="button" data-decline aria-label="Close, continue without locking in">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+
+            <div class="card-offer">
+              <div class="save-panel">
+                <img class="watermark" src="uploads/AmeriLean-logo.png" alt=""
+                  width="2500" height="610" aria-hidden="true">
+                <p class="eyebrow">You save</p>
+                <p class="save-figure">$300</p>
+                <p class="save-caption">over your first three months</p>
+                                <div class="lock-rail" aria-hidden="true">
+                  <div class="rail-steps">
+                    <div class="rail-step">
+                      <span class="rail-node"></span><span class="rail-label">Month 1</span></div>
+                    <div class="rail-step">
+                      <span class="rail-node"></span><span class="rail-label">Month 2</span></div>
+                    <div class="rail-step">
+                      <span class="rail-node"></span><span class="rail-label">Month 3</span></div>
+                  </div>
+                  <div class="rail-under">
+                    <span class="rail-brace">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8.5 11V7.6a3.5 3.5 0 0 1 7 0V11"/>
+                      </svg>
+                      Price locked
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <p class="eyebrow">Optional price lock</p>
+                <h2 id="lock-title">Lock In Your Price &amp; Save $300</h2>
+                <p class="card-sub">Secure your GLP pricing for your first three months
+                  and avoid potential price changes.</p>
+
+                <ul class="benefits">
+                  <li><span class="tick" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+                  </span>Price locked for 3 months</li>
+                  <li><span class="tick" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+                  </span>Predictable monthly pricing</li>
+                </ul>
+
+                <p style="margin: 15px 0 0;">
+                  <button class="btn" type="button" data-accept>Lock In My Price</button>
+                </p>
+                <button class="decline" type="button" data-decline>Continue Without Locking In</button>
+              </div>
+
+              <p class="trust">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                </svg>
+                <span>This offer does not affect your existing order. Nothing is
+                  charged until a provider approves your prescription.</span>
+              </p>
+            </div>
+
+            <div class="card-done" role="status">
+              <div class="done-check" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/>
+                </svg>
+              </div>
+              <h2>Your price is locked</h2>
+              <p>Your first three months are held at today&rsquo;s price.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<p class="visually-hidden" role="status" aria-live="polite" id="popup-status"></p>
+
+<script>
+(function () {
+  "use strict";
+
+  var status = document.getElementById("popup-status");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function announce(msg) { status.textContent = msg; }
+
+  document.querySelectorAll("[data-stage]").forEach(function (stage) {
+    var variant = stage.dataset.stage;
+    var screen = stage.querySelector(".screen");
+    var card = stage.querySelector("[data-card]");
+    var closeBtn = card.querySelector(".card-close");
+    var doneTimer = null;
+
+    function open(focusOnOpen) {
+      clearTimeout(doneTimer);
+      screen.classList.remove("is-done");
+      screen.classList.add("is-open");
+      if (focusOnOpen) closeBtn.focus();
+    }
+
+    function close() {
+      screen.classList.remove("is-open");
+      clearTimeout(doneTimer);
+      doneTimer = setTimeout(function () { screen.classList.remove("is-done"); }, 600);
+    }
+
+    card.querySelectorAll("[data-accept]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        console.log("[popup] accept", { variant: variant });
+        announce(variant === "pen"
+          ? "Pen upgrade added to your plan."
+          : "Your price is locked for three months.");
+        screen.classList.add("is-done");
+        doneTimer = setTimeout(close, reduceMotion ? 2600 : 1900);
+      });
+    });
+
+    card.querySelectorAll("[data-decline]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        console.log("[popup] decline", { variant: variant });
+        announce("No problem — your original order is unchanged.");
+        close();
+      });
+    });
+
+    stage.querySelector("[data-scrim]").addEventListener("click", function () {
+      console.log("[popup] decline", { variant: variant, source: "scrim" });
+      close();
+    });
+
+    screen.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && screen.classList.contains("is-open")) close();
+    });
+
+    stage.querySelector("[data-replay]").addEventListener("click", function () {
+      close();
+      setTimeout(function () { open(true); }, reduceMotion ? 0 : 520);
+    });
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            setTimeout(function () { open(false); }, 420);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.35 });
+      io.observe(stage);
+    } else {
+      open(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>
