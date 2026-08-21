@@ -158,7 +158,7 @@ function WLCalculatorCard({ theme, variant = "light" }) {
             <span style={{ fontSize: "var(--text-sm)", color: v.muted }}>Pace preference</span>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: v.segBg, border: "1px solid " + v.segBorder, borderRadius: "var(--radius-lg)", padding: 4 }}>
               {paces.map((p) => (
-                <button key={p.id} onClick={() => setPace(p.id)} style={{
+                <button key={p.id} onClick={() => setPace(p.id)} aria-pressed={pace === p.id} style={{
                   border: "none", cursor: "pointer", borderRadius: "var(--radius-md)",
                   padding: "var(--spacing-2) var(--spacing-1)", textAlign: "center",
                   background: pace === p.id ? v.segOnBg : "transparent",

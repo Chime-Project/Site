@@ -107,20 +107,25 @@ function ExecChrome() {
       padding: "var(--spacing-4) var(--spacing-6)", pointerEvents: "none",
       fontFamily: "var(--font-family-base)",
     }}>
-      <a href="index.html" aria-label="Chime Health home" style={{
+      <a href="index.html" aria-label="Chime Health home" className="exec-chrome-logo" style={{
         pointerEvents: "auto", display: "inline-flex", alignItems: "center",
         background: "var(--bg-elevated)", borderRadius: "var(--radius-4xl)",
         padding: "10px 18px", boxShadow: "0 1px 4px rgb(0 0 0 / 0.12)",
       }}>
         <img src="assets/logo-main.svg" alt="Chime" style={{ height: 18, display: "block" }} />
       </a>
-      <a href="chimeAssessment.html" onClick={execOpenAssessment} style={{
+      <a href="chimeAssessment.html" onClick={execOpenAssessment} className="exec-chrome-cta" style={{
         pointerEvents: "auto", background: "var(--primary-default)",
         color: "var(--text-on-primary)", borderRadius: "var(--radius-4xl)",
         border: "1px solid rgb(255 255 255 / 0.4)",
         padding: "12px 22px", textDecoration: "none", letterSpacing: "0.02em",
         fontWeight: "var(--font-weight-semibold)", fontSize: "var(--text-sm)",
-      }}>Discover Your Path</a>
+      }}>
+        {/* Two labels, CSS picks one: the long one wrapped to two lines under
+            400px and sat over the headline's first line. */}
+        <span className="exec-chrome-cta-long">Discover Your Path</span>
+        <span className="exec-chrome-cta-short">Get Started</span>
+      </a>
     </header>
   );
 }
@@ -131,6 +136,12 @@ function ExecHero() {
   // acts on before any CSS media query can intervene, so this has to be done to
   // the element itself — pause it and rewind to frame one.
   const videoRef = React.useRef(null);
+  // Phones get the 640×360 rendition (0.7 MB) instead of the 1280×720 loop
+  // (1.75 MB): autoplay fetches the file whatever preload says, so the only
+  // lever is which file. Decided once at mount; the hero is object-fit: cover
+  // either way, so a rotate mid-visit just shows the other crop, never breaks.
+  const heroSrc = window.matchMedia("(max-width: 700px)").matches
+    ? "uploads/executive-hero-mobile.mp4" : "uploads/executive-hero.mp4";
   React.useEffect(() => {
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const v = videoRef.current;
@@ -155,7 +166,7 @@ function ExecHero() {
           autoplay at all on iOS; the poster carries the first frame so the band
           is never briefly empty on a slow connection. aria-hidden because it
           says nothing the copy does not — it is atmosphere, not content. */}
-      <video ref={videoRef} className="exec-hero-video" src="uploads/executive-hero.mp4"
+      <video ref={videoRef} className="exec-hero-video" src={heroSrc}
         poster="uploads/executive-hero-poster.webp"
         autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1} />
       {/* Celeste scrim, heavier on the left. The headline needs the ~8:1 it gets
@@ -304,12 +315,12 @@ function ExecProblem() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <p ref={quoteRef} style={{
+          <h2 ref={quoteRef} style={{
             margin: 0, fontSize: "clamp(28px, 3.6vw, 54px)",
             lineHeight: 1.12, fontWeight: "var(--font-weight-medium)",
             letterSpacing: "-0.015em", maxWidth: "18em",
             willChange: "transform, opacity", transformOrigin: "0% 50%",
-          }}>You Don&rsquo;t Need Another Program. You Need One That Fits.</p>
+          }}>You Don&rsquo;t Need Another Program. You Need One That Fits.</h2>
           <p className="reveal" style={{
             margin: "var(--spacing-10) 0 0", maxWidth: "34em",
             fontSize: "var(--text-xl)", lineHeight: 1.55,
@@ -500,12 +511,12 @@ function ExecMembership() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <p className="reveal" style={{
+          <h2 className="reveal" style={{
             margin: "0 0 var(--spacing-6)", color: "var(--text-default)",
             fontSize: "clamp(28px, 3.6vw, 54px)", lineHeight: 1.12,
             fontWeight: "var(--font-weight-medium)", letterSpacing: "-0.015em",
             maxWidth: "16em",
-          }}>Ongoing — Without Becoming One More Thing To Manage</p>
+          }}>Ongoing — Without Becoming One More Thing To Manage</h2>
           <p style={{
             margin: 0, color: "var(--text-secondary)", fontSize: "var(--text-xl)",
             lineHeight: 1.55, maxWidth: "30em",
@@ -566,7 +577,13 @@ function ExecFinalCta() {
 }
 
 function ExecFooter() {
-  const footLink = { color: "var(--exec-ink-dark)", textDecoration: "none" };
+  // inline-block + vertical padding: the bare 18px-tall text links were the
+  // smallest tap targets on the page; this lifts them to 44px without moving
+  // the baseline.
+  const footLink = {
+    color: "var(--exec-ink-dark)", textDecoration: "none",
+    display: "inline-block", padding: "var(--spacing-3) 0",
+  };
   return (
     <footer data-screen-label="Exec Footer" style={{
       background: "var(--accent-default)", fontFamily: "var(--font-family-base)",

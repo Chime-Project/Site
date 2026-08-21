@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chime Health — Weight Loss For Executives</title>
+<meta name="description" content="Weight loss built for how you perform: a personalized, provider-reviewed path designed to fit the life you’ve already built — not interrupt it. Chime Health for executives.">
 <!-- Persona 1 (The Executive) · Landing 1 of 3 · Weight Loss.
      IA and copy: uploads/Chime_Health_LandingPages_Persona1_Executive (1).pdf
      (untracked — uploads/*.pdf is gitignored, and this repo's root is public).
@@ -34,8 +35,11 @@
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://chime-project.github.io/Site/weight-loss.html">
 <link rel="stylesheet" href="styles.css?v=20260865">
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<!-- Production React, not the development builds the other pages load: 45 KB gz
+     instead of 254 KB on every phone visit, identical behaviour. Babel stays —
+     the JSX is still compiled in the browser. -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
 <style>
@@ -160,6 +164,11 @@
   @media (min-width: 561px) { .wl-calc-milestones { grid-template-columns: repeat(3, 1fr); } }
   @media (min-width: 961px) { .wl-calc-grid { grid-template-columns: minmax(260px, 340px) 1fr; } }
 
+  /* Fixed-chrome CTA: the full label wraps to two lines under 400px, so phones
+     get a short one. display:none keeps the hidden span out of the a11y name. */
+  .exec-chrome-cta { white-space: nowrap; }
+  .exec-chrome-cta-short { display: none; }
+
   /* Final CTA: the family still behind the centred headline. The asset carries
      a soft blurred continuation on its left ~20% (the family had to sit right
      of the headline's edge); object-position 100% so any horizontal crop drops
@@ -190,12 +199,23 @@
     /* padding-bottom stays 0 — the ribbon is the hero's bottom edge now. The
        top padding gives way instead, because the ribbon wraps to three lines at
        this width and the hero still has to fit one viewport. */
-    [data-screen-label="Exec Hero"] { padding-top: var(--spacing-12) !important; }
+    /* 88px, not 48: the fixed chrome pills end at y≈80, and at 48 the headline's
+       first line ("Weight") sat underneath the logo pill on every phone size.
+       The h1 drops to 34px to pay for the extra padding (it wraps to 5 lines
+       either way — the spin badge caps its column at ~190px), so the hero
+       still fits one viewport at 375×667 (measured: ribbon on the fold). */
+    [data-screen-label="Exec Hero"] { padding-top: 88px !important; }
+    [data-screen-label="Exec Hero"] h1 { font-size: 34px !important; }
+    .exec-chrome-cta-long { display: none; }
+    .exec-chrome-cta-short { display: inline; }
+    /* border-box, or min-height adds to the 20px of padding and the pill
+       measures 64 (nothing on this page sets box-sizing globally). */
+    .exec-chrome-logo { min-height: 44px; box-sizing: border-box; }
     .exec-valuebar { padding-top: var(--spacing-4) !important; padding-bottom: var(--spacing-4) !important; }
     /* Five labels wrap to three lines at phone widths, and on a 667px-tall
        screen those extra lines were the difference between the ribbon ending on
        the fold and 13px past it. Smaller type packs them into two. */
-    .exec-value-item { font-size: 11px !important; letter-spacing: 0.05em !important; }
+    .exec-value-item { font-size: 12px !important; letter-spacing: 0.05em !important; }
     [data-screen-label="Problem ID"] {
       padding-top: var(--spacing-12) !important; padding-bottom: var(--spacing-12) !important;
     }
@@ -223,9 +243,9 @@
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260865"></script>
+<script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260867"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
-<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260866"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260867"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
