@@ -15,6 +15,14 @@
 //
 // Palette lives in executive-weight-loss.html as --exec-* page vars, so this
 // file stays free of palette primitives (theme guard).
+//
+// MOTION lives in ui_kits/executive/ExecutiveMotion.js (GSAP: ScrollTrigger +
+// SplitText), mounted from a layout effect at the bottom of this file. This
+// kit only exposes hooks for it: `exec-heading` (masked line reveal),
+// `exec-fade` (batched fade-up), `exec-cta` (magnetic), `exec-hero-*` /
+// `exec-kicker-rule` (drawn hairlines), and the figure classes (clip reveals).
+// Nothing here animates on its own except the CSS badge spin — the page
+// renders fully at rest when GSAP is absent or reduced motion is on.
 
 // The five steps of section 5, as a colour ramp. Ink flips to light on the last
 // two: navy clears AA on strips 1-3, white clears it on 4-5. The flip is
@@ -52,15 +60,22 @@ function execOpenAssessment(e) {
   }
 }
 
+// The hairline is a 1px block rather than a border-bottom so the motion layer
+// can draw it (scaleX 0 → 1). Same height, same colour, same position.
 function ExecKicker({ label, num, color, border }) {
   return (
-    <div style={{
-      display: "flex", justifyContent: "space-between", alignItems: "baseline",
-      paddingBottom: "var(--spacing-3)", borderBottom: "1px solid " + border,
-      color, fontSize: "var(--text-sm)", letterSpacing: "0.08em",
-      textTransform: "uppercase", fontWeight: "var(--font-weight-semibold)",
-    }}>
-      <span>{label}</span><span>{num}</span>
+    <div className="exec-kicker">
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "baseline",
+        paddingBottom: "var(--spacing-3)",
+        color, fontSize: "var(--text-sm)", letterSpacing: "0.08em",
+        textTransform: "uppercase", fontWeight: "var(--font-weight-semibold)",
+      }}>
+        <span>{label}</span><span>{num}</span>
+      </div>
+      <i className="exec-kicker-rule" aria-hidden="true" style={{
+        display: "block", height: 1, background: border, transformOrigin: "0 50%",
+      }} />
     </div>
   );
 }
@@ -87,9 +102,10 @@ function ExecSpinBadge() {
   );
 }
 
-function ExecCta({ label, style, onDark }) {
+function ExecCta({ label, style, className }) {
   return (
-    <a href="chimeAssessment.html" onClick={execOpenAssessment} style={{
+    <a href="chimeAssessment.html" onClick={execOpenAssessment}
+      className={"exec-cta" + (className ? " " + className : "")} style={{
       display: "inline-block", background: "var(--primary-default)",
       color: "var(--text-on-primary)", textDecoration: "none",
       borderRadius: "var(--radius-4xl)", padding: "16px 30px",
@@ -114,7 +130,7 @@ function ExecChrome() {
       }}>
         <img src="assets/logo-main.svg" alt="Chime" style={{ height: 18, display: "block" }} />
       </a>
-      <a href="chimeAssessment.html" onClick={execOpenAssessment} className="exec-chrome-cta" style={{
+      <a href="chimeAssessment.html" onClick={execOpenAssessment} className="exec-chrome-cta exec-cta" style={{
         pointerEvents: "auto", background: "var(--primary-default)",
         color: "var(--text-on-primary)", borderRadius: "var(--radius-4xl)",
         border: "1px solid rgb(255 255 255 / 0.4)",
@@ -179,7 +195,7 @@ function ExecHero() {
           whatever the DOM order — so the copy has to be positioned too or the
           scrim covers it. It also has to carry the section's flex column, or
           .exec-hero-bottom loses the flex:1 that pushes the wordmark down. */}
-      <div style={{
+      <div className="exec-hero-copy" style={{
         position: "relative", zIndex: 2, flex: 1,
         display: "flex", flexDirection: "column",
       }}>
@@ -198,12 +214,16 @@ function ExecHero() {
         }}>Weight Loss Built For How You Perform</h1>
         <ExecSpinBadge />
       </div>
-      <div style={{
-        borderTop: "1px solid var(--exec-hairline-dark)",
-        marginTop: "var(--spacing-10)", paddingTop: "var(--spacing-5)", maxWidth: 560,
-      }}>
+      {/* The hairline is a 1px block, not a border-top, so the motion layer can
+          draw it left → right. 1px + the paragraph's top margin reproduces the
+          old border + padding exactly. */}
+      <div className="exec-hero-sub" style={{ marginTop: "var(--spacing-10)", maxWidth: 560 }}>
+        <i className="exec-hero-rule" aria-hidden="true" style={{
+          display: "block", height: 1, background: "var(--exec-hairline-dark)",
+          transformOrigin: "0 50%",
+        }} />
         <p style={{
-          margin: 0, color: "var(--exec-ink-dark)", fontSize: "var(--text-xl)",
+          margin: "var(--spacing-5) 0 0", color: "var(--exec-ink-dark)", fontSize: "var(--text-xl)",
           lineHeight: 1.45, fontWeight: "var(--font-weight-medium)",
         }}>A personalized path, reviewed by a licensed provider, designed to fit
           the life you&rsquo;ve already built — not interrupt it.</p>
@@ -248,7 +268,7 @@ function ExecValueBar() {
             {/* Drawn, not typed: a "·" between items is read aloud as
                 punctuation on every gap. */}
             {i > 0 ? (
-              <span aria-hidden="true" style={{
+              <span aria-hidden="true" className="exec-value-dot" style={{
                 width: 4, height: 4, borderRadius: "50%", flex: "none",
                 background: "var(--accent-default)",
               }}></span>
@@ -267,44 +287,12 @@ function ExecValueBar() {
 
 // ── 3 · Problem identification ──────────────────────────────────────────────
 function ExecProblem() {
-  // Scroll-linked entrance, same technique as NadWhatIs: the display line
-  // scales 0.9→1 on entry. Plain JS on purpose — CSS scroll timelines don't
-  // run in Safari. No "reveal" class here: its fill-mode would pin the
-  // transform and fight the inline styles.
-  const secRef = React.useRef(null);
-  const quoteRef = React.useRef(null);
-  React.useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
-    const tick = () => {
-      raf = 0;
-      const sec = secRef.current;
-      if (!sec) return;
-      const vh = window.innerHeight || 1;
-      const p = Math.min(1, Math.max(0, 1 - sec.getBoundingClientRect().top / (vh * 0.85)));
-      if (quoteRef.current) {
-        // Scale + opacity only, NO translateY. NadWhatIs shifts its quote down
-        // by up to 96px on entry, which is safe there because nothing follows
-        // it in that section. This section has a paragraph under the quote, and
-        // the travel drove the quote straight through it for the whole entrance.
-        // transformOrigin is 0% 50%, so the scale grows the line ~5% about its
-        // own centre — a few pixels, well inside the margin below.
-        quoteRef.current.style.transform = "scale(" + (0.9 + 0.1 * p).toFixed(4) + ")";
-        quoteRef.current.style.opacity = (0.4 + 0.6 * p).toFixed(3);
-      }
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick); };
-    tick();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
+  // The statement's scroll-linked reveal (word by word, scrubbed) lives in
+  // ExecutiveMotion.js — it replaced the hand-rolled rAF scale this section
+  // used to carry. The h2 is deliberately NOT `exec-heading`: the motion layer
+  // targets it directly for the scrub treatment rather than the masked reveal.
   return (
-    <section ref={secRef} data-screen-label="Problem ID" style={{
+    <section data-screen-label="Problem ID" style={{
       background: "var(--exec-band-dark)", color: "var(--exec-ink-light)",
       fontFamily: "var(--font-family-base)",
       padding: "var(--spacing-24) var(--spacing-6)", overflow: "hidden",
@@ -315,13 +303,12 @@ function ExecProblem() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <h2 ref={quoteRef} style={{
+          <h2 style={{
             margin: 0, fontSize: "clamp(28px, 3.6vw, 54px)",
             lineHeight: 1.12, fontWeight: "var(--font-weight-medium)",
             letterSpacing: "-0.015em", maxWidth: "18em",
-            willChange: "transform, opacity", transformOrigin: "0% 50%",
           }}>You Don&rsquo;t Need Another Program. You Need One That Fits.</h2>
-          <p className="reveal" style={{
+          <p className="exec-fade" style={{
             margin: "var(--spacing-10) 0 0", maxWidth: "34em",
             fontSize: "var(--text-xl)", lineHeight: 1.55,
             color: "var(--exec-ink-light)", opacity: 0.78,
@@ -331,7 +318,7 @@ function ExecProblem() {
         {/* The same executive as the hero loop — the persona carried through
             the page, not stock. Dusk, not daylight: the band is dark and the
             picture has to sit inside it rather than punch a hole in it. */}
-        <figure className="reveal exec-problem-figure" style={{ margin: 0 }}>
+        <figure className="exec-problem-figure" style={{ margin: 0 }}>
           <img src="uploads/executive-problem.webp" loading="lazy" decoding="async"
             alt="An executive at his office window after hours, the city lit behind him"
             style={{
@@ -359,21 +346,21 @@ function ExecSolutions() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <h2 className="reveal" style={{
+          <h2 className="exec-heading" style={{
             margin: "0 0 var(--spacing-5)", color: "var(--text-default)",
             fontSize: "clamp(32px, 4vw, 56px)", lineHeight: 1.02,
             fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
           }}>Because No Two Bodies Are The Same</h2>
-          <p style={{
+          <p className="exec-fade" style={{
             margin: 0, color: "var(--text-secondary)", fontSize: "var(--text-xl)",
             lineHeight: 1.55, maxWidth: "26em",
           }}>Personalized Weight Loss Solutions — never &ldquo;pick your medication.&rdquo;</p>
-          <ExecCta label="Discover Your Weight Loss Path" style={{ marginTop: "var(--spacing-8)" }} />
+          <ExecCta label="Discover Your Weight Loss Path" className="exec-fade" style={{ marginTop: "var(--spacing-8)" }} />
         </div>
         {/* The oversized glyph is "≠", not NAD's "+": this section's whole claim
             is that two bodies are NOT the same, and the mark states it before
             the headline is read. */}
-        <div className="reveal exec-glyph-visual" style={{
+        <div className="exec-glyph-visual" style={{
           position: "relative", minHeight: 460, display: "flex",
           alignItems: "center", justifyContent: "center", overflow: "hidden",
         }}>
@@ -403,13 +390,13 @@ function ExecPath() {
         maxWidth: 1280, margin: "0 auto",
         padding: "var(--spacing-16) var(--spacing-6) var(--spacing-10)",
       }}>
-        <h2 className="reveal" style={{
+        <h2 className="exec-heading" style={{
           margin: "0 0 var(--spacing-4)", color: "var(--text-default)",
           fontSize: "clamp(28px, 3.4vw, 48px)", lineHeight: 1.05,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
           maxWidth: "18em",
         }}>Provider-Reviewed. Efficiently Delivered.</h2>
-        <p style={{
+        <p className="exec-fade" style={{
           margin: 0, color: "var(--text-secondary)", fontSize: "var(--text-lg)",
           lineHeight: 1.55, maxWidth: "30em",
         }}>Every step built to respect your time.</p>
@@ -443,12 +430,12 @@ function ExecCalculator() {
       padding: "var(--spacing-20) var(--spacing-6)",
     }}>
       <div style={{ maxWidth: 1104, margin: "0 auto" }}>
-        <h2 className="reveal" style={{
+        <h2 className="exec-heading" style={{
           margin: "0 0 var(--spacing-4)", color: "var(--exec-ink-dark)",
           fontSize: "clamp(32px, 4vw, 56px)", lineHeight: 1.02,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
         }}>See Your Path Before You Start</h2>
-        <p style={{
+        <p className="exec-fade" style={{
           margin: "0 0 var(--spacing-10)", color: "var(--exec-ink-dark)",
           fontSize: "var(--text-lg)", lineHeight: 1.55, maxWidth: "34em",
         }}>Enter a starting point and a goal — get an estimated timeline in under
@@ -457,7 +444,7 @@ function ExecCalculator() {
             the IA asks for, and its milestone labels ("First check-in" /
             "Building momentum" / "Sustain & thrive") already read efficient —
             verified before this page was written. Do not "fix" what complies. */}
-        <div className="reveal">
+        <div className="exec-fade">
           <WLCalculatorCard />
         </div>
       </div>
@@ -473,7 +460,7 @@ function ExecSteps() {
       padding: "var(--spacing-24) var(--spacing-6)",
     }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <h2 className="reveal" style={{
+        <h2 className="exec-heading" style={{
           margin: "0 0 var(--spacing-12)", color: "var(--text-default)",
           fontSize: "clamp(32px, 4vw, 56px)", lineHeight: 1.02,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
@@ -483,7 +470,7 @@ function ExecSteps() {
           display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "var(--spacing-8)",
         }}>
           {EXEC_STEPS.map((s) => (
-            <div key={s.label} className="reveal">
+            <div key={s.label} className="exec-fade exec-step">
               <ExecKicker label={s.label} num={s.n}
                 color="var(--text-muted)" border="var(--border-default)" />
               <p style={{
@@ -511,13 +498,13 @@ function ExecMembership() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <h2 className="reveal" style={{
+          <h2 className="exec-heading" style={{
             margin: "0 0 var(--spacing-6)", color: "var(--text-default)",
             fontSize: "clamp(28px, 3.6vw, 54px)", lineHeight: 1.12,
             fontWeight: "var(--font-weight-medium)", letterSpacing: "-0.015em",
             maxWidth: "16em",
           }}>Ongoing — Without Becoming One More Thing To Manage</h2>
-          <p style={{
+          <p className="exec-fade" style={{
             margin: 0, color: "var(--text-secondary)", fontSize: "var(--text-xl)",
             lineHeight: 1.55, maxWidth: "30em",
           }}>Chime&rsquo;s Membership carries the ongoing part, the way a well-run
@@ -526,12 +513,12 @@ function ExecMembership() {
               this CTA routes to the assessment as a stand-in — the same thing the
               live category pages' membership buttons do. Point it at the real
               page when one exists. */}
-          <ExecCta label="Explore The Chime Membership" style={{ marginTop: "var(--spacing-8)" }} />
+          <ExecCta label="Explore The Chime Membership" className="exec-fade" style={{ marginTop: "var(--spacing-8)" }} />
         </div>
         {/* Same executive, the morning after the "ongoing part" is handled:
             gym bag, coffee, on his way in. 3:2 so it reads as a still beside
             the two-line statement, not a second portrait. */}
-        <figure className="reveal exec-membership-figure" style={{ margin: 0 }}>
+        <figure className="exec-membership-figure" style={{ margin: 0 }}>
           <img src="uploads/executive-membership.webp" loading="lazy" decoding="async"
             alt="The same executive walking through an office lobby with a gym bag and a coffee"
             style={{
@@ -565,7 +552,7 @@ function ExecFinalCta() {
         position: "relative", zIndex: 2,
         maxWidth: 720, margin: "0 auto", textAlign: "center",
       }}>
-        <h2 style={{
+        <h2 className="exec-heading" style={{
           margin: "0 0 var(--spacing-8)", color: "var(--exec-ink-light)",
           fontSize: "clamp(36px, 5.2vw, 68px)", lineHeight: 0.98,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
@@ -610,6 +597,14 @@ function ExecFooter() {
 }
 
 function ExecutiveWLPage() {
+  // Layout effect, not effect: it runs after the DOM is committed and BEFORE
+  // the browser paints, so the motion layer's initial `from` states are in
+  // place for the very first frame — no flash of the resting page. The
+  // returned cleanup reverts every tween/trigger/split on unmount.
+  React.useLayoutEffect(() => {
+    if (!window.ExecMotion) return undefined;
+    return window.ExecMotion.mount(document);
+  }, []);
   return (
     <React.Fragment>
       <ExecChrome />
