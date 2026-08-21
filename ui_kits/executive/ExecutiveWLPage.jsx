@@ -256,12 +256,11 @@ function ExecValueBar() {
 
 // ── 3 · Problem identification ──────────────────────────────────────────────
 function ExecProblem() {
-  // Scroll-linked entrance, same technique as NadWhatIs: the kicker drifts in
-  // at half scroll speed and the display line scales 0.9→1 on entry. Plain JS
-  // on purpose — CSS scroll timelines don't run in Safari. No "reveal" class
-  // here: its fill-mode would pin the transform and fight the inline styles.
+  // Scroll-linked entrance, same technique as NadWhatIs: the display line
+  // scales 0.9→1 on entry. Plain JS on purpose — CSS scroll timelines don't
+  // run in Safari. No "reveal" class here: its fill-mode would pin the
+  // transform and fight the inline styles.
   const secRef = React.useRef(null);
-  const kickRef = React.useRef(null);
   const quoteRef = React.useRef(null);
   React.useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -281,9 +280,6 @@ function ExecProblem() {
         // own centre — a few pixels, well inside the margin below.
         quoteRef.current.style.transform = "scale(" + (0.9 + 0.1 * p).toFixed(4) + ")";
         quoteRef.current.style.opacity = (0.4 + 0.6 * p).toFixed(3);
-      }
-      if (kickRef.current) {
-        kickRef.current.style.transform = "translateY(" + ((1 - p) * 48).toFixed(1) + "px)";
       }
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick); };
@@ -308,12 +304,8 @@ function ExecProblem() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <div ref={kickRef} style={{ willChange: "transform" }}>
-            <ExecKicker label="The Problem" num="01"
-              color="var(--exec-ink-light)" border="var(--glass-border)" />
-          </div>
           <p ref={quoteRef} style={{
-            margin: "var(--spacing-12) 0 0", fontSize: "clamp(28px, 3.6vw, 54px)",
+            margin: 0, fontSize: "clamp(28px, 3.6vw, 54px)",
             lineHeight: 1.12, fontWeight: "var(--font-weight-medium)",
             letterSpacing: "-0.015em", maxWidth: "18em",
             willChange: "transform, opacity", transformOrigin: "0% 50%",
@@ -356,10 +348,8 @@ function ExecSolutions() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <ExecKicker label="Personalized Solutions" num="02"
-            color="var(--text-muted)" border="var(--border-default)" />
           <h2 className="reveal" style={{
-            margin: "var(--spacing-8) 0 var(--spacing-5)", color: "var(--text-default)",
+            margin: "0 0 var(--spacing-5)", color: "var(--text-default)",
             fontSize: "clamp(32px, 4vw, 56px)", lineHeight: 1.02,
             fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
           }}>Because No Two Bodies Are The Same</h2>
@@ -402,10 +392,8 @@ function ExecPath() {
         maxWidth: 1280, margin: "0 auto",
         padding: "var(--spacing-16) var(--spacing-6) var(--spacing-10)",
       }}>
-        <ExecKicker label="Why Chime Is Different" num="03"
-          color="var(--text-muted)" border="var(--border-default)" />
         <h2 className="reveal" style={{
-          margin: "var(--spacing-8) 0 var(--spacing-4)", color: "var(--text-default)",
+          margin: "0 0 var(--spacing-4)", color: "var(--text-default)",
           fontSize: "clamp(28px, 3.4vw, 48px)", lineHeight: 1.05,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
           maxWidth: "18em",
@@ -444,10 +432,8 @@ function ExecCalculator() {
       padding: "var(--spacing-20) var(--spacing-6)",
     }}>
       <div style={{ maxWidth: 1104, margin: "0 auto" }}>
-        <ExecKicker label="See Your Path" num="04"
-          color="var(--exec-ink-dark)" border="var(--exec-hairline-dark)" />
         <h2 className="reveal" style={{
-          margin: "var(--spacing-8) 0 var(--spacing-4)", color: "var(--exec-ink-dark)",
+          margin: "0 0 var(--spacing-4)", color: "var(--exec-ink-dark)",
           fontSize: "clamp(32px, 4vw, 56px)", lineHeight: 1.02,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
         }}>See Your Path Before You Start</h2>
@@ -514,10 +500,8 @@ function ExecMembership() {
         gap: "var(--spacing-12)", alignItems: "center",
       }}>
         <div>
-          <ExecKicker label="The Chime Membership" num="05"
-            color="var(--accent-onSubtle)" border="var(--accent-border)" />
           <p className="reveal" style={{
-            margin: "var(--spacing-12) 0 var(--spacing-6)", color: "var(--text-default)",
+            margin: "0 0 var(--spacing-6)", color: "var(--text-default)",
             fontSize: "clamp(28px, 3.6vw, 54px)", lineHeight: 1.12,
             fontWeight: "var(--font-weight-medium)", letterSpacing: "-0.015em",
             maxWidth: "16em",
