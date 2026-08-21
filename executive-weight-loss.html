@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="weight-loss">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Weight Loss For Executives</title>
+<!-- Persona 1 (The Executive) · Landing 1 of 3 · Weight Loss.
+     IA and copy: uploads/Chime_Health_LandingPages_Persona1_Executive (1).pdf
+     (untracked — uploads/*.pdf is gitignored, and this repo's root is public).
+
+     Built on nad.html, as specified: this file is the same thin shell — page
+     theme wiring in :root, the kit's CSS, then the kit script and a mount. The
+     layout language (fixed pill chrome, colour-blocked hero with a cropped
+     wordmark, numbered kickers, parallax dark band, vertical strips, split grid
+     with an oversized glyph, centred dark closer) all comes from
+     ui_kits/nad/NadPage.jsx, re-themed and re-copied.
+
+     NOTHING SHARED WAS MODIFIED. Every live component is untouched — the page
+     embeds <WLCalculatorCard /> directly rather than going through
+     WLCalculatorSection, so weight-loss.html cannot be affected by this page.
+
+     ⚙ THE CALCULATOR NEEDED NO CHANGES. The IA asks for "default pace: Standard
+     (not Ambitious)" and for the Week 4/9/18 milestone labels to stay as they
+     are. ui_kits/shared/WLCalculator.jsx already defaults pace to "standard"
+     and already reads "First check-in / Building momentum / Sustain & thrive".
+     Verified before any code was written — do not "fix" what already complies.
+
+     ⚠️ NOT INDEXED, DELIBERATELY. This page sells the same category as
+     weight-loss.html to a different reader. Near-duplicate variants split
+     ranking signals rather than adding reach, so it carries noindex plus a
+     canonical to weight-loss.html and is meant to be reached from paid and
+     email. If that call is reversed it needs genuinely distinct content first,
+     not just the tag removed. -->
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://chime-project.github.io/Site/weight-loss.html">
+<link rel="stylesheet" href="styles.css?v=20260865">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg-default); }
+
+  /* Executive page theme wiring — palette primitives live HERE, not in the kit
+     (ui_kits/executive/ExecutiveWLPage.jsx binds to these --exec-* vars only),
+     which is what keeps the kit clean under the theme guard.
+     Weight Loss theme = the tide (celeste) ramp. The strip ramp runs light →
+     deep across the five steps of the care path, and the dark bands sit on the
+     site's navy section ground (the same ink as --glass-rgb). */
+  :root {
+    --exec-strip-1: var(--color-tide-100);
+    --exec-strip-2: var(--color-tide-200);
+    --exec-strip-3: var(--color-tide-300);
+    --exec-strip-4: var(--color-tide-600);
+    --exec-strip-5: var(--color-tide-800);
+    --exec-ink-dark: rgb(var(--glass-rgb));
+    --exec-ink-light: var(--bg-default);
+    --exec-hairline-dark: color-mix(in srgb, rgb(var(--glass-rgb)) 35%, transparent);
+    --exec-band-dark: rgb(var(--glass-rgb));
+    /* The kit grounds the hero + footer on --accent-default. The weight-loss
+       theme's tide-500 (#5E93D1) is a mid tone that no ink clears AA on — white
+       is 3.1:1 and the navy ink is 5.1:1 only at large sizes. This page pins the
+       accent one stop lighter, exactly as nad.html does for the same reason:
+       navy on tide-300 reads ~8.3:1, AA at every size. On this page only the
+       hero/footer grounds, the calculator band and the "≠" glyph consume
+       --accent-default, so nothing else shifts. */
+    --accent-default: var(--color-tide-300);
+  }
+
+  /* Section scroll-reveal — same pattern as weight-loss.html. Unsupported
+     browsers rest at the end state (visible), so content is never stuck hidden. */
+  @keyframes chime-reveal {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes exec-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: chime-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 22%;
+    }
+    .exec-spin { animation: exec-spin 26s linear infinite; transform-origin: 50% 50%; }
+  }
+
+  /* Care-path strips — the vertical colour-band moment. Hovered strip expands. */
+  .exec-strips { display: flex; align-items: stretch; height: 74vh; }
+  .exec-strip {
+    flex: 1 1 0; display: flex; align-items: flex-start; justify-content: center;
+    padding: 28px 0; overflow: hidden;
+    transition: flex-grow .5s cubic-bezier(.2, .7, .2, 1);
+  }
+  .exec-strip:hover { flex-grow: 2.2; }
+  .exec-strip-label {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-family: var(--font-family-base); font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 40px); letter-spacing: -0.01em;
+    line-height: 1.15; max-height: 100%;
+  }
+
+  /* Hero ambient loop. object-fit: cover so the 16:9 clip fills a hero that is
+     never 16:9; object-position keeps the figure and the window on the right,
+     where the scrim is lightest and no copy sits. */
+  .exec-hero-video {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 62% 50%;
+    display: block; pointer-events: none;
+  }
+  /* Celeste scrim over the footage. Solid on the text side, thinning to the
+     right so the loop still reads. The headline sits on ~92% tide-300, which
+     holds the same navy contrast the flat ground gave it (~8:1) instead of
+     swinging frame to frame. */
+  .exec-hero-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(100deg,
+      color-mix(in srgb, var(--accent-default) 95%, transparent) 0%,
+      color-mix(in srgb, var(--accent-default) 92%, transparent) 38%,
+      color-mix(in srgb, var(--accent-default) 62%, transparent) 72%,
+      color-mix(in srgb, var(--accent-default) 48%, transparent) 100%);
+  }
+  /* Reduced motion: hold the poster frame instead of playing. The JS pauses the
+     element; this keeps it from ever starting in the first place. */
+  @media (prefers-reduced-motion: reduce) {
+    .exec-hero-video { animation: none; }
+  }
+
+  /* The value ribbon sits on the hero's bottom edge rather than after it, so
+     the five proof points land above the fold.
+     IN FLOW, not absolute. Absolute took it out of the column, so it floated
+     over the wordmark and cut "PERFORM" clean in half. As a flex child it
+     occupies real height, the wordmark settles above it, and the hero's 100vh
+     is shared between them — which also means the ribbon's bottom edge IS the
+     fold, with none of the next section showing beneath it.
+     Full-bleed via negative margins that cancel the hero's own side padding;
+     position:relative only so z-index can lift it over the video and scrim. */
+  .exec-valuebar {
+    position: relative; z-index: 3;
+    margin-left: calc(-1 * var(--spacing-6));
+    margin-right: calc(-1 * var(--spacing-6));
+  }
+
+  /* Weight Loss calculator grids.
+     ⚠️ display:grid IS LOAD-BEARING HERE. WLCalculator.jsx marks these two
+     elements `className="wl-calc-grid grid"` / `"wl-calc-milestones grid"`, and
+     that bare `grid` is a TAILWIND utility — it is where display:grid comes from
+     on index.html and weight-loss.html, which both load tailwind.setup.js. This
+     page deliberately does not (nad.html, its base, has no Tailwind either), so
+     without these two declarations grid-template-columns applies to a block box,
+     does nothing, and the calculator silently stacks into one column while every
+     other page shows it in two.
+     Declaring display:grid here is the fix rather than pulling in the Play CDN:
+     that bare `grid` is the ONLY Tailwind class anywhere in the calculator, and
+     the CDN warns against production use in its own console message. If a future
+     edit adds more Tailwind classes to this component, revisit that trade. */
+  .wl-calc-grid { display: grid; grid-template-columns: 1fr; }
+  .wl-calc-milestones { display: grid; grid-template-columns: 1fr; }
+  @media (min-width: 561px) { .wl-calc-milestones { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 961px) { .wl-calc-grid { grid-template-columns: minmax(260px, 340px) 1fr; } }
+
+  /* Final CTA: the family still behind the centred headline. The asset carries
+     a soft blurred continuation on its left ~20% (the family had to sit right
+     of the headline's edge); object-position 100% so any horizontal crop drops
+     that padding first. The scrim is heaviest on the left and middle, where
+     the text sits, and thins toward the picture. */
+  .exec-final-bg {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: 100% 45%;
+    display: block; pointer-events: none;
+  }
+  .exec-final-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--exec-band-dark) 90%, transparent) 0%,
+      color-mix(in srgb, var(--exec-band-dark) 82%, transparent) 50%,
+      color-mix(in srgb, var(--exec-band-dark) 58%, transparent) 100%);
+  }
+
+  @media (max-width: 900px) {
+    .exec-steps-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+
+  @media (max-width: 700px) {
+    /* The wordmark is the desktop hero's floor; at phone widths it would either
+       overflow or shrink to nothing, so it goes and the portrait takes the space. */
+    .exec-hero-word { display: none !important; }
+    .exec-badge { width: 104px; height: 104px; }
+    /* padding-bottom stays 0 — the ribbon is the hero's bottom edge now. The
+       top padding gives way instead, because the ribbon wraps to three lines at
+       this width and the hero still has to fit one viewport. */
+    [data-screen-label="Exec Hero"] { padding-top: var(--spacing-12) !important; }
+    .exec-valuebar { padding-top: var(--spacing-4) !important; padding-bottom: var(--spacing-4) !important; }
+    /* Five labels wrap to three lines at phone widths, and on a 667px-tall
+       screen those extra lines were the difference between the ribbon ending on
+       the fold and 13px past it. Smaller type packs them into two. */
+    .exec-value-item { font-size: 11px !important; letter-spacing: 0.05em !important; }
+    [data-screen-label="Problem ID"] {
+      padding-top: var(--spacing-12) !important; padding-bottom: var(--spacing-12) !important;
+    }
+    /* Portrait-shaped viewport: bias the crop toward the figure so a 16:9
+       clip in a tall frame does not become an empty wall of concrete. */
+    .exec-hero-video { object-position: 58% 50%; }
+    .exec-split-grid { grid-template-columns: 1fr !important; }
+    /* The persona stills stack under their copy; the dusk portrait squares
+       off so it does not cost a whole extra screen at phone widths. */
+    .exec-problem-grid, .exec-membership-grid { grid-template-columns: 1fr !important; }
+    .exec-problem-figure img { aspect-ratio: 1 / 1 !important; object-position: 50% 25% !important; }
+    .exec-final-bg { object-position: 80% 50%; }
+    .exec-glyph-visual { min-height: 340px !important; }
+    .exec-steps-grid { grid-template-columns: 1fr !important; }
+    .exec-strips { flex-direction: column; height: auto; }
+    .exec-strip {
+      min-height: 76px; align-items: center; justify-content: flex-start;
+      padding: 20px;
+    }
+    .exec-strip-label {
+      writing-mode: horizontal-tb; transform: none; font-size: 24px;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260865"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260865"></script>
+<script type="text/babel">
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.Fragment>
+    <ExecutiveWLPage />
+    <ChimeAssessmentModal />
+  </React.Fragment>
+);
+</script>
+</body>
+</html>
