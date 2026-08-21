@@ -41,6 +41,13 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<!-- GSAP 3.15 — core + ScrollTrigger + SplitText (all MIT-free since 3.13).
+     Same CDN + SRI discipline as the React tags. ~50 KB gz for the three; the
+     motion layer (ui_kits/executive/ExecutiveMotion.js) no-ops if any of them
+     fails to load, so the page still renders at rest. -->
+<script src="https://unpkg.com/gsap@3.15.0/dist/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/ScrollTrigger.min.js" integrity="sha384-wl5TeDVvOWt30Pbf8aSo2ZrzsOjddu3avOBvHe+p+OhJt9gP6w9YXmDkN5DK2/dF" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/SplitText.min.js" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr" crossorigin="anonymous"></script>
 <script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
 <style>
   html { scroll-behavior: smooth; }
@@ -73,21 +80,36 @@
     --accent-default: var(--color-tide-300);
   }
 
-  /* Section scroll-reveal — same pattern as weight-loss.html. Unsupported
-     browsers rest at the end state (visible), so content is never stuck hidden. */
-  @keyframes chime-reveal {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  /* Motion is GSAP now (ui_kits/executive/ExecutiveMotion.js) — the CSS
+     view()-timeline reveal this page used to carry is gone, because it only
+     ran in Chromium and it would double up with the GSAP reveals. The badge
+     spin stays CSS: it is a loop, not a reveal. */
   @keyframes exec-spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: chime-reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 2% cover 22%;
-    }
     .exec-spin { animation: exec-spin 26s linear infinite; transform-origin: 50% 50%; }
   }
+
+  /* SplitText line masks (`linesClass: "exec-line"` → masks get `-mask`).
+     The display type runs at line-height 0.98–1.12, so a mask cut exactly at
+     the line box would clip descenders ("g" in Weight, "y" in Bodies). Padding
+     extends the clip box; the negative margin gives that space straight back,
+     so the layout is byte-for-byte the unsplit one. */
+  .exec-line-mask { padding-bottom: 0.16em; margin-bottom: -0.16em; }
+
+  /* Clip-path reveals on the two persona stills: the figure is the clip box,
+     so it needs the picture's radius (the img keeps its own for the at-rest
+     and reduced-motion case, where the figure is never clipped). */
+  .exec-problem-figure, .exec-membership-figure {
+    border-radius: var(--radius-2xl); overflow: hidden;
+    /* Safari paints transformed children outside an overflow:hidden box
+       with border-radius unless the box forms its own compositing layer. */
+    transform: translateZ(0);
+  }
+
+  /* Magnetic CTAs translate; an inline-block <a> needs will-change hints
+     only while hovered, which GSAP adds itself — nothing to do here. The hero
+     hairline and the kicker rules are 1px blocks the motion layer draws. */
+  .exec-hero-rule, .exec-kicker-rule { display: block; }
 
   /* Care-path strips — the vertical colour-band moment. Hovered strip expands. */
   .exec-strips { display: flex; align-items: stretch; height: 74vh; }
@@ -245,7 +267,10 @@
 <div id="root"></div>
 <script type="text/babel" src="ui_kits/shared/WLCalculator.jsx?v=20260867"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
-<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260867"></script>
+<!-- Plain JS, loaded before the kit so window.ExecMotion exists when the page
+     component's layout effect runs. -->
+<script src="ui_kits/executive/ExecutiveMotion.js?v=20260868"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260868"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
