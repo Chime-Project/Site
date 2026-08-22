@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="lab">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Labs &amp; Health Insights For Executives</title>
+<meta name="description" content="Know what’s actually driving your performance: hundreds of biomarkers, reviewed by a licensed provider, turned into a clear picture — not another app to check. Chime Health labs for executives.">
+<!-- Persona 1 (The Executive) · Landing 2 of 3 · Labs & Health Insights.
+     IA and copy: uploads/Chime_Health_LandingPages_Persona1_Executive (1).pdf
+     (untracked — uploads/*.pdf is gitignored, and this repo's root is public).
+
+     Built on executive-weight-loss.html, as asked: the same thin shell — page
+     theme wiring in :root, the kit's CSS, then the kit scripts and a mount —
+     re-themed to the Labs (iris) ramp. The layout language comes from
+     ui_kits/executive/ExecutiveLabsPage.jsx, which follows ExecutiveWLPage.jsx.
+
+     ⚙ THE FOUR INTERACTIVE MODULES ARE THE LIVE LABS ONES (ui_kits/labs/),
+     embedded, with the persona defaults the IA asks for passed as NEW OPTIONAL
+     PROPS whose defaults are the old behaviour, so labs.html is unchanged in
+     what it renders: the biomarker carousel opens on Energy & Recovery. The
+     configurator is NOT mounted here — the page's own Tiers + Configurator
+     section reads LabsProductDetailSection.jsx's data and option primitives
+     instead, which is why that kit is still loaded below. The IA's Build Your Own Panel row was dropped from
+     this landing (2026-08-21, client request). Nothing here needs Tailwind —
+     and do NOT reach for dsbundle.js to get DS primitives: it embeds
+     tailwind.setup.js and injects the Tailwind Play CDN on load.
+
+     ⚠️ --accent-default IS NOT PINNED HERE, unlike the WL page. The live
+     modules paint on --accent-default (the carousel's active rail, the value
+     dots), so the WL trick of pinning the accent one stop lighter would shift
+     them. The page's own grounds (hero, the
+     configurator band, the footer) use --exec-ground instead, which IS the
+     lighter stop (iris-300: the navy ink reads ~9:1 on it; on iris-500 it is
+     ~5.8:1, which is AA but leaves no margin once the hero footage shows
+     through the scrim).
+
+     ⚠️ NOT INDEXED, DELIBERATELY. Same category as labs.html for a different
+     reader; near-duplicate variants split ranking signals, so this carries
+     noindex plus a canonical to labs.html and is meant for paid and email. -->
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://chime-project.github.io/Site/labs.html">
+<link rel="stylesheet" href="styles.css?v=20260865">
+<!-- Production React (45 KB gz instead of the 254 KB development builds), same
+     SRI discipline as executive-weight-loss.html. -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<!-- GSAP 3.15 — core + ScrollTrigger + SplitText; the motion layer no-ops if
+     any of them fails to load, so the page still renders at rest. -->
+<script src="https://unpkg.com/gsap@3.15.0/dist/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/ScrollTrigger.min.js" integrity="sha384-wl5TeDVvOWt30Pbf8aSo2ZrzsOjddu3avOBvHe+p+OhJt9gP6w9YXmDkN5DK2/dF" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/SplitText.min.js" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr" crossorigin="anonymous"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg-default); }
+
+  /* Executive Labs page theme wiring — palette primitives live HERE, not in
+     the kit (ui_kits/executive/ExecutiveLabsPage.jsx binds to these --exec-*
+     vars only), which keeps the kit clean under the theme guard.
+     Labs theme = the iris ramp. The dark bands sit on the theme's iris-tinted
+     ink (--glass-rgb under data-theme="lab"), the light grounds on the page
+     palette, and --exec-ground is the hero / configurator band / footer
+     colour — see the note in the head comment on why it is not --accent-default. */
+  :root {
+    --exec-ground: var(--color-iris-300);
+    --exec-ink-dark: rgb(var(--glass-rgb));
+    --exec-ink-light: var(--bg-default);
+    --exec-hairline-dark: color-mix(in srgb, rgb(var(--glass-rgb)) 35%, transparent);
+    --exec-hairline-light: color-mix(in srgb, var(--bg-default) 35%, transparent);
+    --exec-band-dark: rgb(var(--glass-rgb));
+
+    /* CTAs follow the Labs ramp, not the site's navy. Every pill CTA here
+       (ExecCta, the chrome CTA, the tier "Select" buttons) binds to
+       --primary-*, which is the
+       FIXED navy family (blue-800/900/950) that no data-theme re-colours —
+       the theme contract themes --accent-* only. On the WL landing that was
+       invisible (tide is blue too); on iris it read as a blue button on a
+       lavender page. THEME_CONTRACT.md's own recommendation for themed pages
+       is the darkest accent stop, so this page pins the family to iris-800
+       (white text measures 5.4:1 on it, AA at every size) with hover/active
+       mixed darker, exactly as the live configurator's CTA does. Page-scoped:
+       nothing outside this file changes. */
+    --primary-default: var(--color-iris-800);
+    --primary-hover:   color-mix(in srgb, var(--color-iris-800) 86%, black);
+    --primary-active:  color-mix(in srgb, var(--color-iris-800) 76%, black);
+  }
+
+  /* Curtain z-order. The motion layer PINS the hero (position: fixed) while the
+     Recognition strip scrolls up over it; a fixed box paints above static
+     siblings, so every other section is lifted one stacking level. The hero is
+     matched by its label because the pin wraps it in a spacer (it stops being
+     main's direct child). */
+  main > section { position: relative; z-index: 1; }
+  [data-screen-label="Exec Hero"] { z-index: 0; }
+
+  /* The badge spin stays CSS: it is a loop, not a reveal. Everything else is
+     GSAP (ui_kits/executive/ExecutiveMotion.js). */
+  @keyframes exec-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .exec-spin { animation: exec-spin 26s linear infinite; transform-origin: 50% 50%; }
+  }
+
+  /* SplitText line masks: padding extends the clip box past the descenders
+     ("g", "y" at line-height ~1), the negative margin gives it straight back. */
+  .exec-line-mask { padding-bottom: 0.16em; margin-bottom: -0.16em; }
+
+  /* Clip-path reveals on the persona stills: the figure is the clip box, so it
+     needs the picture's radius. translateZ(0): Safari paints transformed
+     children outside an overflow:hidden + border-radius box otherwise. */
+  .exec-figure, .exec-membership-figure {
+    border-radius: var(--radius-2xl); overflow: hidden; transform: translateZ(0);
+  }
+  .exec-hero-rule, .exec-kicker-rule { display: block; }
+
+  /* Hero ambient loop + iris scrim (solid on the text side, thinning right). */
+  .exec-hero-video {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 62% 50%;
+    display: block; pointer-events: none;
+  }
+  .exec-hero-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(100deg,
+      color-mix(in srgb, var(--exec-ground) 95%, transparent) 0%,
+      color-mix(in srgb, var(--exec-ground) 92%, transparent) 38%,
+      color-mix(in srgb, var(--exec-ground) 62%, transparent) 72%,
+      color-mix(in srgb, var(--exec-ground) 48%, transparent) 100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .exec-hero-video { animation: none; }
+  }
+
+  /* Fixed-chrome CTA: long label on desktop, short on phones. */
+  .exec-chrome-cta { white-space: nowrap; }
+  .exec-chrome-cta-short { display: none; }
+
+  /* Final CTA: the family still behind the centred headline (asset carries a
+     soft left pad; object-position 100% drops that first on a crop). */
+  .exec-final-bg {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: 100% 45%;
+    display: block; pointer-events: none;
+  }
+  .exec-final-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--exec-band-dark) 90%, transparent) 0%,
+      color-mix(in srgb, var(--exec-band-dark) 82%, transparent) 50%,
+      color-mix(in srgb, var(--exec-band-dark) 58%, transparent) 100%);
+  }
+
+  /* ---- Embedded Labs modules: the responsive rules labs.html gives them ---- */
+  @media (max-width: 960px) {
+    .labs-signals-section { padding-inline: var(--spacing-5) !important; }
+    .labs-signals-grid { grid-template-columns: 1fr !important; }
+    .labs-signals-detail { grid-template-columns: 1fr !important; }
+    .labs-signals-photo { height: auto !important; aspect-ratio: 3 / 2; }
+    /* Insight card stack: single column. The stack keeps its own right gutter —
+       that margin is what reserves room for the fan (see InsightStackSection). */
+    .insight-section { padding-inline: var(--spacing-5) !important; }
+    .insight-panel { grid-template-columns: 1fr !important; padding: var(--spacing-8) var(--spacing-6) !important; }
+    .insight-title { font-size: var(--text-4xl) !important; }
+    .labs-pdp-section { padding-inline: var(--spacing-5) !important; }
+    .labs-pdp-grid { grid-template-columns: 1fr !important; gap: var(--spacing-8) !important; }
+  }
+  @media (max-width: 560px) {
+    /* Insight fan: card + depth ×0.66 so the stack plus its fan clears the
+       panel's inner width at 390px. */
+    .insight-stack { --insight-w: 224px; --insight-h: 248px; --insight-depth: 14px; }
+  }
+
+  /* Recognition — full-bleed triptych. Three panels edge to edge, cut by two
+     slanted seams: clip-path polygons, with panels 2 and 3 pulled left by the
+     seam offset so each cut is ONE continuous line across the strip, and a
+     hairline gap on the leading panel's edge through which the page ground
+     shows as the dividing line. --exec-seam is the horizontal run of the slant
+     over the strip's full height (~7° at 1440×760). See the kit for why the
+     panel (clip), the figure (reveal) and the media (zoom) are three nodes. */
+  .exec-recognition { --exec-seam: clamp(56px, 7vw, 120px); --exec-seam-gap: 5px; }
+  /* overflow hidden: the motion layer slides the slabs up into the strip from
+     below its bottom edge (and sideways on phones). */
+  .exec-recognition-strip { display: flex; height: clamp(520px, 76vh, 780px); overflow: hidden; }
+  .exec-recognition-panel { position: relative; flex: 1 1 0; min-width: 0; }
+  .exec-recognition-panel:nth-child(1) {
+    clip-path: polygon(0 0, calc(100% - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  .exec-recognition-panel:nth-child(2) {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(var(--exec-seam) 0, calc(100% - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  .exec-recognition-panel:nth-child(3) {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(var(--exec-seam) 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .exec-recognition-figure { position: absolute; inset: 0; overflow: hidden; transform: translateZ(0); }
+  /* Hover zoom lives on the media wrapper, not the img (the motion layer owns
+     the img's transform for the Ken Burns settle). Reduced motion: no zoom —
+     a jump-cut scale is worse than none. */
+  .exec-recognition-media {
+    position: absolute; inset: 0; transform-origin: 50% 40%;
+    transition: transform .9s cubic-bezier(.2, .7, .2, 1);
+  }
+  .exec-recognition-panel:hover .exec-recognition-media { transform: scale(1.07); }
+  @media (prefers-reduced-motion: reduce) {
+    .exec-recognition-media { transition: none; }
+    .exec-recognition-panel:hover .exec-recognition-media { transform: none; }
+  }
+  /* The statement sits on a scrim drawn from the dark-band ink — clear over the
+     upper half so the picture reads, near-solid where the type is. The caption
+     keeps clear of the slanted cut on its right (seam + gutter). */
+  .exec-recognition-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg,
+      transparent 38%,
+      color-mix(in srgb, var(--exec-band-dark) 35%, transparent) 62%,
+      color-mix(in srgb, var(--exec-band-dark) 84%, transparent) 100%);
+  }
+  .exec-recognition-caption {
+    padding: var(--spacing-8) calc(var(--exec-seam) + var(--spacing-6)) var(--spacing-8) var(--spacing-8);
+  }
+
+  /* ---- Page grids ---- */
+  /* Tiers + Configurator, desktop: the tier column is as tall as the panel
+     beside it (grid align-items: stretch) and splits that height 1 : 1.3 : 1.7
+     between Comprehensive / Complete / Executive — the card grows with the
+     tier. Below 900 the column sits above the panel and the rows size to
+     their content. */
+  @media (min-width: 901px) {
+    .exec-combo-tiers { grid-template-rows: 1fr 1.3fr 1.7fr; }
+  }
+  /* Mid-desktop (901–1180): the panel is too narrow for photo + copy side by
+     side (at 1024 the copy column collapsed to ~90px and the option pills
+     overflowed the page), so the photo goes above the copy as a landscape
+     crop and the panel stays a sane height for the tier column to match. */
+  @media (min-width: 901px) and (max-width: 1180px) {
+    .exec-combo-panel { grid-template-columns: 1fr !important; }
+    .exec-combo-photo { aspect-ratio: 16 / 9 !important; }
+  }
+  @media (max-width: 900px) {
+    /* Combined tiers + configurator candidate: tier rows above the panel. */
+    .exec-combo-grid { grid-template-columns: 1fr !important; }
+    .exec-close-grid { grid-template-columns: 1fr !important; }
+  }
+
+  @media (max-width: 700px) {
+    /* The wordmark is the desktop hero's floor; at phone widths it would either
+       overflow or shrink to nothing, so it goes. */
+    .exec-hero-word { display: none !important; }
+    .exec-badge { width: 104px; height: 104px; }
+    /* 88px top: the fixed chrome pills end at y≈80. The h1 drops to 34px to
+       pay for it, as on the WL landing. */
+    [data-screen-label="Exec Hero"] { padding-top: 88px !important; }
+    [data-screen-label="Exec Hero"] h1 { font-size: 34px !important; }
+    .exec-chrome-cta-long { display: none; }
+    .exec-chrome-cta-short { display: inline; }
+    .exec-chrome-logo { min-height: 44px; box-sizing: border-box; }
+    [data-screen-label="Why Different"] {
+      padding-top: var(--spacing-12) !important; padding-bottom: var(--spacing-12) !important;
+    }
+    .exec-hero-video { object-position: 58% 50%; }
+    /* Recognition stacks: the seams turn into slanted horizontal cuts (left
+       low, right high), panels 2 and 3 pulled UP by the seam offset instead of
+       left, the gap now on the leading panel's bottom edge. The caption clears
+       the rising cut with extra bottom padding. */
+    .exec-recognition { --exec-seam: clamp(24px, 8vw, 40px); --exec-seam-gap: 4px; }
+    .exec-recognition-strip { flex-direction: column; height: auto; }
+    .exec-recognition-panel { flex: none; height: clamp(250px, 66vw, 380px); margin-left: 0 !important; }
+    .exec-recognition-panel + .exec-recognition-panel {
+      margin-top: calc(-1 * var(--exec-seam));
+      height: calc(clamp(250px, 66vw, 380px) + var(--exec-seam));
+    }
+    .exec-recognition-panel:nth-child(1) {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--exec-seam) - var(--exec-seam-gap)), 0 calc(100% - var(--exec-seam-gap)));
+    }
+    .exec-recognition-panel:nth-child(2) {
+      clip-path: polygon(0 var(--exec-seam), 100% 0, 100% calc(100% - var(--exec-seam) - var(--exec-seam-gap)), 0 calc(100% - var(--exec-seam-gap)));
+    }
+    .exec-recognition-panel:nth-child(3) {
+      clip-path: polygon(0 var(--exec-seam), 100% 0, 100% 100%, 0 100%);
+    }
+    .exec-recognition-caption {
+      padding: var(--spacing-6) var(--spacing-6) calc(var(--exec-seam) + var(--spacing-4)) var(--spacing-6) !important;
+    }
+    .exec-split-grid { grid-template-columns: 1fr !important; }
+    .exec-combo-panel { grid-template-columns: 1fr !important; padding: var(--spacing-5) !important; }
+    /* The live module's option pills measure 38px tall (AA's 24px minimum,
+       under the 44px touch recommendation); lift them to 44 on phones. */
+    .exec-combo-panel [role="radio"] { min-height: 44px; }
+    .exec-problem-grid, .exec-membership-grid { grid-template-columns: 1fr !important; }
+    /* The persona still stacks under its copy and squares off so it does not
+       cost a whole extra screen at phone widths. */
+    .exec-figure img { aspect-ratio: 1 / 1 !important; object-position: 50% 25% !important; }
+    .exec-final-bg { object-position: 80% 50%; }
+    .exec-glyph-visual { min-height: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Shared atoms the Labs modules render with -->
+<script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
+<!-- ⚙ The live Labs modules -->
+<script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260840"></script>
+<script type="text/babel" src="ui_kits/labs/LabsProductDetailSection.jsx?v=20260747"></script><!-- not mounted: loaded for LABS_TIERS + LabsOptionGroup -->
+<script type="text/babel" src="ui_kits/labs/LabsSignalsSection.jsx?v=20260869"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
+<!-- The site footer, as on index.html / labs.html -->
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260840"></script>
+<!-- Plain JS, loaded before the kit so window.ExecMotion exists when the page
+     component's layout effect runs. -->
+<script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveLabsPage.jsx?v=20260869"></script>
+<script type="text/babel">
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.Fragment>
+    <ExecutiveLabsPage />
+    <ChimeAssessmentModal />
+  </React.Fragment>
+);
+</script>
+</body>
+</html>

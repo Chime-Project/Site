@@ -41,7 +41,10 @@ const LABS_SIG_ITEMS = [
     image: "0006.webp", alt: "Labeled blood collection vials arranged across stepped white blocks" },
 ];
 
-function ChimeLabsSignalsSection({ theme = "lab" }) {
+// `defaultTag` is the rail item active on load (a LABS_SIG_ITEMS tag, e.g.
+// "Energy" or "Heart Health"). Unset → the first item (Hormones), which is what
+// labs.html always showed; the executive landing opens on Energy & Recovery.
+function ChimeLabsSignalsSection({ theme = "lab", defaultTag }) {
   return (
     <section id="labs-signals-section" data-screen-label="Labs Signals" data-theme={theme}
       className="labs-signals-section" style={{
@@ -70,15 +73,18 @@ function ChimeLabsSignalsSection({ theme = "lab" }) {
             color: "var(--fg-muted)", textWrap: "pretty",
           }}>What your biomarkers may be telling you.</p>
         </div>
-        <LabsSignalsExplorer />
+        <LabsSignalsExplorer defaultTag={defaultTag} />
       </div>
       </LabsSignalsReveal>
     </section>
   );
 }
 
-function LabsSignalsExplorer() {
-  const [active, setActive] = React.useState(0);
+function LabsSignalsExplorer({ defaultTag }) {
+  const [active, setActive] = React.useState(function () {
+    const i = LABS_SIG_ITEMS.findIndex(function (s) { return s.tag === defaultTag; });
+    return i === -1 ? 0 : i;
+  });
   const [paused, setPaused] = React.useState(false);
   const [fade, setFade] = React.useState(true);
   const reduced = React.useMemo(function () {

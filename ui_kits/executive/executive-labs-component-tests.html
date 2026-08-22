@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="lab">
+<head>
+<meta charset="utf-8">
+<title>Chime Executive Labs — React component tests</title>
+<!-- React component tests for the executive labs landing (ui_kits/executive/
+     ExecutiveLabsPage.jsx + ExecutiveCore.jsx).
+     RUN:  serve the repo, open /ui_kits/executive/executive-labs-component-tests.html
+     Headless: the runner sets window.__EXEC_LABS_TEST_DONE and
+     window.__EXEC_LABS_TEST = {pass, fail, failures}, so a driver can poll.
+
+     Same shape as ui_kits/cart/cart-component-tests.html and for the same
+     reasons: no package.json, no node_modules, every page is compiled by
+     in-browser Babel — so the harness loads the same React 18 UMD, the same
+     Babel and the same component files the live page loads, and asserts
+     against a real layout engine. GSAP is deliberately NOT loaded: the motion
+     layer no-ops without it (that is its reduced-motion/CDN-failure contract),
+     which keeps every assertion deterministic. The GSAP paths (pin, scrubs,
+     reveals) are verified in-browser against the real page.
+
+     <base href="../../"> — the kit refers to its assets the way the page
+     does ("uploads/…", "assets/…", "chimeAssessment.html"), relative to the
+     repo root, so the harness resolves everything from there too. -->
+<base href="../../">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script>
+  window.CHIME_UPLOADS_BASE = "uploads";
+  window.CHIME_ASSETS_BASE = "assets";
+</script>
+<style>
+  body { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; margin: 0; padding: 24px; background: #fff; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .summary { padding: 10px 14px; border-radius: 6px; margin: 14px 0; font-weight: 700; }
+  .summary.ok { background: #DCFCE7; color: #016630; }
+  .summary.bad { background: #FFE2E2; color: #9F0712; }
+  .t { padding: 2px 0; }
+  .t.p::before { content: "PASS  "; color: #00A63E; }
+  .t.f::before { content: "FAIL  "; color: #E7000B; font-weight: 700; }
+  .t.f { color: #9F0712; }
+  .why { padding-left: 6em; color: #62748E; white-space: pre-wrap; }
+  .grp { margin-top: 14px; font-weight: 700; color: #314158; }
+  /* Mounted off-screen but laid out (display:none would zero every rect). */
+  #sandbox { position: absolute; left: -10000px; top: 0; width: 1280px; }
+  /* The page vars the kit binds to (copied from executive-labs.html). */
+  :root {
+    --exec-ground: var(--color-iris-300);
+    --exec-ink-dark: rgb(var(--glass-rgb));
+    --exec-ink-light: var(--bg-default);
+    --exec-hairline-dark: color-mix(in srgb, rgb(var(--glass-rgb)) 35%, transparent);
+    --exec-hairline-light: color-mix(in srgb, var(--bg-default) 35%, transparent);
+    --exec-band-dark: rgb(var(--glass-rgb));
+  }
+</style>
+</head>
+<body>
+<h1>Chime Executive Labs — React component tests</h1>
+<div id="out"></div>
+<div id="sandbox"></div>
+
+<!-- Same files, same order as executive-labs.html (minus GSAP). Bump ?v= with
+     the page's tags — a cached kit here reports failures against code that is
+     no longer on disk (see the cart harness for the scar). -->
+<script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260840"></script>
+<script type="text/babel" src="ui_kits/labs/LabsProductDetailSection.jsx?v=20260747"></script>
+<script type="text/babel" src="ui_kits/labs/LabsSignalsSection.jsx?v=20260869"></script>
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260840"></script>
+<script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveLabsPage.jsx?v=20260869"></script>
+
+<script type="text/babel">
+window.addEventListener("error", (e) => { window.__EXEC_LABS_TEST_CRASH = String(e.message); });
+window.addEventListener("unhandledrejection", (e) => {
+  window.__EXEC_LABS_TEST_CRASH = String((e.reason && e.reason.stack) || e.reason);
+});
+(async function () {
+  "use strict";
+  const out = document.getElementById("out");
+  const sandbox = document.getElementById("sandbox");
+  let pass = 0; const failures = [];
+  const tick = (n = 0) => new Promise((r) => setTimeout(r, n));
+  function group(name) { const d = document.createElement("div"); d.className = "grp"; d.textContent = name; out.appendChild(d); }
+  function record(name, okFlag, why) {
+    const d = document.createElement("div"); d.className = "t " + (okFlag ? "p" : "f"); d.textContent = name; out.appendChild(d);
+    if (okFlag) { pass++; return; }
+    failures.push(name + (why ? " — " + why : ""));
+    const w = document.createElement("div"); w.className = "why"; w.textContent = why || ""; out.appendChild(w);
+  }
+  function show(v) {
+    if (v && v.nodeType === 1) return "<" + v.tagName.toLowerCase() + (v.className && typeof v.className === "string" ? "." + v.className.trim().split(/\s+/).join(".") : "") + ">";
+    try { return JSON.stringify(v); } catch (e) { return String(v); }
+  }
+  const ok = (name, v, why) => record(name, !!v, why || "expected truthy, got " + show(v));
+  const eq = (name, a, b) => record(name, a === b, "expected " + show(b) + ", got " + show(a));
+  const has = (name, hay, needle) => record(name, String(hay == null ? "" : hay).indexOf(needle) !== -1,
+    "expected to contain " + JSON.stringify(needle) + ", got " + JSON.stringify(String(hay).slice(0, 160)));
+  async function mount(element) {
+    const host = document.createElement("div"); sandbox.appendChild(host);
+    const root = ReactDOM.createRoot(host); root.render(element); await tick();
+    return { host, $: (s) => host.querySelector(s), $$: (s) => Array.from(host.querySelectorAll(s)), text: () => host.textContent,
+      unmount: () => { root.unmount(); host.remove(); } };
+  }
+  // A real, cancelable click that bubbles to React's root listener. Returns
+  // false when a component handler called preventDefault (the link would not
+  // navigate). The document-level listener runs AFTER React's root listener,
+  // records that flag, then swallows the default itself — the first run of
+  // this suite let the "navigation allowed" case through and the harness
+  // page really did navigate to chimeAssessment.html mid-suite.
+  let lastClickPrevented = false;
+  document.addEventListener("click", (e) => { lastClickPrevented = e.defaultPrevented; e.preventDefault(); });
+  const click = (el) => { el.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window })); return !lastClickPrevented; };
+
+  try {
+
+  // ================= Kit surface =================
+  group("Kit surface (what the page relies on being on window)");
+  ["ExecutiveLabsPage", "ExecLabsHero", "ExecLabsRecognition", "ExecLabsIceberg", "ExecIcebergGraphic",
+   "ExecLabsInsight", "ExecLabsTiersConfigurator", "ExecLabsTierRow", "ExecLabsSignals", "ExecLabsWhy",
+   "ExecLabsClose", "ExecLabsMembership", "ExecLabsFinalCta",
+   "ExecChrome", "ExecCta", "ExecKicker", "ExecSpinBadge", "ExecFooter", "execOpenAssessment",
+   "ChimeInsightStackSection", "ChimeLabsSignalsSection", "ChimeFooter"].forEach((n) => {
+    eq("window." + n + " is a function", typeof window[n], "function");
+  });
+  ok("window.ExecMotion.mount exists", window.ExecMotion && typeof window.ExecMotion.mount === "function");
+  eq("without GSAP, ExecMotion.mount() returns a no-op cleanup", typeof window.ExecMotion.mount(document), "function");
+  eq("the live configurator kit's LABS_TIERS is readable (page reads it for prices/photos)", typeof LABS_TIERS, "object");
+  eq("…and its LabsOptionGroup is (Sex / Lab review rows)", typeof LabsOptionGroup, "function");
+
+  // ================= ExecCta =================
+  group("ExecCta (the one way every CTA opens the assessment)");
+  {
+    const calls = [];
+    window.openChimeAssessment = () => calls.push(1);
+    const c = await mount(<ExecCta label="Discover Your Health Path" className="extra" />);
+    const a = c.$("a");
+    eq("renders an <a>", !!a, true);
+    eq("href is the real assessment URL (middle-click / new tab work)", a.getAttribute("href"), "chimeAssessment.html");
+    eq("label", a.textContent, "Discover Your Health Path");
+    ok("carries exec-cta + the extra class", a.classList.contains("exec-cta") && a.classList.contains("extra"));
+    const allowed = click(a);
+    eq("click calls window.openChimeAssessment once", calls.length, 1);
+    eq("…and prevents the default navigation (same-page handler, no reload)", allowed, false);
+    delete window.openChimeAssessment;
+    const allowed2 = click(a);
+    eq("without the global, the click is NOT prevented (plain link navigation)", allowed2, true);
+    c.unmount();
+  }
+
+  // ================= ExecChrome / ExecKicker =================
+  group("ExecChrome + ExecKicker");
+  {
+    const c = await mount(<ExecChrome />);
+    const header = c.$("header");
+    eq("fixed chrome is a <header> with the screen label", header && header.getAttribute("data-screen-label"), "Exec Chrome");
+    const logo = c.$('a[href="index.html"]');
+    ok("logo pill links home with an accessible name", logo && logo.getAttribute("aria-label") === "Chime Health home");
+    ok("logo img has alt", logo && logo.querySelector("img").getAttribute("alt") === "Chime");
+    const cta = c.$(".exec-chrome-cta");
+    eq("chrome CTA href", cta.getAttribute("href"), "chimeAssessment.html");
+    ok("chrome CTA has a long and a short label (CSS picks one)", cta.querySelector(".exec-chrome-cta-long") && cta.querySelector(".exec-chrome-cta-short"));
+    c.unmount();
+    const k = await mount(<ExecKicker label="Insights" num="01" color="red" border="rgb(1, 2, 3)" />);
+    has("kicker shows the label", k.text(), "Insights");
+    has("kicker shows the number", k.text(), "01");
+    eq("kicker rule is a drawable 1px block with the border colour", k.$(".exec-kicker-rule").style.background, "rgb(1, 2, 3)");
+    k.unmount();
+  }
+
+  // ================= Hero =================
+  group("ExecLabsHero");
+  {
+    const c = await mount(<ExecLabsHero />);
+    eq("h1 is the IA headline", c.$("h1").textContent, "Know What’s Actually Driving Your Performance");
+    has("subhead is the IA's", c.text(), "Hundreds of biomarkers, reviewed by a licensed provider, turned into a clear picture — not another app to check.");
+    eq("hero CTA label", c.$(".exec-hero-sub .exec-cta").textContent, "Discover Your Health Path");
+    const v = c.$("video.exec-hero-video");
+    ok("ambient video: autoplay + muted + loop + playsinline (iOS autoplay contract)", v.hasAttribute("autoplay") && v.muted && v.hasAttribute("loop") && v.hasAttribute("playsinline"));
+    ok("video is decorative: aria-hidden + out of the tab order", v.getAttribute("aria-hidden") === "true" && v.getAttribute("tabindex") === "-1");
+    has("video has the poster", v.getAttribute("poster"), "executive-hero-poster.webp");
+    const expectMobile = window.matchMedia("(max-width: 700px)").matches;
+    has("video source follows the viewport (" + (expectMobile ? "mobile" : "desktop") + " rendition)", v.getAttribute("src"), expectMobile ? "executive-hero-mobile.mp4" : "executive-hero.mp4");
+    eq("wordmark is decorative", c.$(".exec-hero-word").getAttribute("aria-hidden"), "true");
+    eq("wordmark reads INSIGHT", c.$(".exec-hero-word").textContent, "INSIGHT");
+    ok("spin badge present and decorative", c.$(".exec-badge") && c.$(".exec-badge").getAttribute("aria-hidden") === "true");
+    c.unmount();
+  }
+
+  // ================= Recognition =================
+  group("ExecLabsRecognition (triptych)");
+  {
+    const c = await mount(<ExecLabsRecognition />);
+    eq("three panels", c.$$(".exec-recognition-panel").length, 3);
+    eq("list semantics: role=list with 3 listitems", c.$$('[role="list"] > [role="listitem"]').length, 3);
+    const caps = c.$$(".exec-recognition-caption").map((f) => f.textContent);
+    eq("statement 1", caps[0], "Afternoon crashes before it matters most");
+    eq("statement 2", caps[1], "Recovery that takes longer than it used to");
+    eq("statement 3", caps[2], "Sleep that doesn’t translate to rest");
+    ok("no numerals in the captions", caps.every((t) => !/\d/.test(t)));
+    const imgs = c.$$(".exec-recognition-media img");
+    eq("one photo per panel", imgs.length, 3);
+    ok("every photo has a non-empty alt", imgs.every((i) => (i.getAttribute("alt") || "").length > 10));
+    eq("photos are three distinct files", new Set(imgs.map((i) => i.getAttribute("src"))).size, 3);
+    ok("photos lazy-load (below the fold)", imgs.every((i) => i.getAttribute("loading") === "lazy"));
+    ok("each panel has a scrim under its caption", c.$$(".exec-recognition-scrim").length === 3);
+    ok("each panel is a <figure> with a <figcaption> (caption is the accessible text)", c.$$("figure > figcaption.exec-recognition-caption").length === 3);
+    c.unmount();
+  }
+
+  // ================= Iceberg =================
+  group("ExecLabsIceberg");
+  {
+    const c = await mount(<ExecLabsIceberg />);
+    eq("h2", c.$("h2").textContent, "What If The Problem Isn’t What You Think?");
+    has("body", c.text(), "Visible symptoms are the surface. The biomarkers underneath are the real signal.");
+    const svg = c.$("svg.exec-iceberg-svg");
+    ok("graphic is an svg with role=img and a label", svg && svg.getAttribute("role") === "img" && (svg.getAttribute("aria-label") || "").indexOf("iceberg") !== -1);
+    ok("motion hooks: deep mass, tip, waterline, 2 labels", c.$(".exec-iceberg-deep") && c.$(".exec-iceberg-tip") && c.$(".exec-iceberg-line") && c.$$(".exec-iceberg-label").length === 2);
+    eq("labels read VISIBLE SYMPTOMS / BIOMARKERS", c.$$(".exec-iceberg-label").map((t) => t.textContent).join("|"), "VISIBLE SYMPTOMS|BIOMARKERS");
+    eq("section carries the .exec-iceberg hook", c.$("section").classList.contains("exec-iceberg"), true);
+    c.unmount();
+  }
+
+  // ================= Tiers + Configurator =================
+  group("ExecLabsTiersConfigurator (tier cards drive the panel)");
+  {
+    const c = await mount(<ExecLabsTiersConfigurator />);
+    eq("h2", c.$("h2").textContent, "Choose The Depth Of Insight You Need");
+    const group_ = c.$('[role="radiogroup"][aria-label="Tier"]');
+    ok("tier cards form a labelled radiogroup", !!group_);
+    const radios = c.$$('[role="radiogroup"][aria-label="Tier"] [role="radio"]');
+    eq("three tier cards", radios.length, 3);
+    ok("tier cards are real <button>s (focusable, Enter/Space work for free)", radios.every((r) => r.tagName === "BUTTON"));
+    eq("order Comprehensive → Complete → Executive", radios.map((r) => r.textContent.match(/^(Comprehensive|Complete|Executive)/)[1]).join(">"), "Comprehensive>Complete>Executive");
+    eq("Executive is selected on load (the persona default)", radios.map((r) => r.getAttribute("aria-checked")).join(","), "false,false,true");
+    has("Executive card carries the IA's call-out", radios[2].textContent, "Built for exactly this level of scrutiny.");
+    ok("the other two do not", radios[0].textContent.indexOf("scrutiny") === -1 && radios[1].textContent.indexOf("scrutiny") === -1);
+    eq("counts 80+ / 100+ / 130+", radios.map((r) => r.textContent.match(/(\d+\+)/)[1]).join(","), "80+,100+,130+");
+    const T = LABS_TIERS;
+    has("prices come from the live module (Comprehensive)", radios[0].textContent, T.Comprehensive.price);
+    has("prices come from the live module (Executive)", radios[2].textContent, T.Executive.price);
+    eq("panel title follows the tier", c.$("h3").textContent, "Total Health Panel — Executive");
+    has("panel price follows the tier", c.$(".exec-combo-panel").textContent, T.Executive.price);
+    eq("panel photo follows the tier", c.$(".exec-combo-photo img").getAttribute("src"), T.Executive.image);
+    has("badge shows the tier's count", c.$(".exec-combo-photo").textContent, T.Executive.markers);
+    has("'N+ Biomarkers tested' line", c.$(".exec-combo-panel").textContent, T.Executive.markers + " Biomarkers tested");
+    // switch tier
+    click(radios[0]); await tick();
+    eq("clicking Comprehensive re-checks the group", c.$$('[aria-label="Tier"] [role="radio"]').map((r) => r.getAttribute("aria-checked")).join(","), "true,false,false");
+    eq("…panel title updates", c.$("h3").textContent, "Total Health Panel — Comprehensive");
+    eq("…panel photo updates", c.$(".exec-combo-photo img").getAttribute("src"), T.Comprehensive.image);
+    has("…panel price updates", c.$(".exec-combo-panel").textContent, T.Comprehensive.price);
+    // option groups from the live module
+    const groups = c.$$('.exec-combo-panel [role="radiogroup"]');
+    eq("Sex + Lab review option rows render (live LabsOptionGroup)", groups.map((g) => g.getAttribute("aria-label")).join(","), "Sex,Lab review");
+    const sexChecked = () => c.$$('[aria-label="Sex"] [role="radio"]').map((r) => r.textContent + ":" + r.getAttribute("aria-checked")).join(",");
+    eq("Sex defaults to the first option", sexChecked(), "Male:true,Female:false");
+    click(c.$$('[aria-label="Sex"] [role="radio"]')[1]); await tick();
+    eq("picking Female updates the row", sexChecked(), "Male:false,Female:true");
+    eq("Lab review defaults to the first option", c.$$('[aria-label="Lab review"] [role="radio"]')[0].getAttribute("aria-checked"), "true");
+    const cta = c.$(".exec-combo-panel a.exec-cta");
+    eq("CTA is the IA's 'Book My Health Test'", cta && cta.textContent, "Book My Health Test");
+    eq("…and goes to the assessment", cta.getAttribute("href"), "chimeAssessment.html");
+    eq("execLabsTiers() order + counts", execLabsTiers().map((t) => t.tier + ":" + t.markers).join(","), "Comprehensive:80+,Complete:100+,Executive:130+");
+    c.unmount();
+  }
+
+  // ================= Close / Why / Membership / Final =================
+  group("ExecLabsClose, ExecLabsWhy, ExecLabsMembership, ExecLabsFinalCta");
+  {
+    const c = await mount(<ExecLabsClose />);
+    eq("close h2", c.$("h2").textContent, "Receiving Information Is Only One Step");
+    eq("three kickers Insights/Guidance/Support", c.$$(".exec-kicker").map((k) => k.textContent.replace(/0\d/, "")).join(","), "Insights,Guidance,Support");
+    eq("numbered 01–03", c.$$(".exec-kicker").map((k) => k.textContent.match(/0\d/)[0]).join(","), "01,02,03");
+    eq("CTA", c.$("a.exec-cta").textContent, "Discover Your Health Path");
+    c.unmount();
+    const w = await mount(<ExecLabsWhy />);
+    eq("why h2", w.$("h2").textContent, "Insight You Can Act On, Not Just Read");
+    ok("why h2 is the scrubbed statement (exec-scrub), not a masked heading", w.$("h2").classList.contains("exec-scrub") && !w.$("h2").classList.contains("exec-heading"));
+    ok("why still is a clip-reveal figure with alt text", w.$("figure.exec-still img") && (w.$("figure.exec-still img").getAttribute("alt") || "").length > 10);
+    has("why body", w.text(), "Every panel is reviewed by a licensed provider and translated into next steps, not just numbers.");
+    w.unmount();
+    const m = await mount(<ExecLabsMembership />);
+    eq("membership h2", m.$("h2").textContent, "Insights That Update As You Do");
+    eq("membership CTA", m.$("a.exec-cta").textContent, "Explore The Chime Membership");
+    m.unmount();
+    const f = await mount(<ExecLabsFinalCta />);
+    eq("final h2", f.$("h2").textContent, "The Data Behind How You Feel");
+    eq("final CTA", f.$("a.exec-cta").textContent, "Discover Your Health Path");
+    ok("final background image is decorative (empty alt + aria-hidden)", f.$(".exec-final-bg").getAttribute("alt") === "" && f.$(".exec-final-bg").getAttribute("aria-hidden") === "true");
+    f.unmount();
+  }
+
+  // ================= Whole page =================
+  group("ExecutiveLabsPage (composition + a11y sweep)");
+  {
+    const c = await mount(<ExecutiveLabsPage />);
+    eq("exactly one <h1>", c.$$("h1").length, 1);
+    ok("landmarks: header + main + footer", c.$("header") && c.$("main") && c.$("footer"));
+    const order = c.$$("main > section[data-screen-label]").map((s) => s.getAttribute("data-screen-label"));
+    eq("section order is the IA's (minus the dropped Build Panel, with 5+6 combined)",
+      order.join(" > "),
+      "Exec Hero > Recognition > Iceberg > Cross-Link Carousel > Tiers + Configurator > Biomarker Carousel > Why Different > 3-Step Close > Membership > Final CTA");
+    has("footer is the site footer (ChimeFooter), not ExecFooter", c.$("footer").textContent, "hello@chimehealth.com");
+    eq("no ExecFooter on this page", c.$$('footer[data-screen-label="Exec Footer"]').length, 0);
+    const imgs = c.$$("img");
+    ok("every <img> has an alt attribute (" + imgs.length + " images)", imgs.every((i) => i.hasAttribute("alt")));
+    const links = c.$$("a");
+    ok("every <a> has an href (" + links.length + " links)", links.every((a) => a.getAttribute("href")));
+    const buttons = c.$$("button");
+    ok("every <button> has an accessible name (" + buttons.length + " buttons)", buttons.every((b) => (b.textContent.trim() || b.getAttribute("aria-label") || "").length > 0));
+    const ctas = c.$$("main a.exec-cta");
+    ok("every exec CTA goes to the assessment (" + ctas.length + ")", ctas.every((a) => a.getAttribute("href") === "chimeAssessment.html"));
+    // heading outline: levels never jump by more than one
+    const hs = c.$$("h1,h2,h3,h4").map((h) => Number(h.tagName[1]));
+    let jump = null;
+    for (let i = 1; i < hs.length; i++) if (hs[i] > hs[i - 1] + 1) { jump = hs[i - 1] + "→" + hs[i] + " at #" + i; break; }
+    eq("heading levels never skip (h1→h3)", jump, null);
+    // biomarker carousel persona default
+    const rail = c.$(".labs-signals-grid");
+    ok("biomarker carousel opens on Energy & Recovery", rail && /Energy/.test(c.$(".labs-signals-detail").textContent) && /Energy & Recovery/.test(c.$(".labs-signals-detail").textContent));
+    // theme guard at the DOM level (exec sections only — the site footer is a
+    // homepage kit with its own fixed navy, by design)
+    const bad = c.$$("main [style]").filter((el) => /--color-(iris|tide|cadmium|sage|peach|blue)-\d|#[0-9a-fA-F]{6}\b/.test(el.getAttribute("style") || ""));
+    eq("no palette primitives / brand hex in the rendered exec sections", bad.length, 0, bad.slice(0, 3).map(show).join(", "));
+    c.unmount();
+  }
+
+  } catch (err) {
+    failures.push("SUITE CRASHED: " + ((err && err.stack) || err));
+  }
+
+  const s = document.createElement("div");
+  s.className = "summary " + (failures.length ? "bad" : "ok");
+  s.textContent = failures.length ? "FAIL — " + pass + " passed, " + failures.length + " failed" : "PASS — " + pass + " checks";
+  out.insertBefore(s, out.firstChild);
+  window.__EXEC_LABS_TEST = { pass: pass, fail: failures.length, failures: failures };
+  window.__EXEC_LABS_TEST_DONE = true;
+})();
+</script>
+</body>
+</html>

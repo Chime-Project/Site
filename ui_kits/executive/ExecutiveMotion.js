@@ -23,7 +23,19 @@
 //   Care path  the five strips wipe in like bars filling, staggered and
 //              scrubbed — the widening colour IS the arrow chain.
 //   Steps      cards cascade; each kicker hairline draws left → right.
-//   Stills     clip-path reveals (Problem + Membership).
+//   Stills     clip-path reveals (Problem + Membership, and any `.exec-still`).
+//   Scrubs     any `.exec-scrub` heading gets the Problem band's word-by-word
+//              scroll reveal (the labs landing's Why Different band).
+//   Curtain    (labs landing) the hero is PINNED while the Recognition
+//              triptych scrolls up over it, and inside the strip the three
+//              slabs slide into place along their own seams with a trailing
+//              stagger (scrubbed) — a translation along the cut keeps the cut
+//              one continuous line, so the seams never break mid-motion; the
+//              photos carry a light parallax and the captions land last.
+//   Iceberg    (labs landing) the tip lands, the waterline draws, the labels
+//              fade in, and the submerged mass rises out of the deep on a
+//              scrub — "what's underneath" is revealed by the reader's own
+//              scrolling, which is the section's whole argument.
 //   Final CTA  background parallax, masked headline, CTA pops in.
 //   CTAs       magnetic pull + lift on fine pointers only.
 //
@@ -147,26 +159,35 @@
         if (video) exit.to(video, { scale: 1.08 }, 0);
       }
 
-      // ── Problem band ──────────────────────────────────────────────────────
-      var problem = q('[data-screen-label="Problem ID"]');
-      if (problem) {
-        var quote = q("h2", problem);
-        if (quote && SplitText) {
-          SplitText.create(quote, {
+      // Word-by-word scroll reveal, scrubbed: the dark-band "read it as you
+      // arrive" beat. Plain fade-up if SplitText failed to load.
+      function scrubWords(el) {
+        if (!el) return;
+        if (SplitText) {
+          return SplitText.create(el, {
             type: "words", wordsClass: "exec-word", autoSplit: true,
             onSplit: function (self) {
               return gsap.from(self.words, {
                 opacity: 0.16, ease: "none", stagger: 0.05,
-                scrollTrigger: { trigger: quote, start: "top 80%", end: "bottom 45%", scrub: 0.5 },
+                scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 45%", scrub: 0.5 },
               });
             },
           });
-        } else if (quote) {
-          gsap.from(quote, { autoAlpha: 0, y: 30, duration: 1, ease: "power3.out",
-            scrollTrigger: { trigger: quote, start: "top 85%", once: true } });
         }
+        return gsap.from(el, { autoAlpha: 0, y: 30, duration: 1, ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 85%", once: true } });
+      }
+
+      // ── Problem band ──────────────────────────────────────────────────────
+      var problem = q('[data-screen-label="Problem ID"]');
+      if (problem) {
+        scrubWords(q("h2", problem));
         revealStill(q(".exec-problem-figure", problem));
       }
+      // The same two treatments by hook, for pages whose dark band is not the
+      // Problem band (labs: Why Different).
+      qa(".exec-scrub").forEach(function (el) { scrubWords(el); });
+      qa(".exec-still").forEach(function (fig) { revealStill(fig); });
 
       // ── Solutions: ≠ glyph + vial ─────────────────────────────────────────
       var sol = q('[data-screen-label="No Two Bodies"]');
@@ -220,14 +241,19 @@
         });
       }
 
-      // ── Steps: kicker hairlines draw ──────────────────────────────────────
-      var rules = qa(".exec-kicker-rule");
-      if (rules.length) {
+      // ── Kicker hairlines draw ─────────────────────────────────────────────
+      // One trigger PER grid: the labs landing carries three kicker grids a long
+      // way apart (Recognition, Tiers, 3-Step Close) and a single document-wide
+      // tween would draw the later grids' rules while they were still
+      // off-screen. The WL page has one grid, so this is what it always did.
+      qa(".exec-steps-grid, .exec-kicker-grid").forEach(function (grid) {
+        var rules = qa(".exec-kicker-rule", grid);
+        if (!rules.length) return;
         gsap.from(rules, {
           scaleX: 0, duration: 1.1, ease: "power4.out", stagger: 0.12,
-          scrollTrigger: { trigger: ".exec-steps-grid", start: "top 85%", once: true },
+          scrollTrigger: { trigger: grid, start: "top 85%", once: true },
         });
-      }
+      });
 
       // ── Membership still ──────────────────────────────────────────────────
       revealStill(q(".exec-membership-figure"));
@@ -248,6 +274,101 @@
             scale: 0.8, autoAlpha: 0, duration: 0.9, ease: "back.out(1.7)", delay: 0.35,
             scrollTrigger: { trigger: fin, start: "top 70%", once: true },
           });
+        }
+      }
+
+      // ── Hero → Recognition curtain (labs landing) ─────────────────────────
+      var strip = q(".exec-recognition-strip");
+      if (hero && strip) {
+        // 1. The hero holds still for exactly its own height of scroll while
+        //    the next section slides up over it (pinSpacing:false = no extra
+        //    scroll distance, the strip simply rises over the fixed hero).
+        //    The hero's existing exit parallax (wordmark drift, footage zoom)
+        //    keeps running underneath, which is what gives the cover depth.
+        //    z-order (strip above the fixed hero) is the page CSS's job.
+        ScrollTrigger.create({
+          trigger: hero, start: "top top", end: "bottom top",
+          pin: true, pinSpacing: false, anticipatePin: 1,
+        });
+
+        // 2. Slabs. Geometry is read from layout offsets (offset* ignore the
+        //    transforms this very tween applies), inside functions so
+        //    invalidateOnRefresh re-measures after a resize or font swap.
+        var panels = qa(".exec-recognition-panel", strip);
+        var stripH = function () { return strip.offsetHeight; };
+        var stripW = function () { return strip.offsetWidth; };
+        // Desktop row: panels overlap horizontally by the seam run.
+        var seamX = function () {
+          return panels.length > 1 ? Math.max(0, (panels[0].offsetLeft + panels[0].offsetWidth) - panels[1].offsetLeft) : 0;
+        };
+        // Stacked column: they overlap vertically by it instead.
+        var seamY = function () {
+          return panels.length > 1 ? Math.max(0, (panels[0].offsetTop + panels[0].offsetHeight) - panels[1].offsetTop) : 0;
+        };
+        if (c.desktop) {
+          // Along the seam = down-left; each slab starts further down than the
+          // one before it and they all arrive together as the strip lands.
+          panels.forEach(function (p, i) {
+            var k = 0.3 + i * 0.3;
+            gsap.fromTo(p,
+              { y: function () { return stripH() * k; }, x: function () { return -seamX() * k; } },
+              { y: 0, x: 0, ease: "none",
+                scrollTrigger: { trigger: strip, start: "top bottom", end: "top 12%", scrub: 0.6, invalidateOnRefresh: true } });
+          });
+        } else {
+          // Stacked: the seam runs left-low → right-high, so "along the seam"
+          // is sideways (with the small matching vertical component). Slabs
+          // alternate sides, each on its own trigger.
+          panels.forEach(function (p, i) {
+            var dir = i % 2 ? -1 : 1;
+            gsap.fromTo(p,
+              { x: function () { return -dir * stripW() * 0.35; }, y: function () { return dir * seamY() * 0.35; } },
+              { x: 0, y: 0, ease: "none",
+                scrollTrigger: { trigger: p, start: "top bottom", end: "top 45%", scrub: 0.6, invalidateOnRefresh: true } });
+          });
+        }
+
+        // 3. Photos drift slower than the strip (the img is cut 16% taller
+        //    than its figure for this); captions land once the strip is in.
+        var photos = qa(".exec-recognition-media img", strip);
+        if (photos.length) {
+          gsap.fromTo(photos, { yPercent: -5 }, { yPercent: 5, ease: "none",
+            scrollTrigger: { trigger: strip, start: "top bottom", end: "bottom top", scrub: true } });
+        }
+        var caps = qa(".exec-recognition-caption", strip);
+        if (caps.length) {
+          gsap.from(caps, { autoAlpha: 0, y: 22, duration: 0.9, ease: "power3.out", stagger: 0.12,
+            scrollTrigger: { trigger: strip, start: c.desktop ? "top 45%" : "top 70%", once: true } });
+        }
+      }
+
+      // ── Iceberg (labs landing) ────────────────────────────────────────────
+      // The SVG is geometry in a 520×560 viewBox: a tip above the waterline, a
+      // mass below it inside a clip at the waterline. The tip lands and the
+      // line draws once; the mass is SCRUBBED up from fully submerged (y 360 in
+      // viewBox units, i.e. below the clip) to its resting place, so the reader
+      // scrolls it into existence.
+      var ice = q(".exec-iceberg");
+      if (ice) {
+        var iceSvg = q(".exec-iceberg-svg", ice);
+        var iceDeep = q(".exec-iceberg-deep", ice);
+        var iceTip = q(".exec-iceberg-tip", ice);
+        var iceLine = q(".exec-iceberg-line", ice);
+        var iceLabels = qa(".exec-iceberg-label", ice);
+        if (iceSvg) {
+          var settle = gsap.timeline({
+            scrollTrigger: { trigger: iceSvg, start: "top 80%", once: true },
+            defaults: { ease: "power3.out" },
+          });
+          if (iceTip) settle.from(iceTip, { y: 48, autoAlpha: 0, duration: 1.1 }, 0);
+          if (iceLine) settle.fromTo(iceLine, { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 1.3, ease: "power4.out" }, 0.1);
+          if (iceLabels.length) settle.from(iceLabels, { autoAlpha: 0, y: 8, duration: 0.7, stagger: 0.18 }, 0.7);
+          if (iceDeep) {
+            gsap.fromTo(iceDeep, { y: 360 }, {
+              y: 0, ease: "none",
+              scrollTrigger: { trigger: iceSvg, start: "top 85%", end: "center 40%", scrub: 0.6 },
+            });
+          }
         }
       }
 
