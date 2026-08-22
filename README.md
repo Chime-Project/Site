@@ -42,7 +42,8 @@ The homepage is `index.html`. Pages:
 | `/weight-loss.html` | Weight Loss landing (tide) |
 | `/wellness.html` | Health, Energy & Wellness (cadmium/gold) |
 | `/labs.html` | Labs & Health Insights (iris) |
-| `/executive-weight-loss.html` | Weight Loss for executives (Persona 1) — `weight-loss` theme, GSAP motion layer (`ui_kits/executive/`). `noindex` + canonical to `weight-loss.html`; reached from paid/email, not the nav |
+| `/executive-weight-loss.html` | Weight Loss for executives (Persona 1, landing 1 of 3) — `weight-loss` theme, GSAP motion layer (`ui_kits/executive/`). `noindex` + canonical to `weight-loss.html`; reached from paid/email, not the nav |
+| `/executive-labs.html` | Labs & Health Insights for executives (Persona 1, landing 2 of 3) — `lab` theme, same layout language and motion layer; embeds the live Labs carousels (Energy & Recovery default) and folds tiers + configurator into one section (Executive default). `noindex` + canonical to `labs.html` |
 | `/chimeAssessment.html` | **The** health assessment (v4 build, `ui_kits/chimeAssessment/`) — every CTA on the site lands here. Case‑sensitive URL |
 | `/assessment.html` | The retired v1 funnel. Unlinked, but **not deletable** — `chimeAssessment.html` still loads its `AssessmentControls.jsx` |
 | `/nad.html` | NAD+ add‑on page, Chime theme (`ui_kits/nad/NadPage.jsx`) |
@@ -70,7 +71,8 @@ chime/
 ├── weight-loss.html        # Weight Loss landing page
 ├── wellness.html           # Health, Energy & Wellness page
 ├── labs.html               # Labs & Health Insights page
-├── executive-weight-loss.html  # Executive (Persona 1) weight-loss landing — GSAP motion
+├── executive-weight-loss.html  # Executive (Persona 1) landing 1: weight loss — GSAP motion
+├── executive-labs.html     # Executive (Persona 1) landing 2: labs & health insights
 ├── chimeAssessment.html    # Health Assessment (v4 intake funnel) — every CTA lands here
 ├── assessment.html         # v1 funnel, retired but still supplies AssessmentControls.jsx
 ├── nad.html                # NAD+ add-on page (Chime)
@@ -101,8 +103,11 @@ chime/
 │   ├── weight-loss/        #   WeightLossHero, WLBodies, WLTimeline, WLCalculator sections…
 │   ├── wellness/           #   WellnessHero, HWSymptoms, WNTimeline…
 │   ├── labs/               #   LabsHero, LabsSignals, InsightStack, BuildPanel…
-│   ├── executive/          #   Executive landing
-│   │   ├── ExecutiveWLPage.jsx     # the page (sections, copy, motion hooks)
+│   ├── executive/          #   Executive (Persona 1) landings
+│   │   ├── ExecutiveCore.jsx       # shared chrome, CTA, kicker, badge, footer — load before a page kit
+│   │   ├── ExecutiveWLPage.jsx     # landing 1 (sections, copy, motion hooks)
+│   │   ├── ExecutiveLabsPage.jsx   # landing 2 (embeds the live ui_kits/labs modules)
+│   │   ├── executive-labs-component-tests.html  # React component tests — serve the repo, open it (see Deploying)
 │   │   └── ExecutiveMotion.js      # GSAP layer — plain JS, mounted from the page's layout effect
 │   ├── chimeAssessment/    #   THE assessment (v4 spec; "v4" in the file names is the spec version)
 │   │   ├── assessment-v4-data.js / -logic.js
@@ -187,17 +192,18 @@ for its field primitives, and removing that kit blanks the live assessment.
 
 ## Motion (GSAP)
 
-Three pages load GSAP 3 from unpkg with SRI hashes, like the React tags:
-`chimeAssessment.html` and `cart.html` (core only — screen transitions) and
-`executive-weight-loss.html` (core + ScrollTrigger + SplitText; every GSAP plugin
-has been free since 3.13). Everywhere else, reveals are the CSS
+Four pages load GSAP 3 from unpkg with SRI hashes, like the React tags:
+`chimeAssessment.html` and `cart.html` (core only — screen transitions) and the
+two executive landings, `executive-weight-loss.html` and `executive-labs.html`
+(core + ScrollTrigger + SplitText; every GSAP plugin has been free since 3.13). Everywhere else, reveals are the CSS
 `animation-timeline: view()` pattern in each page's `<style>` (Chromium‑only by
 design — other browsers rest at the visible end state).
 
-The executive landing's motion is a separate **plain‑JS layer**,
-`ui_kits/executive/ExecutiveMotion.js`, which `ExecutiveWLPage.jsx` mounts from a
-`useLayoutEffect` (after the DOM is committed, before first paint, so `from`
-states never flash). The kit exposes hooks and nothing else:
+The executive landings' motion is one shared **plain‑JS layer**,
+`ui_kits/executive/ExecutiveMotion.js`, which each page kit (`ExecutiveWLPage.jsx`,
+`ExecutiveLabsPage.jsx`) mounts from a `useLayoutEffect` (after the DOM is
+committed, before first paint, so `from` states never flash). It is selector‑
+driven, so one file serves both pages; the kits expose hooks and nothing else:
 
 | Hook | Treatment |
 |---|---|
@@ -205,7 +211,11 @@ states never flash). The kit exposes hooks and nothing else:
 | `exec-fade` | `ScrollTrigger.batch` fade‑up, neighbours cascade |
 | `exec-cta` | magnetic lean + lift on `(hover: hover) and (pointer: fine)` only |
 | `exec-hero-rule`, `exec-kicker-rule` | 1px blocks (not borders) so they can be drawn `scaleX 0 → 1` |
-| `exec-problem-figure`, `exec-membership-figure` | clip‑path wipe + Ken Burns settle |
+| `exec-problem-figure`, `exec-membership-figure`, `exec-still` | clip‑path wipe + Ken Burns settle |
+| `exec-scrub` | the Problem band's word‑by‑word scrubbed statement, on any heading (labs: Why Different) |
+| `exec-steps-grid`, `exec-kicker-grid` | kicker rules draw per grid (one trigger per grid — the labs page has three, far apart) |
+| `exec-iceberg-*` | labs landing: tip lands, waterline draws, the submerged mass is scrubbed up out of the deep |
+| `exec-recognition-strip` / `-panel` / `-media img` / `-caption` | labs landing **curtain**: the hero is pinned (`pinSpacing:false`) while the triptych scrolls over it; the slabs slide into place along their seams (scrubbed, staggered — a translation along the cut keeps the cut one line), the photos parallax, the captions land once. Needs the page's `main > section { z-index: 1 }` so the strip paints above the fixed hero |
 
 Scroll‑scrubbed beats on top: hero exit parallax, the Problem band's word‑by‑word
 statement, the care‑path strips wiping in like bars, the `≠` glyph/vial drift and
@@ -217,6 +227,28 @@ Verifying it: `agent-browser set media reduced-motion`, reload, and expect
 `ScrollTrigger.getAll().length === 0` with no `.exec-fade` at opacity 0; reset
 with `agent-browser set media no-preference`.
 
+**The labs landing embeds the live Labs modules** (`ui_kits/labs/`
+InsightStackSection and LabsSignalsSection) rather than re‑drawing them; the
+persona default goes in through an optional prop whose default is the old
+behaviour (`defaultTag`), so `labs.html` renders byte‑identically (verified by DOM
+diff against the live build). The IA's Tiers and Panel Configurator rows are one
+section there (`ExecLabsTiersConfigurator`: the tier cards are the selector, the
+panel beside them reads `LABS_TIERS` / `LabsOptionGroup` from
+`LabsProductDetailSection.jsx`, which is loaded but not mounted). The IA's Build
+Your Own Panel row is deliberately absent from that landing (client call,
+2026‑08‑21). Traps worth knowing:
+
+- `--accent-default` is **not** pinned lighter on that page the way the WL page
+  pins it — the embedded modules paint with it. The page's own grounds use
+  `--exec-ground` instead.
+- `--primary-*` **is** pinned there, to iris‑800 (+ darker hover/active mixes):
+  every pill CTA binds to that family, which is the fixed navy `blue-800/900/950`
+  no theme re‑colours — on tide it passes as on‑theme, on iris it read as a blue
+  button on a lavender page.
+- Don't load **`dsbundle.js`** on a lean page to borrow a DS primitive: it embeds
+  `tailwind.setup.js` and injects the Tailwind Play CDN on load (plus a copy of
+  every homepage kit). Copy the component's block out instead.
+
 ---
 
 ## Theming
@@ -224,7 +256,7 @@ with `agent-browser set media no-preference`.
 Components reference semantic tokens only (`--accent-default`, `--text-default`,
 `--bg-default`, …) and not palette primitives (`--color-iris-500`) or raw brand
 hex values. The active palette is inherited from the nearest `data-theme` ancestor.
-Single‑theme pages (Labs, FAQ, legal, NAD+, the executive landing) set it on
+Single‑theme pages (Labs, FAQ, legal, NAD+, the executive landings) set it on
 `<html>`; the homepage and the category pages set it **per section**, so one page
 can carry several palettes. Changing `data-theme` changes the palette applied to
 every component beneath it.
@@ -234,7 +266,7 @@ every component beneath it.
 | `default` | blue | FAQ, legal pages, `nad.html`, homepage default sections |
 | `weight-loss` | tide | Weight Loss, Executive Weight Loss, homepage WL section |
 | `wellness` / `energy-wellness` | cadmium (gold) | Wellness, homepage wellness section, Chime upsells |
-| `lab` | iris | Labs, homepage labs section |
+| `lab` | iris | Labs, Executive Labs, homepage labs section |
 
 The Amerilean pages (`upsell01–03`, `nad2`, `upsellPopups`) are outside this
 system on purpose: they load no site stylesheet and carry their own palette.
@@ -279,6 +311,12 @@ environment. Before pushing:
 
 1. Run the guard: `bash ui_kits/shared/check-theme-agnostic.sh` (0 errors) — and
    pass the kit directory you touched (`… ui_kits/executive`) to scan it too.
+   Kit tests: `node ui_kits/chimeAssessment/assessment-v4-tests.js`,
+   `node ui_kits/cart/cart-tests.js`, and the in‑browser component suites
+   (`ui_kits/cart/cart-component-tests.html`,
+   `ui_kits/executive/executive-labs-component-tests.html` — serve the repo,
+   open the page, expect the green PASS summary; headless drivers poll
+   `window.__EXEC_LABS_TEST_DONE` / `__EXEC_LABS_TEST`).
 2. Preview at desktop and 390px widths. Allow ≥6s (homepage ≥8s) for in‑browser
    Babel to compile before checking a page.
 3. Confirm every `<script src>` on a changed page returns 200. A 404 leaves the
