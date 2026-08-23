@@ -2,6 +2,11 @@
 // Left: headline + subtext. Right: a fanned stack of 5 insight cards that
 // auto-cycles (front card flies out down-left, the rest shift forward).
 //
+// `title`, `sub` and `cards` (all optional) override the headline, subtext and
+// card data — added for the executive wellness landing, which reuses the stack
+// as its "Did You Know?" carousel. Defaults are the original values, so
+// labs.html and executive-labs.html render exactly what they always did.
+//
 // Theme-agnostic per THEME_CONTRACT.md: no palette primitives, no brand hex.
 // Each card takes a distinct stop off the page's OWN accent ramp
 // (active → strong → hover → default → border), so the fan reads as one
@@ -61,6 +66,7 @@ const INSIGHT_ICONS = {
     </React.Fragment>
   ),
   heart: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />,
+  droplet: <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />,
 };
 
 const INSIGHT_CARDS = [
@@ -84,12 +90,12 @@ function rotateOrder(order) {
   return order.slice(1).concat(order[0]);
 }
 
-function InsightCardStack() {
+function InsightCardStack({ cards = INSIGHT_CARDS }) {
   const reduced = React.useMemo(function () {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }, []);
   const [order, setOrder] = React.useState(function () {
-    return INSIGHT_CARDS.map(function (_, i) { return i; });
+    return cards.map(function (_, i) { return i; });
   });
   const [leaving, setLeaving] = React.useState(null);   // index mid fly-out
   const [returning, setReturning] = React.useState(null); // index fading back in at the rear
@@ -140,11 +146,11 @@ function InsightCardStack() {
         // Overriding margin-right to auto re-centres the box and drops this
         // reservation, which pushes the fan back out of the panel.
         margin: "0 auto",
-        marginRight: "calc(" + INSIGHT_DEPTH + " * " + (INSIGHT_CARDS.length - 1) + ")",
-        marginTop: "calc(" + INSIGHT_DEPTH + " * " + (INSIGHT_CARDS.length - 1) + ")",
+        marginRight: "calc(" + INSIGHT_DEPTH + " * " + (cards.length - 1) + ")",
+        marginTop: "calc(" + INSIGHT_DEPTH + " * " + (cards.length - 1) + ")",
         cursor: "pointer", outlineOffset: 6,
       }}>
-      {INSIGHT_CARDS.map(function (card, i) {
+      {cards.map(function (card, i) {
         const pos = order.indexOf(i);
         const depth = pos;
         const isFront = pos === 0;
@@ -162,7 +168,7 @@ function InsightCardStack() {
             padding: "var(--spacing-5)",
             display: "flex", flexDirection: "column", justifyContent: "space-between",
             transform: isLeaving ? undefined : "translate(calc(" + INSIGHT_DEPTH + " * " + depth + "), calc(" + INSIGHT_DEPTH + " * " + (-depth) + "))",
-            zIndex: isLeaving ? 99 : INSIGHT_CARDS.length - pos,
+            zIndex: isLeaving ? 99 : cards.length - pos,
             boxShadow: isFront ? "var(--shadow-md)" : "var(--shadow-sm)",
             transition: reduced ? "none" : "transform " + INSIGHT_FLY_MS + "ms var(--ease-in-out), box-shadow " + INSIGHT_FLY_MS + "ms var(--ease-in-out)",
             animation: isLeaving
@@ -218,7 +224,12 @@ function InsightCardStack() {
   );
 }
 
-function ChimeInsightStackSection({ theme = "default" }) {
+function ChimeInsightStackSection({
+  theme = "default",
+  title = "One Insight Can Change Everything",
+  sub = "Health is connected.",
+  cards,
+}) {
   return (
     <section data-screen-label="One Insight Can Change Everything" data-theme={theme}
       className="insight-section" style={{
@@ -235,15 +246,15 @@ function ChimeInsightStackSection({ theme = "default" }) {
           <h2 className="insight-title" style={{
             margin: 0, fontSize: "var(--text-5xl)", fontWeight: 300,
             lineHeight: 1.1, color: "var(--text-default)", textWrap: "balance",
-          }}>One Insight Can Change Everything</h2>
+          }}>{title}</h2>
           <p style={{
             margin: "var(--spacing-4) 0 0", fontSize: "var(--text-base)",
             lineHeight: 1.5, color: "var(--fg-muted)",
-          }}>Health is connected.</p>
+          }}>{sub}</p>
         </Reveal>
 
         <Reveal delay={150}>
-          <InsightCardStack />
+          <InsightCardStack cards={cards} />
         </Reveal>
       </div>
     </section>

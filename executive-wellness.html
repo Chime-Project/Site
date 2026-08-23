@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="wellness">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Energy &amp; Wellness For Executives</title>
+<meta name="description" content="Feel like yourself again — without losing momentum. Personalized energy and recovery support, reviewed by a licensed provider, built around a schedule that doesn’t slow down. Chime Health for executives.">
+<!-- Persona 1 (The Executive) · Landing 3 of 3 · Energy & Wellness.
+     IA and copy: uploads/Chime_Health_LandingPages_Persona1_Executive (1).pdf
+     (untracked — uploads/*.pdf is gitignored, and this repo's root is public).
+
+     Built on executive-labs.html, as asked: the same thin shell — page theme
+     wiring in :root, the kit's CSS, then the kit scripts and a mount —
+     re-themed to the Energy & Wellness (cadmium) ramp. The layout language
+     comes from ui_kits/executive/ExecutiveWellnessPage.jsx, which follows
+     ExecutiveLabsPage.jsx.
+
+     ⚙ THE TWO INTERACTIVE MODULES ARE LIVE ONES, embedded with the persona
+     overrides the IA asks for passed as NEW OPTIONAL PROPS whose defaults are
+     the old behaviour, so wellness.html / labs.html / executive-labs.html are
+     unchanged in what they render: ChimeHWSymptomsSection (ui_kits/wellness/)
+     gets the five performance-framed labels, and ChimeInsightStackSection
+     (ui_kits/labs/) is re-copied as the "Did You Know?" carousel. Nothing here
+     needs Tailwind — and do NOT reach for dsbundle.js to get DS primitives: it
+     embeds tailwind.setup.js and injects the Tailwind Play CDN on load.
+
+     ⚠️ --accent-default IS NOT PINNED HERE, same reasoning as the labs page:
+     the live modules paint on the theme's accent ramp (the symptom stack's
+     cream→gold gradient and subhead, the card stack's border stops), so
+     pinning would shift them. The page's own grounds use --exec-ground
+     (cadmium-300; the umber ink below reads ~8.7:1 on it), and the dark bands
+     use a page-local umber (--exec-band-dark) rather than rgb(--glass-rgb) —
+     the wellness theme does not re-tint the glass, so the theme value is the
+     site's NAVY ink, which would sit cold on a gold page.
+
+     ⚠️ NOT INDEXED, DELIBERATELY. Same category as wellness.html for a
+     different reader; near-duplicate variants split ranking signals, so this
+     carries noindex plus a canonical to wellness.html and is meant for paid
+     and email. -->
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://chime-project.github.io/Site/wellness.html">
+<link rel="stylesheet" href="styles.css?v=20260865">
+<!-- Production React (45 KB gz instead of the 254 KB development builds), same
+     SRI discipline as the other two executive landings. -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<!-- GSAP 3.15 — core + ScrollTrigger + SplitText; the motion layer no-ops if
+     any of them fails to load, so the page still renders at rest. -->
+<script src="https://unpkg.com/gsap@3.15.0/dist/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/ScrollTrigger.min.js" integrity="sha384-wl5TeDVvOWt30Pbf8aSo2ZrzsOjddu3avOBvHe+p+OhJt9gP6w9YXmDkN5DK2/dF" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/SplitText.min.js" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr" crossorigin="anonymous"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg-default); }
+
+  /* Executive Wellness page theme wiring — palette primitives live HERE, not
+     in the kit (ui_kits/executive/ExecutiveWellnessPage.jsx binds to these
+     --exec-* vars only), which keeps the kit clean under the theme guard.
+     Energy & Wellness theme = the cadmium (gold) ramp. --exec-ground is the
+     hero / 3-step-close-pill colour (cadmium-300); the dark bands sit on a
+     page-local warm umber (cadmium-800 mixed toward black) because this theme,
+     unlike Labs, does NOT re-tint --glass-rgb — the theme glass is navy, and a
+     navy band on a gold page reads as another site's section. The umber ink
+     measures ~8.7:1 on cadmium-300. */
+  :root {
+    --exec-ground: var(--color-cadmium-300);
+    --exec-ink-dark: color-mix(in srgb, var(--color-cadmium-800) 40%, black);
+    --exec-band-dark: color-mix(in srgb, var(--color-cadmium-800) 40%, black);
+    --exec-ink-light: var(--bg-default);
+    --exec-hairline-dark: color-mix(in srgb, var(--exec-ink-dark) 35%, transparent);
+    --exec-hairline-light: color-mix(in srgb, var(--bg-default) 35%, transparent);
+
+    /* CTAs follow the Energy & Wellness ramp, not the site's navy. Every pill
+       CTA here binds to --primary-*, which is the FIXED navy family that no
+       data-theme re-colours — the theme contract themes --accent-* only. On a
+       gold page a navy button reads as another brand, so, exactly as the labs
+       landing pinned iris-800, this page pins the family to cadmium-800
+       (white text measures 5.9:1 on it, AA at every size) with hover/active
+       mixed darker. Page-scoped: nothing outside this file changes. */
+    --primary-default: var(--color-cadmium-800);
+    --primary-hover:   color-mix(in srgb, var(--color-cadmium-800) 86%, black);
+    --primary-active:  color-mix(in srgb, var(--color-cadmium-800) 76%, black);
+  }
+
+  /* The badge spin stays CSS: it is a loop, not a reveal. Everything else is
+     GSAP (ui_kits/executive/ExecutiveMotion.js). No curtain z-order rules on
+     this page — the motion layer only pins the hero when a Recognition strip
+     exists, and this landing has none. */
+  @keyframes exec-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .exec-spin { animation: exec-spin 26s linear infinite; transform-origin: 50% 50%; }
+  }
+
+  /* SplitText line masks: padding extends the clip box past the descenders
+     ("g", "y" at line-height ~1), the negative margin gives it straight back. */
+  .exec-line-mask { padding-bottom: 0.16em; margin-bottom: -0.16em; }
+
+  /* Clip-path reveals on the persona stills: the figure is the clip box, so it
+     needs the picture's radius. translateZ(0): Safari paints transformed
+     children outside an overflow:hidden + border-radius box otherwise. */
+  .exec-figure, .exec-membership-figure {
+    border-radius: var(--radius-2xl); overflow: hidden; transform: translateZ(0);
+  }
+  .exec-hero-rule, .exec-kicker-rule { display: block; }
+
+  /* Hero ambient loop + cadmium scrim (solid on the text side, thinning right). */
+  .exec-hero-video {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 62% 50%;
+    display: block; pointer-events: none;
+  }
+  .exec-hero-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(100deg,
+      color-mix(in srgb, var(--exec-ground) 95%, transparent) 0%,
+      color-mix(in srgb, var(--exec-ground) 92%, transparent) 38%,
+      color-mix(in srgb, var(--exec-ground) 62%, transparent) 72%,
+      color-mix(in srgb, var(--exec-ground) 48%, transparent) 100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .exec-hero-video { animation: none; }
+  }
+
+  /* Fixed-chrome CTA: long label on desktop, short on phones. */
+  .exec-chrome-cta { white-space: nowrap; }
+  .exec-chrome-cta-short { display: none; }
+
+  /* Final CTA: the family still behind the centred headline (asset carries a
+     soft left pad; object-position 100% drops that first on a crop). */
+  .exec-final-bg {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: 100% 45%;
+    display: block; pointer-events: none;
+  }
+  .exec-final-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--exec-band-dark) 90%, transparent) 0%,
+      color-mix(in srgb, var(--exec-band-dark) 82%, transparent) 50%,
+      color-mix(in srgb, var(--exec-band-dark) 58%, transparent) 100%);
+  }
+
+  /* ---- Embedded card-stack module: the responsive rules labs.html gives it ---- */
+  @media (max-width: 960px) {
+    /* Insight card stack: single column. The stack keeps its own right gutter —
+       that margin is what reserves room for the fan (see InsightStackSection). */
+    .insight-section { padding-inline: var(--spacing-5) !important; }
+    .insight-panel { grid-template-columns: 1fr !important; padding: var(--spacing-8) var(--spacing-6) !important; }
+    .insight-title { font-size: var(--text-4xl) !important; }
+  }
+  @media (max-width: 560px) {
+    /* Insight fan: card + depth ×0.66 so the stack plus its fan clears the
+       panel's inner width at 390px. */
+    .insight-stack { --insight-w: 224px; --insight-h: 248px; --insight-depth: 14px; }
+  }
+
+  /* ---- Page grids ---- */
+  @media (max-width: 960px) {
+    .exec-goals-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+  @media (max-width: 900px) {
+    .exec-close-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 560px) {
+    .exec-goals-grid { grid-template-columns: 1fr !important; }
+  }
+
+  @media (max-width: 700px) {
+    /* The wordmark is the desktop hero's floor; at phone widths it would either
+       overflow or shrink to nothing, so it goes. */
+    .exec-hero-word { display: none !important; }
+    .exec-badge { width: 104px; height: 104px; }
+    /* 88px top: the fixed chrome pills end at y≈80. The h1 drops to 34px to
+       pay for it, as on the other two landings. */
+    [data-screen-label="Exec Hero"] { padding-top: 88px !important; }
+    [data-screen-label="Exec Hero"] h1 { font-size: 34px !important; }
+    .exec-chrome-cta-long { display: none; }
+    .exec-chrome-cta-short { display: inline; }
+    .exec-chrome-logo { min-height: 44px; box-sizing: border-box; }
+    .exec-hero-video { object-position: 58% 50%; }
+    [data-screen-label="3-Step Close"] {
+      padding-top: var(--spacing-12) !important; padding-bottom: var(--spacing-12) !important;
+    }
+    .exec-membership-grid { grid-template-columns: 1fr !important; }
+    .exec-final-bg { object-position: 80% 50%; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Shared atoms the embedded modules render with -->
+<script type="text/babel" src="ui_kits/shared/ui/Reveal.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
+<script src="ui_kits/homepage/image-slot.js?v=20260718"></script>
+<!-- ⚙ The live modules -->
+<script type="text/babel" src="ui_kits/wellness/HWSymptomsSection.jsx?v=20260870"></script>
+<script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260870"></script>
+<script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
+<!-- The site footer, as on index.html / wellness.html -->
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260840"></script>
+<!-- Plain JS, loaded before the kit so window.ExecMotion exists when the page
+     component's layout effect runs. -->
+<script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260870"></script>
+<script type="text/babel">
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.Fragment>
+    <ExecutiveWellnessPage />
+    <ChimeAssessmentModal />
+  </React.Fragment>
+);
+</script>
+</body>
+</html>

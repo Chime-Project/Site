@@ -7,6 +7,10 @@
 // listener that scales the pinned cards imperatively (refs, not state) so it
 // runs at scroll rate with no re-renders. Reduced-motion users get the static
 // stacked layout and no listener is attached.
+//
+// `cards` (optional) overrides the card labels — added for the executive
+// wellness landing, which reframes them toward performance. The default is the
+// full HWS_CARDS list, so wellness.html renders exactly what it always did.
 
 const HWS_UPLOADS = window.CHIME_UPLOADS_BASE || "../../uploads";
 
@@ -39,10 +43,10 @@ function HWSSoundFamiliarCTA({ label, onClick }) {
   return <Button label={label} onClick={onClick} variant="ghost" size="cta" />;
 }
 
-function ChimeHWSymptomsSection() {
+function ChimeHWSymptomsSection({ cards = HWS_CARDS } = {}) {
   const containerRef = React.useRef(null);
   const cardRefs = React.useRef([]);
-  const n = HWS_CARDS.length;
+  const n = cards.length;
 
   React.useEffect(function () {
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -111,7 +115,7 @@ function ChimeHWSymptomsSection() {
 
         {/* Right — 8 stacking cards + in-flow spacers (never margin/padding) */}
         <div className="hws-cards" style={{ width: "100%", maxWidth: 480, justifySelf: "end" }}>
-          {HWS_CARDS.map(function (label, i) {
+          {cards.map(function (label, i) {
             const even = i % 2 === 0;
             const last = i === n - 1;
             return (
