@@ -144,29 +144,117 @@
       color-mix(in srgb, var(--exec-band-dark) 58%, transparent) 100%);
   }
 
-  /* ---- Embedded card-stack module: the responsive rules labs.html gives it ---- */
-  @media (max-width: 960px) {
-    /* Insight card stack: single column. The stack keeps its own right gutter —
-       that margin is what reserves room for the fan (see InsightStackSection). */
-    .insight-section { padding-inline: var(--spacing-5) !important; }
-    .insight-panel { grid-template-columns: 1fr !important; padding: var(--spacing-8) var(--spacing-6) !important; }
-    .insight-title { font-size: var(--text-4xl) !important; }
+  /* ---- "Did You Know?" wall — full-screen marquee masonry. The columns sit
+     behind the floating title card and drift vertically; each track holds two
+     identical .exec-wall-seq halves, so the -50% keyframe hands off
+     seamlessly (the seq's own padding-bottom is the wrap gap). Durations are
+     per-column inline styles — the shorthand here deliberately omits
+     duration, and the inline value overrides its 0s default. ---- */
+  .exec-wall-columns {
+    position: absolute; inset: 0; z-index: 0; display: flex;
+    gap: var(--spacing-5); padding: 0 var(--spacing-5);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);
   }
-  @media (max-width: 560px) {
-    /* Insight fan: card + depth ×0.66 so the stack plus its fan clears the
-       panel's inner width at 390px. */
-    .insight-stack { --insight-w: 224px; --insight-h: 248px; --insight-depth: 14px; }
+  .exec-wall-col { flex: 1 1 0; min-width: 0; overflow: hidden; }
+  .exec-wall-track { display: flex; flex-direction: column; will-change: transform; }
+  .exec-wall-seq {
+    display: flex; flex-direction: column;
+    gap: var(--spacing-5); padding-bottom: var(--spacing-5);
+  }
+  @keyframes exec-wall-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  @keyframes exec-wall-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .exec-wall-track { animation: exec-wall-up linear infinite; }
+    .exec-wall-track-down { animation-name: exec-wall-down; }
+    /* Reading or aiming at an Explore link stops the drift — :active covers
+       touch, where there is no hover: the wall holds still under a finger. */
+    .exec-wall-columns:hover .exec-wall-track,
+    .exec-wall-columns:active .exec-wall-track { animation-play-state: paused; }
+  }
+  /* Visually-hidden static copy of the wall's facts for assistive tech. On
+     keyboard focus it unclips into a small panel at the section's foot —
+     an invisible focused link would violate focus-visibility. */
+  .exec-sr-only {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .exec-sr-only:focus-within {
+    width: auto; height: auto; margin: 0; clip: auto; white-space: normal;
+    overflow: visible; left: 50%; bottom: var(--spacing-6); transform: translateX(-50%);
+    z-index: 4; background: var(--bg-elevated); border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl); padding: var(--spacing-4) var(--spacing-6);
+    box-shadow: var(--shadow-md); list-style: none; max-width: min(90vw, 640px);
+  }
+
+  /* ---- Goal strips — two full-bleed rows of three, cut by slanted seams
+     (the labs landing's Recognition-triptych geometry, doubled). Row 2 mirrors
+     the slant so the pair reads as a chevron, and the page ground shows
+     through a hairline gap on every leading edge. --exec-seam is the
+     horizontal run of the slant over the strip's full height. ---- */
+  .exec-goals { --exec-seam: clamp(44px, 5.5vw, 96px); --exec-seam-gap: 5px; }
+  .exec-goals-strip { display: flex; height: clamp(360px, 52vh, 540px); overflow: hidden; }
+  .exec-goals-strip + .exec-goals-strip { margin-top: var(--exec-seam-gap); }
+  .exec-goals-panel { position: relative; flex: 1 1 0; min-width: 0; }
+  /* Row 1: seams lean down-left, exactly the labs triptych's cuts. */
+  .exec-goals-strip .exec-goals-panel:nth-child(1) {
+    clip-path: polygon(0 0, calc(100% - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  .exec-goals-strip .exec-goals-panel:nth-child(2) {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(var(--exec-seam) 0, calc(100% - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  .exec-goals-strip .exec-goals-panel:nth-child(3) {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(var(--exec-seam) 0, 100% 0, 100% 100%, 0 100%);
+  }
+  /* Row 2 (equal specificity, declared after → wins): mirrored, down-right. */
+  .exec-goals-strip-alt .exec-goals-panel:nth-child(1) {
+    clip-path: polygon(0 0, calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  .exec-goals-strip-alt .exec-goals-panel:nth-child(2) {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(0 0, calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam-gap)) 100%, var(--exec-seam) 100%);
+  }
+  .exec-goals-strip-alt .exec-goals-panel:nth-child(3) {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(0 0, 100% 0, 100% 100%, var(--exec-seam) 100%);
+  }
+  .exec-goals-figure { position: absolute; inset: 0; overflow: hidden; transform: translateZ(0); }
+  /* Hover zoom on the media wrapper, not the img — same 3-node split as the
+     labs strip, kept even without the curtain motion so the nodes stay
+     interchangeable between the two kits. */
+  .exec-goals-media {
+    position: absolute; inset: 0; transform-origin: 50% 40%;
+    transition: transform .9s cubic-bezier(.2, .7, .2, 1);
+  }
+  .exec-goals-panel:hover .exec-goals-media { transform: scale(1.07); }
+  @media (prefers-reduced-motion: reduce) {
+    .exec-goals-media { transition: none; }
+    .exec-goals-panel:hover .exec-goals-media { transform: none; }
+  }
+  .exec-goals-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg,
+      transparent 42%,
+      color-mix(in srgb, var(--exec-band-dark) 32%, transparent) 64%,
+      color-mix(in srgb, var(--exec-band-dark) 82%, transparent) 100%);
+  }
+  /* Captions keep clear of the slanted cut on their trailing side. */
+  .exec-goals-caption {
+    padding: var(--spacing-8) calc(var(--exec-seam) + var(--spacing-6)) var(--spacing-8) var(--spacing-8);
+  }
+  .exec-goals-strip-alt .exec-goals-caption {
+    padding: var(--spacing-8) var(--spacing-8) var(--spacing-8) calc(var(--exec-seam) + var(--spacing-6));
   }
 
   /* ---- Page grids ---- */
-  @media (max-width: 960px) {
-    .exec-goals-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  }
   @media (max-width: 900px) {
     .exec-close-grid { grid-template-columns: 1fr !important; }
-  }
-  @media (max-width: 560px) {
-    .exec-goals-grid { grid-template-columns: 1fr !important; }
   }
 
   @media (max-width: 700px) {
@@ -187,6 +275,31 @@
     }
     .exec-membership-grid { grid-template-columns: 1fr !important; }
     .exec-final-bg { object-position: 80% 50%; }
+    /* Goal strips stack: each row becomes a column of three with slanted
+       horizontal cuts (left low, right high — the labs mobile treatment),
+       both rows the same, separated by the hairline gap. */
+    .exec-goals { --exec-seam: clamp(20px, 7vw, 34px); --exec-seam-gap: 4px; }
+    .exec-goals-strip { flex-direction: column; height: auto; }
+    .exec-goals-panel { flex: none; height: clamp(230px, 60vw, 340px); margin-left: 0 !important; }
+    .exec-goals-panel + .exec-goals-panel {
+      margin-top: calc(-1 * var(--exec-seam));
+      height: calc(clamp(230px, 60vw, 340px) + var(--exec-seam));
+    }
+    .exec-goals-strip .exec-goals-panel:nth-child(1) {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--exec-seam) - var(--exec-seam-gap)), 0 calc(100% - var(--exec-seam-gap))) !important;
+    }
+    .exec-goals-strip .exec-goals-panel:nth-child(2) {
+      clip-path: polygon(0 var(--exec-seam), 100% 0, 100% calc(100% - var(--exec-seam) - var(--exec-seam-gap)), 0 calc(100% - var(--exec-seam-gap))) !important;
+    }
+    .exec-goals-strip .exec-goals-panel:nth-child(3) {
+      clip-path: polygon(0 var(--exec-seam), 100% 0, 100% 100%, 0 100%) !important;
+    }
+    .exec-goals-caption {
+      padding: var(--spacing-5) var(--spacing-5) calc(var(--exec-seam) + var(--spacing-4)) var(--spacing-5) !important;
+    }
+    /* Wall: two columns carry all five cards; the title card tightens. */
+    .exec-wall-col:nth-child(n+3) { display: none; }
+    .exec-wall-title { padding: var(--spacing-8) var(--spacing-6) !important; }
   }
 </style>
 </head>
@@ -197,7 +310,9 @@
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
 <script src="ui_kits/homepage/image-slot.js?v=20260718"></script>
-<!-- ⚙ The live modules -->
+<!-- ⚙ The live symptom stack, plus the labs card-stack kit — the fan is NOT
+     mounted here since the wall redesign (2026-08-23); the kit is loaded for
+     INSIGHT_ICONS, which the wall's cards draw with. -->
 <script type="text/babel" src="ui_kits/wellness/HWSymptomsSection.jsx?v=20260870"></script>
 <script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260870"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
@@ -207,7 +322,7 @@
      component's layout effect runs. -->
 <script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
 <script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
-<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260870"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260872"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
