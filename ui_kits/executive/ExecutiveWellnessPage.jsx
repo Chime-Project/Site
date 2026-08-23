@@ -19,13 +19,14 @@
 // Performing At Your Best" reframed into the same register — flagged to the
 // client rather than invented silently.
 //
-// ⚙ THE TWO INTERACTIVE MODULES ARE THE LIVE ONES, embedded unmodified in what
-// they render by default: ChimeHWSymptomsSection (the symptom card stack —
-// whose Part 2 IS the IA's row 3 Reframe, same headline) and
-// ChimeInsightStackSection (the auto-cycling card stack, reused as the IA's
-// row 5 carousel). The persona overrides arrive through props that did not
-// exist before and default to the old behaviour, so wellness.html, labs.html
-// and executive-labs.html render exactly what they did.
+// ⚙ INTERACTIVE MODULES: ChimeHWSymptomsSection (the live symptom card stack
+// — whose Part 2 IS the IA's row 3 Reframe, same headline) is embedded with a
+// new optional `cards` prop defaulting to the old behaviour, so wellness.html
+// renders exactly what it did. The IA's row 5 carousel started as an embed of
+// ChimeInsightStackSection and was redesigned on 2026-08-23 into this page's
+// own full-screen marquee wall (ExecWnWall below) — the labs kit stays loaded
+// only for INSIGHT_ICONS, and its fan renders unchanged on labs.html /
+// executive-labs.html.
 //
 // Palette lives in executive-wellness.html as --exec-* page vars, so this file
 // stays free of palette primitives (theme guard). The chrome, CTA, kicker and
@@ -50,14 +51,33 @@ const EXEC_WN_SYMPTOMS = [
   "Not performing at your best",
 ];
 
-// Section 4. The IA's six goals, verbatim, in its order.
+// Section 4. The IA's six goals, verbatim, in its order — each drawn as the
+// executive LIVING that goal (the Recognition-triptych treatment from the labs
+// landing, asked for on 2026-08-23): row 1 = goals 1–3, row 2 = goals 4–6.
+// "More Energy" reuses the Membership still (the one clearly positive frame
+// that already existed); the other five are new nano_banana_pro stills off the
+// same character sheet (jobs c929ebd3-…, 8b862263-…, 5a73dfa9-…, 39d6bb72-…,
+// e42ce504-… — the first focus take drew an Apple mark on a tablet and was
+// re-shot holding a printed brief instead; check devices for logos).
 const EXEC_WN_GOALS = [
-  "More Energy",
-  "Sharper Focus",
-  "Better Recovery",
-  "Healthy Aging",
-  "Greater Vitality",
-  "Feeling Like Yourself Again",
+  { goal: "More Energy", num: "01", image: "uploads/executive-membership.webp",
+    alt: "The executive arriving through a bright glass lobby with a gym bag and a coffee",
+    focus: "57% 30%" },
+  { goal: "Sharper Focus", num: "02", image: "uploads/executive-goal-focus.webp",
+    alt: "The same executive at his corner-office window mid-morning, printed brief in hand, clear-eyed",
+    focus: "50% 25%" },
+  { goal: "Better Recovery", num: "03", image: "uploads/executive-goal-recovery.webp",
+    alt: "The same executive sitting tall on a gym bench after a workout, towel round his neck, smiling easily",
+    focus: "50% 22%" },
+  { goal: "Healthy Aging", num: "04", image: "uploads/executive-goal-aging.webp",
+    alt: "The same executive mid-stride on a sunrise jog along a leafy park path",
+    focus: "50% 22%" },
+  { goal: "Greater Vitality", num: "05", image: "uploads/executive-goal-vitality.webp",
+    alt: "The same executive laughing as he throws a football at golden hour, his teenage son behind him",
+    focus: "50% 28%" },
+  { goal: "Feeling Like Yourself Again", num: "06", image: "uploads/executive-goal-himself.webp",
+    alt: "The same executive relaxed at his kitchen window in the early morning with a mug of coffee",
+    focus: "50% 25%" },
 ];
 
 // Section 5. The IA's five items in its order, "each framed as 'Did You
@@ -187,68 +207,200 @@ function ExecWnSymptoms() {
   return <ChimeHWSymptomsSection cards={EXEC_WN_SYMPTOMS} />;
 }
 
-// ── 4 · Goal cards ──────────────────────────────────────────────────────────
+// ── 4 · Goal strips ─────────────────────────────────────────────────────────
 // The IA row is a bare list of six goals with no bodies and no CTA, so the
-// cards are deliberately spare: a numbered kicker and the goal in display
-// type. The kicker hairlines draw in sequence (exec-kicker-grid), which is
-// what makes six otherwise-static tiles read as a set being counted out.
+// pictures do the talking: two full-bleed rows of three panels in the labs
+// landing's Recognition-triptych language — slanted seams cut by clip-path,
+// the page ground showing through a hairline gap, the photo zooming under the
+// pointer — except every frame here is the POSITIVE mirror: the same executive
+// living each goal. Row 2 mirrors the slant so the pair reads as one set, not
+// a repeat. Same three-nested-boxes structure as the labs strip (panel = clip,
+// figure = frame, media = hover zoom); no curtain motion though — that block
+// in ExecutiveMotion.js keys off `.exec-recognition-strip`, deliberately NOT
+// used here (it would pin the hero, which sits two sections away). The
+// captions carry the only entrance motion (exec-fade cascade).
 function ExecWnGoals() {
+  const rows = [EXEC_WN_GOALS.slice(0, 3), EXEC_WN_GOALS.slice(3)];
   return (
-    <section data-screen-label="Goal Cards" style={{
+    <section data-screen-label="Goal Cards" className="exec-goals" style={{
       background: "var(--bg-tertiary)", fontFamily: "var(--font-family-base)",
-      padding: "var(--spacing-24) var(--spacing-6)",
+      padding: "var(--spacing-24) 0 0", overflow: "hidden",
     }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 var(--spacing-6)" }}>
         <h2 className="exec-heading" style={{
           margin: 0, color: "var(--text-default)",
           fontSize: "clamp(32px, 4vw, 56px)", lineHeight: 1.02,
           fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
           maxWidth: "14em",
         }}>Wellness Means Different Things To Different People</h2>
-        <div className="exec-kicker-grid exec-goals-grid" style={{
-          display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "var(--spacing-6)", marginTop: "var(--spacing-12)",
-        }}>
-          {EXEC_WN_GOALS.map((g, i) => (
-            <div key={g} className="exec-fade exec-goal" style={{
-              background: "var(--bg-elevated)", border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-2xl)", padding: "var(--spacing-6)",
-              minHeight: 168, boxSizing: "border-box",
-              display: "flex", flexDirection: "column",
-              justifyContent: "space-between", gap: "var(--spacing-8)",
-            }}>
-              <ExecKicker label="Goal" num={"0" + (i + 1)}
-                color="var(--text-muted)" border="var(--border-default)" />
-              <span style={{
-                fontSize: "clamp(22px, 2vw, 30px)", lineHeight: 1.15,
-                fontWeight: "var(--font-weight-semibold)", letterSpacing: "-0.01em",
-                color: "var(--text-default)", textWrap: "balance",
-              }}>{g}</span>
-            </div>
-          ))}
-        </div>
+      </div>
+      <div style={{ marginTop: "var(--spacing-12)" }}>
+        {rows.map((row, r) => (
+          <div key={r} role="list"
+            className={"exec-goals-strip" + (r === 1 ? " exec-goals-strip-alt" : "")}>
+            {row.map((g) => (
+              <div key={g.goal} role="listitem" className="exec-goals-panel">
+                <figure className="exec-goals-figure" style={{
+                  margin: 0, background: "var(--exec-band-dark)", color: "var(--exec-ink-light)",
+                }}>
+                  <div className="exec-goals-media">
+                    <img src={g.image} alt={g.alt} loading="lazy" decoding="async" style={{
+                      position: "absolute", inset: 0, width: "100%", height: "100%",
+                      objectFit: "cover", objectPosition: g.focus, display: "block",
+                    }} />
+                  </div>
+                  <div className="exec-goals-scrim" aria-hidden="true" />
+                  <figcaption className="exec-fade exec-goals-caption" style={{
+                    position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 2,
+                  }}>
+                    <span style={{
+                      display: "block", fontSize: "var(--text-sm)", letterSpacing: "0.08em",
+                      textTransform: "uppercase", fontWeight: "var(--font-weight-semibold)",
+                      opacity: 0.8,
+                    }}>{"Goal " + g.num}</span>
+                    <span style={{
+                      display: "block", marginTop: "var(--spacing-2)",
+                      fontSize: "clamp(22px, 1.9vw, 30px)", lineHeight: 1.2,
+                      fontWeight: "var(--font-weight-medium)", letterSpacing: "-0.01em",
+                      maxWidth: "12em", textWrap: "balance",
+                    }}>{g.goal}</span>
+                  </figcaption>
+                </figure>
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
-// ── 5 · ⚙ "Did You Know?" carousel (live module) ────────────────────────────
-// The labs kit's auto-cycling card stack, re-copied through its new props: the
-// IA's headline, its five items, every fact opening with "Did you know?" and
-// none carrying a price. The sub keeps the module's own approved line — it is
-// exactly why these five sit in one stack. Each card's Explore → link opens
-// the assessment, as the module always did.
-function ExecWnCarousel() {
+// ── 5 · ⚙ "Did You Know?" wall (full-screen marquee) ────────────────────────
+// Redesigned 2026-08-23 (user request): a full-viewport section. The five
+// cards keep the fan's exact visual language — 10px accent-stop border,
+// radius-3xl, translucent white ground, title + fact top-right, big line icon
+// centre, Explore → bottom-right (see InsightCardStack in
+// ui_kits/labs/InsightStackSection.jsx) — but stack Pinterest-style in four
+// columns of varying card heights that drift vertically in a continuous
+// marquee (alternating direction, each column its own period; hover pauses;
+// reduced motion holds still). The section title floats over the wall as a
+// card of the same language. The labs kit is still LOADED — INSIGHT_ICONS is
+// a top-level const of its <script>, i.e. a global lexical binding — but the
+// fan component is no longer mounted on this page.
+//
+// The wall is aria-hidden (its cards repeat many times and move); the five
+// facts are rendered once more as a visually-hidden list with real links, so
+// assistive tech gets the content exactly once, static.
+
+// Column recipes: [card index into EXEC_WN_CARDS, minHeight px]. Sequences
+// are duplicated in the DOM (two .exec-wall-seq halves) so the -50% keyframe
+// loops seamlessly. On phones only the first two columns render — between
+// them they carry all five cards.
+const EXEC_WN_WALL_COLUMNS = [
+  { dir: "up", dur: "46s", cards: [[0, 380], [2, 300], [3, 440], [4, 320]] },
+  { dir: "down", dur: "58s", cards: [[1, 320], [4, 420], [0, 300], [3, 360]] },
+  { dir: "up", dur: "40s", cards: [[2, 400], [1, 300], [4, 340], [0, 440]] },
+  { dir: "down", dur: "52s", cards: [[3, 310], [0, 400], [1, 350], [2, 320]] },
+];
+
+function ExecWnWallCard({ card, h }) {
+  const icons = (typeof INSIGHT_ICONS !== "undefined") ? INSIGHT_ICONS : {};
+  // The fan draws every icon at 140; here the icon scales with the card so
+  // short masonry cards keep the same three-band composition.
+  const iconSize = h >= 420 ? 140 : h >= 360 ? 118 : 96;
   return (
-    <section data-screen-label="Did You Know Carousel" style={{
-      background: "var(--bg-default)", fontFamily: "var(--font-family-base)",
-      padding: "var(--spacing-8) 0",
+    <div style={{
+      boxSizing: "border-box", border: "10px solid " + card.accent,
+      borderRadius: "var(--radius-3xl)", background: "rgba(255, 255, 255, 0.72)",
+      padding: "var(--spacing-5)", minHeight: h,
+      display: "flex", flexDirection: "column", justifyContent: "space-between",
+      boxShadow: "var(--shadow-sm)",
     }}>
-      <div className="exec-fade">
-        <ChimeInsightStackSection theme="wellness"
-          title="Discover What&rsquo;s Possible" sub="Health is connected."
-          cards={EXEC_WN_CARDS} />
+      <div style={{ textAlign: "right" }}>
+        <div style={{
+          fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)",
+          lineHeight: 1.25, color: "var(--text-default)",
+        }}>{card.title}</div>
+        <div style={{
+          marginTop: "var(--spacing-1)", fontSize: "var(--text-sm)",
+          lineHeight: 1.4, color: "var(--fg-muted)",
+        }}>{card.sub}</div>
       </div>
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        color: card.numColor,
+      }}>
+        <div className="insight-icon">
+          {icons[card.icon] ? <Icon size={iconSize} strokeWidth={1.5}>{icons[card.icon]}</Icon> : null}
+        </div>
+      </div>
+      {/* tabIndex -1: the card scrolls by inside an aria-hidden marquee, so
+          keyboard users reach the assessment through the static list below
+          (and every other CTA on the page) instead of a moving target. */}
+      <div style={{ textAlign: "right" }}>
+        <a href="chimeAssessment.html" tabIndex={-1} onClick={execOpenAssessment} style={{
+          fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-medium)",
+          color: card.numColor, textDecoration: "underline", textUnderlineOffset: "3px",
+        }}>Explore →</a>
+      </div>
+    </div>
+  );
+}
+
+function ExecWnWall() {
+  return (
+    <section data-screen-label="Did You Know Wall" className="exec-wall" style={{
+      position: "relative", overflow: "hidden", minHeight: "100vh",
+      background: "var(--bg-default)", fontFamily: "var(--font-family-base)",
+      boxSizing: "border-box", display: "flex",
+      alignItems: "center", justifyContent: "center",
+      padding: "var(--spacing-16) var(--spacing-6)",
+    }}>
+      <div className="exec-wall-columns" aria-hidden="true">
+        {EXEC_WN_WALL_COLUMNS.map((col, ci) => (
+          <div key={ci} className="exec-wall-col">
+            <div
+              className={"exec-wall-track" + (col.dir === "down" ? " exec-wall-track-down" : "")}
+              style={{ animationDuration: col.dur }}>
+              {[0, 1].map((half) => (
+                <div key={half} className="exec-wall-seq">
+                  {col.cards.map(([c, h], i) => (
+                    <ExecWnWallCard key={half + "-" + i} card={EXEC_WN_CARDS[c]} h={h} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* The title, floated as a card of the same language over the wall. */}
+      <div className="exec-fade exec-wall-title" style={{
+        position: "relative", zIndex: 3, boxSizing: "border-box",
+        background: "var(--bg-elevated)", border: "10px solid var(--accent-default)",
+        borderRadius: "var(--radius-3xl)", boxShadow: "var(--shadow-md)",
+        padding: "var(--spacing-10) var(--spacing-12)",
+        maxWidth: 620, textAlign: "center",
+      }}>
+        <h2 className="exec-heading" style={{
+          margin: "0 0 var(--spacing-3)", color: "var(--text-default)",
+          fontSize: "clamp(30px, 3.4vw, 48px)", lineHeight: 1.05,
+          fontWeight: "var(--font-weight-bold)", letterSpacing: "-0.02em",
+        }}>Discover What&rsquo;s Possible</h2>
+        <p style={{
+          margin: 0, color: "var(--text-secondary)",
+          fontSize: "var(--text-lg)", lineHeight: 1.5,
+        }}>Health is connected.</p>
+      </div>
+      {/* Static copy of the five facts for assistive tech (the wall above is
+          aria-hidden and repeats them in motion). */}
+      <ul className="exec-sr-only">
+        {EXEC_WN_CARDS.map((c) => (
+          <li key={c.key}>
+            {c.title + " — " + c.sub + " "}
+            <a href="chimeAssessment.html" onClick={execOpenAssessment}>Explore</a>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -389,7 +541,7 @@ function ExecutiveWellnessPage() {
         <ExecWnHero />
         <ExecWnSymptoms />
         <ExecWnGoals />
-        <ExecWnCarousel />
+        <ExecWnWall />
         <ExecWnClose />
         <ExecWnMembership />
         <ExecWnFinalCta />
@@ -404,5 +556,5 @@ function ExecutiveWellnessPage() {
 
 Object.assign(window, {
   ExecutiveWellnessPage, ExecWnHero, ExecWnSymptoms, ExecWnGoals,
-  ExecWnCarousel, ExecWnClose, ExecWnMembership, ExecWnFinalCta,
+  ExecWnWall, ExecWnWallCard, ExecWnClose, ExecWnMembership, ExecWnFinalCta,
 });
