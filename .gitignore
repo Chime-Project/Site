@@ -18,3 +18,6 @@ uploads/*.pages
 
 # Full-resolution signals-photo masters — the site serves the 000N.webp recompressions
 uploads/000[0-9].png
+
+# Local-only dated snapshots of the site's pages, kept for reference — never deploy
+reference-pages/
