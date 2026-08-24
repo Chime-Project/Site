@@ -38,18 +38,29 @@ function ChimeFooter() {
         display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr",
         gap: "var(--spacing-12)", alignItems: "start",
       }}>
-        <a href="index.html" aria-label="Chime Health home" style={{ display: "inline-flex", gridColumn: "1" }}>
+        {/* minHeight 44: the wordmark is ~24px tall, and the anchor is a tap
+            target (WCAG 2.5.5) — the box grows, the mark stays put. */}
+        <a href="index.html" aria-label="Chime Health home" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, gridColumn: "1" }}>
           {/* Navy wordmark flattened to white for the deep slate panel. */}
           <img src={FOOTER_ASSETS + "/logo-main.svg"} alt="Chime Health" style={{ width: "min(190px, 100%)", height: "auto", display: "block", filter: "brightness(0) invert(1)" }} />
         </a>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
           <div style={{ fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-white)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Contact Email</div>
+          {/* 44px tap target: the box grows around the 18px text row; the
+              negative margins keep the column's visual rhythm (the neighbours
+              are plain labels, so the enlarged hit area overlaps nothing
+              interactive) and the negative left margin cancels the horizontal
+              padding so the text keeps its left alignment. */}
           <a href="mailto:hello@chimehealth.com" style={{
             color: "var(--color-blue-100)",
             fontSize: "var(--text-sm)",
             fontWeight: "var(--font-weight-medium)",
             textDecoration: "none",
+            display: "inline-flex", alignItems: "center",
+            minHeight: 44, width: "max-content",
+            padding: "0 var(--spacing-3)",
+            margin: "calc(-1 * var(--spacing-2)) 0 calc(-1 * var(--spacing-2)) calc(-1 * var(--spacing-3))",
             transition: "color var(--transition-fast) var(--ease-in-out)",
           }} onMouseEnter={(e) => e.target.style.color = "var(--color-white)"} onMouseLeave={(e) => e.target.style.color = "var(--color-blue-100)"}>
             hello@chimehealth.com
@@ -69,12 +80,15 @@ function ChimeFooter() {
           </address>
         </div>
 
-        <nav style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
+        {/* gap 0, not spacing-3: each FooterLink now carries a 44px tap box
+            (13px of it above and below the text), which IS the row spacing —
+            keeping the old gap on top of it doubled the air between rows. */}
+        <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           {["Weight Loss", "Health, Energy & Wellness", "Labs"].map((l) => <FooterLink key={l} label={l} href={FOOTER_HREFS[l] || "#"} />)}
           <FooterLink label="FAQs" href={FOOTER_FAQ_HREF} />
         </nav>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           {["Privacy Policy", "HIPAA Notice", "Telehealth Consent", "Terms & Conditions"].map((l) => (
             <FooterLink key={l} label={l} href={FOOTER_LEGAL_HREFS[l]} />
           ))}
@@ -121,7 +135,15 @@ function FooterLink({ label, href = "#", underline = false }) {
         fontWeight: "var(--font-weight-medium)",
         textDecoration: underline || hover ? "underline" : "none",
         textUnderlineOffset: 4,
-        width: "max-content",
+        // 44px touch target (WCAG 2.5.5): the bare 18px text row was the
+        // smallest tap target on every page (2026-08-23 audit). The box grows
+        // around the text — inline-flex centres it, the columns above drop
+        // their gap to compensate, and the negative left margin cancels the
+        // horizontal padding so the label keeps its column alignment.
+        display: "inline-flex", alignItems: "center",
+        minHeight: 44, width: "max-content",
+        padding: "0 var(--spacing-3)",
+        marginLeft: "calc(-1 * var(--spacing-3))",
         transition: "color var(--transition-fast) var(--ease-in-out)",
       }}
     >
@@ -148,6 +170,8 @@ function FooterCta({ label }) {
         fontSize: "var(--text-sm)",
         fontWeight: "var(--font-weight-semibold)",
         textDecoration: "none",
+        // The padding alone measured 42px tall — 2px shy of the 44px target.
+        minHeight: 44, boxSizing: "border-box",
         padding: "var(--spacing-3) var(--spacing-6)",
         borderRadius: "var(--radius-4xl)",
         boxShadow: hover ? "var(--shadow-md)" : "var(--shadow-sm)",
