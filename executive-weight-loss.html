@@ -111,19 +111,43 @@
      hairline and the kicker rules are 1px blocks the motion layer draws. */
   .exec-hero-rule, .exec-kicker-rule { display: block; }
 
-  /* Care-path strips — the vertical colour-band moment. Hovered strip expands. */
-  .exec-strips { display: flex; align-items: stretch; height: 74vh; }
-  .exec-strip {
-    flex: 1 1 0; display: flex; align-items: flex-start; justify-content: center;
-    padding: 28px 0; overflow: hidden;
+  /* Care-path panels — the colour ramp cut by slanted seams (the wellness
+     landing's goal-strip language, lite: flat ramp grounds and numbered
+     captions, no photos; restyled 2026-08-23). Same seam math as that page:
+     --exec-seam is the horizontal run of the cut over the row's height, and
+     the page ground shows through a hairline gap on every leading edge. A
+     hovered panel still widens — kept from the old strip design; the seam
+     angle holds while it does (the run is a px value, not a %). NOT named
+     .exec-strip: ExecutiveMotion's care-path wipe writes inline clip-path
+     insets that would flatten these polygons (that block no-ops here now). */
+  .exec-wlpath {
+    /* Seam scaled with the height (both ~0.7× the first cut) so the slant
+       angle stays where it was when the band was 48vh. */
+    --exec-seam: clamp(24px, 3vw, 52px); --exec-seam-gap: 5px;
+    display: flex; height: clamp(240px, 32vh, 340px); overflow: hidden;
+  }
+  .exec-wlpath-panel {
+    position: relative; flex: 1 1 0; min-width: 0;
     transition: flex-grow .5s cubic-bezier(.2, .7, .2, 1);
   }
-  .exec-strip:hover { flex-grow: 2.2; }
-  .exec-strip-label {
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    font-family: var(--font-family-base); font-weight: 700;
-    font-size: clamp(20px, 2.4vw, 40px); letter-spacing: -0.01em;
-    line-height: 1.15; max-height: 100%;
+  .exec-wlpath-panel:hover { flex-grow: 1.6; }
+  .exec-wlpath-panel:first-child {
+    clip-path: polygon(0 0, calc(100% - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  .exec-wlpath-panel + .exec-wlpath-panel {
+    margin-left: calc(-1 * var(--exec-seam));
+    clip-path: polygon(var(--exec-seam) 0, calc(100% - var(--exec-seam-gap)) 0,
+      calc(100% - var(--exec-seam) - var(--exec-seam-gap)) 100%, 0 100%);
+  }
+  /* After the sibling rule (equal specificity): the last panel keeps the
+     overlap margin but runs to the strip's square right edge. */
+  .exec-wlpath-panel:last-child {
+    clip-path: polygon(var(--exec-seam) 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .exec-wlpath-caption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: var(--spacing-6) calc(var(--exec-seam) + var(--spacing-4)) var(--spacing-6) var(--spacing-6);
   }
 
   /* Hero ambient loop. object-fit: cover so the 16:9 clip fills a hero that is
@@ -252,13 +276,26 @@
     .exec-final-bg { object-position: 80% 50%; }
     .exec-glyph-visual { min-height: 340px !important; }
     .exec-steps-grid { grid-template-columns: 1fr !important; }
-    .exec-strips { flex-direction: column; height: auto; }
-    .exec-strip {
-      min-height: 76px; align-items: center; justify-content: flex-start;
-      padding: 20px;
+    /* Care-path panels stack: slanted horizontal cuts (left low, right high),
+       each pulled up by the seam so the cut stays one line; slim slabs. */
+    .exec-wlpath { --exec-seam: clamp(16px, 6vw, 28px); --exec-seam-gap: 4px; flex-direction: column; height: auto; }
+    .exec-wlpath-panel { flex: none; height: clamp(104px, 26vw, 150px); margin-left: 0 !important; }
+    .exec-wlpath-panel:hover { flex-grow: 0; }
+    .exec-wlpath-panel + .exec-wlpath-panel {
+      margin-top: calc(-1 * var(--exec-seam));
+      height: calc(clamp(104px, 26vw, 150px) + var(--exec-seam));
     }
-    .exec-strip-label {
-      writing-mode: horizontal-tb; transform: none; font-size: 24px;
+    .exec-wlpath-panel:first-child {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--exec-seam) - var(--exec-seam-gap)), 0 calc(100% - var(--exec-seam-gap))) !important;
+    }
+    .exec-wlpath-panel + .exec-wlpath-panel {
+      clip-path: polygon(0 var(--exec-seam), 100% 0, 100% calc(100% - var(--exec-seam) - var(--exec-seam-gap)), 0 calc(100% - var(--exec-seam-gap))) !important;
+    }
+    .exec-wlpath-panel:last-child {
+      clip-path: polygon(0 var(--exec-seam), 100% 0, 100% 100%, 0 100%) !important;
+    }
+    .exec-wlpath-caption {
+      padding: var(--spacing-4) var(--spacing-5) calc(var(--exec-seam) + var(--spacing-3)) var(--spacing-5) !important;
     }
   }
 </style>
@@ -271,7 +308,7 @@
      component's layout effect runs. -->
 <script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
 <script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
-<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260869"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWLPage.jsx?v=20260874"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
