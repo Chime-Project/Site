@@ -29,6 +29,8 @@
 // The five steps of section 5, as a colour ramp. Ink flips to light on the last
 // two: navy clears AA on strips 1-3, white clears it on 4-5. The flip is
 // POSITIONAL — reorder these and the contrast breaks.
+// (The --exec-strip-* ramp vars keep their name — they are the page's tokens —
+// even though the panels are now .exec-wlpath-*, see ExecPath below.)
 const EXEC_PATH = [
   { label: "You", bg: "var(--exec-strip-1)", ink: "var(--exec-ink-dark)" },
   { label: "Wellness Coach", bg: "var(--exec-strip-2)", ink: "var(--exec-ink-dark)" },
@@ -313,12 +315,32 @@ function ExecPath() {
       </div>
       {/* The IA writes this row's subhead as an arrow chain
           (You → Wellness Coach → Provider → Personalized Plan → Ongoing
-          Support). Drawn as the strip ramp instead: same five beats, same
-          order, and the widening colour does the work the arrows did. */}
-      <div className="exec-strips" role="list">
-        {EXEC_PATH.map((s) => (
-          <div key={s.label} role="listitem" className="exec-strip" style={{ background: s.bg }}>
-            <span className="exec-strip-label" style={{ color: s.ink }}>{s.label}</span>
+          Support). Drawn as the colour ramp cut into slanted-seam panels —
+          restyled 2026-08-23 to the wellness landing's goal-strip language
+          (lite: flat ramp grounds and numbered captions, no photos). The
+          widening colour still does the work the arrows did, and a hovered
+          panel still widens (this section's own beat, kept from the strip
+          design). Classes are exec-wlpath-*, NOT exec-strip: the motion
+          layer's care-path wipe writes inline clip-path insets that would
+          flatten these seam polygons — that block now no-ops on this page,
+          and the captions cascade in via exec-fade instead. */}
+      <div className="exec-wlpath" role="list">
+        {EXEC_PATH.map((s, i) => (
+          <div key={s.label} role="listitem" className="exec-wlpath-panel"
+            style={{ background: s.bg, color: s.ink, fontFamily: "var(--font-family-base)" }}>
+            <div className="exec-fade exec-wlpath-caption">
+              <span style={{
+                display: "block", fontSize: "var(--text-sm)", letterSpacing: "0.08em",
+                textTransform: "uppercase", fontWeight: "var(--font-weight-semibold)",
+                opacity: 0.8,
+              }}>{"Step 0" + (i + 1)}</span>
+              <span style={{
+                display: "block", marginTop: "var(--spacing-2)",
+                fontSize: "clamp(20px, 1.7vw, 26px)", lineHeight: 1.2,
+                fontWeight: "var(--font-weight-medium)", letterSpacing: "-0.01em",
+                textWrap: "balance",
+              }}>{s.label}</span>
+            </div>
           </div>
         ))}
       </div>
