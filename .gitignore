@@ -21,3 +21,8 @@ uploads/000[0-9].png
 
 # Local-only dated snapshots of the site's pages, kept for reference — never deploy
 reference-pages/
+
+# Standalone handoff export of amerilean.html (folder + zip) — regenerated from
+# the live files, never deployed; the repo root is the Pages root
+amerilean-landing/
+amerilean-landing.zip
