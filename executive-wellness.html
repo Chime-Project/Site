@@ -15,19 +15,18 @@
      comes from ui_kits/executive/ExecutiveWellnessPage.jsx, which follows
      ExecutiveLabsPage.jsx.
 
-     ⚙ THE TWO INTERACTIVE MODULES ARE LIVE ONES, embedded with the persona
-     overrides the IA asks for passed as NEW OPTIONAL PROPS whose defaults are
-     the old behaviour, so wellness.html / labs.html / executive-labs.html are
-     unchanged in what they render: ChimeHWSymptomsSection (ui_kits/wellness/)
-     gets the five performance-framed labels, and ChimeInsightStackSection
-     (ui_kits/labs/) is re-copied as the "Did You Know?" carousel. Nothing here
-     needs Tailwind — and do NOT reach for dsbundle.js to get DS primitives: it
-     embeds tailwind.setup.js and injects the Tailwind Play CDN on load.
+     ⚙ ONE LIVE KIT IS EMBEDDED: ChimeInsightStackSection (ui_kits/labs/) is
+     loaded for INSIGHT_ICONS, which the "Did You Know?" wall draws with — the
+     fan itself is not mounted, and it renders unchanged on labs.html /
+     executive-labs.html. (The ChimeHWSymptomsSection embed — the IA's rows
+     2+3, the symptom stack — was CUT on 2026-08-28, user request.) Nothing
+     here needs Tailwind — and do NOT reach for dsbundle.js to get DS
+     primitives: it embeds tailwind.setup.js and injects the Tailwind Play CDN
+     on load.
 
      ⚠️ --accent-default IS NOT PINNED HERE, same reasoning as the labs page:
-     the live modules paint on the theme's accent ramp (the symptom stack's
-     cream→gold gradient and subhead, the card stack's border stops), so
-     pinning would shift them. The page's own grounds use --exec-ground
+     the live module paints on the theme's accent ramp (the card stack's
+     border stops), so pinning would shift it. The page's own grounds use --exec-ground
      (cadmium-300; the umber ink below reads ~8.7:1 on it), and the dark bands
      use a page-local umber (--exec-band-dark) rather than rgb(--glass-rgb) —
      the wellness theme does not re-tint the glass, so the theme value is the
@@ -310,10 +309,9 @@
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
 <script src="ui_kits/homepage/image-slot.js?v=20260718"></script>
-<!-- ⚙ The live symptom stack, plus the labs card-stack kit — the fan is NOT
-     mounted here since the wall redesign (2026-08-23); the kit is loaded for
-     INSIGHT_ICONS, which the wall's cards draw with. -->
-<script type="text/babel" src="ui_kits/wellness/HWSymptomsSection.jsx?v=20260870"></script>
+<!-- ⚙ The labs card-stack kit — the fan is NOT mounted here since the wall
+     redesign (2026-08-23); the kit is loaded for INSIGHT_ICONS, which the
+     wall's cards draw with. -->
 <script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260870"></script>
 <script type="text/babel" src="ui_kits/homepage/AssessmentModal.jsx?v=20260865"></script>
 <!-- The site footer, as on index.html / wellness.html -->
@@ -322,7 +320,7 @@
      component's layout effect runs. -->
 <script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
 <script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
-<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260872"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260878"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>

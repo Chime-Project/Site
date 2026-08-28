@@ -13,20 +13,16 @@
 // deliberate exceptions lifted from live pages so they carry approved wording:
 // the 3-Step Close's subtitle and step bodies (wellness.html's Simple Path),
 // and the "Did You Know?" card facts (the NAD+ line is nad.html's, LIPO-C and
-// Provider Oversight are faqs.js / wellness.html wording). The IA gives three
-// of the five symptom labels; the last two ("Mornings that start in a fog",
-// "Not performing at your best") are the live stack's "Mental Fog" and "Not
-// Performing At Your Best" reframed into the same register — flagged to the
-// client rather than invented silently.
+// Provider Oversight are faqs.js / wellness.html wording).
 //
-// ⚙ INTERACTIVE MODULES: ChimeHWSymptomsSection (the live symptom card stack
-// — whose Part 2 IS the IA's row 3 Reframe, same headline) is embedded with a
-// new optional `cards` prop defaulting to the old behaviour, so wellness.html
-// renders exactly what it did. The IA's row 5 carousel started as an embed of
+// ⚙ INTERACTIVE MODULE: the IA's row 5 carousel started as an embed of
 // ChimeInsightStackSection and was redesigned on 2026-08-23 into this page's
 // own full-screen marquee wall (ExecWnWall below) — the labs kit stays loaded
 // only for INSIGHT_ICONS, and its fan renders unchanged on labs.html /
-// executive-labs.html.
+// executive-labs.html. The IA's rows 2+3 (the ChimeHWSymptomsSection embed
+// with performance-framed labels) were CUT on 2026-08-28 (user request); the
+// module's optional `cards` prop stays in the wellness kit, defaulting to the
+// old behaviour, so wellness.html renders exactly what it did.
 //
 // Palette lives in executive-wellness.html as --exec-* page vars, so this file
 // stays free of palette primitives (theme guard). The chrome, CTA, kicker and
@@ -39,17 +35,6 @@
 // reveal) and `exec-kicker-grid` + `exec-kicker-rule` (drawn hairlines).
 // Nothing here animates on its own except the CSS badge spin — the page
 // renders fully at rest when GSAP is absent or reduced motion is on.
-
-// Section 2. The IA gives the first three verbatim and says "only the 5 labels
-// change to performance framing"; see the copy-source note above for where the
-// last two come from. Sentence case is the IA's own, kept as written.
-const EXEC_WN_SYMPTOMS = [
-  "Running on caffeine by 2pm",
-  "Recovery that lags behind training",
-  "Focus that fades before the day does",
-  "Mornings that start in a fog",
-  "Not performing at your best",
-];
 
 // Section 4. The IA's six goals, verbatim, in its order — each drawn as the
 // executive LIVING that goal (the Recognition-triptych treatment from the labs
@@ -136,9 +121,8 @@ function ExecWnHero() {
       position: "relative", overflow: "hidden", background: "var(--exec-ground)",
       fontFamily: "var(--font-family-base)", minHeight: "100vh",
       boxSizing: "border-box", display: "flex", flexDirection: "column",
-      /* No value ribbon on this landing (the IA's row 2 is the symptom stack,
-         a section of its own), so the hero keeps a small bottom inset and the
-         wordmark is its floor — as on the labs landing. */
+      /* No value ribbon on this landing, so the hero keeps a small bottom
+         inset and the wordmark is its floor — as on the labs landing. */
       padding: "var(--spacing-24) var(--spacing-6) var(--spacing-6)",
     }}>
       <video ref={videoRef} className="exec-hero-video" src={heroSrc}
@@ -192,19 +176,6 @@ function ExecWnHero() {
       </div>
     </section>
   );
-}
-
-// ── 2 + 3 · ⚙ Symptom card stack + Reframe (live module) ───────────────────
-// One embed covers both IA rows: the live module's Part 1 is the stacked-card
-// "Does Any of This Sound Familiar?" (row 2, labels overridden to the
-// performance framing) and its Part 2 is "What If Feeling Tired Isn't
-// Normal?" — the IA's row 3 headline, word for word, with the live page's
-// approved supporting copy. Mounted bare, not inside an `exec-fade` wrapper:
-// the module is scroll-driven (position: sticky over several viewports) and
-// carries its own ground, so a batched fade-up of the whole thing would fight
-// its own motion.
-function ExecWnSymptoms() {
-  return <ChimeHWSymptomsSection cards={EXEC_WN_SYMPTOMS} />;
 }
 
 // ── 4 · Goal strips ─────────────────────────────────────────────────────────
@@ -539,7 +510,6 @@ function ExecutiveWellnessPage() {
       <ExecChrome />
       <main>
         <ExecWnHero />
-        <ExecWnSymptoms />
         <ExecWnGoals />
         <ExecWnWall />
         <ExecWnClose />
@@ -555,6 +525,6 @@ function ExecutiveWellnessPage() {
 }
 
 Object.assign(window, {
-  ExecutiveWellnessPage, ExecWnHero, ExecWnSymptoms, ExecWnGoals,
+  ExecutiveWellnessPage, ExecWnHero, ExecWnGoals,
   ExecWnWall, ExecWnWallCard, ExecWnClose, ExecWnMembership, ExecWnFinalCta,
 });
