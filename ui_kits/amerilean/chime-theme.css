@@ -10,7 +10,7 @@
 
    Structural rules live in amerilean.css; this file may only restate tokens
    and carry the few Chime-specific exceptions at the bottom (logo geometry,
-   no-italic type). Do not add component rules here.
+   no-italic type, the DS button skins). Do not add other component rules.
    ========================================================================== */
 
 :root {
@@ -80,4 +80,37 @@
 .footer-wordmark {
   width: min(380px, 70%);
   margin-inline: auto;
+}
+
+/* Chime DS call-to-actions (user request 2026-08-28): the landing's three
+   button variants remapped onto the site Button.jsx skins —
+     terra → primary on light  (accent pill, white label)
+     sand  → primary on dark   (white pill, ink label — every sand CTA here
+             sits on a slate ground: masthead, hero, tirz card, footer,
+             sticky bar)
+     ghost → ghost             (accent-subtle pill, accent-strong label)
+   The DS hover is a sweep; a static sheet gets the sweep's end state. */
+.btn--terra {
+  background: var(--teal); /* accent-default */
+  color: var(--white);
+}
+.btn--terra:hover {
+  background: var(--ink); /* accent-active (blue-800) */
+}
+.btn--sand {
+  background: var(--white);
+  color: var(--ink); /* text-default */
+}
+.btn--sand:hover {
+  background: var(--teal);
+  color: var(--white);
+  filter: none; /* amerilean.css dims sand on hover; the DS recolors instead */
+}
+.btn--ghost {
+  background: var(--mist-100); /* accent-subtle (blue-100) */
+  color: var(--teal-800); /* accent-strong (blue-700) */
+  border: 1px solid transparent;
+}
+.btn--ghost:hover {
+  background: var(--mist); /* accent-subtleHover (blue-200) */
 }
