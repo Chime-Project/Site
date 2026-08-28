@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Chime Health theme for the GLP-1 promo landing (glp1-plan.html)
+
+   Loads AFTER amerilean.css and restates its palette tokens with Chime
+   values, so both brands share one component stylesheet. Every value below
+   is a literal copy of a token in tokens/colors.css / tokens/typography.css
+   (named in the trailing comments) because this page loads no site
+   stylesheet — same rule as amerilean.css itself. If a Chime ramp value
+   changes in tokens/, re-copy it here.
+
+   Structural rules live in amerilean.css; this file may only restate tokens
+   and carry the few Chime-specific exceptions at the bottom (logo geometry,
+   no-italic type). Do not add component rules here.
+   ========================================================================== */
+
+:root {
+  /* Chime palette (tokens/colors.css primitives) */
+  --slate: #26354d; /* blue-900 — headlines, dark bands */
+  --teal: #6580bc; /* blue-500 — accent-default */
+  --teal-800: #485e89; /* blue-700 — small accent text, AA on the light bands */
+  --mist: #bdd2f6; /* blue-200 */
+  --mist-100: #dae5fa; /* blue-100 — quiet band tint */
+  --mist-50: #eff3fc; /* blue-50 — chart / slider grounds inside white cards */
+  --mist-600: #7fa0d9; /* blue-400 — mid-blue muted accents */
+  --sand: #dcd6c1; /* sand-300 */
+  --sand-100: #f7f3e4; /* sand-100 — light band (pricing / testimonials) */
+  --terra: #d98a6f; /* peach-500 — human warmth, selective emphasis */
+  --terra-100: #f9f1ef; /* peach-100 */
+  --terra-300: #eac6be; /* peach-300 — warm emphasis, AA-large on slate */
+  --terra-800: #8b5948; /* peach-800 — CTA ground, porcelain text ≈6.3:1 */
+  --clay: #c10007; /* red-700 — danger zone / "no" marks */
+  --porcelain: #fffefb; /* sand-50 — the site's --bg-default canvas */
+  --ink: #324563; /* blue-800 — the site's --text-default */
+  --ink-2: #485e89; /* blue-700 — the site's --text-secondary */
+  --line: #cad5e2; /* slate-300 — hairline borders */
+
+  /* RGB components — keep in sync with the hex above */
+  --slate-rgb: 38, 53, 77;
+  --teal-rgb: 101, 128, 188;
+  --teal-800-rgb: 72, 94, 137;
+  --mist-rgb: 189, 210, 246;
+  --sand-rgb: 220, 214, 193;
+  --terra-rgb: 217, 138, 111;
+  --clay-rgb: 193, 0, 7;
+  --porcelain-rgb: 255, 254, 251;
+
+  /* Palette-adjacent one-offs */
+  --terra-900: #6f4739; /* .btn--terra hover — darker peach-800 */
+  --band-hi: #31415f; /* lighter navy gradient stop (onDark badges) */
+  --footer-mid: #22304a; /* footer band gradient midpoint */
+  --badge-edge: #dae5fa; /* blue-100 rim */
+  --badge-face-1: #f8fafe;
+  --badge-face-2: #eff3fc; /* blue-50 */
+  --badge-clay-edge: #f2ded9; /* peach-200 rim */
+  --badge-clay-fade-rgb: 242, 222, 217;
+  --badge-clay-face-1: #fcf8f7;
+  --badge-clay-face-2: #f9f1ef; /* peach-100 */
+
+  /* Chime brand font (tokens/typography.css --font-family-base) */
+  --font: "Quicksand", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Quicksand ships no italic — the split-heading tail and the footer's
+   flourish line keep their weight + peach color contrast and drop the
+   (browser-synthesized) slant. */
+.h-split em,
+.h1 em,
+.h2--dark em,
+.signup__head .serif {
+  font-style: normal;
+}
+
+/* The Chime wordmark is 428×193 (≈2.2:1) where the AmeriLean one is 4.1:1 —
+   rescale both placements instead of letting the shared widths stretch it.
+   (Declared after amerilean.css, so these win inside its media queries too.) */
+.masthead__logo img {
+  width: 92px;
+}
+.footer-wordmark {
+  width: min(380px, 70%);
+  margin-inline: auto;
+}

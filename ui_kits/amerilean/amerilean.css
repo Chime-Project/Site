@@ -43,6 +43,31 @@
   --ink-2: #47536b; /* muted slate — AA on porcelain, sand-100, mist-100 */
   --line: #cbd8df; /* hairline borders — mist tint */
 
+  /* RGB components of the palette, for rgba() tints — keep in sync with the
+     hex values above. Routed through tokens so a sibling theme sheet (see
+     chime-theme.css) can restate the whole palette without duplicating any
+     component rule. Neutral white/black scrims stay literal. */
+  --slate-rgb: 30, 42, 68;
+  --teal-rgb: 78, 124, 132;
+  --teal-800-rgb: 47, 78, 84;
+  --mist-rgb: 185, 202, 211;
+  --sand-rgb: 216, 198, 178;
+  --terra-rgb: 201, 143, 122;
+  --clay-rgb: 165, 64, 45;
+  --porcelain-rgb: 250, 251, 252;
+
+  /* Palette-adjacent one-offs that were literals in component rules */
+  --terra-900: #6b3e2e; /* .btn--terra hover — darker terra-800 */
+  --band-hi: #2a3852; /* lighter slate gradient stop (onDark badges) */
+  --footer-mid: #223150; /* footer band gradient midpoint */
+  --badge-edge: #dbe4e9; /* ico-badge rim + faces — mist-tinted */
+  --badge-face-1: #f7fafb;
+  --badge-face-2: #e8eff3;
+  --badge-clay-edge: #e8dcda; /* clay ico-badge rim + faces — warm-tinted */
+  --badge-clay-fade-rgb: 227, 217, 211;
+  --badge-clay-face-1: #faf8f7;
+  --badge-clay-face-2: #f2ece9;
+
   --font: "Noto Serif", ui-serif, Georgia, "Times New Roman", serif;
 
   /* type scale — overridden per breakpoint in section 8 */
@@ -330,7 +355,7 @@ b {
   color: var(--porcelain);
 }
 .btn--terra:hover {
-  background: #6b3e2e;
+  background: var(--terra-900);
 }
 .btn--sand {
   background: var(--sand);
@@ -342,10 +367,10 @@ b {
 .btn--ghost {
   background: transparent;
   color: var(--teal-800);
-  border: 1px solid rgba(47, 78, 84, 0.4);
+  border: 1px solid rgba(var(--teal-800-rgb), 0.4);
 }
 .btn--ghost:hover {
-  background: rgba(78, 124, 132, 0.08);
+  background: rgba(var(--teal-rgb), 0.08);
 }
 .btn--sm {
   padding: 10px 24px;
@@ -428,8 +453,8 @@ b {
   background: linear-gradient(
     155deg,
     #fff 0%,
-    #dbe4e9 45%,
-    rgba(185, 202, 211, 0.6) 100%
+    var(--badge-edge) 45%,
+    rgba(var(--mist-rgb), 0.6) 100%
   );
   color: var(--teal-800);
 }
@@ -438,7 +463,7 @@ b {
   position: absolute;
   inset: 1px;
   border-radius: calc(var(--r) - 1px);
-  background: linear-gradient(155deg, #f7fafb 0%, #e8eff3 100%);
+  background: linear-gradient(155deg, var(--badge-face-1) 0%, var(--badge-face-2) 100%);
 }
 .ico-badge::after {
   content: "";
@@ -448,9 +473,9 @@ b {
   opacity: 0.5;
   background: radial-gradient(
     50% 50%,
-    rgba(78, 124, 132, 0.35) 0%,
-    rgba(78, 124, 132, 0.12) 45%,
-    rgba(78, 124, 132, 0) 100%
+    rgba(var(--teal-rgb), 0.35) 0%,
+    rgba(var(--teal-rgb), 0.12) 45%,
+    rgba(var(--teal-rgb), 0) 100%
   );
 }
 .ico-badge .ico {
@@ -470,19 +495,19 @@ b {
   background: linear-gradient(
     155deg,
     #fff 0%,
-    #e8dcda 45%,
-    rgba(227, 217, 211, 0.6) 100%
+    var(--badge-clay-edge) 45%,
+    rgba(var(--badge-clay-fade-rgb), 0.6) 100%
   );
 }
 .ico-badge--clay::before {
-  background: linear-gradient(155deg, #faf8f7 0%, #f2ece9 100%);
+  background: linear-gradient(155deg, var(--badge-clay-face-1) 0%, var(--badge-clay-face-2) 100%);
 }
 .ico-badge--clay::after {
   background: radial-gradient(
     50% 50%,
-    rgba(201, 143, 122, 0.45) 0%,
-    rgba(201, 143, 122, 0.14) 45%,
-    rgba(201, 143, 122, 0) 100%
+    rgba(var(--terra-rgb), 0.45) 0%,
+    rgba(var(--terra-rgb), 0.14) 45%,
+    rgba(var(--terra-rgb), 0) 100%
   );
 }
 .ico-badge--teal {
@@ -493,19 +518,19 @@ b {
   background: linear-gradient(
     155deg,
     rgba(255, 255, 255, 0.25) 0%,
-    rgba(185, 202, 211, 0.35) 45%,
-    rgba(185, 202, 211, 0.15) 100%
+    rgba(var(--mist-rgb), 0.35) 45%,
+    rgba(var(--mist-rgb), 0.15) 100%
   );
 }
 .ico-badge--onDark::before {
-  background: linear-gradient(155deg, #2a3852 0%, #1e2a44 100%);
+  background: linear-gradient(155deg, var(--band-hi) 0%, var(--slate) 100%);
 }
 .ico-badge--onDark::after {
   background: radial-gradient(
     50% 50%,
-    rgba(185, 202, 211, 0.45) 0%,
-    rgba(185, 202, 211, 0.16) 45%,
-    rgba(185, 202, 211, 0) 100%
+    rgba(var(--mist-rgb), 0.45) 0%,
+    rgba(var(--mist-rgb), 0.16) 45%,
+    rgba(var(--mist-rgb), 0) 100%
   );
 }
 
@@ -626,13 +651,13 @@ b {
   background:
     radial-gradient(
       60% 70% at 78% 18%,
-      rgba(78, 124, 132, 0.4) 0%,
-      rgba(78, 124, 132, 0) 70%
+      rgba(var(--teal-rgb), 0.4) 0%,
+      rgba(var(--teal-rgb), 0) 70%
     ),
     radial-gradient(
       45% 55% at 8% 92%,
-      rgba(216, 198, 178, 0.16) 0%,
-      rgba(216, 198, 178, 0) 70%
+      rgba(var(--sand-rgb), 0.16) 0%,
+      rgba(var(--sand-rgb), 0) 70%
     ),
     var(--slate);
   color: var(--porcelain);
@@ -713,7 +738,7 @@ b {
   margin: 0;
   border-radius: var(--radius-card);
   overflow: hidden;
-  box-shadow: 0 18px 40px rgba(30, 42, 68, 0.35);
+  box-shadow: 0 18px 40px rgba(var(--slate-rgb), 0.35);
 }
 .collage__shot img {
   width: 100%;
@@ -752,7 +777,7 @@ b {
   width: 30%;
   rotate: 19deg;
   z-index: 2;
-  filter: drop-shadow(0 16px 22px rgba(30, 42, 68, 0.45));
+  filter: drop-shadow(0 16px 22px rgba(var(--slate-rgb), 0.45));
   transition: transform 0.4s ease-in-out;
 }
 .collage__vial:hover {
@@ -761,7 +786,7 @@ b {
 
 /* --- Disclosure (native, zero JS) ---------------------------------------- */
 .disclose {
-  border-top: 1px solid rgba(30, 42, 68, 0.14);
+  border-top: 1px solid rgba(var(--slate-rgb), 0.14);
 }
 .disclose > summary {
   display: flex;
@@ -946,15 +971,15 @@ details[open] > summary .plus::before {
   gap: 12px;
   padding: 12px 16px;
   border-radius: 12px 12px 0 0;
-  background: rgba(78, 124, 132, 0.22);
+  background: rgba(var(--teal-rgb), 0.22);
 }
 .plan__price {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: rgba(78, 124, 132, 0.08);
-  border: 1px solid rgba(185, 202, 211, 0.4);
+  background: rgba(var(--teal-rgb), 0.08);
+  border: 1px solid rgba(var(--mist-rgb), 0.4);
   border-top: 0;
   border-radius: 0 0 12px 12px;
 }
@@ -1216,7 +1241,7 @@ details[open] > summary .plus::before {
   background: var(--mist-100);
 }
 .compare thead .hi {
-  box-shadow: 0 -2px 6px rgba(30, 42, 68, 0.08);
+  box-shadow: 0 -2px 6px rgba(var(--slate-rgb), 0.08);
 }
 .compare .best {
   position: absolute;
@@ -1247,7 +1272,7 @@ details[open] > summary .plus::before {
   color: var(--porcelain);
 }
 .mark--no {
-  background: rgba(165, 64, 45, 0.12);
+  background: rgba(var(--clay-rgb), 0.12);
   color: var(--clay);
 }
 .mark .ico {
@@ -1432,7 +1457,7 @@ details[open] > summary .plus::before {
   background: linear-gradient(
     270deg,
     var(--slate) 0%,
-    #223150 55%,
+    var(--footer-mid) 55%,
     var(--teal-800) 130%
   );
 }
@@ -1486,12 +1511,12 @@ details[open] > summary .plus::before {
   max-width: 100%;
   padding: 12px 28px;
   border-radius: 99px;
-  border: 1px solid rgba(250, 251, 252, 0.5);
+  border: 1px solid rgba(var(--porcelain-rgb), 0.5);
   background: transparent;
   color: var(--porcelain);
 }
 .signup input[type="email"]::placeholder {
-  color: rgba(250, 251, 252, 0.7);
+  color: rgba(var(--porcelain-rgb), 0.7);
 }
 .footer-nav {
   display: flex;
@@ -1852,7 +1877,7 @@ details[open] > summary .plus::before {
 .proj__range:focus-visible ~ .proj__knob {
   box-shadow:
     0 0 0 4px var(--white),
-    0 0 0 7px rgba(78, 124, 132, 0.4),
+    0 0 0 7px rgba(var(--teal-rgb), 0.4),
     0 2px 8px rgba(0, 0, 0, 0.25);
 }
 .proj__cards {
@@ -2315,7 +2340,7 @@ details[open] > summary .plus::before {
     padding: 16px 20px;
     background: var(--slate);
     color: var(--porcelain);
-    box-shadow: 0 -6px 24px rgba(30, 42, 68, 0.3);
+    box-shadow: 0 -6px 24px rgba(var(--slate-rgb), 0.3);
   }
   .sticky-cta__copy {
     flex: 1 1 auto;
