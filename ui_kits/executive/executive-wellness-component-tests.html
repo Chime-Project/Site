@@ -74,12 +74,11 @@
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260716"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
 <script src="ui_kits/homepage/image-slot.js?v=20260718"></script>
-<script type="text/babel" src="ui_kits/wellness/HWSymptomsSection.jsx?v=20260870"></script>
 <script type="text/babel" src="ui_kits/labs/InsightStackSection.jsx?v=20260870"></script>
 <script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260873"></script>
 <script src="ui_kits/executive/ExecutiveMotion.js?v=20260869"></script>
 <script type="text/babel" src="ui_kits/executive/ExecutiveCore.jsx?v=20260869"></script>
-<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260872"></script>
+<script type="text/babel" src="ui_kits/executive/ExecutiveWellnessPage.jsx?v=20260878"></script>
 
 <script type="text/babel">
 window.addEventListener("error", (e) => { window.__EXEC_WN_TEST_CRASH = String(e.message); });
@@ -124,10 +123,10 @@ window.addEventListener("unhandledrejection", (e) => {
 
   // ================= Kit surface =================
   group("Kit surface (what the page relies on being on window)");
-  ["ExecutiveWellnessPage", "ExecWnHero", "ExecWnSymptoms", "ExecWnGoals",
+  ["ExecutiveWellnessPage", "ExecWnHero", "ExecWnGoals",
    "ExecWnWall", "ExecWnWallCard", "ExecWnClose", "ExecWnMembership", "ExecWnFinalCta",
    "ExecChrome", "ExecCta", "ExecKicker", "ExecSpinBadge", "execOpenAssessment",
-   "ChimeHWSymptomsSection", "ChimeInsightStackSection", "ChimeFooter", "Button"].forEach((n) => {
+   "ChimeInsightStackSection", "ChimeFooter", "Button"].forEach((n) => {
     eq("window." + n + " is a function", typeof window[n], "function");
   });
   ok("window.ExecMotion.mount exists", window.ExecMotion && typeof window.ExecMotion.mount === "function");
@@ -151,38 +150,6 @@ window.addEventListener("unhandledrejection", (e) => {
     eq("wordmark is decorative", c.$(".exec-hero-word").getAttribute("aria-hidden"), "true");
     eq("wordmark reads MOMENTUM", c.$(".exec-hero-word").textContent, "MOMENTUM");
     ok("spin badge present and decorative", c.$(".exec-badge") && c.$(".exec-badge").getAttribute("aria-hidden") === "true");
-    c.unmount();
-  }
-
-  // ================= Symptom stack (live module + override) =================
-  group("ExecWnSymptoms (live ChimeHWSymptomsSection, performance labels)");
-  {
-    const c = await mount(<ExecWnSymptoms />);
-    eq("section is the live module's (screen label Sound Familiar)", c.$("section").getAttribute("data-screen-label"), "Sound Familiar");
-    eq("…themed energy-wellness by the module itself", c.$("section").getAttribute("data-theme"), "energy-wellness");
-    has("part 1 headline", c.text(), "Does Any of This Sound Familiar?");
-    const cards = c.$$(".hws-cards > div").filter((d) => d.textContent.trim());
-    eq("five performance cards (the IA's 'only the 5 labels change')", cards.length, 5);
-    eq("labels in order (3 verbatim IA + 2 derived)",
-      cards.map((d) => d.textContent).join("|"),
-      "Running on caffeine by 2pm|Recovery that lags behind training|Focus that fades before the day does|Mornings that start in a fog|Not performing at your best");
-    has("part 2 IS the IA's Reframe row", c.text(), "What If Feeling Tired Isn't Normal?");
-    has("part 2 keeps the live page's approved body", c.text(), "Many people adapt to low energy over time.");
-    const btn = c.$("button");
-    eq("module CTA is the IA's wellness CTA", btn && btn.textContent, "Discover Your Wellness Path");
-    const calls = [];
-    window.openChimeAssessment = () => calls.push(1);
-    click(btn);
-    eq("module CTA opens the assessment", calls.length, 1);
-    delete window.openChimeAssessment;
-    c.unmount();
-  }
-  {
-    // Regression guard for wellness.html: the default mount is the old render.
-    const c = await mount(<ChimeHWSymptomsSection />);
-    const cards = c.$$(".hws-cards > div").filter((d) => d.textContent.trim());
-    eq("prop-less mount keeps ALL EIGHT original cards (wellness.html unchanged)", cards.length, 8);
-    eq("…starting with the original first label", cards[0].textContent, "Afternoon Energy Crashes");
     c.unmount();
   }
 
@@ -304,9 +271,9 @@ window.addEventListener("unhandledrejection", (e) => {
     eq("exactly one <h1>", c.$$("h1").length, 1);
     ok("landmarks: header + main + footer", c.$("header") && c.$("main") && c.$("footer"));
     const order = c.$$("main > section[data-screen-label]").map((s) => s.getAttribute("data-screen-label"));
-    eq("section order is the IA's (rows 2+3 share the symptom module)",
+    eq("section order is the IA's minus rows 2+3 (symptom module cut 2026-08-28)",
       order.join(" > "),
-      "Exec Hero > Sound Familiar > Goal Cards > Did You Know Wall > 3-Step Close > Membership > Final CTA");
+      "Exec Hero > Goal Cards > Did You Know Wall > 3-Step Close > Membership > Final CTA");
     has("footer is the site footer (ChimeFooter), not ExecFooter", c.$("footer").textContent, "hello@chimehealth.com");
     const imgs = c.$$("img");
     ok("every <img> has an alt attribute (" + imgs.length + " images)", imgs.every((i) => i.hasAttribute("alt")));
@@ -320,11 +287,9 @@ window.addEventListener("unhandledrejection", (e) => {
     let jump = null;
     for (let i = 1; i < hs.length; i++) if (hs[i] > hs[i - 1] + 1) { jump = hs[i - 1] + "→" + hs[i] + " at #" + i; break; }
     eq("heading levels never skip (h1→h3)", jump, null);
-    // theme guard at the DOM level — exec sections only: the symptom stack is
-    // the wellness kit's own module (it carries cadmium primitives by design),
-    // and the site footer is a homepage kit with its own fixed navy.
+    // theme guard at the DOM level — main is all exec sections now (the site
+    // footer, a homepage kit with its own fixed navy, sits outside main).
     const bad = c.$$("main [style]")
-      .filter((el) => !el.closest('[data-screen-label="Sound Familiar"]'))
       .filter((el) => /--color-(iris|tide|cadmium|sage|peach|blue)-\d|#[0-9a-fA-F]{6}\b/.test(el.getAttribute("style") || ""));
     eq("no palette primitives / brand hex in the rendered exec sections", bad.length, 0, bad.slice(0, 3).map(show).join(", "));
     c.unmount();
