@@ -219,25 +219,15 @@
   }
   .on-dark .decline { color: var(--on-dark-2); } /* 9.90:1 on the slate band */
 
-  /* ---- What is Zofran ---- */
-  .what { background: var(--band-cream); }
-  .what-grid { display: grid; gap: 36px; align-items: center; }
-  .what p.lede {
+  /* ---- Lede + body (live in the benefits band since 2026-08-30) ---- */
+  .benefits .lede {
     font-weight: var(--weight-display); letter-spacing: normal;
     font-size: clamp(24px, 3.2vw, 34px); line-height: 1.3; margin: 18px 0 0;
+    max-width: 24em;
   }
   /* Zofran is the only one of the three with a second paragraph of reviewed copy
      under the lede — the doc gives it context the other two do not have. */
-  .what p.body { color: var(--ink-2); margin: 20px 0 0; max-width: 34em; }
-  .what-photo {
-    width: 100%; height: auto; display: block; border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-lg);
-  }
-  @media (min-width: 768px) {
-    /* 420px, the same cap as chimeUpsell01: the beach photo is landscape too,
-       and needs the width to balance the lede. */
-    .what-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 64px; }
-  }
+  .benefits .body { color: var(--ink-2); margin: 20px 0 0; max-width: 34em; }
 
   /* ---- Benefits: panel row + funnel, after uploads/diagram.jpg ----
      The diagram's structure is a row of colour panels, each with a line icon over
@@ -247,7 +237,7 @@
   /* 0 here is the mobile case only — below 768px the bottom gap comes from
      margin-bottom instead (see the max-width block at the end of this group). */
   .benefits { padding-bottom: 0; }
-  .benefits-intro { max-width: 26em; font-size: clamp(22px, 2.8vw, 30px); margin: 14px 0 36px; }
+  .benefits-intro { max-width: 26em; font-size: clamp(22px, 2.8vw, 30px); margin: 28px 0 36px; }
   .benefit-cols { display: grid; grid-template-columns: repeat(2, 1fr); }
   .benefit {
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
@@ -449,9 +439,9 @@
 
   /* ---- Mobile: center all content (recap section is already centered) ---- */
   @media (max-width: 767px) {
-    .hero-grid, .what-grid, .benefits .wrap-wide, .path .wrap,
+    .hero-grid, .benefits .wrap-wide, .path .wrap,
     .quote-card, footer .wrap { text-align: center; }
-    .hero h1, .hero .sub, .benefits-intro, .path p,
+    .hero h1, .hero .sub, .benefits .lede, .benefits .body, .benefits-intro, .path p,
     .btn, .footer-logo { margin-left: auto; margin-right: auto; }
     .quote-card figcaption { justify-content: center; }
   }
@@ -493,27 +483,7 @@
     </div>
   </section>
 
-  <!-- 3. What is Zofran -->
-  <section class="what" id="what-is" aria-labelledby="what-title">
-    <div class="wrap-wide what-grid">
-      <div class="reveal">
-        <p class="eyebrow" id="what-title">What Is Zofran?</p>
-        <p class="lede">Zofran is a prescription medication commonly associated with
-          nausea and vomiting support.</p>
-        <p class="body">For individuals starting a weight-loss medication, nausea can
-          sometimes make it harder to stay consistent, feel comfortable, or move
-          through the first stages of care with confidence.</p>
-      </div>
-      <!-- Brand-neutral lifestyle photography, shared with the Amerilean twin.
-           ⚠️ 600x387 is the only source we have — it fills a 420px slot at 1.4x,
-           so it is soft on a 2x display. Ask the client for a larger export. -->
-      <img class="what-photo reveal" src="uploads/wellness-aa5b5325.jpg"
-        width="600" height="387"
-        alt="A woman sitting calmly on an exercise mat on the beach at sunrise">
-    </div>
-  </section>
-
-  <!-- 4. Why add Zofran — panel row + funnel, after uploads/diagram.jpg, matching
+  <!-- 3. Why add Zofran — panel row + funnel, after uploads/diagram.jpg, matching
        chimeUpsell01. Three things to know, all deliberate:
          1. FIVE panels. That happens to equal the diagram's count, but the reason
             is the reviewed copy, not the template — the funnel below is cut to
@@ -534,6 +504,16 @@
   <section id="benefits" class="benefits" aria-labelledby="benefits-title">
     <div class="wrap-wide">
       <p class="eyebrow reveal" id="benefits-title">Why Add Zofran?</p>
+      <!-- The lede and its body paragraph used to open their own cream "What Is
+           Zofran?" band (with the wellness-aa5b5325.jpg photo); that band was
+           folded into this one 2026-08-30 and the photo dropped, matching
+           chimeUpsell01. Copy is unchanged — Zofran keeps its second paragraph,
+           the only one of the three with reviewed body copy. -->
+      <p class="lede reveal">Zofran is a prescription medication commonly associated with
+        nausea and vomiting support.</p>
+      <p class="body reveal">For individuals starting a weight-loss medication, nausea can
+        sometimes make it harder to stay consistent, feel comfortable, or move
+        through the first stages of care with confidence.</p>
       <h2 class="benefits-intro reveal">Zofran may help support:</h2>
     </div>
     <div class="benefit-cols" role="list">
@@ -600,7 +580,7 @@
     </div>
   </section>
 
-  <!-- 5. Final offer recap -->
+  <!-- 4. Final offer recap -->
   <section class="recap on-dark" id="offer" aria-labelledby="offer-title">
     <div class="wrap">
       <h2 id="offer-title">Add Zofran</h2>
@@ -621,7 +601,7 @@
     </div>
   </section>
 
-  <!-- 6. A more complete wellness path -->
+  <!-- 5. A more complete wellness path -->
   <section class="path" id="path" aria-labelledby="path-title">
     <div class="wrap">
       <p class="eyebrow reveal" id="path-title">Support For The Moments You May Need It</p>
@@ -649,7 +629,7 @@
     </div>
   </section>
 
-  <!-- 7. Social proof (light) -->
+  <!-- 6. Social proof (light) -->
   <section id="proof" aria-labelledby="proof-title">
     <div class="wrap-wide">
       <p class="eyebrow reveal" id="proof-title">The Chime Experience</p>
@@ -688,13 +668,13 @@
 
 </main>
 
-<!-- 8. Sticky mobile CTA -->
+<!-- 7. Sticky mobile CTA -->
 <div class="sticky-bar" id="sticky-bar">
   <span class="sticky-price">Zofran · <span class="price" data-price>[PRICE]</span></span>
   <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add Zofran</button>
 </div>
 
-<!-- 9. Footer disclaimer -->
+<!-- 8. Footer disclaimer -->
 <footer>
   <div class="wrap">
     <!-- The site logo, used as-drawn. Navbar.jsx and Footer.jsx both apply
