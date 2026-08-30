@@ -316,21 +316,6 @@
     .benefits { margin-bottom: 56px; } /* desktop stays flush into the next band */
   }
 
-  /* ---- Wellness path / provider trust ---- */
-  .path { background: var(--band-mist); }
-  .path h2 { font-size: clamp(28px, 3.6vw, 40px); margin: 14px 0 18px; }
-  .path p { color: var(--ink-2); max-width: 34em; margin: 0 0 14px; }
-  .provider-badge {
-    display: inline-flex; align-items: center; gap: 14px; margin-top: 26px;
-    background: var(--card); border: 1px solid var(--cta-border); border-radius: var(--radius-4xl);
-    padding: 10px 22px 10px 10px; font-size: var(--text-sm);
-    font-weight: var(--font-weight-semibold); color: var(--ink-2);
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .badge-spin { animation: spin 34s linear infinite; transform-origin: 50% 50%; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  }
-
   /* ---- Social proof ---- */
   #proof .eyebrow { text-align: center; }
   .quote-row { display: grid; gap: 16px; margin-top: 34px; }
@@ -427,9 +412,9 @@
 
   /* ---- Mobile: center all content (recap section is already centered) ---- */
   @media (max-width: 767px) {
-    .hero-grid, .benefits .wrap-wide, .path .wrap,
+    .hero-grid, .benefits .wrap-wide,
     .quote-card, footer .wrap { text-align: center; }
-    .hero h1, .hero .sub, .benefits .lede, .benefits-intro, .path p,
+    .hero h1, .hero .sub, .benefits .lede, .benefits-intro,
     .btn, .footer-logo { margin-left: auto; margin-right: auto; }
     .quote-card figcaption { justify-content: center; }
   }
@@ -602,36 +587,7 @@
     </div>
   </section>
 
-  <!-- 5. A more complete wellness path -->
-  <section class="path" id="path" aria-labelledby="path-title">
-    <div class="wrap">
-      <p class="eyebrow reveal" id="path-title">A More Personalized Approach</p>
-      <h2 class="reveal">Your health journey is not one-size-fits-all.</h2>
-      <p class="reveal">Adding Tesamorelin may help support a more complete approach
-        to your goals, especially if you are focused on long-term progress,
-        wellness, and how your body changes over time.</p>
-      <p class="reveal">Like every part of your Chime experience, this option is
-        guided with provider oversight and designed around your individual needs.</p>
-      <span class="provider-badge reveal">
-        <svg class="badge-spin" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
-          <defs><path id="badge-arc" fill="none" d="M26,26 m-19,0 a19,19 0 1,1 38,0 a19,19 0 1,1 -38,0"/></defs>
-          <circle cx="26" cy="26" r="25" fill="var(--band-mist)"/>
-          <!-- textLength pins one full phrase to the arc circumference (2π·19 ≈ 119.4)
-               so the loop closes cleanly instead of clipping mid-word. It also
-               absorbs the switch from Noto Serif to Quicksand and the shorter
-               "CHIME" — lengthAdjust stretches the glyphs to fill either way. -->
-          <text style="fill: var(--ink-2); font-family: var(--font); font-weight: 700; font-size: 6px">
-            <textPath href="#badge-arc" textLength="118" lengthAdjust="spacingAndGlyphs">PROVIDER GUIDED · CHIME CARE ·</textPath>
-          </text>
-          <path d="M26 17l7 3v5c0 4.6-3 8.2-7 9.6-4-1.4-7-5-7-9.6v-5z" fill="none" stroke="var(--ink-2)" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M22.5 26l2.6 2.6 4.6-4.9" fill="none" stroke="var(--ink-2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Provider oversight
-      </span>
-    </div>
-  </section>
-
-  <!-- 6. Social proof (light) -->
+  <!-- 5. Social proof (light) -->
   <section id="proof" aria-labelledby="proof-title">
     <div class="wrap-wide">
       <p class="eyebrow reveal" id="proof-title">The Chime Experience</p>
@@ -670,13 +626,13 @@
 
 </main>
 
-<!-- 7. Sticky mobile CTA -->
+<!-- 6. Sticky mobile CTA -->
 <div class="sticky-bar" id="sticky-bar">
   <span class="sticky-price">Tesamorelin · <span class="price" data-price>[PRICE]</span></span>
   <button class="btn" type="button" data-accept data-source="sticky" data-analytics="sticky-cta">Add Tesamorelin</button>
 </div>
 
-<!-- 8. Footer disclaimer -->
+<!-- 7. Footer disclaimer -->
 <footer>
   <div class="wrap">
     <!-- The site logo, used as-drawn. Navbar.jsx and Footer.jsx both apply
