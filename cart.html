@@ -658,6 +658,20 @@
   }
   .cart-submit { margin-top: var(--spacing-10); text-align: center; }
   .cart-secure { margin: var(--spacing-3) 0 0; font-size: var(--text-xs); color: var(--text-muted); }
+  /* Pre-payment policy links: same voice as .cart-fine, sitting on the pay
+     button rather than the card block, since they bind the whole order. */
+  .cart-policy-links {
+    margin: 0 auto var(--spacing-4); max-width: 34em;
+    font-size: var(--text-xs); line-height: 1.6; color: var(--text-muted);
+  }
+  .cart-policy-links a { color: var(--accent-strong); }
+  /* Disclosure notes on the dark summary card: inherit its ink, sit at the
+     same volume as .cart-due-note. */
+  .cart-notes {
+    margin: var(--spacing-5) 0 0; padding-inline-start: var(--spacing-5);
+    display: grid; row-gap: var(--spacing-2);
+    font-size: var(--text-xs); line-height: 1.6; opacity: 0.85;
+  }
   .cart-legal {
     margin: clamp(40px, 5vw, 64px) auto 0; max-width: 640px; text-align: center;
     font-size: 11px; line-height: 1.6; color: var(--text-muted);
@@ -764,11 +778,11 @@
 <!-- Shared catalog + cart config load first (plain scripts), then the
      primitives, then the controls and the flow. -->
 <script src="ui_kits/shared/data/products.js?v=20260852"></script>
-<script src="ui_kits/cart/cart-data.js?v=20260858"></script>
+<script src="ui_kits/cart/cart-data.js?v=20260881"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
 <script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260858"></script>
-<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260864"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260881"></script>
 <script type="text/babel">
 function ChimeCartPage() {
   return (
