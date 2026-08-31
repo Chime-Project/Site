@@ -1,5 +1,5 @@
 // Chime Health — shared legal document renderer.
-// Drives all four legal pages from window.CHIME_LEGAL (see shared/data/legal.js):
+// Drives the legal pages from window.CHIME_LEGAL (see shared/data/legal.js):
 // title band with effective/updated dates, then a single prose column.
 // Theme-agnostic: the page sets data-theme, this component only reads semantic tokens.
 
@@ -54,7 +54,7 @@ function ChimeLegalPage({ doc }) {
             display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)",
             marginTop: "var(--spacing-6)",
           }}>
-            <LegalDate label="Effective" value={doc.effective} />
+            {doc.effective ? <LegalDate label="Effective" value={doc.effective} /> : null}
             {doc.updated ? <LegalDate label="Last updated" value={doc.updated} /> : null}
           </div>
         </div>

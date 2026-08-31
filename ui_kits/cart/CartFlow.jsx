@@ -504,6 +504,13 @@ function CartCheckoutScreen({ order, onBack, entry }) {
               <p className="cart-due-title">{copy.dueToday}</p>
               <p className="cart-due-note">{copy.dueTodayNote}</p>
             </div>
+
+            {/* Merchant-account disclosures: what the provider decides, who
+                ships, and how the membership renews — on the card the customer
+                reads before paying, not only in the fine print below. */}
+            <ul className="cart-notes">
+              {copy.checkoutNotes.map((n) => <li key={n}>{n}</li>)}
+            </ul>
           </div>
       {placed ? (
         <div className="cart-placed" role="status">
@@ -604,6 +611,16 @@ function CartCheckoutScreen({ order, onBack, entry }) {
             </p>}
 
             <div className="cart-submit">
+              {/* The policies the Continue button binds the user to, visible
+                  right above it. New tab on purpose: this flow preserves typed
+                  form state, and an in-tab navigation is what discards it. */}
+              <p className="cart-policy-links">
+                By continuing you agree to our{" "}
+                <a href="return-refund-policy.html" target="_blank" rel="noopener">Return &amp; Refund Policy</a>,{" "}
+                <a href="shipping-policy.html" target="_blank" rel="noopener">Shipping Policy</a>,{" "}
+                <a href="terms-conditions.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>, and{" "}
+                <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+              </p>
               <Button label="Continue" onClick={onSubmit} />
               <p className="cart-secure">Your payment information is secure and encrypted.</p>
             </div>

@@ -23,6 +23,8 @@ const FOOTER_LEGAL_HREFS = {
   "HIPAA Notice": "hipaa-notice.html",
   "Telehealth Consent": "telehealth-consent.html",
   "Terms & Conditions": "terms-conditions.html",
+  "Return & Refund Policy": "return-refund-policy.html",
+  "Shipping Policy": "shipping-policy.html",
 };
 
 function ChimeFooter() {
@@ -89,7 +91,8 @@ function ChimeFooter() {
         </nav>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {["Privacy Policy", "HIPAA Notice", "Telehealth Consent", "Terms & Conditions"].map((l) => (
+          {["Privacy Policy", "HIPAA Notice", "Telehealth Consent", "Terms & Conditions",
+            "Return & Refund Policy", "Shipping Policy"].map((l) => (
             <FooterLink key={l} label={l} href={FOOTER_LEGAL_HREFS[l]} />
           ))}
         </div>

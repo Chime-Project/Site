@@ -67,6 +67,17 @@
     dueToday: "$0 Due Today!",
     dueTodayNote: "Only charged if your prescription is approved.",
     hipaaNote: "Your data is protected by HIPAA. All transactions are secured and encrypted.",
+    // Pre-payment disclosures (merchant-account requirement, Asana
+    // 1218018600323416): provider review, no guarantee of medication,
+    // pharmacy-partner fulfilment, delivery variability, and renewal terms,
+    // stated before the customer submits payment. The renewal line restates
+    // CHIME_CART_LEGAL's auto-renew authorization in plain language — it
+    // adds no claim that paragraph does not already make.
+    checkoutNotes: [
+      "Prescription treatment is subject to review and approval by a licensed healthcare provider. Medication is not guaranteed.",
+      "Eligible prescriptions are fulfilled and shipped by licensed pharmacy partners. Shipping and delivery timing may vary.",
+      "Memberships renew automatically at the end of each term at that term’s price, until cancelled as described in the Terms & Conditions.",
+    ],
   };
 
   // ---- Promotion -----------------------------------------------------------

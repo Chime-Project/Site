@@ -516,4 +516,27 @@ window.CHIME_LEGAL = {
       { t: "p", x: "www.chimehealth.com" },
     ],
   },
+
+  // ---- Return & Refund Policy ----------------------------------------------
+  // Copy verbatim from the merchant-account requirements task (Asana
+  // 1218018600323416, 2026-08-31). No effective date was provided, so none is
+  // invented — LegalPage renders the date pill only when one exists.
+  "return-refund-policy": {
+    title: "Return & Refund Policy",
+    blocks: [
+      { t: "h2", x: "Returns & Refunds" },
+      { t: "p", x: "Unfortunately, we cannot accept returns of prescription products for reuse or resale, and all sales are final." },
+      { t: "p", x: "However, if you believe an error occurred with your prescription order or fulfillment, please contact us so that the matter can be reviewed." },
+    ],
+  },
+
+  // ---- Shipping Policy (same task, same provenance) ------------------------
+  "shipping-policy": {
+    title: "Shipping Policy",
+    blocks: [
+      { t: "h2", x: "Shipping" },
+      { t: "p", x: "When a licensed healthcare provider determines that treatment is appropriate and issues a prescription, eligible prescriptions may be fulfilled and shipped by one of our licensed pharmacy partners." },
+      { t: "p", x: "Our pharmacy partners generally ship eligible prescriptions within 48 hours of receiving and processing the prescription. Actual processing and delivery times may vary based on pharmacy processing, patient location, weekends or holidays, carrier service, and other circumstances outside of Chime Health’s control." },
+    ],
+  },
 };
