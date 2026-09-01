@@ -26,3 +26,7 @@ reference-pages/
 # the live files, never deployed; the repo root is the Pages root
 amerilean-landing/
 amerilean-landing.zip
+
+# Same for the Chime-brand sibling (glp1-plan.html)
+glp1-plan-landing/
+glp1-plan-landing.zip

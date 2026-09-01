@@ -1,0 +1,1550 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Longevity Lifestyle Plan — GLP-1 &amp; NAD+ | Chime Health</title>
+    <meta
+      name="description"
+      content="A 3-month GLP-1 + NAD+ plan to support well-being, mental clarity, and vitality. Provider review, supplies, and support included, shipped to your door."
+    />
+    <!-- Chime Health — Longevity Lifestyle Plan (asked for 2026-09-01).
+         A Chime-brand recreation of the Brello Health product page
+         brellohealth.com/product/empowered-longevity-lifestyle-plan: same
+         section order (gallery + plan picker hero, what's included, purchase
+         callout, testimonials, "ideal for", How GLP-1 / NAD+ work, 4-step path,
+         FAQ, disclaimer, footer), rebuilt on the shared landing kit that
+         glp1-plan.html uses — ui_kits/amerilean/amerilean.css re-tokened by
+         chime-theme.css — plus ui_kits/longevity/longevity-plan.css for the
+         product-page components that kit lacks. No CDN scripts; reveal-on-scroll
+         is amerilean.js, the gallery/plan picker is longevity-plan.js.
+
+         IMAGERY — every asset is already tracked in this repo; nothing new was
+         added. Vial "pairs" in the gallery are composed in CSS from the
+         transparent uploads/vials/*.webp cutouts. The lifestyle photos
+         (uploads/hf_*.webp, executive-*.webp, powerC-web.jpg, assets/wl-bodies-gym.webp,
+         start-07599cc8.jpg) are the site's existing generated stand-ins —
+         swap for real, consented photography before launch.
+
+         STAND-IN CONTENT flagged for the client (do not treat as approved):
+           • Prices ($749 → $698 / $598 per 3 months) are the reference page's
+             numbers, kept so the layout reads correctly. Chime's catalog
+             (ui_kits/shared/data/products.js) has no GLP-1 + NAD+ bundle yet.
+           • The purchase-first flow ("no intake form before you pay",
+             "not approved → full refund") is the reference's business rule.
+             Chime's live flow is assessment → intake → provider review, and
+             legal.js's refund policy only says prescription sales are final;
+             counsel must confirm the not-approved refund promise.
+           • Testimonials are written stand-ins, not real Chime patients.
+           • "4.9 • 2000+ reviews" is the same placeholder glp1-plan.html uses.
+         CTAs route to chimeAssessment.html (the real Chime intake) — the same
+         stand-in nad.html and glp1-plan.html use; cart.html cannot preselect a
+         plan yet, so "Start Your Journey" stores the choice in sessionStorage
+         ("chime:longevity-plan") for a future checkout hookup.
+
+         Citations are the peer-reviewed references the reference page cites,
+         renumbered 1–10 in order of appearance. -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Longevity Lifestyle Plan — GLP-1 &amp; NAD+ | Chime Health"
+    />
+    <meta
+      property="og:description"
+      content="A 3-month GLP-1 + NAD+ plan designed to support overall well-being, mental clarity, and vitality. Provider review, supplies, and support included."
+    />
+    <meta property="og:image" content="uploads/vials/nad-plus.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="ui_kits/amerilean/amerilean.css?v=20260879" />
+    <link rel="stylesheet" href="ui_kits/amerilean/chime-theme.css?v=20260880" />
+    <link rel="stylesheet" href="ui_kits/longevity/longevity-plan.css?v=20260882" />
+  </head>
+  <body>
+    <svg
+      id="sprite"
+      aria-hidden="true"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path
+          d="M 0 5.25 L 3.75 9 L 12.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock-sm" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 13.125)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="var(--isw,1.5)"
+        ></circle>
+        <path
+          d="M12 11v5M12 8h.01"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="var(--isw,1.75)"
+          stroke-linecap="round"
+        ></path>
+      </symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 C 10.988 0.649 11.251 1.438 11.25 2.25 L 11.25 3 L 3.75 3 L 3.75 2.25 C 3.749 1.438 4.012 0.649 4.5 0 L 0.75 0 C 0.336 0 0 0.336 0 0.75 L 0 16.5 C 0 16.914 0.336 17.25 0.75 17.25 L 14.25 17.25 C 14.664 17.25 15 16.914 15 16.5 L 15 0.75 C 15 0.336 14.664 0 14.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 14.25)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 11.25)"
+        ></path>
+        <path
+          d="M 10.5 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 16.5 C 15 16.914 14.664 17.25 14.25 17.25 L 0.75 17.25 C 0.336 17.25 0 16.914 0 16.5 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-stethoscope" viewBox="0 0 24 24">
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(18.375 13.875)"
+        ></path>
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 L 6 8.25 C 8.071 8.25 9.75 6.571 9.75 4.5 L 9.75 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 13.5)"
+        ></path>
+        <path
+          d="M 8.25 0 L 10.5 0 L 10.5 4.422 C 10.5 7.307 8.205 9.712 5.319 9.75 C 3.915 9.769 2.562 9.224 1.562 8.237 C 0.563 7.25 0 5.904 0 4.5 L 0 0 L 2.25 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 2.25 L 0 2.25 L 0 6 C 0 6.414 0.336 6.75 0.75 6.75 L 3 6.75 C 3 5.507 4.007 4.5 5.25 4.5 C 6.493 4.5 7.5 5.507 7.5 6.75 L 13.5 6.75 C 13.5 5.507 14.507 4.5 15.75 4.5 C 16.993 4.5 18 5.507 18 6.75 L 20.25 6.75 C 20.664 6.75 21 6.414 21 6 L 21 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 11.25)"
+        ></path>
+        <path
+          d="M 0 0 L 3.992 0 C 4.298 0 4.573 0.185 4.688 0.469 L 6 3.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 15 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 13.5)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 15.75)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 15.75)"
+        ></path>
+        <path
+          d="M 6 0 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 18)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0 L 6 6 C 6 6.414 5.664 6.75 5.25 6.75 L 3 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 11.25)"
+        ></path>
+        <path
+          d="M 3 12 L 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15 0 L 15 9.878"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 6)"
+        ></path>
+      </symbol>
+      <symbol id="i-award" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 3.358 3.358 0 7.5 0 C 11.642 0 15 3.358 15 7.5 C 15 11.642 11.642 15 7.5 15 C 3.358 15 0 11.642 0 7.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 9 0 L 9 7.5 L 4.499 5.25 L 0 7.5 L 0 0.001"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 15)"
+        ></path>
+      </symbol>
+      <symbol id="i-thumbs-up" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0 7.5 L 3.75 0 C 5.407 0 6.75 1.343 6.75 3 L 6.75 5.25 L 12.75 5.25 C 13.18 5.25 13.59 5.435 13.875 5.758 C 14.159 6.081 14.292 6.51 14.238 6.938 L 13.113 15.938 C 13.018 16.687 12.381 17.25 11.625 17.25 L 0 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 0 3 L 2.25 5.25 L 7.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 9.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-timer" viewBox="0 0 24 24">
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 0 L 0 5.25 L 5.25 5.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 6.75)"
+        ></path>
+      </symbol>
+          <symbol id="i-star" viewBox="0 0 24 24">
+        <path
+          d="M12 2.6l2.9 5.9 6.5 .95-4.7 4.6 1.1 6.5L12 17.5l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"
+          fill="currentColor"
+          stroke="none"
+        ></path>
+      </symbol>
+    </svg>
+
+    <!-- ===================================================================== -->
+    <!-- Header                                                                 -->
+    <!-- ===================================================================== -->
+    <header class="masthead">
+      <div class="masthead__inner">
+        <a class="masthead__logo" href="index.html" aria-label="Chime Health home">
+          <img
+            src="assets/logo-slate.png"
+            alt="Chime Health"
+            width="428"
+            height="193"
+          />
+        </a>
+        <a class="btn btn--sand btn--sm" href="chimeAssessment.html"
+          >See If You Qualify</a
+        >
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =================================================================== -->
+      <!-- Product hero — gallery + plan picker                                 -->
+      <!-- =================================================================== -->
+      <section class="pdp" aria-labelledby="plan-title">
+        <div class="pdp__inner">
+          <div class="pdp__head">
+            <p class="eyebrow eyebrow--teal">Energy &amp; Wellness · 3-Month Plan</p>
+            <h1 class="h-split h1" id="plan-title">
+              Longevity <em>Lifestyle Plan</em>
+            </h1>
+            <div class="rating">
+              <span class="stars" role="img" aria-label="Rated 4.9 out of 5">
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+              </span>
+              <p><strong>Excellent rating</strong></p>
+              <p>4.9 • 2000+ reviews</p>
+            </div>
+            <p class="lede">
+              Designed for people who want to support overall well-being,
+              mental clarity, and vitality through every stage of life.
+            </p>
+          </div>
+
+          <div class="gallery">
+            <div class="gallery__stage" aria-live="polite">
+              <figure class="gallery__slide" data-gallery-slide>
+                <figcaption class="gallery__caption">
+                  <b>Tirzepatide &amp; NAD+</b>
+                  <span>3-month supply of both medications (if approved)</span>
+                </figcaption>
+                <div class="gallery__pair">
+                  <img
+                    src="uploads/vials/tirzepatide.webp"
+                    alt="Compounded tirzepatide multiple-dose vial"
+                    loading="eager"
+                    fetchpriority="high"
+                  />
+                  <img
+                    src="uploads/vials/nad-plus.webp"
+                    alt="Compounded NAD+ multiple-dose vial"
+                    loading="eager"
+                  />
+                </div>
+              </figure>
+              <figure class="gallery__slide" data-gallery-slide hidden>
+                <figcaption class="gallery__caption">
+                  <b>Semaglutide &amp; NAD+</b>
+                  <span>3-month supply of both medications (if approved)</span>
+                </figcaption>
+                <div class="gallery__pair">
+                  <img
+                    src="uploads/vials/semaglutide.webp"
+                    alt="Compounded semaglutide multiple-dose vial"
+                  />
+                  <img
+                    src="uploads/vials/nad-plus.webp"
+                    alt="Compounded NAD+ multiple-dose vial"
+                  />
+                </div>
+              </figure>
+              <figure class="gallery__slide" data-gallery-slide hidden>
+                <figcaption class="gallery__caption">
+                  <b>NAD+</b>
+                  <span>The coenzyme your cells use to turn nutrients into energy</span>
+                </figcaption>
+                <div class="gallery__pair gallery__pair--solo">
+                  <img
+                    src="uploads/vials/nad-plus.webp"
+                    alt="Compounded NAD+ multiple-dose vial"
+                  />
+                </div>
+              </figure>
+              <figure class="gallery__slide" data-gallery-slide hidden>
+                <img
+                  class="photo"
+                  src="uploads/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.webp"
+                  alt="Couple running together through a field at sunset"
+                />
+              </figure>
+              <figure class="gallery__slide" data-gallery-slide hidden>
+                <img
+                  class="photo"
+                  src="assets/wl-bodies-gym.webp"
+                  alt="Two women standing together in a gym"
+                />
+              </figure>
+            </div>
+
+            <div class="gallery__thumbs" role="tablist" aria-label="Product images">
+              <button
+                class="gallery__thumb"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-label="Tirzepatide and NAD+ vials"
+                data-gallery-thumb
+              >
+                <span class="pair" aria-hidden="true">
+                  <img src="uploads/vials/tirzepatide.webp" alt="" />
+                  <img src="uploads/vials/nad-plus.webp" alt="" />
+                </span>
+              </button>
+              <button
+                class="gallery__thumb"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-label="Semaglutide and NAD+ vials"
+                data-gallery-thumb
+              >
+                <span class="pair" aria-hidden="true">
+                  <img src="uploads/vials/semaglutide.webp" alt="" />
+                  <img src="uploads/vials/nad-plus.webp" alt="" />
+                </span>
+              </button>
+              <button
+                class="gallery__thumb"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-label="NAD+ vial"
+                data-gallery-thumb
+              >
+                <span class="pair" aria-hidden="true">
+                  <img src="uploads/vials/nad-plus.webp" alt="" />
+                </span>
+              </button>
+              <button
+                class="gallery__thumb"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-label="Couple running at sunset"
+                data-gallery-thumb
+              >
+                <img
+                  src="uploads/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.webp"
+                  alt=""
+                  loading="lazy"
+                />
+              </button>
+              <button
+                class="gallery__thumb"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-label="Two women in a gym"
+                data-gallery-thumb
+              >
+                <img src="assets/wl-bodies-gym.webp" alt="" loading="lazy" />
+              </button>
+            </div>
+            <p class="gallery__hint">Tap a thumbnail for details</p>
+
+          </div>
+
+          <p class="fine pdp__fine">
+            Any information provided on this page is for informational
+            purposes only and should not be construed as medical advice; it is
+            not a substitute for professional medical consultation, diagnosis,
+            or treatment. All patients must consult with a licensed healthcare
+            provider prior to the prescription or dispensing of any medication,
+            which will be done only pursuant to a valid prescription.
+            Compounded drug products are not FDA-approved, and the FDA does not
+            evaluate their safety, effectiveness, or quality. Patients are
+            encouraged to discuss the risks, benefits, and appropriateness of
+            any medication, including compounded products, with their
+            healthcare provider before use.
+          </p>
+
+          <div class="pdp__copy">
+            <div class="includes-box">
+              <p class="h5">What's included?</p>
+              <ul class="checks">
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>GLP-1 medication (if approved)</span>
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>NAD+ medication (if approved)</span>
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>Syringes with needles &amp; injection instructions</span>
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span
+                    >Chime patient portal: provider review, orders &amp; tracking
+                    in one place</span
+                  >
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>Wellness Coach check-ins &amp; progress tracking</span>
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>Ongoing care-team support</span>
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>Provider health review</span>
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span>Fast shipping</span>
+                </li>
+              </ul>
+            </div>
+
+            <fieldset class="picker">
+              <legend class="picker__title">Confirm your plan selection:</legend>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="plan"
+                  value="tirzepatide-nad"
+                  data-slide="0"
+                  data-price="$698"
+                  checked
+                />
+                <span class="option__radio" aria-hidden="true"></span>
+                <span class="option__main">
+                  <span class="option__name"
+                    >Tirzepatide &amp; NAD+ <small>3-Month Plan</small></span
+                  >
+                  <span class="option__meta"
+                    >$698 today, then $698 every 3 months · Cancel anytime</span
+                  >
+                </span>
+                <span class="option__price">
+                  <s class="option__was">$749</s>
+                  <span class="option__now">$698<small> / 3 mo</small></span>
+                </span>
+                <span class="pill pill--slate pill--sm option__save">Save $51</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="plan"
+                  value="semaglutide-nad"
+                  data-slide="1"
+                  data-price="$598"
+                />
+                <span class="option__radio" aria-hidden="true"></span>
+                <span class="option__main">
+                  <span class="option__name"
+                    >Semaglutide &amp; NAD+ <small>3-Month Plan</small></span
+                  >
+                  <span class="option__meta"
+                    >$598 today, then $598 every 3 months · Cancel anytime</span
+                  >
+                </span>
+                <span class="option__price">
+                  <s class="option__was">$749</s>
+                  <span class="option__now">$598<small> / 3 mo</small></span>
+                </span>
+                <span class="pill pill--slate pill--sm option__save">Save $151</span>
+              </label>
+            </fieldset>
+
+            <div class="pdp__cta">
+              <a
+                class="btn btn--terra btn--block btn--extrapd"
+                id="planCta"
+                href="chimeAssessment.html"
+                data-plan="tirzepatide-nad"
+                >Start Your Journey</a
+              >
+              <p class="pdp__secure">
+                <svg class="ico"><use href="#i-lock" /></svg>
+                Secure, encrypted checkout · HIPAA compliant
+              </p>
+
+              <!-- Express-pay buttons, as under the reference's CTA (there they
+                   are Stripe's Express Checkout Element: Link, Google Pay,
+                   Apple Pay, in that order, with the same label). STAND-INS:
+                   these are static wallet-styled links until checkout is wired;
+                   Stripe's element replaces this whole block when it is. -->
+              <div class="express" aria-label="Express payment options">
+                <p class="express__label">Or pay with these encrypted options</p>
+                <a
+                  class="express__btn express__btn--link"
+                  href="chimeAssessment.html"
+                  aria-label="Pay securely with Link"
+                >
+                  <span class="express__word">Pay securely with</span>
+                  <svg class="express__linkmark" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="11" fill="currentColor" />
+                    <path
+                      d="M9.5 7.5 14 12l-4.5 4.5"
+                      fill="none"
+                      stroke="#00d66f"
+                      stroke-width="2.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="express__linkword">link</span>
+                </a>
+                <a
+                  class="express__btn express__btn--google"
+                  href="chimeAssessment.html"
+                  aria-label="Pay with Google Pay"
+                >
+                  <svg class="express__g" viewBox="0 0 48 48" aria-hidden="true">
+                    <path
+                      fill="#FFC107"
+                      d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+                    />
+                    <path
+                      fill="#FF3D00"
+                      d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"
+                    />
+                    <path
+                      fill="#4CAF50"
+                      d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"
+                    />
+                    <path
+                      fill="#1976D2"
+                      d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"
+                    />
+                  </svg>
+                  <span class="express__word">Pay</span>
+                </a>
+                <a
+                  class="express__btn express__btn--apple"
+                  href="chimeAssessment.html"
+                  aria-label="Pay with Apple Pay"
+                >
+                  <svg class="express__apple" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      fill="currentColor"
+                      d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"
+                    />
+                  </svg>
+                  <span class="express__word">Pay</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Purchase-process callout                                             -->
+      <!-- =================================================================== -->
+      <section class="callout-band" aria-labelledby="callout-title">
+        <div class="callout reveal">
+          <span class="ico-badge ico-badge--teal"
+            ><svg class="ico"><use href="#i-info" /></svg
+          ></span>
+          <div class="callout__body">
+            <p class="h5" id="callout-title">No intake form required before you pay</p>
+            <p class="copy">
+              First, choose your plan. After checkout, you'll complete an online
+              intake form inside your Chime patient portal. If approved by a
+              licensed healthcare provider, your kit ships to your door. Not
+              approved? You'll receive a full refund.
+            </p>
+            <div class="callout__terms">
+              <p>
+                <strong>3-Month Plan with Tirzepatide &amp; NAD+:</strong> you
+                will be charged $698 today. Your 3-month plan will automatically
+                renew for $698 every 3 months. You can cancel anytime.
+              </p>
+              <p>
+                <strong>3-Month Plan with Semaglutide &amp; NAD+:</strong> you
+                will be charged $598 today. Your 3-month plan will automatically
+                renew for $598 every 3 months. You can cancel anytime.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Social proof                                                         -->
+      <!-- =================================================================== -->
+      <section class="section t-slate proof" aria-labelledby="proof-title">
+        <!-- band background, as on the reference: one photo behind frosted,
+             text-only cards (no photos inside the cards) -->
+        <div class="proof__bg" aria-hidden="true">
+          <img
+            src="uploads/hf_20260715_175520_37b982f3-c380-43c9-bc9c-8d50b3441ae1.webp"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div class="content">
+          <div class="intro proof__head reveal">
+            <h2 class="h-split h2 h2--dark" id="proof-title">
+              Why Thousands Chose <em>Chime</em> for a Fresh Start
+            </h2>
+          </div>
+
+          <!-- STAND-IN testimonials — written for layout, not real patients. -->
+          <div class="proof__grid">
+            <article class="proof-card reveal" style="--rd: 0.1s">
+              <span class="stars" role="img" aria-label="Rated 5 out of 5">
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+              </span>
+              <h3 class="h5">Energy I Didn't Expect</h3>
+              <p class="copy-sm proof-card__quote">
+                "Twelve weeks in and the scale is finally moving, but the part
+                I didn't expect was the energy. My mornings feel like mornings
+                again, and the check-ins keep me consistent."
+              </p>
+              <p class="proof-card__name">– Danielle K. –</p>
+            </article>
+
+            <article class="proof-card reveal" style="--rd: 0.2s">
+              <span class="stars" role="img" aria-label="Rated 5 out of 5">
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+              </span>
+              <h3 class="h5">Support That Shows Up</h3>
+              <p class="copy-sm proof-card__quote">
+                "My provider answered every question within a day, and the
+                portal made it easy to see exactly where my order was. Five
+                months in and I haven't felt this consistent in years."
+              </p>
+              <p class="proof-card__name">– Marcus T. –</p>
+            </article>
+
+            <article class="proof-card reveal" style="--rd: 0.3s">
+              <span class="stars" role="img" aria-label="Rated 5 out of 5">
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+              </span>
+              <h3 class="h5">Simple From Start to Finish</h3>
+              <p class="copy-sm proof-card__quote">
+                "Quick intake, fast shipping, and the kit came with everything
+                I needed. Pricing was clear up front and customer service
+                actually replies to email."
+              </p>
+              <p class="proof-card__name">– Priya R. –</p>
+            </article>
+          </div>
+
+          <div class="proof__foot reveal">
+            <div class="rating">
+              <span class="stars" role="img" aria-label="Rated 4.9 out of 5">
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+                <svg class="ico"><use href="#i-star" /></svg>
+              </span>
+              <p><strong>Excellent rating</strong></p>
+              <p>4.9 • 2000+ reviews</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Inside the plan                                                      -->
+      <!-- =================================================================== -->
+      <section class="section t-sand" aria-labelledby="inside-title">
+        <div class="content">
+          <div class="intro section__head reveal">
+            <h2 class="h-split h2" id="inside-title">
+              Inside the <em>Longevity</em> Plan
+            </h2>
+          </div>
+
+          <div class="split">
+            <div class="split__media reveal">
+              <img
+                src="uploads/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.webp"
+                alt="Couple running together through a field at sunset"
+                loading="lazy"
+              />
+            </div>
+            <div class="split__copy reveal" style="--rd: 0.15s">
+              <h3 class="h3">
+                The Longevity Lifestyle Plan is ideal for people who:
+              </h3>
+              <ul class="checks">
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    >Want to rebuild consistency and momentum in their health
+                    journey</span
+                  >
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    >Live busy lives and want to feel better without disrupting
+                    their day</span
+                  >
+                </li>
+              </ul>
+              <a class="btn btn--terra" href="chimeAssessment.html"
+                >See If You Qualify</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- How GLP-1 works                                                      -->
+      <!-- =================================================================== -->
+      <section class="section t-white" aria-labelledby="glp1-title">
+        <div class="content">
+          <div class="split split--flip">
+            <div class="split__media reveal">
+              <img
+                src="uploads/powerC-web.jpg"
+                alt="Couple walking hand in hand outdoors"
+                loading="lazy"
+              />
+            </div>
+            <div class="split__copy reveal" style="--rd: 0.15s">
+              <h2 class="h3" id="glp1-title">How GLP-1 Works</h2>
+              <p class="copy">
+                GLP-1 is a naturally occurring hormone that supports the body's
+                mechanisms for metabolic balance after meals.<sup class="cite"
+                  >1</sup
+                >
+              </p>
+              <p class="h5">Studies examine GLP-1's potential role in:</p>
+              <ul class="checks">
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    ><strong>Feeling lighter</strong> and more comfortable in
+                    daily movements<sup class="cite">2</sup></span
+                  >
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    ><strong>Improved consistency</strong> with nutrition
+                    habits<sup class="cite">3</sup></span
+                  >
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    ><strong>Greater confidence</strong> staying on track week to
+                    week<sup class="cite">4</sup></span
+                  >
+                </li>
+              </ul>
+              <ol class="refs" start="1">
+                <li>
+                  Kahal H, Kilpatrick ES, Wilding JPH. Tirzepatide: a dual
+                  GIP/GLP-1 receptor agonist for the treatment of type 2
+                  diabetes. Diabetologia. 2023;66(1):1-14.
+                </li>
+                <li>
+                  Garvey WT, Batterham RL, Bhatta M, et al. Association between
+                  weight reduction achieved with tirzepatide and health-related
+                  quality of life in people with overweight or obesity. Obesity
+                  (Silver Spring). 2025;33(4):769-780.
+                </li>
+                <li>
+                  Hartman ML, Sanyal AJ, Aleppo G, et al. Effects of tirzepatide
+                  on body weight and cardiometabolic risk factors in people with
+                  overweight or obesity: a post hoc analysis of the SURPASS
+                  clinical trial program. Diabetes Obes Metab.
+                  2023;25(2):485-496.
+                </li>
+                <li>
+                  Rubino D, Abrahamsson N, Davies M, et al. Continued treatment
+                  with tirzepatide for maintenance of weight reduction in adults
+                  with obesity: a randomized clinical trial. JAMA.
+                  2024;331(1):31-43.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- How NAD+ works                                                       -->
+      <!-- =================================================================== -->
+      <section class="section t-mist" aria-labelledby="nad-title">
+        <div class="content">
+          <div class="split">
+            <div class="split__media reveal">
+              <img
+                src="uploads/hf_20260709_235042_d5fcb10f-0daf-4a3f-a324-6c1333d8210d.webp"
+                alt="Woman smiling with a cup of coffee by a window"
+                loading="lazy"
+              />
+            </div>
+            <div class="split__copy reveal" style="--rd: 0.15s">
+              <h2 class="h3" id="nad-title">How NAD+ Works</h2>
+              <p class="copy">
+                NAD+ is a natural coenzyme found in every cell of your body. It
+                plays an important role in how cells turn nutrients into usable
+                energy.<sup class="cite">5</sup>
+              </p>
+              <p class="copy">
+                As we age, NAD+ levels naturally decline.<sup class="cite">6</sup>
+              </p>
+              <p class="h5">Studies examine NAD+'s potential role in:</p>
+              <ul class="checks">
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    >Assisting in
+                    <strong>reducing the daily impact of stress</strong
+                    ><sup class="cite">7</sup></span
+                  >
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    >Supporting mechanisms involved in
+                    <strong>promoting physical activity</strong
+                    ><sup class="cite">8, 9</sup></span
+                  >
+                </li>
+                <li>
+                  <span class="dot"
+                    ><svg class="ico"><use href="#i-check" /></svg
+                  ></span>
+                  <span class="copy"
+                    ><strong>Neuroprotection</strong> to stay on point<sup
+                      class="cite"
+                      >10</sup
+                    ></span
+                  >
+                </li>
+              </ul>
+              <p class="results-note">Results may vary.</p>
+              <a class="btn btn--terra" href="chimeAssessment.html"
+                >See If You Qualify</a
+              >
+              <ol class="refs" start="5">
+                <li>
+                  Houtkooper RH, Cantó C, Auwerx J. NAD+ homeostasis as a hub for
+                  metabolic control in health and disease. Cell Metab.
+                  2010;11(5):430-441. doi:10.1016/j.cmet.2010.04.001
+                </li>
+                <li>
+                  Verdin E, Ott M. NAD+ in aging, metabolism, and disease. Trends
+                  Cell Biol. 2015;25(9):431-441. doi:10.1016/j.tcb.2015.04.002
+                </li>
+                <li>
+                  Gomes AP, Price NL, Ling AZ, et al. Declining NAD+ induces a
+                  pseudohypoxic state disrupting cellular energy homeostasis and
+                  mitochondrial function in human cells. Cell Metab.
+                  2013;17(3):392-405. doi:10.1016/j.cmet.2013.02.003
+                </li>
+                <li>
+                  Fang EF, Lautrup S, Ho YS, et al. NAD+ in aging: molecular
+                  mechanisms and translational implications. Trends Mol Med.
+                  2017;23(10):899-916. doi:10.1016/j.molmed.2017.08.001
+                </li>
+                <li>
+                  de Picciotto NE, Gano LB, Johnson LC, et al. Nicotinamide
+                  mononucleotide supplementation reverses vascular dysfunction
+                  and oxidative stress with aging in mice. Aging Cell.
+                  2016;15(5):973-977. doi:10.1111/acel.12488
+                </li>
+                <li>
+                  Lautrup S, Sinclair DA, Mattson MP, Fang EF. NAD+ in brain
+                  aging and neurodegenerative disorders. Cell Metab.
+                  2019;30(4):630-655. doi:10.1016/j.cmet.2019.09.015
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Path to care                                                         -->
+      <!-- =================================================================== -->
+      <section class="section t-sand" aria-labelledby="path-title">
+        <div class="content">
+          <div class="intro section__head reveal">
+            <h2 class="h-split h2" id="path-title">
+              A Straightforward <em>Path to Care</em>
+            </h2>
+          </div>
+
+          <div class="path__grid">
+            <article class="path-card reveal" style="--rd: 0.05s">
+              <img
+                src="uploads/executive-labs-review.webp"
+                alt="Man reviewing a plan on a tablet at his desk"
+                loading="lazy"
+              />
+              <p class="path-card__num">01</p>
+              <h3 class="h5">Select Your Plan</h3>
+              <p class="copy">
+                Choose your plan and check out. After checkout, you'll complete
+                an online intake form in your Chime patient portal.
+              </p>
+            </article>
+
+            <article class="path-card reveal" style="--rd: 0.15s">
+              <img
+                src="uploads/start-07599cc8.jpg"
+                alt="Licensed healthcare provider with a stethoscope"
+                loading="lazy"
+              />
+              <p class="path-card__num">02</p>
+              <h3 class="h5">Provider Review</h3>
+              <p class="copy">
+                A licensed healthcare provider reviews your information to
+                determine if the plan is appropriate for you.
+              </p>
+            </article>
+
+            <article class="path-card reveal" style="--rd: 0.25s">
+              <img
+                src="uploads/executive-membership.webp"
+                alt="Man walking outside with a coffee and a bag"
+                loading="lazy"
+              />
+              <p class="path-card__num">03</p>
+              <h3 class="h5">Ships to Your Door</h3>
+              <p class="copy">
+                If approved, your kit ships to your door. Not approved? You'll
+                receive a full refund.
+              </p>
+            </article>
+
+            <article class="path-card reveal" style="--rd: 0.35s">
+              <img
+                src="uploads/executive-final.webp"
+                alt="Family gathered around an outdoor table"
+                loading="lazy"
+              />
+              <p class="path-card__num">04</p>
+              <h3 class="h5">Ongoing Support</h3>
+              <p class="copy">
+                We care about your journey. You can always reach out to your
+                care team if you need guidance or support.
+              </p>
+            </article>
+          </div>
+
+          <div class="path__cta reveal">
+            <a class="btn btn--terra" href="chimeAssessment.html"
+              >See If You Qualify</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- FAQ                                                                  -->
+      <!-- =================================================================== -->
+      <section class="section t-mist" aria-labelledby="faq-title">
+        <div class="content faq">
+          <div class="faq__aside">
+            <h2 class="faq__title reveal" id="faq-title">
+              Frequently<br /> Asked<br /> Questions
+            </h2>
+            <a
+              class="btn btn--terra reveal"
+              style="--rd: 0.1s"
+              href="chimeAssessment.html"
+              >See If You Qualify</a
+            >
+          </div>
+
+          <div class="faq__list reveal">
+            <details class="faq__item">
+              <summary>
+                What is the medical approval process like?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <ol>
+                  <li>Complete an online intake form.</li>
+                  <li>A licensed healthcare provider reviews your information.</li>
+                  <li>
+                    If approved, the medication, instructions, and supplies are
+                    shipped to your home.
+                  </li>
+                  <li>
+                    You'll have access to both provider and customer support
+                    every step of the way.
+                  </li>
+                </ol>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                Is the medication included in the plan?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>Yes. If approved, here's what you'll pay:</p>
+                <ul>
+                  <li>Semaglutide + NAD+ (3-month plan): $598</li>
+                  <li>Tirzepatide + NAD+ (3-month plan): $698</li>
+                </ul>
+                <p>
+                  Both plans include everything you need, shipped to your door.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What if I am not approved?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>You will receive a full refund.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What is the timeline after medical approval?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>
+                  Once a licensed provider issues a prescription, our licensed
+                  pharmacy partners generally ship eligible prescriptions within
+                  48 hours of receiving and processing it.
+                </p>
+                <p>
+                  Fulfillment and tracking updates are posted to your Chime
+                  patient portal. Actual delivery times can vary with pharmacy
+                  processing, your location, weekends or holidays, and carrier
+                  service.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                Refund eligibility
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>
+                  If a provider does not approve your prescription, your payment
+                  is refunded in full.
+                </p>
+                <p>
+                  Once a provider has completed your health review and written a
+                  prescription, we cannot accept returns of prescription
+                  products for reuse or resale, and the sale is final. If you
+                  believe an error occurred with your order or fulfillment,
+                  please contact us at hello@chimehealth.com so the matter can be
+                  reviewed.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                Replacement policy
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>
+                  Once the carrier confirms your medication has been delivered,
+                  the order is considered complete. Because these are
+                  medications, we're unable to reship a package once the carrier
+                  has marked it delivered.
+                </p>
+                <p>
+                  If you did not receive your package despite a delivery
+                  confirmation, please file a claim directly with the carrier
+                  for lost or stolen packages, and contact Chime support through
+                  your patient portal so we can help review your tracking
+                  information.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Disclaimer                                                           -->
+      <!-- =================================================================== -->
+      <section class="disclaimer" aria-label="Medical disclaimer">
+        <p class="fine fine--center">
+          Any information provided on this page is for informational purposes
+          only and should not be construed as medical advice; it is not a
+          substitute for professional medical consultation, diagnosis, or
+          treatment. All patients must consult with a licensed healthcare
+          provider prior to the prescription or dispensing of any medication,
+          which will be done only pursuant to a valid prescription. Compounded
+          drug products are not FDA-approved, and the FDA does not evaluate
+          their safety, effectiveness, or quality. Patients are encouraged to
+          discuss the risks, benefits, and appropriateness of any medication,
+          including compounded products, with their healthcare provider before
+          use.
+        </p>
+      </section>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- Footer                                                                 -->
+    <!-- ===================================================================== -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__top">
+          <div class="signup">
+            <div class="signup__head">
+              <p class="h3">Join the Chime</p>
+              <p class="serif">community</p>
+            </div>
+            <p>Sign up to receive health tips and more.</p>
+            <!-- stub form, as on glp1-plan.html — wire to a real endpoint later -->
+            <form action="#" method="post">
+              <label class="sr-only" for="email">Email address</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Email address"
+                required
+              />
+              <button class="btn btn--sand" type="submit">Subscribe</button>
+            </form>
+          </div>
+
+          <nav class="footer-nav" aria-label="Footer">
+            <a href="weight-loss.html">Weight Loss</a>
+            <a href="wellness.html">Wellness</a>
+            <a href="labs.html">Labs</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+        </div>
+
+        <div class="site-footer__badges">
+          <div class="social">
+            <a href="javascript:void(0);" aria-label="Chime Health on Facebook">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="30"
+                height="30"
+              >
+                <path
+                  d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3 0-1.3-.1-2.45-.1-2.4 0-4.05 1.45-4.05 4.15V9.9H7.5V13h2.7v8h3.3Z"
+                />
+              </svg>
+            </a>
+            <a href="javascript:void(0);" aria-label="Chime Health on Instagram">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="30"
+                height="30"
+              >
+                <path
+                  d="M12 4.6c2.4 0 2.68.01 3.63.05.88.04 1.35.19 1.67.31.42.16.72.36 1.03.67.32.32.51.62.68 1.04.12.31.27.79.31 1.67.04.95.05 1.23.05 3.63s-.01 2.68-.05 3.63c-.04.88-.19 1.36-.31 1.67-.17.42-.36.72-.68 1.03-.31.32-.61.51-1.03.68-.32.12-.79.27-1.67.31-.95.04-1.23.05-3.63.05s-2.68-.01-3.63-.05c-.88-.04-1.36-.19-1.67-.31a2.79 2.79 0 0 1-1.04-.68 2.79 2.79 0 0 1-.67-1.03c-.12-.31-.27-.79-.31-1.67-.04-.95-.05-1.23-.05-3.63s.01-2.68.05-3.63c.04-.88.19-1.36.31-1.67.16-.42.36-.72.67-1.04.32-.31.62-.51 1.04-.67.31-.12.79-.27 1.67-.31.95-.04 1.23-.05 3.63-.05Zm0-1.62c-2.44 0-2.75.01-3.71.05-.95.05-1.6.2-2.17.42-.59.23-1.09.54-1.59 1.04-.5.5-.81 1-1.04 1.59-.22.57-.37 1.22-.42 2.17-.04.96-.05 1.27-.05 3.71s.01 2.75.05 3.71c.05.95.2 1.6.42 2.17.23.59.54 1.09 1.04 1.59.5.5 1 .81 1.59 1.04.57.22 1.22.37 2.17.42.96.04 1.27.05 3.71.05s2.75-.01 3.71-.05c.95-.05 1.6-.2 2.17-.42a4.4 4.4 0 0 0 1.59-1.04c.5-.5.81-1 1.04-1.59.22-.57.37-1.22.42-2.17.04-.96.05-1.27.05-3.71s-.01-2.75-.05-3.71c-.05-.95-.2-1.6-.42-2.17a4.4 4.4 0 0 0-1.04-1.59 4.4 4.4 0 0 0-1.59-1.04c-.57-.22-1.22-.37-2.17-.42-.96-.04-1.27-.05-3.71-.05Zm0 4.38a4.64 4.64 0 1 0 0 9.28 4.64 4.64 0 0 0 0-9.28Zm0 7.66a3.01 3.01 0 1 1 0-6.03 3.01 3.01 0 0 1 0 6.03Zm5.91-7.85a1.08 1.08 0 1 1-2.17 0 1.08 1.08 0 0 1 2.17 0Z"
+                />
+              </svg>
+            </a>
+            <a href="javascript:void(0);" aria-label="Chime Health on TikTok">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="30"
+                height="30"
+              >
+                <path
+                  d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 1 1-1.85-2.48V9.77a5.65 5.65 0 1 0 4.94 5.6V8.9a7.3 7.3 0 0 0 4.27 1.38V7.19a4.25 4.25 0 0 1-3.21-1.37Z"
+                />
+              </svg>
+            </a>
+          </div>
+          <!-- certification badges carried over from glp1-plan.html at the
+               client's request. LegitScript certification must actually be
+               held by Chime Health before this page launches publicly. -->
+          <img
+            src="uploads/legitscript.png"
+            alt="LegitScript Certified"
+            width="85"
+            height="76"
+            loading="lazy"
+          />
+          <img
+            src="uploads/badge-compounded-usa.webp"
+            alt="Compounded in the U.S.A."
+            width="85"
+            height="76"
+            loading="lazy"
+          />
+        </div>
+
+        <img
+          class="footer-wordmark"
+          src="assets/logo-white.png"
+          alt="Chime Health"
+          width="428"
+          height="193"
+          loading="lazy"
+        />
+
+        <div class="site-footer__legal">
+          <hr />
+          <p class="footer-fine">
+            Chime Health connects you with licensed healthcare providers for
+            wellness medications delivered to your door, with ongoing support.
+            Individual results vary. Compounded medications are available
+            subject to provider review and are not guaranteed to be prescribed.
+            These statements have not been evaluated by the Food and Drug
+            Administration.
+          </p>
+          <div class="legal-links">
+            <span>Copyright © 2026 Chime Health</span><span class="sep">|</span>
+            <span>All Rights Reserved</span><span class="sep">|</span>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a
+            ><span class="sep">|</span>
+            <a href="return-refund-policy.html">Refund Policy</a
+            ><span class="sep">|</span>
+            <a href="shipping-policy.html">Shipping Policy</a
+            ><span class="sep">|</span>
+            <a href="telehealth-consent.html">Consent to Telehealth</a
+            ><span class="sep">|</span>
+            <a href="privacy-policy.html">Privacy Policy</a
+            ><span class="sep">|</span>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Sticky offer bar — mobile only (CSS controls visibility) -->
+    <div class="sticky-cta">
+      <div class="sticky-cta__copy">
+        <b>Longevity Lifestyle Plan</b>
+        <span id="stickyPrice">$698 every 3 months</span>
+      </div>
+      <a class="btn btn--sand" href="chimeAssessment.html">Start Now</a>
+    </div>
+
+    <script src="ui_kits/amerilean/amerilean.js?v=20260877" defer></script>
+    <script src="ui_kits/longevity/longevity-plan.js?v=20260882" defer></script>
+  </body>
+</html>
