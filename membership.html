@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Choose Your Membership</title>
+<meta name="description" content="Choose a Chime Health Membership term — 1 month, 3 months, 6 months or 1 year — then talk to your provider about medications that may be right for you.">
+<meta name="robots" content="noindex">
+<!-- Membership plan selector — a single funnel step (asked for 2026-09-02).
+     Rebuilt from uploads/ref001.jpeg, a Mochi Health membership-selection
+     screen, on the Chime theme: styles.css tokens + Quicksand, page styles in
+     ui_kits/membership/membership.css, behavior in membership.js. No React, no
+     CDN scripts — the plan radios are native inputs and every selection state
+     is CSS. Chrome is the bare logo-only lockup cart.html uses: every link is
+     an exit from a funnel the user is already inside.
+
+     PLAN NUMBERS are the ones in the request, verbatim, and two of them differ
+     from the reference image — flagged, not "fixed":
+       • 1 Month: the request says "$79 due today"; the screenshot shows
+         $79 struck through and $39 due today (the $40 first-month offer).
+         Rendered as requested, so that row has no strikethrough — was = due.
+       • 1 Year: the request says "Save $430"; the screenshot shows "Save $400"
+         (12 × $79 − $548 = $400). Rendered as requested.
+     Struck-through "was" prices on the other rows follow the reference's
+     pattern (months × monthly rate: $207 / $354 / $588).
+     Medication "Starting from" figures are also the request's ($80 / $90) and
+     do NOT match ui_kits/shared/data/products.js (Semaglutide $179,
+     Tirzepatide $279, themselves flagged as borrowed AmeriLean rates).
+     Reconcile before this page goes in front of a customer.
+
+     COPY substituted for Chime where the reference is Mochi-specific:
+       • Headline — the reference's "500,000 members" claim has no Chime
+         equivalent; wording is lifted from the approved WL membership panel
+         (WLTimelineSection.jsx: "a care team that stays with you and adjusts
+         as your life does").
+       • Card description — benefits are the FAQ's approved membership list
+         (faqs.js "What is Chime Membership?"). The reference's "unlimited
+         video visits", "2000+ medications" and "FSA/HSA" claims are dropped:
+         none is a Chime claim.
+       • Renewal line — verbatim from cart-data.js checkoutNotes (the
+         merchant-account disclosure already on checkout).
+       • Approval line — cart-data.js's provider-review disclosure, prefixed
+         with the reference's 28-day-supply sentence. ⚠️ Confirm 28 days is
+         Chime's supply period before launch.
+       • Third medication row — Chime's catalog has Weight Loss and
+         Energy & Wellness only; no skincare or hair-growth products exist, so
+         the reference's "skincare, hair growth" became "energy, wellness,
+         recovery". The vial art is Chime's own (uploads/vials/*.webp).
+       • "Sign out" — this site has no accounts; the link goes home and is a
+         stand-in for the real session control. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css?v=20260883">
+<link rel="stylesheet" href="ui_kits/membership/membership.css?v=20260883">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html" aria-label="Chime Health — home">
+    <img src="assets/logo-main.svg" alt="Chime Health" width="1095" height="138">
+  </a>
+</header>
+
+<main class="page" id="main">
+
+  <!-- 1. Offer banner -->
+  <p class="promo" data-screen-label="Membership Offer">
+    Limited-time offer for you! $40 off your first month of membership.
+    <a href="terms-conditions.html">Terms apply.</a>
+  </p>
+
+  <h1 class="headline" data-screen-label="Membership Headline">Join the Chime Membership: a care team that stays with you and adjusts as your life does.</h1>
+
+  <!-- 2. Membership card + plan selector -->
+  <section class="card" aria-labelledby="mem-title" data-screen-label="Membership Plans">
+    <div class="card-mark" aria-hidden="true">
+      <img src="assets/mark-white.png" alt="" width="428" height="193">
+    </div>
+    <h2 class="card-title" id="mem-title">Chime Health Membership</h2>
+    <p class="card-desc">Provider messaging, progress and medication tracking, refill support, and personalized recommendations. Ongoing support across every Chime treatment path.</p>
+
+    <fieldset class="plans" id="plans">
+      <legend class="visually-hidden">Choose a membership term</legend>
+
+      <!-- was = due on this row (see the file header), so no strikethrough. -->
+      <label class="plan">
+        <input class="plan-input" type="radio" name="plan" value="1mo"
+               data-label="1 Month" data-monthly="79" data-due="79" data-save="40">
+        <span class="plan-frame" aria-hidden="true"></span>
+        <span class="plan-body">
+          <span class="plan-name">1 Month</span>
+          <span class="plan-rate">$79 / mo</span>
+        </span>
+        <span class="plan-radio" aria-hidden="true"></span>
+        <span class="plan-foot">
+          <span class="plan-due">$79 due today</span>
+          <span class="plan-badges">
+            <span class="badge badge--save">Save $40</span>
+          </span>
+        </span>
+      </label>
+
+      <label class="plan">
+        <input class="plan-input" type="radio" name="plan" value="3mo" checked
+               data-label="3 Months" data-monthly="69" data-due="167" data-save="70">
+        <span class="plan-frame" aria-hidden="true"></span>
+        <span class="plan-body">
+          <span class="plan-name">3 Months</span>
+          <span class="plan-rate">$69 / mo</span>
+        </span>
+        <span class="plan-radio" aria-hidden="true"></span>
+        <span class="plan-foot">
+          <span class="plan-due"><s><span class="visually-hidden">Regular price </span>$207</s> $167 due today</span>
+          <span class="plan-badges">
+            <span class="badge badge--pop">Most popular</span>
+            <span class="badge badge--save">Save $70</span>
+          </span>
+        </span>
+      </label>
+
+      <label class="plan">
+        <input class="plan-input" type="radio" name="plan" value="6mo"
+               data-label="6 Months" data-monthly="59" data-due="314" data-save="160">
+        <span class="plan-frame" aria-hidden="true"></span>
+        <span class="plan-body">
+          <span class="plan-name">6 Months</span>
+          <span class="plan-rate">$59 / mo</span>
+        </span>
+        <span class="plan-radio" aria-hidden="true"></span>
+        <span class="plan-foot">
+          <span class="plan-due"><s><span class="visually-hidden">Regular price </span>$354</s> $314 due today</span>
+          <span class="plan-badges">
+            <span class="badge badge--save">Save $160</span>
+          </span>
+        </span>
+      </label>
+
+      <label class="plan">
+        <input class="plan-input" type="radio" name="plan" value="1yr"
+               data-label="1 Year" data-monthly="49" data-due="548" data-save="430">
+        <span class="plan-frame" aria-hidden="true"></span>
+        <span class="plan-body">
+          <span class="plan-name">1 Year</span>
+          <span class="plan-rate">$49 / mo</span>
+        </span>
+        <span class="plan-radio" aria-hidden="true"></span>
+        <span class="plan-foot">
+          <span class="plan-due"><s><span class="visually-hidden">Regular price </span>$588</s> $548 due today</span>
+          <span class="plan-badges">
+            <span class="badge badge--save">Save $430</span>
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <p class="fine" data-screen-label="Membership Renewal Note">Memberships renew automatically at the end of each term at that term&rsquo;s price, until cancelled as described in the <a href="terms-conditions.html">Terms &amp; Conditions</a>.</p>
+
+  <!-- 3. Medications -->
+  <h2 class="subhead" data-screen-label="Membership Medications Heading">Once you&rsquo;re a member, you can talk to your provider about medications that may be right for you.</h2>
+
+  <ul class="meds" data-screen-label="Membership Medications">
+    <li class="med">
+      <span class="med-icon" aria-hidden="true"><img src="uploads/vials/semaglutide.webp" alt="" width="418" height="800"></span>
+      <span class="med-text">
+        <span class="med-name">Compounded Semaglutide</span>
+        <span class="med-price">Starting from $80.00 / mo</span>
+      </span>
+    </li>
+    <li class="med">
+      <span class="med-icon" aria-hidden="true"><img src="uploads/vials/tirzepatide.webp" alt="" width="427" height="800"></span>
+      <span class="med-text">
+        <span class="med-name">Compounded Tirzepatide</span>
+        <span class="med-price">Starting from $90.00 / mo</span>
+      </span>
+    </li>
+    <li class="med">
+      <span class="med-icon" aria-hidden="true"><img src="uploads/vials/nad-plus.webp" alt="" width="422" height="800"></span>
+      <span class="med-text">
+        <span class="med-name">And access to other treatments across energy, wellness, recovery, and more.</span>
+      </span>
+    </li>
+  </ul>
+
+  <p class="fine" data-screen-label="Membership Medication Note">Monthly prices include a 28-day supply of medication. Prescription treatment is subject to review and approval by a licensed healthcare provider. Medication is not guaranteed.</p>
+
+</main>
+
+<!-- 4. Fixed CTA bar -->
+<div class="cta-bar" data-screen-label="Membership CTA">
+  <div class="cta-inner">
+    <button class="btn" id="selectPlan" type="button" data-href="cart.html">Select plan</button>
+    <a class="signout" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      Sign out
+    </a>
+  </div>
+</div>
+
+<script src="ui_kits/membership/membership.js?v=20260883"></script>
+</body>
+</html>
