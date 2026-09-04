@@ -1,7 +1,8 @@
 /*
  * Plan selector: 1 / 3 / 6-month terms for two medications.
- * One price table drives every figure on the cards. Design prototype only —
- * the buttons are blank stubs and nothing navigates.
+ * One price table drives every figure on the cards. The card buttons open the
+ * questionnaire (questionnaire/step1.html) and carry the medication and term
+ * as ?med=sema|tirz&term=1|3|6 so the choice made here is not lost.
  *
  * Rule: commit to 3 months or more and every 4th month is free, for as long
  * as the patient stays enrolled. "effective" = charge ÷ months covered.
@@ -103,6 +104,13 @@
       }
     }
     setText(card, "[data-cta]", copy.cta + med.short);
+    var cta = card.querySelector("[data-cta]");
+    if (cta) {
+      cta.setAttribute(
+        "href",
+        "questionnaire/step1.html?med=" + card.getAttribute("data-plan") + "&term=" + term
+      );
+    }
     card.setAttribute("data-term", String(term));
   }
 
