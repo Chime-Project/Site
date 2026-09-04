@@ -19,31 +19,30 @@ plan-length → checkout path carries the selection.
 
 ## The flow
 
-1. Every "Start Losing Weight Now" and the sticky "Buy Now" stay on step 1: the
-   hero CTA scrolls to `#products`; each medication card's CTA (and a click
-   anywhere on the card) selects it (`ChimeFlow.select('sema'|'tirz')`, blue-500
-   outline); the sticky bar selects whatever is chosen, else the page's
-   recommendation, Tirzepatide.
-2. Selecting a medication reveals `#plan-stage` under the two cards — the
-   questionnaire's step 18 "SavvyCal stage" (`.sv-*` CSS copied from
-   `chime-plans-landing/questionnaire/css/questionnaire.css` into
-   `css/plan-stage.css`, seal included), widened to 1040px from 1024px up.
-   Cards are 1 / 3 / 6 months, 3 months preselected; each lists the checkout's
-   "Your plan, all in" rows as struck price → FREE plus the plan's own
-   save / no-free-month line and its charge note.
-3. `js/plan-stage.js` prices the cards from the Chime plans-landing ladder
-   (semaglutide $249 / $149 ($447 per 4 months, $112 effective) / $139 ($834
+1. One block per medication does everything (real merge, 2026-09-04): the hero
+   CTA scrolls to `#products`; each medication card keeps its vial, badges,
+   press strip, name, rating and member count, then carries **its own plan-length
+   rows** (1 / 3 / 6 months with rate, free-month tag, effective price and
+   savings), a live "what you pay today" note, its own Start button and the
+   checkout's "Your plan, all in" rows as struck price → FREE. The old
+   INCLUDED block and the separate plan stage are gone. **Nothing is
+   preselected**: picking a row selects medication + length together (the
+   other card clears), enables that card's "Start 3 months – Tirzepatide"
+   button, and on phones scrolls it into view; the button opens
+   `checkout.html?med=sema|tirz&term=1|3|6` (selection also in sessionStorage
+   `chime:checkout-selection`). `product.html?med=…&term=…` preselects (the
+   checkout's Back link uses it). The sticky bar's Buy Now scrolls to the
+   chosen card's button, else to the section.
+2. `js/plan-select.js` holds the price ladder (the Chime plans landing's:
+   semaglutide $249 / $149 ($447 per 4 months, $112 effective) / $139 ($834
    per 8 months, $104); tirzepatide $359 / $185 ($555, $139) / $172 ($1,032,
-   $129)), updates the CTA label ("Continue with 3 months + 1 free"), then
-   stores `chime:checkout-selection` in sessionStorage and opens
-   `checkout.html?med=sema|tirz&term=1|3|6`. `product.html?med=…` preselects.
-4. `js/checkout-selection.js` reads the URL (fallback: sessionStorage; default
+   $129)); the rows are rendered statically from the same table in the build.
+3. `js/checkout-selection.js` reads the URL (fallback: sessionStorage; default
    Semaglutide, 3 months) and fills the order summary: plan name, vial, term
    badge, "{Med} · {term} (N months)" line, both charge figures and both
-   per-day figures (charge ÷ months covered ÷ 30). The medication cards on
-   step 1 show the 3-month effective price ($112 / $139 per month) and the
-   Tirzepatide tag reads "Recommended for you" (it was "Same price as
-   Semaglutide!", untrue with this ladder).
+   per-day figures (charge ÷ months covered ÷ 30). The Tirzepatide tag reads
+   "Recommended for you" (it was "Same price as Semaglutide!", untrue with
+   this ladder).
 
 ## What changed from the source
 

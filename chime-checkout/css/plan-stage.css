@@ -65,27 +65,40 @@
   .sv-price { font-size: 40px; }
 }
 
-/* chime-checkout additions (2026-09-04): the stage sits under the two medication cards inside
-   #products; each plan card lists the checkout's "Your plan, all in" rows as struck price -> FREE. */
+/* chime-checkout (2026-09-04): the plan-length choice lives inside each medication card (.mp);
+   the .sv-* rules above are the questionnaire's step 18 stage, used here for the radio and the
+   struck-price benefit rows. */
 html { scroll-behavior: smooth; }
-#products, #plan-stage { scroll-margin-top: 16px; }
-#plan-stage { margin-top: 56px; }
-/* the stage kicker reads as the stage's title here — larger than the questionnaire's 11px eyebrow */
-#plan-stage .sv-kicker { font-size: 17px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 12px; }
-@media (max-width: 767px) { #plan-stage .sv-kicker { font-size: 14px; } }
-@media (max-width: 767px) { #plan-stage { margin-top: 36px; } }
-/* .sv-stage sets display:block, which would beat the [hidden] attribute — the price chart must not
-   exist on the page until a medication has been chosen. */
-#plan-stage[hidden] { display: none !important; }
-@media (min-width: 1024px) {
-  /* #products is a max-w-screen-md (768px) column; let the three plan cards breathe */
-  #plan-stage { width: min(1040px, 100vw - 64px); position: relative; left: 50%; transform: translateX(-50%); }
-}
+#products { scroll-margin-top: 16px; }
 [data-med][id] { transition: outline-color .15s ease, box-shadow .15s ease; outline: 3px solid transparent; outline-offset: 0; }
 [data-med][data-selected="true"] { outline-color: #6580bc; box-shadow: 0 18px 40px rgba(38, 53, 77, 0.22); }
+.sv-radio > span { display: block; width: 8px; height: 8px; border-radius: 9999px; }
 .sv-list--value li { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .sv-list--value .sv-val { white-space: nowrap; font-size: 11.5px; font-weight: 700; color: #485e89; }
 .sv-list--value .sv-val s { color: #90a1b9; font-weight: 400; margin-right: 4px; }
-.sv-list--value li.sv-b:empty { display: none; }
-.sv-list--value li.sv-b { display: block; }
-.sv-radio > span { display: block; width: 8px; height: 8px; border-radius: 9999px; }
+.mp { text-align: left; }
+.mp-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.mp-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #485e89; }
+.mp-seal { width: 54px; height: 54px; flex: none; transform: rotate(-8deg); filter: drop-shadow(0 3px 6px rgba(38, 53, 77, 0.2)); }
+.mp-rows { display: grid; gap: 8px; }
+.mp-row { position: relative; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; grid-template-areas: "r name price" "r sub sub"; column-gap: 10px; row-gap: 2px; align-items: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; cursor: pointer; outline: 2px solid transparent; outline-offset: 0; transition: outline-color .15s ease, background-color .15s ease; }
+.mp-row:hover { border-color: #bdd2f6; }
+/* the 3-month option is the highlighted one (user request 2026-09-04) — emphasised, not preselected */
+.mp-row[data-term="3"] { border: 2px solid #6580bc; background: #eff3fc; box-shadow: 0 10px 24px rgba(101, 128, 188, 0.22); padding: 12px 12px; }
+.mp-row[data-term="3"] .mp-tag { background: #6580bc; color: #fff; }
+.mp-row[data-term="3"] .mp-price { color: #485e89; font-size: 22px; }
+.mp-row[data-term="3"]:hover { border-color: #485e89; }
+.mp-row:has(.sv-radio[data-state="checked"]) { outline-color: #324563; background: #eff3fc; }
+.mp-row .sv-radio { position: static; grid-area: r; }
+.mp-name { grid-area: name; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 700; font-size: 14px; color: #26354d; }
+.mp-tag { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #485e89; background: #dae5fa; border-radius: 9999px; padding: 2px 7px; white-space: nowrap; }
+.mp-price { grid-area: price; font-weight: 700; font-size: 20px; line-height: 1; color: #26354d; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mp-price sup { font-size: 11px; position: relative; top: -6px; }
+.mp-price small { font-size: 11px; font-weight: 400; color: #485e89; }
+.mp-sub { grid-area: sub; font-size: 11.5px; line-height: 1.35; color: #485e89; }
+.mp-note { margin: 10px 0 0; font-size: 12px; line-height: 1.4; color: #485e89; }
+.mp-cta { display: block; width: 100%; margin-top: 10px; border: 0; border-radius: 9999px; background: #6580bc; color: #fff; font: inherit; font-weight: 700; font-size: 15px; padding: 14px 16px; cursor: pointer; box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); transition: background-color .15s ease; }
+.mp-cta:hover { background: #324563; }
+.mp-cta[disabled] { background: #bdd2f6; color: #324563; box-shadow: none; cursor: not-allowed; }
+.mp-plus { margin: 16px 0 8px; font-size: 12px; font-weight: 700; color: #26354d; }
+@media (max-width: 767px) { .mp-price { font-size: 18px; } }
