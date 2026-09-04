@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chime Health</title>
+    <meta name="title" content="Chime Health" />
+    <meta
+      name="description"
+      content="Our approach combines groundbreaking medication with coaching, support, and sustainable lifestyle adjustments to facilitate long-lasting weight loss."
+    />
+    <!-- =======================================================
+    Favicons
+    ======================================================= -->
+
+    <link
+    rel="icon"
+    type="image/png"
+    sizes="96x96"
+    href="images/favicon-chime.png?v=20260885"
+    />
+
+    <link
+    rel="icon"
+    type="image/png"
+    href="images/favicon-chime.png?v=20260885"
+    />
+
+    <link rel="shortcut icon" href="images/favicon-chime.png?v=20260885" />
+
+    <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="images/favicon-chime.png?v=20260885"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link href="css/questionnaire.css?v=20260885" rel="stylesheet" />
+  </head>
+  <body class="font-body relative min-h-screen flex flex-col">
+    <header
+      class="grid h-16 grid-cols-[minmax(0,1fr)_auto_auto] items-center justify-center gap-x-3 px-5 transition-all duration-150 sm:h-20 sm:grid-cols-2 sm:px-14 has-data-[slot=left-slot]:*:data-[slot=amerilean-logo]:col-span-1 has-data-[slot=left-slot]:*:data-[slot=amerilean-logo]:justify-start has-data-[slot=right-slot]:*:data-[slot=amerilean-logo]:col-span-1 has-data-[slot=right-slot]:*:data-[slot=amerilean-logo]:justify-start bg-[#fff] sticky top-0 z-2"
+    >
+      <div
+        data-slot="amerilean-logo"
+        class="col-span-full col-start-1 flex h-8 justify-center text-secondary-800 *:w-fit sm:absolute sm:left-1/2 sm:h-20 sm:-translate-x-1/2"
+      >
+        <img src="images/logo-chime.svg?v=20260885" class="size-full shrink-0 sm:my-auto sm:h-8" alt="Chime Health logo">
+      </div>
+      <div
+        class="col-start-3 row-start-1 justify-self-end flex items-center gap-3"
+        data-slot="right-slot"
+      >
+        <div
+          id="languageSwitcher"
+          class="sm:flex hidden flex-row border border-[#c8c8c8] rounded-lg"
+        >
+          <a
+            href="javascript:void(0);"
+            class="lang-btn lang-active lang-active-right text-[#292929] px-3 py-2.5"
+            data-lang="en"
+          >
+            EN
+          </a>
+
+          <a
+            href="javascript:void(0);"
+            class="lang-btn text-[#292929] px-3 py-2.5"
+            data-lang="es"
+            >ES</a
+          >
+        </div>
+
+        <button
+          id="mobileLanguageBtn"
+          type="button"
+          class="flex size-9 items-center justify-center rounded-lg border border-neutral-300 bg-primary-50 text-sm font-medium text-neutral-950 sm:hidden"
+        >
+          EN
+        </button>
+      </div>
+    </header>
+
+    <div class="w-full sticky sm:top-20 top-16 z-2">
+      <div
+        class="h-0.5 w-full has-data-[slot=progress-bar]:bg-[#edede7] sm:h-1"
+      >
+        <div
+          data-slot="progress-bar"
+          class="h-full bg-[#a9a68e]"
+          style="width: 84%"
+        ></div>
+      </div>
+    </div>
+
+    <main class="w-full py-6 px-5 sm:py-16 sm:px-5 flex-1">
+      <div
+        class="mx-auto flex w-full flex-col items-center gap-6 sm:gap-10 sm:max-w-xl"
+      >
+        <section class="flex flex-col items-center gap-1">
+          <h1
+            data-slot="heading"
+            class="inline-flex items-baseline gap-1 font-bold [&amp;>svg]:size-[1em] [&amp;>svg]:translate-y-[0.125em] text-xl sm:text-2xl text-[#606D5B] text-center"
+          >
+            If prescribed, where should we ship your order?
+          </h1>
+          <p
+            class="inline-flex items-baseline gap-1.5 text-base [&amp;>svg]:size-[1em] [&amp;>svg]:translate-y-[0.125em] text-center text-[#525252] font-normal"
+          >
+            (*) Mandatory field
+          </p>
+        </section>
+
+        <form>
+          <fieldset class="col-span-full flex flex-col gap-4 text-brown-09">
+            <div class="grid gap-x-8 gap-y-1.5 sm:grid-cols-3">
+              <div class="flex flex-col gap-1.5 sm:col-span-2">
+                <label
+                  class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                  for="_r_41_-form-item"
+                  aria-required="true"
+                >
+                  Address
+                </label>
+                <label
+                  class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;>input]:placeholder:text-neutral-500 [&amp;>input]:placeholder:transition-colors [&amp;>input]:placeholder:duration-200 hover:[&amp;>input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;>input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                >
+                  <div
+                    data-slot="input-slot"
+                    class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="#cad5e2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="size-4 shrink-0"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 1.25C11.2919 1.25 10.6485 1.45282 9.95055 1.79224C9.27585 2.12035 8.49642 2.60409 7.52286 3.20832L5.45628 4.4909C4.53509 5.06261 3.79744 5.5204 3.2289 5.95581C2.64015 6.40669 2.18795 6.86589 1.86131 7.46263C1.53535 8.05812 1.38857 8.69174 1.31819 9.4407C1.24999 10.1665 1.24999 11.0541 1.25 12.1672V13.7799C1.24999 15.6837 1.24998 17.1866 1.4027 18.3616C1.55937 19.567 1.88856 20.5401 2.63236 21.3094C3.37958 22.0824 4.33046 22.4277 5.50761 22.5914C6.64849 22.75 8.10556 22.75 9.94185 22.75H14.0581C15.8944 22.75 17.3515 22.75 18.4924 22.5914C19.6695 22.4277 20.6204 22.0824 21.3676 21.3094C22.1114 20.5401 22.4406 19.567 22.5973 18.3616C22.75 17.1866 22.75 15.6838 22.75 13.7799V12.1672C22.75 11.0541 22.75 10.1665 22.6818 9.4407C22.6114 8.69174 22.4646 8.05812 22.1387 7.46263C21.8121 6.86589 21.3599 6.40669 20.7711 5.95581C20.2026 5.5204 19.4649 5.06262 18.5437 4.49091L16.4771 3.20831C15.5036 2.60409 14.7241 2.12034 14.0494 1.79224C13.3515 1.45282 12.7081 1.25 12 1.25ZM8.27953 4.50412C9.29529 3.87371 10.0095 3.43153 10.6065 3.1412C11.1882 2.85833 11.6002 2.75 12 2.75C12.3998 2.75 12.8118 2.85833 13.3935 3.14119C13.9905 3.43153 14.7047 3.87371 15.7205 4.50412L17.7205 5.74537C18.6813 6.34169 19.3559 6.76135 19.8591 7.1467C20.3487 7.52164 20.6303 7.83106 20.8229 8.18285C21.0162 8.53589 21.129 8.94865 21.1884 9.58104C21.2492 10.2286 21.25 11.0458 21.25 12.2039V13.725C21.25 15.6959 21.2485 17.1012 21.1098 18.1683C20.9736 19.2163 20.717 19.8244 20.2892 20.2669C19.8649 20.7058 19.2871 20.9664 18.2858 21.1057C17.2602 21.2483 15.9075 21.25 14 21.25H10C8.09247 21.25 6.73983 21.2483 5.71422 21.1057C4.71286 20.9664 4.13514 20.7058 3.71079 20.2669C3.28301 19.8244 3.02642 19.2163 2.89019 18.1683C2.75149 17.1012 2.75 15.6959 2.75 13.725V12.2039C2.75 11.0458 2.75076 10.2286 2.81161 9.58104C2.87103 8.94865 2.98385 8.53589 3.17709 8.18285C3.36965 7.83106 3.65133 7.52164 4.14092 7.1467C4.6441 6.76135 5.31869 6.34169 6.27953 5.74537L8.27953 4.50412Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    data-slot="input"
+                    placeholder="123, Main Street"
+                    id="_r_41_-form-item"
+                    aria-describedby="_r_41_-form-item-description"
+                    aria-invalid="false"
+                    class="w-full focus:outline-none"
+                    name="shipping.address"
+                  />
+                </label>
+                <p
+                  id="_r_41_-form-item-message"
+                  class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                ></p>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label
+                  class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                  for="_r_42_-form-item"
+                >
+                  Apartment number
+                </label>
+                <label
+                  class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;>input]:placeholder:text-neutral-500 [&amp;>input]:placeholder:transition-colors [&amp;>input]:placeholder:duration-200 hover:[&amp;>input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;>input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                >
+                  <div
+                    data-slot="input-slot"
+                    class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="#cad5e2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="size-4 shrink-0"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 1.25C11.2919 1.25 10.6485 1.45282 9.95055 1.79224C9.27585 2.12035 8.49642 2.60409 7.52286 3.20832L5.45628 4.4909C4.53509 5.06261 3.79744 5.5204 3.2289 5.95581C2.64015 6.40669 2.18795 6.86589 1.86131 7.46263C1.53535 8.05812 1.38857 8.69174 1.31819 9.4407C1.24999 10.1665 1.24999 11.0541 1.25 12.1672V13.7799C1.24999 15.6837 1.24998 17.1866 1.4027 18.3616C1.55937 19.567 1.88856 20.5401 2.63236 21.3094C3.37958 22.0824 4.33046 22.4277 5.50761 22.5914C6.64849 22.75 8.10556 22.75 9.94185 22.75H14.0581C15.8944 22.75 17.3515 22.75 18.4924 22.5914C19.6695 22.4277 20.6204 22.0824 21.3676 21.3094C22.1114 20.5401 22.4406 19.567 22.5973 18.3616C22.75 17.1866 22.75 15.6838 22.75 13.7799V12.1672C22.75 11.0541 22.75 10.1665 22.6818 9.4407C22.6114 8.69174 22.4646 8.05812 22.1387 7.46263C21.8121 6.86589 21.3599 6.40669 20.7711 5.95581C20.2026 5.5204 19.4649 5.06262 18.5437 4.49091L16.4771 3.20831C15.5036 2.60409 14.7241 2.12034 14.0494 1.79224C13.3515 1.45282 12.7081 1.25 12 1.25ZM8.27953 4.50412C9.29529 3.87371 10.0095 3.43153 10.6065 3.1412C11.1882 2.85833 11.6002 2.75 12 2.75C12.3998 2.75 12.8118 2.85833 13.3935 3.14119C13.9905 3.43153 14.7047 3.87371 15.7205 4.50412L17.7205 5.74537C18.6813 6.34169 19.3559 6.76135 19.8591 7.1467C20.3487 7.52164 20.6303 7.83106 20.8229 8.18285C21.0162 8.53589 21.129 8.94865 21.1884 9.58104C21.2492 10.2286 21.25 11.0458 21.25 12.2039V13.725C21.25 15.6959 21.2485 17.1012 21.1098 18.1683C20.9736 19.2163 20.717 19.8244 20.2892 20.2669C19.8649 20.7058 19.2871 20.9664 18.2858 21.1057C17.2602 21.2483 15.9075 21.25 14 21.25H10C8.09247 21.25 6.73983 21.2483 5.71422 21.1057C4.71286 20.9664 4.13514 20.7058 3.71079 20.2669C3.28301 19.8244 3.02642 19.2163 2.89019 18.1683C2.75149 17.1012 2.75 15.6959 2.75 13.725V12.2039C2.75 11.0458 2.75076 10.2286 2.81161 9.58104C2.87103 8.94865 2.98385 8.53589 3.17709 8.18285C3.36965 7.83106 3.65133 7.52164 4.14092 7.1467C4.6441 6.76135 5.31869 6.34169 6.27953 5.74537L8.27953 4.50412Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    data-slot="input"
+                    placeholder="1A"
+                    id="_r_42_-form-item"
+                    aria-describedby="_r_42_-form-item-description"
+                    aria-invalid="false"
+                    class="w-full focus:outline-none"
+                    name="shipping.apartmentNumber"
+                  />
+                </label>
+                <p
+                  id="_r_42_-form-item-message"
+                  class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                ></p>
+              </div>
+              <div class="flex flex-col gap-1.5 sm:col-span-2">
+                <label
+                  class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                  for="_r_43_-form-item"
+                  aria-required="true"
+                >
+                  City
+                </label>
+                <label
+                  class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;>input]:placeholder:text-neutral-500 [&amp;>input]:placeholder:transition-colors [&amp;>input]:placeholder:duration-200 hover:[&amp;>input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;>input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                >
+                  <div
+                    data-slot="input-slot"
+                    class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                  >
+                    <svg
+                      viewBox="0 0 16 17"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="#cad5e2"
+                      class="size-4 shrink-0"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M2.16666 7.26211C2.16666 3.9961 4.77 1.33325 7.99999 1.33325C11.23 1.33325 13.8333 3.9961 13.8333 7.26211C13.8333 8.83885 13.384 10.5319 12.5896 11.9945C11.7962 13.4553 10.6371 14.7247 9.187 15.4025C8.4337 15.7546 7.56628 15.7546 6.81298 15.4025C5.3629 14.7247 4.20374 13.4553 3.41036 11.9945C2.61601 10.5319 2.16666 8.83885 2.16666 7.26211ZM7.99999 2.33325C5.33894 2.33325 3.16666 4.53157 3.16666 7.26211C3.16666 8.66016 3.56841 10.1902 4.28913 11.5172C5.01082 12.8461 6.03067 13.933 7.23642 14.4966C7.72136 14.7233 8.27862 14.7233 8.76356 14.4966C9.96931 13.933 10.9892 12.8461 11.7109 11.5172C12.4316 10.1902 12.8333 8.66016 12.8333 7.26211C12.8333 4.53157 10.661 2.33325 7.99999 2.33325ZM7.99999 5.66659C7.17156 5.66659 6.49999 6.33816 6.49999 7.16659C6.49999 7.99501 7.17156 8.66659 7.99999 8.66659C8.82842 8.66659 9.49999 7.99501 9.49999 7.16659C9.49999 6.33816 8.82842 5.66659 7.99999 5.66659ZM5.49999 7.16659C5.49999 5.78587 6.61928 4.66659 7.99999 4.66659C9.3807 4.66659 10.5 5.78587 10.5 7.16659C10.5 8.5473 9.3807 9.66659 7.99999 9.66659C6.61928 9.66659 5.49999 8.5473 5.49999 7.16659Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    data-slot="input"
+                    placeholder="Phoenix"
+                    id="_r_43_-form-item"
+                    aria-describedby="_r_43_-form-item-description"
+                    aria-invalid="false"
+                    class="w-full focus:outline-none"
+                    name="shipping.city"
+                  />
+                </label>
+                <p
+                  id="_r_43_-form-item-message"
+                  class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                ></p>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label
+                  class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                  for="_r_44_-form-item"
+                  aria-required="true"
+                >
+                  Zip code
+                </label>
+                <label
+                  class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;>input]:placeholder:text-neutral-500 [&amp;>input]:placeholder:transition-colors [&amp;>input]:placeholder:duration-200 hover:[&amp;>input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;>input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                >
+                  <div
+                    data-slot="input-slot"
+                    class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="#cad5e2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="size-4 shrink-0"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 1.25C11.2919 1.25 10.6485 1.45282 9.95055 1.79224C9.27585 2.12035 8.49642 2.60409 7.52286 3.20832L5.45628 4.4909C4.53509 5.06261 3.79744 5.5204 3.2289 5.95581C2.64015 6.40669 2.18795 6.86589 1.86131 7.46263C1.53535 8.05812 1.38857 8.69174 1.31819 9.4407C1.24999 10.1665 1.24999 11.0541 1.25 12.1672V13.7799C1.24999 15.6837 1.24998 17.1866 1.4027 18.3616C1.55937 19.567 1.88856 20.5401 2.63236 21.3094C3.37958 22.0824 4.33046 22.4277 5.50761 22.5914C6.64849 22.75 8.10556 22.75 9.94185 22.75H14.0581C15.8944 22.75 17.3515 22.75 18.4924 22.5914C19.6695 22.4277 20.6204 22.0824 21.3676 21.3094C22.1114 20.5401 22.4406 19.567 22.5973 18.3616C22.75 17.1866 22.75 15.6838 22.75 13.7799V12.1672C22.75 11.0541 22.75 10.1665 22.6818 9.4407C22.6114 8.69174 22.4646 8.05812 22.1387 7.46263C21.8121 6.86589 21.3599 6.40669 20.7711 5.95581C20.2026 5.5204 19.4649 5.06262 18.5437 4.49091L16.4771 3.20831C15.5036 2.60409 14.7241 2.12034 14.0494 1.79224C13.3515 1.45282 12.7081 1.25 12 1.25ZM8.27953 4.50412C9.29529 3.87371 10.0095 3.43153 10.6065 3.1412C11.1882 2.85833 11.6002 2.75 12 2.75C12.3998 2.75 12.8118 2.85833 13.3935 3.14119C13.9905 3.43153 14.7047 3.87371 15.7205 4.50412L17.7205 5.74537C18.6813 6.34169 19.3559 6.76135 19.8591 7.1467C20.3487 7.52164 20.6303 7.83106 20.8229 8.18285C21.0162 8.53589 21.129 8.94865 21.1884 9.58104C21.2492 10.2286 21.25 11.0458 21.25 12.2039V13.725C21.25 15.6959 21.2485 17.1012 21.1098 18.1683C20.9736 19.2163 20.717 19.8244 20.2892 20.2669C19.8649 20.7058 19.2871 20.9664 18.2858 21.1057C17.2602 21.2483 15.9075 21.25 14 21.25H10C8.09247 21.25 6.73983 21.2483 5.71422 21.1057C4.71286 20.9664 4.13514 20.7058 3.71079 20.2669C3.28301 19.8244 3.02642 19.2163 2.89019 18.1683C2.75149 17.1012 2.75 15.6959 2.75 13.725V12.2039C2.75 11.0458 2.75076 10.2286 2.81161 9.58104C2.87103 8.94865 2.98385 8.53589 3.17709 8.18285C3.36965 7.83106 3.65133 7.52164 4.14092 7.1467C4.6441 6.76135 5.31869 6.34169 6.27953 5.74537L8.27953 4.50412Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    data-slot="input"
+                    placeholder="12345"
+                    id="_r_44_-form-item"
+                    aria-describedby="_r_44_-form-item-description"
+                    aria-invalid="false"
+                    class="w-full focus:outline-none"
+                    name="shipping.zipCode"
+                    maxlength="5"
+                    inputmode="numeric"
+                  />
+                </label>
+                <p
+                  id="_r_44_-form-item-message"
+                  class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                ></p>
+              </div>
+            </div>
+          </fieldset>
+          <div class="flex flex-col gap-1.5 mb-8">
+            <label
+              class="relative flex cursor-pointer gap-2 transition-all duration-100 has-disabled:cursor-not-allowed has-disabled:**:cursor-not-allowed checkbox"
+            >
+              <input
+                type="checkbox"
+                value="on"
+                checked="true"
+                name="isBillingSameAsShipping"
+              />
+              <div class="min-w-0 grow wrap-break-word">
+                <span
+                  class="block w-full text-neutral-950 font-normal translate-y-0.5 text-sm"
+                >
+                  Billing address is the same as shipping
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="col-span-full"
+            style="opacity: 1; height: auto"
+            id="isBillingSameAsShipping"
+          >
+            <fieldset class="col-span-full flex flex-col gap-4 text-brown-09">
+              <h3
+                data-slot="heading"
+                class="inline-flex items-baseline gap-1 font-bold text-neutral-950 [&amp;&gt;svg]:size-[1em] [&amp;&gt;svg]:translate-y-[0.125em] text-base sm:text-lg"
+              >
+                Billing address
+              </h3>
+              <div class="grid gap-x-8 gap-y-1.5 sm:grid-cols-3">
+                <div class="flex flex-col gap-1.5 sm:col-span-2">
+                  <label
+                    class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                    for="_r_72_-form-item"
+                    aria-required="true"
+                    >Address</label
+                  ><label
+                    class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;&gt;input]:placeholder:text-neutral-500 [&amp;&gt;input]:placeholder:transition-colors [&amp;&gt;input]:placeholder:duration-200 hover:[&amp;&gt;input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;&gt;input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                    ><div
+                      data-slot="input-slot"
+                      class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="#cad5e2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="size-4 shrink-0"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
+                        ></path>
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 1.25C11.2919 1.25 10.6485 1.45282 9.95055 1.79224C9.27585 2.12035 8.49642 2.60409 7.52286 3.20832L5.45628 4.4909C4.53509 5.06261 3.79744 5.5204 3.2289 5.95581C2.64015 6.40669 2.18795 6.86589 1.86131 7.46263C1.53535 8.05812 1.38857 8.69174 1.31819 9.4407C1.24999 10.1665 1.24999 11.0541 1.25 12.1672V13.7799C1.24999 15.6837 1.24998 17.1866 1.4027 18.3616C1.55937 19.567 1.88856 20.5401 2.63236 21.3094C3.37958 22.0824 4.33046 22.4277 5.50761 22.5914C6.64849 22.75 8.10556 22.75 9.94185 22.75H14.0581C15.8944 22.75 17.3515 22.75 18.4924 22.5914C19.6695 22.4277 20.6204 22.0824 21.3676 21.3094C22.1114 20.5401 22.4406 19.567 22.5973 18.3616C22.75 17.1866 22.75 15.6838 22.75 13.7799V12.1672C22.75 11.0541 22.75 10.1665 22.6818 9.4407C22.6114 8.69174 22.4646 8.05812 22.1387 7.46263C21.8121 6.86589 21.3599 6.40669 20.7711 5.95581C20.2026 5.5204 19.4649 5.06262 18.5437 4.49091L16.4771 3.20831C15.5036 2.60409 14.7241 2.12034 14.0494 1.79224C13.3515 1.45282 12.7081 1.25 12 1.25ZM8.27953 4.50412C9.29529 3.87371 10.0095 3.43153 10.6065 3.1412C11.1882 2.85833 11.6002 2.75 12 2.75C12.3998 2.75 12.8118 2.85833 13.3935 3.14119C13.9905 3.43153 14.7047 3.87371 15.7205 4.50412L17.7205 5.74537C18.6813 6.34169 19.3559 6.76135 19.8591 7.1467C20.3487 7.52164 20.6303 7.83106 20.8229 8.18285C21.0162 8.53589 21.129 8.94865 21.1884 9.58104C21.2492 10.2286 21.25 11.0458 21.25 12.2039V13.725C21.25 15.6959 21.2485 17.1012 21.1098 18.1683C20.9736 19.2163 20.717 19.8244 20.2892 20.2669C19.8649 20.7058 19.2871 20.9664 18.2858 21.1057C17.2602 21.2483 15.9075 21.25 14 21.25H10C8.09247 21.25 6.73983 21.2483 5.71422 21.1057C4.71286 20.9664 4.13514 20.7058 3.71079 20.2669C3.28301 19.8244 3.02642 19.2163 2.89019 18.1683C2.75149 17.1012 2.75 15.6959 2.75 13.725V12.2039C2.75 11.0458 2.75076 10.2286 2.81161 9.58104C2.87103 8.94865 2.98385 8.53589 3.17709 8.18285C3.36965 7.83106 3.65133 7.52164 4.14092 7.1467C4.6441 6.76135 5.31869 6.34169 6.27953 5.74537L8.27953 4.50412Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      data-slot="input"
+                      placeholder="123, Main Street"
+                      id="_r_72_-form-item"
+                      aria-describedby="_r_72_-form-item-description"
+                      aria-invalid="false"
+                      class="w-full focus:outline-none"
+                      name="billing.address"
+                  /></label>
+                  <p
+                    id="_r_72_-form-item-message"
+                    class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                  ></p>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label
+                    class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                    for="_r_73_-form-item"
+                    >Apartment number</label
+                  ><label
+                    class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;&gt;input]:placeholder:text-neutral-500 [&amp;&gt;input]:placeholder:transition-colors [&amp;&gt;input]:placeholder:duration-200 hover:[&amp;&gt;input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;&gt;input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                    ><div
+                      data-slot="input-slot"
+                      class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="#cad5e2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="size-4 shrink-0"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
+                        ></path>
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 1.25C11.2919 1.25 10.6485 1.45282 9.95055 1.79224C9.27585 2.12035 8.49642 2.60409 7.52286 3.20832L5.45628 4.4909C4.53509 5.06261 3.79744 5.5204 3.2289 5.95581C2.64015 6.40669 2.18795 6.86589 1.86131 7.46263C1.53535 8.05812 1.38857 8.69174 1.31819 9.4407C1.24999 10.1665 1.24999 11.0541 1.25 12.1672V13.7799C1.24999 15.6837 1.24998 17.1866 1.4027 18.3616C1.55937 19.567 1.88856 20.5401 2.63236 21.3094C3.37958 22.0824 4.33046 22.4277 5.50761 22.5914C6.64849 22.75 8.10556 22.75 9.94185 22.75H14.0581C15.8944 22.75 17.3515 22.75 18.4924 22.5914C19.6695 22.4277 20.6204 22.0824 21.3676 21.3094C22.1114 20.5401 22.4406 19.567 22.5973 18.3616C22.75 17.1866 22.75 15.6838 22.75 13.7799V12.1672C22.75 11.0541 22.75 10.1665 22.6818 9.4407C22.6114 8.69174 22.4646 8.05812 22.1387 7.46263C21.8121 6.86589 21.3599 6.40669 20.7711 5.95581C20.2026 5.5204 19.4649 5.06262 18.5437 4.49091L16.4771 3.20831C15.5036 2.60409 14.7241 2.12034 14.0494 1.79224C13.3515 1.45282 12.7081 1.25 12 1.25ZM8.27953 4.50412C9.29529 3.87371 10.0095 3.43153 10.6065 3.1412C11.1882 2.85833 11.6002 2.75 12 2.75C12.3998 2.75 12.8118 2.85833 13.3935 3.14119C13.9905 3.43153 14.7047 3.87371 15.7205 4.50412L17.7205 5.74537C18.6813 6.34169 19.3559 6.76135 19.8591 7.1467C20.3487 7.52164 20.6303 7.83106 20.8229 8.18285C21.0162 8.53589 21.129 8.94865 21.1884 9.58104C21.2492 10.2286 21.25 11.0458 21.25 12.2039V13.725C21.25 15.6959 21.2485 17.1012 21.1098 18.1683C20.9736 19.2163 20.717 19.8244 20.2892 20.2669C19.8649 20.7058 19.2871 20.9664 18.2858 21.1057C17.2602 21.2483 15.9075 21.25 14 21.25H10C8.09247 21.25 6.73983 21.2483 5.71422 21.1057C4.71286 20.9664 4.13514 20.7058 3.71079 20.2669C3.28301 19.8244 3.02642 19.2163 2.89019 18.1683C2.75149 17.1012 2.75 15.6959 2.75 13.725V12.2039C2.75 11.0458 2.75076 10.2286 2.81161 9.58104C2.87103 8.94865 2.98385 8.53589 3.17709 8.18285C3.36965 7.83106 3.65133 7.52164 4.14092 7.1467C4.6441 6.76135 5.31869 6.34169 6.27953 5.74537L8.27953 4.50412Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      data-slot="input"
+                      placeholder="1A"
+                      id="_r_73_-form-item"
+                      aria-describedby="_r_73_-form-item-description"
+                      aria-invalid="false"
+                      class="w-full focus:outline-none"
+                      name="billing.apartmentNumber"
+                  /></label>
+                  <p
+                    id="_r_73_-form-item-message"
+                    class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                  ></p>
+                </div>
+                <div class="flex flex-col gap-1.5 sm:col-span-2">
+                  <label
+                    class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                    for="_r_74_-form-item"
+                    aria-required="true"
+                    >City</label
+                  ><label
+                    class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;&gt;input]:placeholder:text-neutral-500 [&amp;&gt;input]:placeholder:transition-colors [&amp;&gt;input]:placeholder:duration-200 hover:[&amp;&gt;input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;&gt;input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                    ><div
+                      data-slot="input-slot"
+                      class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                    >
+                      <svg
+                        viewBox="0 0 16 17"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#cad5e2"
+                        class="size-4 shrink-0"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M2.16666 7.26211C2.16666 3.9961 4.77 1.33325 7.99999 1.33325C11.23 1.33325 13.8333 3.9961 13.8333 7.26211C13.8333 8.83885 13.384 10.5319 12.5896 11.9945C11.7962 13.4553 10.6371 14.7247 9.187 15.4025C8.4337 15.7546 7.56628 15.7546 6.81298 15.4025C5.3629 14.7247 4.20374 13.4553 3.41036 11.9945C2.61601 10.5319 2.16666 8.83885 2.16666 7.26211ZM7.99999 2.33325C5.33894 2.33325 3.16666 4.53157 3.16666 7.26211C3.16666 8.66016 3.56841 10.1902 4.28913 11.5172C5.01082 12.8461 6.03067 13.933 7.23642 14.4966C7.72136 14.7233 8.27862 14.7233 8.76356 14.4966C9.96931 13.933 10.9892 12.8461 11.7109 11.5172C12.4316 10.1902 12.8333 8.66016 12.8333 7.26211C12.8333 4.53157 10.661 2.33325 7.99999 2.33325ZM7.99999 5.66659C7.17156 5.66659 6.49999 6.33816 6.49999 7.16659C6.49999 7.99501 7.17156 8.66659 7.99999 8.66659C8.82842 8.66659 9.49999 7.99501 9.49999 7.16659C9.49999 6.33816 8.82842 5.66659 7.99999 5.66659ZM5.49999 7.16659C5.49999 5.78587 6.61928 4.66659 7.99999 4.66659C9.3807 4.66659 10.5 5.78587 10.5 7.16659C10.5 8.5473 9.3807 9.66659 7.99999 9.66659C6.61928 9.66659 5.49999 8.5473 5.49999 7.16659Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      data-slot="input"
+                      placeholder="Phoenix"
+                      id="_r_74_-form-item"
+                      aria-describedby="_r_74_-form-item-description"
+                      aria-invalid="false"
+                      class="w-full focus:outline-none"
+                      name="billing.city"
+                  /></label>
+                  <p
+                    id="_r_74_-form-item-message"
+                    class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                  ></p>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label
+                    class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                    for="_r_75_-form-item"
+                    aria-required="true"
+                    >Zip code</label
+                  ><label
+                    class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;&gt;input]:placeholder:text-neutral-500 [&amp;&gt;input]:placeholder:transition-colors [&amp;&gt;input]:placeholder:duration-200 hover:[&amp;&gt;input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;&gt;input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+                    ><div
+                      data-slot="input-slot"
+                      class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="#cad5e2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="size-4 shrink-0"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
+                        ></path>
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 1.25C11.2919 1.25 10.6485 1.45282 9.95055 1.79224C9.27585 2.12035 8.49642 2.60409 7.52286 3.20832L5.45628 4.4909C4.53509 5.06261 3.79744 5.5204 3.2289 5.95581C2.64015 6.40669 2.18795 6.86589 1.86131 7.46263C1.53535 8.05812 1.38857 8.69174 1.31819 9.4407C1.24999 10.1665 1.24999 11.0541 1.25 12.1672V13.7799C1.24999 15.6837 1.24998 17.1866 1.4027 18.3616C1.55937 19.567 1.88856 20.5401 2.63236 21.3094C3.37958 22.0824 4.33046 22.4277 5.50761 22.5914C6.64849 22.75 8.10556 22.75 9.94185 22.75H14.0581C15.8944 22.75 17.3515 22.75 18.4924 22.5914C19.6695 22.4277 20.6204 22.0824 21.3676 21.3094C22.1114 20.5401 22.4406 19.567 22.5973 18.3616C22.75 17.1866 22.75 15.6838 22.75 13.7799V12.1672C22.75 11.0541 22.75 10.1665 22.6818 9.4407C22.6114 8.69174 22.4646 8.05812 22.1387 7.46263C21.8121 6.86589 21.3599 6.40669 20.7711 5.95581C20.2026 5.5204 19.4649 5.06262 18.5437 4.49091L16.4771 3.20831C15.5036 2.60409 14.7241 2.12034 14.0494 1.79224C13.3515 1.45282 12.7081 1.25 12 1.25ZM8.27953 4.50412C9.29529 3.87371 10.0095 3.43153 10.6065 3.1412C11.1882 2.85833 11.6002 2.75 12 2.75C12.3998 2.75 12.8118 2.85833 13.3935 3.14119C13.9905 3.43153 14.7047 3.87371 15.7205 4.50412L17.7205 5.74537C18.6813 6.34169 19.3559 6.76135 19.8591 7.1467C20.3487 7.52164 20.6303 7.83106 20.8229 8.18285C21.0162 8.53589 21.129 8.94865 21.1884 9.58104C21.2492 10.2286 21.25 11.0458 21.25 12.2039V13.725C21.25 15.6959 21.2485 17.1012 21.1098 18.1683C20.9736 19.2163 20.717 19.8244 20.2892 20.2669C19.8649 20.7058 19.2871 20.9664 18.2858 21.1057C17.2602 21.2483 15.9075 21.25 14 21.25H10C8.09247 21.25 6.73983 21.2483 5.71422 21.1057C4.71286 20.9664 4.13514 20.7058 3.71079 20.2669C3.28301 19.8244 3.02642 19.2163 2.89019 18.1683C2.75149 17.1012 2.75 15.6959 2.75 13.725V12.2039C2.75 11.0458 2.75076 10.2286 2.81161 9.58104C2.87103 8.94865 2.98385 8.53589 3.17709 8.18285C3.36965 7.83106 3.65133 7.52164 4.14092 7.1467C4.6441 6.76135 5.31869 6.34169 6.27953 5.74537L8.27953 4.50412Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      data-slot="input"
+                      placeholder="12345"
+                      id="_r_75_-form-item"
+                      aria-describedby="_r_75_-form-item-description"
+                      aria-invalid="false"
+                      class="w-full focus:outline-none"
+                      name="billing.zipCode"
+                      maxlength="5"
+                      inputmode="numeric"
+                  /></label>
+                  <p
+                    id="_r_75_-form-item-message"
+                    class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+                  ></p>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-span-full">
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="font-medium text-[#525252] aria-required:after:content-['_*'] text-sm"
+                for="_r_46_-form-item"
+                aria-required="true"
+              >
+                Phone number
+              </label>
+              <label
+                class="flex w-full cursor-text gap-2 overflow-hidden rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-950 placeholder-neutral-500 transition-colors duration-200 outline-none hover:border-neutral-700 [&amp;>input]:placeholder:text-neutral-500 [&amp;>input]:placeholder:transition-colors [&amp;>input]:placeholder:duration-200 hover:[&amp;>input]:placeholder:text-neutral-700 focus-within:border-neutral-500 focus-within:placeholder-neutral-700 focus-within:ring-2 focus-within:ring-secondary-200 focus-within:ring-offset-1 focus-within:[&amp;>input]:placeholder:text-neutral-700 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-700 has-disabled:cursor-not-allowed has-disabled:border-neutral-200 has-disabled:bg-neutral-50 has-disabled:text-neutral-700 has-aria-invalid:border-red-700 aria-invalid:border-red-700 has-[[data-slot=input]:read-only]:pointer-events-none has-[[data-slot=input]:read-only]:border-transparent has-[[data-slot=input]:read-only]:bg-white/50"
+              >
+                <div
+                  data-slot="input-slot"
+                  class="flex items-center gap-2 fill-secondary-400 text-sm text-secondary-400 data-[side=left]:order-first data-[side=right]:order-last [&amp;_svg]:size-4"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="#cad5e2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M11.9436 1.25H12.0564C13.8942 1.24998 15.3498 1.24997 16.489 1.40314C17.6614 1.56076 18.6104 1.89288 19.3588 2.64124C20.1071 3.38961 20.4392 4.33856 20.5969 5.51098C20.75 6.65019 20.75 8.10583 20.75 9.94359V14.0564C20.75 15.8942 20.75 17.3498 20.5969 18.489C20.4392 19.6614 20.1071 20.6104 19.3588 21.3588C18.6104 22.1071 17.6614 22.4392 16.489 22.5969C15.3498 22.75 13.8942 22.75 12.0564 22.75H11.9436C10.1058 22.75 8.65019 22.75 7.51098 22.5969C6.33856 22.4392 5.38961 22.1071 4.64124 21.3588C3.89288 20.6104 3.56076 19.6614 3.40314 18.489C3.24997 17.3498 3.24998 15.8942 3.25 14.0564V9.94358C3.24998 8.10582 3.24997 6.65019 3.40314 5.51098C3.56076 4.33856 3.89288 3.38961 4.64124 2.64124C5.38961 1.89288 6.33856 1.56076 7.51098 1.40314C8.65019 1.24997 10.1058 1.24998 11.9436 1.25ZM7.71085 2.88976C6.70476 3.02502 6.12511 3.27869 5.7019 3.7019C5.27869 4.12511 5.02502 4.70476 4.88976 5.71085C4.75159 6.73851 4.75 8.09318 4.75 10V14C4.75 15.9068 4.75159 17.2615 4.88976 18.2892C5.02502 19.2952 5.27869 19.8749 5.7019 20.2981C6.12511 20.7213 6.70476 20.975 7.71085 21.1102C8.73851 21.2484 10.0932 21.25 12 21.25C13.9068 21.25 15.2615 21.2484 16.2892 21.1102C17.2952 20.975 17.8749 20.7213 18.2981 20.2981C18.7213 19.8749 18.975 19.2952 19.1102 18.2892C19.2484 17.2615 19.25 15.9068 19.25 14V10C19.25 8.09318 19.2484 6.73851 19.1102 5.71085C18.975 4.70476 18.7213 4.12511 18.2981 3.7019C17.8749 3.27869 17.2952 3.02502 16.2892 2.88976C15.2615 2.75159 13.9068 2.75 12 2.75C10.0932 2.75 8.73851 2.75159 7.71085 2.88976ZM8.25 19C8.25 18.5858 8.58579 18.25 9 18.25H15C15.4142 18.25 15.75 18.5858 15.75 19C15.75 19.4142 15.4142 19.75 15 19.75H9C8.58579 19.75 8.25 19.4142 8.25 19Z"
+                    ></path>
+                  </svg>
+                  <p
+                    class="inline-flex items-baseline gap-1.5 text-base [&amp;>svg]:size-[1em] [&amp;>svg]:translate-y-[0.125em] text-neutral-950 font-normal"
+                  >
+                    +1
+                  </p>
+                </div>
+                <input
+                  data-slot="input"
+                  placeholder="1234567890"
+                  maxlength="10"
+                  id="_r_46_-form-item"
+                  aria-describedby="_r_46_-form-item-description"
+                  aria-invalid="false"
+                  class="w-full focus:outline-none"
+                  type="tel"
+                  name="phoneNumber"
+                />
+              </label>
+              <p
+                id="_r_46_-form-item-message"
+                class="-mt-0.5 min-h-5 text-left text-sm font-medium text-red-07"
+              ></p>
+            </div>
+            <div class="flex flex-col gap-3 sm:items-center sm:text-center">
+              <p
+                class="inline-flex items-baseline gap-1.5 text-base [&amp;>svg]:size-[1em] [&amp;>svg]:translate-y-[0.125em] text-neutral-800 font-bold"
+              >
+                We'll only use your number to text order updates and important
+                information about your treatments.
+              </p>
+              <div class="col-span-full flex w-full flex-col gap-4 pt-6" data-consent-block>
+            <div class="flex flex-col gap-3">
+              <label class="relative flex cursor-pointer gap-2 transition-all duration-100 checkbox">
+                <input
+                  type="checkbox"
+                  id="form_contact_agree"
+                  name="contact_agree"
+                  value="on" required
+                  class="mt-1 size-4 shrink-0"
+                />
+                <div class="min-w-0 grow wrap-break-word">
+                  <span class="block w-full text-neutral-950 font-normal text-sm">
+                    I confirm that I am the patient completing this intake form and that my answers are accurate and complete to the best of my knowledge. I understand the importance of providing accurate health information for my care. I agree to the Truthfulness Consent, Telehealth Consent &amp; Informed Treatment Consent.
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div class="flex flex-col gap-3">
+              <label class="relative flex cursor-pointer gap-2 transition-all duration-100 checkbox">
+                <input
+                  type="checkbox"
+                  id="form_sms_consent"
+                  name="sms_consent"
+                  value="on" data-optional
+                  class="mt-1 size-4 shrink-0"
+                />
+                <div class="min-w-0 grow wrap-break-word">
+                  <span class="block w-full text-neutral-950 font-normal text-sm">
+                    I consent to receive marketing text messages from Chime Health and its medical providers at the phone number provided, including promotions, discounts, and product/service updates. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out. Consent is not a condition of purchase.
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+            </div>
+          </div>
+          <div class="col-span-full flex flex-col gap-3 pt-8">
+            <a
+              id="step6Continue"
+              href="step17.html"
+              class="inline-block font-medium sm:w-auto bg-[#4B5647] py-2.5 px-6 w-full text-white rounded-lg sm:min-w-[128px] sm:flex sm:justify-center sm:items-center hover:bg-[#363f33] text-center"
+            >
+              Find your treatment
+            </a>
+            <a
+              href="step15.html"
+              class="inline-block font-medium sm:w-auto bg-transparent border border-[#8c9a87] text-[#4B5647] py-2.5 px-6 w-full rounded-lg sm:min-w-[128px] sm:flex sm:justify-center sm:items-center hover:bg-[#f9f9f7] text-center mb-5"
+            >
+              Back
+            </a>
+            <p
+              class="inline-flex items-baseline gap-1.5 [&amp;>svg]:size-[1em] [&amp;>svg]:translate-y-[0.125em] text-sm text-center text-neutral-700 font-normal"
+            >
+              By checking the option "I'd also like to receive occasional
+              promotions via text message. Opt out anytime.", I agree to receive
+              marketing text messages from Chime Health at the number provided
+              above. Messages &amp; calls may use an automatic telephone dialing
+              system. Consent is not required as a condition of purchase.
+              Message and data rates may apply. Message frequency varies. Send
+              HELP for help or STOP to cancel. Messages &amp; calls may include
+              shopping cart reminders.
+            </p>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <section
+      aria-label="Notifications alt+T"
+      tabindex="-1"
+      aria-live="polite"
+      aria-relevant="additions text"
+      aria-atomic="false"
+    >
+      <ol
+        dir="ltr"
+        tabindex="-1"
+        data-sonner-toaster="true"
+        data-sonner-theme="light"
+        data-y-position="top"
+        data-x-position="right"
+        style="
+          --front-toast-height: 94px;
+          --width: 356px;
+          --gap: 14px;
+          --offset-top: 24px;
+          --offset-right: 24px;
+          --offset-bottom: 24px;
+          --offset-left: 24px;
+          --mobile-offset-top: 16px;
+          --mobile-offset-right: 16px;
+          --mobile-offset-bottom: 16px;
+          --mobile-offset-left: 16px;
+        "
+      >
+        <li
+          tabindex="0"
+          class=""
+          data-sonner-toast=""
+          data-styled="false"
+          data-mounted="true"
+          data-promise="false"
+          data-swiped="false"
+          data-removed="false"
+          data-visible="true"
+          data-y-position="top"
+          data-x-position="right"
+          data-index="0"
+          data-front="true"
+          data-swiping="false"
+          data-dismissible="true"
+          data-swipe-out="false"
+          data-expanded="false"
+          style="
+            --index: 0;
+            --toasts-before: 0;
+            --z-index: 1;
+            --offset: 0px;
+            --initial-height: 94px;
+          "
+        >
+          <div data-content="" class="">
+            <div data-title="" class="">
+              <div
+                class="rounded-xl border p-4 text-left text-sm font-medium bg-brown-03 text-nature-10 border-transparent shadow-md"
+              >
+                <div class="flex gap-2">
+                  <div class="icon-container flex h-5 items-center">
+                    <div
+                      class="flex shrink-0 items-stretch justify-center size-4"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="#cad5e2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="size-4 shrink-0"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
+                        ></path>
+                        <path
+                          d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                        ></path>
+                        <path
+                          d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="w-full">
+                    You can't select both GLP-1 Weight Loss and GLP-1
+                    Microdosing. We've switched your selection to GLP-1
+                    Microdosing
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+    <p id="loading-indicator" style="display:none;">Processing...</p>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/questionaire.js"></script>
+    <script src="js/lang.js?v=20260710"></script>
+    <script src="js/account-contact-details.js"></script>
+    <script src="js/quiz-logic.js?v=20260710"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const TEXT_FIELD_NAMES = [
+          "shipping.address",
+          "shipping.apartmentNumber",
+          "shipping.city",
+          "shipping.zipCode",
+          "billing.address",
+          "billing.apartmentNumber",
+          "billing.city",
+          "billing.zipCode",
+          "phoneNumber",
+        ];
+
+        const CHECKBOX_FIELD_NAMES = [
+          "isBillingSameAsShipping",
+        ];
+
+        function saveToSessionStorage(key, value) {
+          if (value) {
+            sessionStorage.setItem(key, value);
+          } else {
+            sessionStorage.removeItem(key);
+          }
+        }
+
+        TEXT_FIELD_NAMES.forEach(name => {
+          const field = document.querySelector(`[name="${name}"]`);
+          if (!field) {
+            return;
+          }
+
+          const savedValue = sessionStorage.getItem(name);
+          if (savedValue) {
+            field.value = savedValue;
+          }
+
+          field.addEventListener("input", function () {
+            saveToSessionStorage(name, field.value.trim());
+          });
+        });
+
+        CHECKBOX_FIELD_NAMES.forEach(name => {
+          const field = document.querySelector(`[name="${name}"]`);
+          if (!field) {
+            return;
+          }
+
+          const savedValue = sessionStorage.getItem(name);
+          if (savedValue !== null) {
+            field.checked = savedValue === "true";
+            field.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+
+          field.addEventListener("change", function () {
+            sessionStorage.setItem(name, field.checked ? "true" : "false");
+          });
+        });
+
+        const shippingAddressField = document.querySelector('[name="shipping.address"]');
+        const shippingCityField = document.querySelector('[name="shipping.city"]');
+        const shippingZipField = document.querySelector('[name="shipping.zipCode"]');
+        const billingAddressField = document.querySelector('[name="billing.address"]');
+        const billingCityField = document.querySelector('[name="billing.city"]');
+        const billingZipField = document.querySelector('[name="billing.zipCode"]');
+        const phoneField = document.querySelector('[name="phoneNumber"]');
+        const isBillingSameCheckbox = document.querySelector(
+          '[name="isBillingSameAsShipping"]'
+        );
+        const continueLink = document.getElementById("step6Continue");
+
+        function getMessageElement(field) {
+          const fieldGroup = field.closest(".flex.flex-col.gap-1\\.5");
+          return fieldGroup ? fieldGroup.querySelector("p:last-child") : null;
+        }
+
+        function setError(field, message) {
+          const messageElement = getMessageElement(field);
+          field.setAttribute("aria-invalid", "true");
+          if (messageElement) {
+            messageElement.textContent = message;
+            messageElement.classList.remove("text-red-07");
+            messageElement.classList.add("text-red-600");
+          }
+        }
+
+        function clearError(field) {
+          const messageElement = getMessageElement(field);
+          field.setAttribute("aria-invalid", "false");
+          if (messageElement) {
+            messageElement.textContent = "";
+          }
+        }
+
+        function validateRequired(field, label) {
+          if (!field.value.trim()) {
+            setError(field, `Please enter your ${label}.`);
+            return false;
+          }
+          clearError(field);
+          return true;
+        }
+
+        function validateZip(field, label) {
+          const digits = field.value.replace(/\D/g, "");
+          if (!digits) {
+            setError(field, `Please enter your ${label}.`);
+            return false;
+          }
+          if (digits.length !== 5) {
+            setError(field, `Please enter a valid 5-digit ${label}.`);
+            return false;
+          }
+          clearError(field);
+          return true;
+        }
+
+        function validateStep6Form() {
+          let isValid = true;
+
+          if (!validateRequired(shippingAddressField, "shipping address")) {
+            isValid = false;
+          }
+          if (!validateRequired(shippingCityField, "shipping city")) {
+            isValid = false;
+          }
+          if (!validateZip(shippingZipField, "shipping zip code")) {
+            isValid = false;
+          }
+
+          const phoneDigits = phoneField.value.replace(/\D/g, "");
+          if (!phoneDigits) {
+            setError(phoneField, "Please enter your phone number.");
+            isValid = false;
+          } else if (phoneDigits.length !== 10) {
+            setError(phoneField, "Please enter a valid 10-digit phone number.");
+            isValid = false;
+          } else {
+            clearError(phoneField);
+          }
+
+          // Billing fields are only required when the user unchecks
+          // "Billing address is the same as shipping".
+          const billingRequired =
+            isBillingSameCheckbox && !isBillingSameCheckbox.checked;
+
+          [
+            [billingAddressField, "billing address", validateRequired],
+            [billingCityField, "billing city", validateRequired],
+            [billingZipField, "billing zip code", validateZip],
+          ].forEach(([field, label, validate]) => {
+            if (!field) {
+              return;
+            }
+            if (billingRequired) {
+              if (!validate(field, label)) {
+                isValid = false;
+              }
+            } else {
+              clearError(field);
+            }
+          });
+
+          if (!isValid) {
+            const firstInvalid = document.querySelector('[aria-invalid="true"]');
+            if (firstInvalid) {
+              firstInvalid.focus();
+            }
+          }
+
+          return isValid;
+        }
+
+        [
+          shippingAddressField,
+          shippingCityField,
+          shippingZipField,
+          billingAddressField,
+          billingCityField,
+          billingZipField,
+          phoneField,
+        ].forEach(field => {
+          if (!field) {
+            return;
+          }
+          field.addEventListener("input", function () {
+            clearError(field);
+          });
+        });
+
+        if (continueLink) {
+          continueLink.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            if (!validateStep6Form()) {
+              return;
+            }
+
+            $("#loading-indicator").show();
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    window.location.href = continueLink.href;
+                }, 200);
+            });
+          });
+
+          window.addEventListener("pageshow", function () {
+              $("#loading-indicator").hide();
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
