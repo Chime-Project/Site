@@ -88,6 +88,8 @@ html { scroll-behavior: smooth; }
 .mp-row[data-term="3"] .mp-tag { background: #6580bc; color: #fff; }
 .mp-row[data-term="3"] .mp-price { color: #485e89; font-size: 22px; }
 .mp-row[data-term="3"]:hover { border-color: #485e89; }
+.mp-row[data-term="3"] { overflow: hidden; transform-origin: 50% 50%; will-change: transform; }
+.mp-shine { position: absolute; top: -20%; bottom: -20%; left: -45%; width: 38%; opacity: 0; pointer-events: none; transform: skewX(-18deg); background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%); }
 .mp-row:has(.sv-radio[data-state="checked"]) { outline-color: #324563; background: #eff3fc; }
 .mp-row .sv-radio { position: static; grid-area: r; }
 .mp-name { grid-area: name; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 700; font-size: 14px; color: #26354d; }
