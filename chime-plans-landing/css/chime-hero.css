@@ -1,0 +1,110 @@
+/* Chime Health hero: the site's bento language (cream canvas, blue tile for
+   the message, photo tile on a soft blue gradient, white pill CTA, chip row).
+   Loads last; only touches the masthead and the hero. */
+
+/* ---- masthead: cream, slate logo, blue nav button ---- */
+.masthead { background: var(--porcelain); border-bottom: 1px solid var(--mist-100); }
+.masthead .btn--sand { background: var(--teal); color: var(--white); }
+.masthead .btn--sand:hover { background: var(--teal-800); color: var(--white); }
+
+/* ---- hero canvas ---- */
+.hero {
+  min-height: 0;
+  padding: 108px var(--gutter) 40px;
+  background: var(--porcelain);
+  color: var(--ink);
+}
+.hero__inner {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  column-gap: 16px;
+  row-gap: 16px;
+  align-items: stretch;
+}
+
+/* ---- message tile (blue-500, white type) ---- */
+.hero__copy {
+  background: var(--teal);
+  color: var(--white);
+  border-radius: 24px;
+  padding: 44px 44px 36px;
+  gap: 22px;
+}
+.hero .h1 { color: var(--white); font-weight: 400; letter-spacing: -0.01em; }
+.hero .h1 em { color: var(--sand-100); font-style: italic; }
+.hero__head .h4 { color: rgba(255, 255, 255, 0.85); font-weight: 500; }
+.hero__head .lede { color: rgba(255, 255, 255, 0.92); }
+.hero .pill--outline { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.45); color: var(--white); }
+.hero__secure { color: rgba(255, 255, 255, 0.85); }
+.hero .rating, .hero .rating p { color: var(--white); }
+.hero .rating .stars .ico { color: var(--sand-100); }
+
+/* ---- offer card: white card on the blue tile ---- */
+.hero-offer {
+  background: var(--white);
+  border: 0;
+  color: var(--ink);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(var(--slate-rgb), 0.12);
+  max-width: none;
+}
+.hero-offer__badge { background: var(--terra); color: var(--white); }
+.hero-offer__term { color: var(--ink-2); }
+.hero-offer__price b { color: var(--slate); }
+.hero-offer__price span, .hero-offer__price em { color: var(--ink-2); }
+.hero-offer__bill { color: var(--ink); }
+.hero-offer__anchor { color: var(--ink-2); }
+.hero-offer__link { color: var(--teal-800); }
+.hero-offer__link:hover { color: var(--slate); }
+
+/* ---- trust chips: white pills, like the homepage chip row ---- */
+.hero__trust { gap: 8px 10px; }
+.hero__trust li {
+  padding: 8px 14px; border-radius: 999px;
+  background: var(--white); color: var(--ink);
+  font-size: 13px; font-weight: 500;
+}
+.hero__trust .ico { color: var(--teal); }
+
+/* ---- photo tile: collage on a soft blue gradient ---- */
+.hero__inner > .collage {
+  width: auto;
+  aspect-ratio: auto;
+  align-self: stretch;
+  padding: 28px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, var(--mist) 0%, var(--mist-100) 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.hero__inner > .collage::before {
+  /* inner geometry box the % positions refer to */
+  content: ""; display: block; width: 100%; max-width: 460px; aspect-ratio: 514 / 580;
+}
+.hero__inner > .collage > * { position: absolute; }
+.hero__inner > .collage { position: relative; }
+.collage__shot { box-shadow: 0 14px 34px rgba(var(--slate-rgb), 0.18); }
+.collage__shot--before { left: 8%; top: 8%; width: 44%; height: 58%; }
+.collage__shot--after { left: 46%; top: 30%; width: 46%; height: 62%; }
+.collage__vial { left: 34%; top: 56%; width: 30%; }
+.collage__label { background: var(--white); color: var(--slate); }
+
+@media (max-width: 900px) {
+  .hero { padding: 96px var(--gutter) 32px; }
+  .hero__inner { grid-template-columns: 1fr; }
+  .hero__inner > .collage { grid-column: 1; grid-row: auto; min-height: 380px; }
+  .hero__inner > .collage::before { max-width: 360px; }
+}
+@media (max-width: 600px) {
+  .hero__copy { padding: 26px 20px 24px; border-radius: 20px; }
+  .hero__inner > .collage { padding: 18px; min-height: 340px; }
+  .hero__trust li { padding: 7px 12px; font-size: 12.5px; }
+}
+
+/* masthead sits on cream now: show the slate logo as-is */
+.masthead__logo img { filter: none; }
+
+/* phones: the kit flattens .hero__copy into the grid, so the blue tile has no
+   box of its own — paint the hero itself as the tile and keep the photo tile light */
+@media (max-width: 809px) {
+  .hero { background: var(--teal); color: var(--white); padding: 96px var(--gutter) 40px; }
+  .hero__inner > .collage { background: linear-gradient(160deg, var(--mist-100) 0%, var(--porcelain) 100%); }
+}

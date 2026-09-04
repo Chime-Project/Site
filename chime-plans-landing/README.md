@@ -17,9 +17,14 @@ then open http://localhost:8791/chime-plans-landing/
 - Logos (`logo-slate.png`, `logo-white.png`), Chime vials
   (`semaglutide.webp`, `tirzepatide.webp`), and the hero order of the existing
   Chime landing (h1 first, pill and kicker below).
-- Photos, rating and volume figures are the ones the existing Chime landing
-  uses (`profile*.webp`, "4.9 • 2,000+ reviews", "1000's of patients treated
-  every month"). They are stand-ins there too; replace before launch.
+- Hero: restyled in the Chime site's bento language (`css/chime-hero.css`):
+  cream canvas and masthead, blue tile for the message with a white offer
+  card and white pill CTA, trust chips, photo tile on a soft blue gradient.
+  The before/after photos are the same as the AmeriLean landing
+  (`model-before.jpg`, `model-after.jpg`).
+- Rating and volume figures are the ones the existing Chime landing uses
+  ("4.9 • 2,000+ reviews", "1000's of patients treated every month"). They are
+  stand-ins there too; replace before launch.
 - Testimonials: Sarah M., David S. and Nicole B. from the existing Chime
   landing, quotes cut to two sentences.
 - Copy says Chime Health throughout, including the fine print and the
