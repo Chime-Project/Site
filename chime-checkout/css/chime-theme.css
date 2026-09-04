@@ -27,6 +27,16 @@ a.chime-back:hover { background: #bdd2f6; }
 }
 @media (max-width: 375px) { .site-logo { height: 20px; } }
 button[data-testid="checkout-button"] { box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); }
+/* "Our recommendation" cards: per-medication link into the merged section */
+a.rec-link { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; color: #485e89; text-decoration: none; }
+a.rec-link:hover { color: #324563; text-decoration: underline; }
+[data-med][id] { scroll-margin-top: 16px; }
+.rec-card > div:last-child { min-width: 0; }
+.rec-title { flex-wrap: wrap; row-gap: 4px; }
+@media (max-width: 480px) {
+  .rec-title { display: flex; flex-direction: column; align-items: flex-start; }
+  .rec-title > div { order: -1; }
+}
 /* the inline Care+ badge must not shrink inside the Care+ card's flex row */
 svg[aria-label="Chime Care+ Weight Loss Warranty"] { flex: none; }
 /* Apple Pay keeps Apple's black button (brand requirement) */

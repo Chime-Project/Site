@@ -39,9 +39,42 @@
     if (state.med && img) img.src = CHIME_PLANS[state.med].image;
     if (state.med && name) name.textContent = "Microdose " + CHIME_PLANS[state.med].name;
   }
+  // GSAP pulse on the highlighted 3-month rows (user request 2026-09-04): border and ground breathe
+  // between two Chime blues while the row is on screen, stop once a plan is chosen, off under
+  // prefers-reduced-motion.
+  var pulses = [];
+  if (window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll('.mp-row[data-term="3"]').forEach(function (row) {
+      var tag = row.querySelector(".mp-tag"), shine = row.querySelector(".mp-shine");
+      // one cycle ≈ 2.6s: breathe up with a colour/glow swing, shine sweeps through, the pill pops, breathe back
+      var tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5, paused: true });
+      tl.to(row, { scale: 1.03, borderColor: "#94baf2", backgroundColor: "#dae5fa", boxShadow: "0 18px 40px rgba(101, 128, 188, 0.55)", duration: 1.0, ease: "sine.inOut" }, 0)
+        .fromTo(shine, { left: "-45%", opacity: 1 }, { left: "125%", duration: 0.9, ease: "power2.inOut" }, 0.15)
+        .to(tag, { scale: 1.06, duration: 0.4, ease: "sine.inOut" }, 0.5)
+        .to(tag, { scale: 1, duration: 0.45, ease: "sine.inOut" }, 0.9)
+        .to(row, { scale: 1, borderColor: "#6580bc", backgroundColor: "#eff3fc", boxShadow: "0 10px 24px rgba(101, 128, 188, 0.22)", duration: 1.0, ease: "sine.inOut" }, 1.05);
+      pulses.push({ row: row, tag: tag, shine: shine, tl: tl, entered: false });
+    });
+    if (pulses.length && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var p = pulses.filter(function (x) { return x.row === en.target; })[0]; if (!p) return;
+          if (en.isIntersecting && !state.term) {
+            if (!p.entered) { p.entered = true; gsap.from(p.row, { y: -10, duration: 0.7, ease: "bounce.out" }); }   // first sight: a little drop-in
+            p.tl.play();
+          } else p.tl.pause();
+        });
+      }, { threshold: 0.4 });
+      pulses.forEach(function (p) { io.observe(p.row); });
+    }
+  }
+  function stopPulse() {
+    pulses.forEach(function (p) { p.tl.kill(); gsap.killTweensOf([p.row, p.tag, p.shine]); gsap.set([p.row, p.tag, p.shine], { clearProps: "all" }); });
+    pulses = [];
+  }
   function select(med, term, opts) {
     if (!CHIME_PLANS[med] || !CHIME_PLANS[med].terms[term]) return;
-    state.med = med; state.term = term; render();
+    state.med = med; state.term = term; render(); stopPulse();
     if (!(opts && opts.quiet) && phone()) {
       var cta = document.querySelector('[data-mp="' + med + '"] [data-mp-cta]');
       if (cta) cta.scrollIntoView({ behavior: "smooth", block: "center" });
