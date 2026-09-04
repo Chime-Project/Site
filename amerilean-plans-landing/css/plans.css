@@ -140,3 +140,15 @@
   .hero .rating { order: 4; }
   .hero__copy { gap: 18px; }
 }
+
+/* ---------------- As featured in: press logo strip under the hero ---------------- */
+.featured { padding: 26px var(--gutter); background: var(--porcelain); border-bottom: 1px solid var(--line); }
+.featured__eyebrow { margin: 0 0 16px; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.featured__row { list-style: none; margin: 0 auto; padding: 0; max-width: var(--shell); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 34px; }
+.featured__row li { margin: 0; display: flex; align-items: center; }
+.featured__row img { height: 24px; width: auto; max-width: 140px; opacity: 0.8; filter: grayscale(1); }
+@media (max-width: 600px) {
+  .featured { padding: 20px var(--gutter); }
+  .featured__row { gap: 14px 24px; }
+  .featured__row img { height: 20px; max-width: 110px; }
+}

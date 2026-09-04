@@ -65,6 +65,10 @@ closing CTA. Reasons, from the research brief in the plan:
 - The footer's "limited time discount on your first order" signup became a
   plain health-tips signup, so it does not compete with the price-lock offer.
 
+- **As featured in** press strip (Bloomberg, Forbes, Healthline, WebMD, Fortune,
+  Fast Company, The New York Times) restored from the original landing, under
+  the hero.
+
 ## Prices (anchored on this landing's $112 / $139 effective)
 
 | | Semaglutide | Tirzepatide |
