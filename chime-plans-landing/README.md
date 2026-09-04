@@ -83,9 +83,11 @@ forest hero carrying the landing's headline ("Every 4th Month is Free —
 Forever."), three floating cards for 1 / 3 / 6 months with the 3-month card
 raised and stamped with a "4th month free · for life" seal, "Everything in
 1 MONTH, plus:" lists, the landing's "Start 3 months – Semaglutide" button
-labels, a terracotta continue button, and the landing's "Every plan includes"
-fine print. Styles live in `css/questionnaire.css` under `.sv-*`; the display
-face is Fraunces, imported next to DM Sans at the top of that file.
+labels, a continue button in the site's primary skin (blue-500, blue-800 on
+hover — the mock's terracotta was swapped on 2026-09-04, same rule as the
+landing's `.btn--terra`), and the landing's "Every plan includes" fine print.
+Styles live in `css/questionnaire.css` under `.sv-*`; the display face is
+Quicksand since the Chime theme below (it was Fraunces in the mock).
 
 What did not change: the radio buttons, their `value`s (99 / 101 / 102 / 103 /
 209) and `data-slot` attributes, so `js/checkout.js` still handles selection and
@@ -157,7 +159,7 @@ The quiz is now Chime-branded on every page (EN and ES):
   (`(?<!\\)#hex`); the escaped selector hexes must always stay exactly as the
   markup writes them (case included). Step headings (`.text-[#606D5B]`) are
   pinned to blue-900 rather than the ramp's blue-400.
-- The css link is at `?v=20260886`. `css/landing.css`, `slick*.css` and the
+- The css link is at `?v=20260887`. `css/landing.css`, `slick*.css` and the
   old AmeriLean favicon/logo/product images are unreferenced leftovers from
   the copy.
 
