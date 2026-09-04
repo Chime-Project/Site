@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
+/* Chime Health theme for chime-checkout/ (product.html + checkout.html).
+   The compiled Tailwind sheets already carry Chime token values (remapped from
+   tokens/colors.css, values only); this file holds the few rules that are not a
+   colour swap: Quicksand, the DS button skins, the vial tiles and the logo geometry. */
+
+/* Quicksand ships no italic — drop the synthesized slant (same rule as chime-theme.css on the plan landing) */
+.italic, em, i { font-style: normal; }
+
+/* Logo: the Chime wordmark is 1095x138; the source slot was 90px wide for a 4:1 mark */
+.site-logo { width: auto; height: 26px; margin-left: 0; }
+@media (min-width: 768px) { .site-logo { height: 30px; } }
+
+/* DS primary call-to-action (Button.jsx skin): accent pill, white label, blue-800 on hover.
+   In these two pages bg-slate-950 is only used on the CTA pills (hero, plan cards, sticky bar, Complete Purchase). */
+a.bg-slate-950, button.bg-slate-950, span.bg-slate-950 { background-color: #6580bc; }
+a.hover\:bg-slate-900:hover, button.hover\:bg-slate-900:hover, span.hover\:bg-slate-900:hover { background-color: #324563; }
+/* Checkout header: Back to the plan stage (chime-back keeps ?med&term via checkout-selection.js) — DS ghost skin */
+a.chime-back { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 9999px; background: #dae5fa; color: #485e89; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+a.chime-back:hover { background: #bdd2f6; }
+@media (max-width: 480px) {
+  /* phone header: logo + Back + Secure Payment must fit 375px */
+  .site-logo { height: 22px; }
+  header div:has(> a.chime-back) { gap: 8px; }
+  a.chime-back { padding: 6px 10px; font-size: 12px; }
+  a.chime-back svg { display: none; }
+}
+@media (max-width: 375px) { .site-logo { height: 20px; } }
+button[data-testid="checkout-button"] { box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); }
+/* Apple Pay keeps Apple's black button (brand requirement) */
+button.bg-black { background-color: #000; }
+
+/* Chime vials are tall cut-outs on transparency where the source used square product photos
+   cropped with object-cover: sit them whole on a mist tile instead. */
+img[src*="images/vial-"] { object-fit: contain; padding: 6%; background: linear-gradient(160deg, #bdd2f6 0%, #dae5fa 100%); }
+.sticky img[src*="images/vial-"] { padding: 4px; border-radius: 8px; }
+
+/* Footer wordmarks: the 1095x138 Chime logo is sized by width (the source slot was 56px tall for a 3:1 mark,
+   which pushes a 7.9:1 mark past a 390px viewport); the decorative full-width wordmark is soft */
+footer img.footer-logo { height: auto; width: min(300px, 85%); }
+footer img.footer-wordmark-hero { opacity: .14; width: 100%; max-width: 720px; margin: 0 auto; }
