@@ -30,6 +30,10 @@ then open http://localhost:8791/chime-plans-landing/
 - Copy says Chime Health throughout, including the fine print and the
   comparison table.
 
+- **As featured in** press strip (Bloomberg, Forbes, Healthline, WebMD, Fortune,
+  Fast Company, The New York Times) restored from the original landing, under
+  the hero.
+
 ## Prices
 
 Identical to the AmeriLean version (semaglutide $112/mo and tirzepatide
