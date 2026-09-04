@@ -15,7 +15,7 @@
     --color-yellow-400: oklch(85.2% 0.199 91.936);
     --color-yellow-900: oklch(42.1% 0.095 57.708);
     --color-green-100: #f8fafc;
-    --color-green-700: #8b5948;
+    --color-green-700: #485e89; /* funnel accent text (text-green-700) → blue-700 */
     --color-green-900: #26354d;
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-gray-100: oklch(96.7% 0.003 264.542);
@@ -1029,7 +1029,7 @@
     border-color: #6580bc;
   }
   .border-\[\#5CC12E\] {
-    border-color: #d98a6f;
+    border-color: #7fa0d9;
   }
   .border-\[\#8c9a87\] {
     border-color: #cad5e2;
@@ -1122,7 +1122,7 @@
     background-color: #cad5e2;
   }
   .bg-\[\#36b063\] {
-    background-color: #d98a6f;
+    background-color: #7fa0d9;
   }
   .bg-\[\#122b08\] {
     background-color: #26354d;
@@ -1131,16 +1131,16 @@
     background-color: #7fa0d9;
   }
   .bg-\[\#28914F\] {
-    background-color: #d98a6f;
+    background-color: #7fa0d9;
   }
   .bg-\[\#66875b\] {
     background-color: #7fa0d9;
   }
   .bg-\[\#227340\] {
-    background-color: #8b5948;
+    background-color: #6580bc;
   }
   .bg-\[\#449818\] {
-    background-color: #8b5948;
+    background-color: #6580bc;
   }
   .bg-\[\#C2F0D2\] {
     background-color: #eff3fc;
@@ -1528,7 +1528,7 @@
     color: #485e89;
   }
   .text-\[\#5ccc85\] {
-    color: #eac6be;
+    color: #bdd2f6;
   }
   .text-\[\#7d8f77\] {
     color: #7fa0d9;
@@ -1546,10 +1546,10 @@
     color: #26354d;
   }
   .text-\[\#523a2d\] {
-    color: #8b5948;
+    color: #324563;
   }
   .text-\[\#605a4c\] {
-    color: #8b5948;
+    color: #324563;
   }
   .text-\[\#606D5B\] {
     color: #26354d; /* step headings: blue-900, like the site h1s */
@@ -1558,10 +1558,10 @@
     color: #7fa0d9;
   }
   .text-\[\#28914F\] {
-    color: #d98a6f;
+    color: #7fa0d9;
   }
   .text-\[\#049966\] {
-    color: #8b5948;
+    color: #485e89;
   }
   .text-\[\#66875b\] {
     color: #7fa0d9;
@@ -1576,7 +1576,7 @@
     color: #485e89;
   }
   .text-\[\#449818\] {
-    color: #8b5948;
+    color: #485e89;
   }
   .text-\[\#525252\] {
     color: #485e89;
@@ -3096,10 +3096,10 @@
   }
 }
 .bg-gradient {
-  background: linear-gradient(90deg, #d98a6f, #d98a6f);
+  background: linear-gradient(90deg, #7fa0d9, #7fa0d9);
 }
 .bg-grayGradient {
-  background: linear-gradient(#f9f1ef, #f9f1ef);
+  background: linear-gradient(#eff3fc, #eff3fc);
 }
 .bg-greenGradient {
   background: radial-gradient(circle, #485e89, #26354d);
@@ -3125,7 +3125,7 @@
     left: calc(1 / 2 * 100%);
   }
   content: "";
-  background: linear-gradient(180deg, #eff3fc 0%, #8b5948 50%, #eff3fc 100%);
+  background: linear-gradient(180deg, #eff3fc 0%, #6580bc 50%, #eff3fc 100%);
 }
 .grid_box {
   grid-template-areas: "iconBar content" ". badges";
@@ -3163,7 +3163,7 @@
   }
 }
 .bg-brown-03 {
-  background-color: #f9f1ef;
+  background-color: #eff3fc;
 }
 .card-selected-1 {
   background: linear-gradient(90deg, #7fa0d9, #26354d);
@@ -3201,7 +3201,7 @@
   margin-bottom: 12px;
 }
 [data-sonner-toast] > div > div > div {
-  background: #f9f1ef;
+  background: #eff3fc;
   color: #26354d;
   border-radius: 12px;
   padding: 16px;
@@ -3690,7 +3690,7 @@ input:-webkit-autofill:active {
    with the "4th month free · for life" seal. Content = the Chime plans
    landing (1 / 3 / 6 months, its inclusions and fine print). Scoped .sv-*.
    ===================================================================== */
-.sv-stage { --sv-forest: #26354d; --sv-forest-2: #22304a; --sv-lime: #6580bc; --sv-lime-ink: #bdd2f6; --sv-terra: #8b5948; --sv-cream: #f7f3e4; --sv-ink: #26354d; --sv-ink-2: #485e89; --sv-serif: "Quicksand", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; --sv-mono: "Quicksand", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+.sv-stage { --sv-forest: #26354d; --sv-forest-2: #22304a; --sv-lime: #6580bc; --sv-lime-ink: #bdd2f6; --sv-terra: #485e89; --sv-cream: #f7f3e4; --sv-ink: #26354d; --sv-ink-2: #485e89; --sv-serif: "Quicksand", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; --sv-mono: "Quicksand", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: block; background: var(--sv-cream); border-radius: 16px; overflow: hidden; border: 1px solid #dae5fa; }
 .sv-hero { position: relative; background: var(--sv-forest); color: #fff; padding: 26px 20px 110px; text-align: center; }
 .sv-hero::before { content: ""; position: absolute; inset: 0; opacity: 0.14; pointer-events: none; background: radial-gradient(circle at 20% 30%, #fff 0 2px, transparent 3px) 0 0 / 52px 52px, radial-gradient(circle at 70% 70%, #fff 0 1.5px, transparent 2.5px) 0 0 / 42px 42px; }
@@ -3777,7 +3777,7 @@ input:-webkit-autofill:active {
 /* Chime vials (2026-09-04): the funnel's 2000x2000 product photos were square shots on AmeriLean's
    green backdrop, cropped with object-cover. The Chime vials are tall cut-outs on transparency, so
    they sit whole on the landing's mist tile instead of being cropped to a band. */
-img[src*="vial-semaglutide"], img[src*="vial-tirzepatide"] {
+img[src*="images/vial-"] {
   object-fit: contain; padding: 6px;
   background: linear-gradient(160deg, #bdd2f6 0%, #dae5fa 100%);
 }

@@ -124,9 +124,13 @@ The quiz is now Chime-branded on every page (EN and ES):
   `tokens/colors.css`: teals → blue-500 `#6580bc` / blue-700 `#485e89` /
   blue-400 `#7fa0d9`; the sage greens and navies → blue-900 `#26354d` and
   blue-800 `#324563`; light greens and sage tints → blue-50/100/200; the
-  `#f9f9f7` panel ground → sand-100 `#f7f3e4`; terracotta → peach-800
-  `#8b5948` (text, CTA) and peach-500 `#d98a6f`; hairlines → slate-300
-  `#cad5e2`. Semantic reds/ambers (errors, warnings) were left alone. The same
+  `#f9f9f7` panel ground → sand-100 `#f7f3e4`; hairlines → slate-300
+  `#cad5e2`. The funnel's terracotta (its accent for `text-green-700`, the
+  "New!" badges, the brown copy on the cream panels and the stage's plan
+  names) first went to the peach ramp and then, after review the same day, to
+  the blue ramp too (blue-700 for accent text, blue-800 for body copy,
+  blue-500 for grounds) — the quiz carries no peach at all now. Semantic
+  reds/ambers (errors, warnings) were left alone. The same
   map ran over `fill=` / `stroke=` / `style=` attributes and `<style>` blocks
   in the pages, never over `class=""`. The step 18 stage keeps its
   construction (forest stage → slate, lime → the accent blue, the seal in
@@ -149,8 +153,13 @@ The quiz is now Chime-branded on every page (EN and ES):
   `../images/semaglutide.webp` / `tirzepatide.webp`) instead of the funnel's
   square product shots on AmeriLean's green backdrop. They are tall cut-outs,
   so a rule at the end of the sheet sets `object-fit: contain` on a mist
-  gradient tile for any `img[src*="vial-"]`; step 18's inline script maps
-  each treatment to the matching file.
+  gradient tile for any `img[src*="images/vial-"]`; step 18's inline script
+  maps each treatment to the matching file. Step 2's four interest cards use
+  Chime vials from `uploads/vials/` the same way: `vial-glp1.webp` (GLP-1
+  Weight Loss), `vial-nad.webp` (Longevity), `vial-glp-squared.webp` (GLP-1
+  Microdosing) and `vial-sermorelin.webp` for Testosterone Replacement
+  Therapy — Chime has no testosterone vial, so that one is a stand-in to
+  replace when the product art exists.
 - **Trap (fixed 2026-09-04, same day):** the first remap also rewrote the hex
   inside Tailwind's escaped arbitrary-value *selectors* (`.bg-\[\#4B5647\]`
   became `.bg-\[\#324563\]`), so those classes stopped matching the markup —
@@ -159,7 +168,7 @@ The quiz is now Chime-branded on every page (EN and ES):
   (`(?<!\\)#hex`); the escaped selector hexes must always stay exactly as the
   markup writes them (case included). Step headings (`.text-[#606D5B]`) are
   pinned to blue-900 rather than the ramp's blue-400.
-- The css link is at `?v=20260887`. `css/landing.css`, `slick*.css` and the
+- The css link is at `?v=20260888`. `css/landing.css`, `slick*.css` and the
   old AmeriLean favicon/logo/product images are unreferenced leftovers from
   the copy.
 
