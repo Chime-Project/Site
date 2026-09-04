@@ -1,4 +1,4 @@
-/* chime-checkout/checkout.html — fills the order summary from the plan chosen on product.html
+/* chime-checkout/checkout.html: fills the order summary from the plan chosen on product.html
    (?med=sema|tirz&term=1|3|6, falling back to sessionStorage "chime:checkout-selection").
    Without a selection the page shows Semaglutide, 3 months + 1 free. */
 (function () {
@@ -20,11 +20,11 @@
   function setText(sel, text) { document.querySelectorAll(sel).forEach(function (n) { n.textContent = text; }); }
   setText("[data-sel=med]", plan.name);
   setText("[data-sel=term-badge]", CHIME_TERM_LABEL[term]);
-  setText("[data-sel=plan-line]", plan.name + " · " + CHIME_TERM_LABEL[term] + (term === 1 ? "" : " (" + t.covers + " months)"));
+  setText("[data-sel=plan-line]", plan.name + " \u00b7 " + CHIME_TERM_LABEL[term] + (term === 1 ? "" : " (" + t.covers + " months)"));
   setText("[data-sel=charge]", chimeMoney(t.charge));
   setText("[data-sel=perday]", "$" + perDay.toFixed(2));
   document.querySelectorAll("[data-sel=img]").forEach(function (i) { i.src = plan.image; i.alt = plan.name; });
   var back = document.getElementById("chime-back");
-  if (back) back.href = "product.html?med=" + med + "&term=" + term + "#plan-stage";
+  if (back) back.href = "product.html?med=" + med + "&term=" + term + "#products";
   window.CHIME_SELECTION = { med: med, term: term, charge: t.charge };
 })();
