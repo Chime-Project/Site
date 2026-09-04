@@ -54,7 +54,13 @@
     var img = document.getElementById("sticky-med-img"), name = document.getElementById("sticky-med-name");
     if (img) img.src = CHIME_PLANS[med].image;
     if (name) name.textContent = "Microdose " + CHIME_PLANS[med].name;
-    if (!(opts && opts.quiet)) stage.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!(opts && opts.quiet)) {
+      // Phones stack the three plan cards, so land on the Continue button (user request 2026-09-04);
+      // wider screens see the whole stage from its top.
+      var phone = window.matchMedia("(max-width: 767px)").matches;
+      var target = phone ? document.getElementById("svContinue") : stage;
+      target.scrollIntoView({ behavior: "smooth", block: phone ? "center" : "start" });
+    }
   }
   stage.addEventListener("click", function (e) {
     var card = e.target.closest(".sv-card"); if (card) setTerm(+card.dataset.term);
