@@ -1,0 +1,1442 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Labor Day: Free NAD+ with any 6+ month plan | Chime Health</title>
+    <meta
+      name="description"
+      content="This Labor Day, NAD+ is on the house. Add any 6+ month Chime weight-loss plan and get NAD+ (a $160 value) free. Offer ends September 7 at midnight."
+    />
+    <!-- Chime Health — Labor Day offer landing (Asana "A New Rip Job - Chime",
+         task 1218162485657452, asked for 2026-09-03). A recreation of
+         trinitymeds.com/m1/offer-labor-day on the Chime brand: section order
+         and copy follow the reference; the layout comes from the SHARED
+         ui_kits/amerilean/amerilean.css re-tokened by chime-theme.css (the same
+         stack as glp1-plan.html / longevity-plan.html), plus
+         ui_kits/labor-day/labor-day.css + .js for the pieces the kit lacks
+         (tickers, offer bar, light hero + offer card, countdown, spots bar,
+         seal, photo step cards, estimate result, timeline list, 2-col closing).
+
+         STAND-IN CONTENT — flagged to the client, not silently invented:
+         · The offer itself ("free NAD+ with any 6+ month plan") is the
+           reference's promotion. Nobody has confirmed Chime is running it and
+           cart.html cannot apply it: CTAs go to chimeAssessment.html and the
+           promo is only remembered in sessionStorage ("chime:labor-day-offer").
+         · NAD+ value: $160 = Chime's own 1-month NAD+ price (products.js);
+           the reference says $149. Closing price "From $110/month" = Chime's
+           GLP-1 start price (products.js); the reference says $99/month.
+         · "Only 2300 spots — 1295 claimed" are the reference's invented
+           scarcity numbers, kept as static data attributes on .spots.
+         · Countdown target 2026-09-08T00:00 local ("September 7th at
+           midnight") copies the reference; confirm the real end date.
+         · Dropped as unverifiable for Chime: the 4.4★ rating row, the
+           Bloomberg/Forbes/NYT press band, "Trusted by 125k+ Americans", the
+           reference's pharmacy-partner list and its OpenLoop legal text, and
+           the language selector.
+         · Photos are existing tracked stand-ins (uploads/wl01.webp cutout in
+           the hero, hf_*.webp, wieght_loss_md.webp, assets/photo-start.jpg,
+           2vials.webp, generic-blue vials). The reference's sky/flag/couple
+           hero photo has no Chime equivalent — CSS gradient + string lights.
+         · FAQ answers use the reviewed copy in ui_kits/shared/data/faqs.js
+           where one exists (pharmacy, next steps, GLP-1, membership); the
+           states / insurance / pause-cancel / minimum-age / BMI answers are
+           written in Chime voice from legal.js facts and the reference.
+         · Estimate slider ratio (15%) is the reference's; "You could lose"
+           replaces its "You could easily lose".
+         No AOS/CDN scripts — reveal-on-scroll runs in amerilean.js. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Labor Day: Free NAD+ with any 6+ month plan | Chime Health" />
+    <meta
+      property="og:description"
+      content="This Labor Day, NAD+ is on the house. Add any 6+ month Chime weight-loss plan and get NAD+ (a $160 value) free. Offer ends September 7 at midnight."
+    />
+    <meta property="og:image" content="uploads/vials/nad-plus.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="ui_kits/amerilean/amerilean.css?v=20260879" />
+    <link rel="stylesheet" href="ui_kits/amerilean/chime-theme.css?v=20260880" />
+    <link rel="stylesheet" href="ui_kits/labor-day/labor-day.css?v=20260884" />
+  </head>
+  <body>
+<svg
+      id="sprite"
+      aria-hidden="true"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path
+          d="M 0 5.25 L 3.75 9 L 12.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-cross" viewBox="0 0 24 24">
+        <path
+          d="M 13.5 0 L 0 13.5"
+          fill="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 13.5 13.5 L 0 0"
+          fill="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock-sm" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 13.125)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-dumbbell" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(15 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15 5.25)"
+        ></path>
+        <path
+          d="M 0 0 L 2.25 0 C 2.664 0 3 0.336 3 0.75 L 3 8.25 C 3 8.664 2.664 9 2.25 9 L 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(18.75 7.5)"
+        ></path>
+        <path
+          d="M 3 9 L 0.75 9 C 0.336 9 0 8.664 0 8.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 12)"
+        ></path>
+        <path
+          d="M 0 0 L 1.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(21.75 12)"
+        ></path>
+        <path
+          d="M 0 0 L 1.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(0.75 12)"
+        ></path>
+      </symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24">
+        <path
+          d="M 11.1 0.771 L 19.299 15.008 C 19.874 16.012 19.131 17.25 17.948 17.25 L 1.549 17.25 C 0.366 17.25 -0.376 16.012 0.198 15.008 L 8.398 0.771 C 8.988 -0.257 10.509 -0.257 11.1 0.771 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.251 3)"
+        ></path>
+        <path
+          d="M 11.1 0.771 L 19.299 15.008 C 19.874 16.012 19.131 17.25 17.948 17.25 L 1.549 17.25 C 0.366 17.25 -0.376 16.012 0.198 15.008 L 8.398 0.771 C 8.988 -0.257 10.509 -0.257 11.1 0.771 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.251 3)"
+        ></path>
+        <path
+          d="M 0 3.75 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 9.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 15.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-unlock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.564 0 7.152 1.288 7.5 3"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 L 0 0 L 9 0 L 9 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 6)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 0 L 9 0 L 9 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 6)"
+        ></path>
+        <path
+          d="M 0 0.75 C 0 0.336 0.336 0 0.75 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 17.25 C 15 17.664 14.664 18 14.25 18 L 0.75 18 C 0.336 18 0 17.664 0 17.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.001)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(7.125 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(14.625 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(7.125 16.5)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 16.5)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(14.625 16.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24">
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(15.75 5.25)"
+        ></path>
+        <path
+          d="M 0 0 L 0 16.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 20.25)"
+        ></path>
+        <path
+          d="M 0 3 L 13.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 5.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-bell-off" viewBox="0 0 24 24">
+        <path
+          d="M 5.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 5.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 0 L 15 16.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 7.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 8.25)"
+        ></path>
+        <path
+          d="M 0 0 C 0.998 1.133 0.998 2.832 0 3.966"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(18 10.019)"
+        ></path>
+        <path
+          d="M 12 6.722 L 12 13.247 L 5.25 7.997 L 0.75 7.997 C 0.336 7.997 0 7.661 0 7.247 L 0 1.247 C 0 0.833 0.336 0.497 0.75 0.497 L 5.25 0.497 L 5.889 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 7.753)"
+        ></path>
+        <path
+          d="M 0 2.905 L 3.736 0 L 3.736 7.015"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(10.514 3)"
+        ></path>
+        <path
+          d="M 0 0 C 2.292 2.562 2.292 6.438 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(20.782 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 L 9 7.5 L 15 9.75 L 4.5 21 L 6 13.5 L 0 11.25 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 10.5 0 L 9 7.5 L 15 9.75 L 4.5 21 L 6 13.5 L 0 11.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 6.75 C 15 7.164 14.664 7.5 14.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 12)"
+        ></path>
+        <path
+          d="M 0.75 4.5 C 0.336 4.5 0 4.164 0 3.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 17.25 0 C 17.664 0 18 0.336 18 0.75 L 18 3.75 C 18 4.164 17.664 4.5 17.25 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 7.5)"
+        ></path>
+        <path
+          d="M 15 0 L 15 6.75 C 15 7.164 14.664 7.5 14.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 12"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 7.5)"
+        ></path>
+        <path
+          d="M 4.574 0.676 C 5.45 1.552 5.501 3.026 4.574 3.847 C 2.989 5.25 0 5.25 0 5.25 C 0 5.25 0 2.262 1.406 0.676 C 2.225 -0.251 3.698 -0.199 4.574 0.676 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 2.25)"
+        ></path>
+        <path
+          d="M 0.676 0.676 C -0.199 1.552 -0.251 3.026 0.676 3.847 C 2.262 5.25 5.25 5.25 5.25 5.25 C 5.25 5.25 5.25 2.262 3.844 0.676 C 3.026 -0.251 1.552 -0.199 0.676 0.676 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6.75 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 C 10.988 0.649 11.251 1.438 11.25 2.25 L 11.25 3 L 3.75 3 L 3.75 2.25 C 3.749 1.438 4.012 0.649 4.5 0 L 0.75 0 C 0.336 0 0 0.336 0 0.75 L 0 16.5 C 0 16.914 0.336 17.25 0.75 17.25 L 14.25 17.25 C 14.664 17.25 15 16.914 15 16.5 L 15 0.75 C 15 0.336 14.664 0 14.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 14.25)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 11.25)"
+        ></path>
+        <path
+          d="M 10.5 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 16.5 C 15 16.914 14.664 17.25 14.25 17.25 L 0.75 17.25 C 0.336 17.25 0 16.914 0 16.5 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-stethoscope" viewBox="0 0 24 24">
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(18.375 13.875)"
+        ></path>
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 L 6 8.25 C 8.071 8.25 9.75 6.571 9.75 4.5 L 9.75 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 13.5)"
+        ></path>
+        <path
+          d="M 8.25 0 L 10.5 0 L 10.5 4.422 C 10.5 7.307 8.205 9.712 5.319 9.75 C 3.915 9.769 2.562 9.224 1.562 8.237 C 0.563 7.25 0 5.904 0 4.5 L 0 0 L 2.25 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 2.25 L 0 2.25 L 0 6 C 0 6.414 0.336 6.75 0.75 6.75 L 3 6.75 C 3 5.507 4.007 4.5 5.25 4.5 C 6.493 4.5 7.5 5.507 7.5 6.75 L 13.5 6.75 C 13.5 5.507 14.507 4.5 15.75 4.5 C 16.993 4.5 18 5.507 18 6.75 L 20.25 6.75 C 20.664 6.75 21 6.414 21 6 L 21 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 11.25)"
+        ></path>
+        <path
+          d="M 0 0 L 3.992 0 C 4.298 0 4.573 0.185 4.688 0.469 L 6 3.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 15 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 13.5)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 15.75)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 15.75)"
+        ></path>
+        <path
+          d="M 6 0 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 18)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0 L 6 6 C 6 6.414 5.664 6.75 5.25 6.75 L 3 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 11.25)"
+        ></path>
+        <path
+          d="M 3 12 L 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15 0 L 15 9.878"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 6)"
+        ></path>
+      </symbol>
+      <symbol id="i-award" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 3.358 3.358 0 7.5 0 C 11.642 0 15 3.358 15 7.5 C 15 11.642 11.642 15 7.5 15 C 3.358 15 0 11.642 0 7.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 9 0 L 9 7.5 L 4.499 5.25 L 0 7.5 L 0 0.001"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 15)"
+        ></path>
+      </symbol>
+      <symbol id="i-utensils" viewBox="0 0 24 24">
+        <path
+          d="M 5.25 12 L 0 12 C 0 12 0 2.25 5.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(14.25 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 12)"
+        ></path>
+        <path
+          d="M 5.25 12 L 0 12 C 0 12 0 2.25 5.25 0 L 5.25 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(14.25 3.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 C 5.821 8.25 7.5 6.571 7.5 4.5 L 6.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-thumbs-up" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0 7.5 L 3.75 0 C 5.407 0 6.75 1.343 6.75 3 L 6.75 5.25 L 12.75 5.25 C 13.18 5.25 13.59 5.435 13.875 5.758 C 14.159 6.081 14.292 6.51 14.238 6.938 L 13.113 15.938 C 13.018 16.687 12.381 17.25 11.625 17.25 L 0 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 0 3 L 2.25 5.25 L 7.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 9.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-timer" viewBox="0 0 24 24">
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 0 L 0 5.25 L 5.25 5.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 6.75)"
+        ></path>
+      </symbol>
+          <symbol id="i-star" viewBox="0 0 24 24">
+        <path
+          d="M12 2.6l2.9 5.9 6.5 .95-4.7 4.6 1.1 6.5L12 17.5l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"
+          fill="currentColor"
+          stroke="none"
+        ></path>
+      </symbol>
+          <symbol id="i-dollar" viewBox="0 0 24 24">
+        <path
+          d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+        ></path>
+      </symbol>
+    </svg>
+
+    <!-- ===================================================================== -->
+    <!-- Top bars: highlights ticker + offer bar                                -->
+    <!-- ===================================================================== -->
+    <div class="ticker" data-screen-label="LD Ticker" aria-label="Highlights">
+      <ul class="ticker__track">
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Personalized Treatment Plans</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Licensed US Providers</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Accessible &amp; Affordable</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Next-Day Shipping Available</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>HIPAA Protected</li>
+      </ul>
+    </div>
+    <p class="offer-bar" data-screen-label="LD Offer Bar">
+      NAD+ worth $160 on the house. Labor Day limited time offer!
+      <em>Offer ends September 7th at midnight!</em>
+    </p>
+
+    <!-- ===================================================================== -->
+    <!-- Header                                                                 -->
+    <!-- ===================================================================== -->
+    <header class="masthead" data-screen-label="LD Masthead">
+      <div class="masthead__inner">
+        <a class="masthead__logo" href="labor-day.html" aria-label="Chime Health home">
+          <img src="assets/logo-slate.png" alt="Chime Health" width="428" height="193" />
+        </a>
+        <nav class="masthead__nav" aria-label="Page">
+          <a href="#how-it-works">How it works</a>
+          <a href="#faq">FAQ’s</a>
+          <a href="#pricing">Pricing</a>
+        </nav>
+        <div class="masthead__actions">
+          <!-- stub, like the site Navbar's "Log in" button (no portal yet) -->
+          <a class="btn btn--ghost btn--sm" href="javascript:void(0);">Log in</a>
+          <a class="btn btn--terra btn--sm" href="chimeAssessment.html">Get Started</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =================================================================== -->
+      <!-- Hero                                                                 -->
+      <!-- =================================================================== -->
+      <section class="hero lbd-hero" data-screen-label="LD Hero">
+        <svg class="lbd-hero__lights" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMin slice" aria-hidden="true"><path d="M0 30 Q720 150 1440 30" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5"/><path d="M0 110 Q720 215 1440 110" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5"/><circle cx="60" cy="49" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="60" cy="49" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="120" cy="57" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="120" cy="57" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="180" cy="65" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="180" cy="65" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="240" cy="72" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="240" cy="72" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="300" cy="79" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="300" cy="79" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="360" cy="84" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="360" cy="84" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="420" cy="89" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="420" cy="89" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="480" cy="92" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="480" cy="92" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="540" cy="95" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="540" cy="95" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="600" cy="97" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="600" cy="97" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="660" cy="99" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="660" cy="99" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="720" cy="99" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="720" cy="99" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="780" cy="99" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="780" cy="99" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="840" cy="97" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="840" cy="97" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="900" cy="95" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="900" cy="95" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="960" cy="92" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="960" cy="92" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="1020" cy="89" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1020" cy="89" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1080" cy="84" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="1080" cy="84" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="1140" cy="79" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1140" cy="79" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1200" cy="72" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1200" cy="72" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1260" cy="65" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="1260" cy="65" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="1320" cy="57" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1320" cy="57" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1380" cy="49" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="1380" cy="49" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="60" cy="127" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="60" cy="127" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="120" cy="135" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="120" cy="135" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="180" cy="142" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="180" cy="142" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="240" cy="148" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="240" cy="148" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="300" cy="154" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="300" cy="154" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="360" cy="158" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="360" cy="158" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="420" cy="162" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="420" cy="162" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="480" cy="166" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="480" cy="166" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="540" cy="168" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="540" cy="168" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="600" cy="170" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="600" cy="170" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="660" cy="171" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="660" cy="171" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="720" cy="172" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="720" cy="172" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="780" cy="171" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="780" cy="171" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="840" cy="170" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="840" cy="170" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="900" cy="168" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="900" cy="168" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="960" cy="166" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="960" cy="166" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1020" cy="162" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="1020" cy="162" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="1080" cy="158" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1080" cy="158" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1140" cy="154" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1140" cy="154" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1200" cy="148" r="9" fill="var(--terra-300)" fill-opacity="0.22"/><circle cx="1200" cy="148" r="4.5" fill="var(--terra-300)" fill-opacity="0.95"/><circle cx="1260" cy="142" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1260" cy="142" r="4.5" fill="currentColor" fill-opacity="0.95"/><circle cx="1320" cy="135" r="9" fill="var(--teal)" fill-opacity="0.22"/><circle cx="1320" cy="135" r="4.5" fill="var(--teal)" fill-opacity="0.95"/><circle cx="1380" cy="127" r="9" fill="currentColor" fill-opacity="0.22"/><circle cx="1380" cy="127" r="4.5" fill="currentColor" fill-opacity="0.95"/></svg>
+        <div class="lbd-hero__inner">
+          <div class="lbd-hero__copy">
+            <h1 class="h-split h1">This Labor Day, <em>NAD+ is on the house</em></h1>
+            <span class="pill pill--clay"
+              ><svg class="ico"><use href="#i-star" /></svg>Labor Day Special</span
+            >
+            <p class="lede">Claim your free NAD+ before it's gone</p>
+            <a class="btn btn--terra lbd-hero__cta" href="chimeAssessment.html">Get Started</a>
+          </div>
+
+          <!-- stand-in person cutout (tracked uploads/wl01.webp) -->
+          <figure class="lbd-hero__figure">
+            <img
+              src="uploads/wl01.webp"
+              alt=""
+              width="960"
+              height="1590"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
+
+          <div class="lbd-hero__side">
+            <div class="offer-card">
+              <div class="seal" aria-hidden="true">
+                <small>Let's celebrate</small>
+                <b>Labor Day</b>
+                <small>1st Monday of September</small>
+              </div>
+
+              <div class="offer-card__top">
+                <div>
+                  <p class="offer-card__title"><em>Free</em> NAD+ ($160) with any 6+ month plan</p>
+                  <p class="offer-card__ends">Offer ends in</p>
+                  <div class="countdown" data-ends="2026-09-08T00:00:00" role="timer" aria-live="off">
+                    <div class="countdown__unit"><span class="countdown__num" data-cd="d">00</span><span class="countdown__label">Days</span></div>
+                    <span class="countdown__sep" aria-hidden="true">:</span>
+                    <div class="countdown__unit"><span class="countdown__num" data-cd="h">00</span><span class="countdown__label">Hrs</span></div>
+                    <span class="countdown__sep" aria-hidden="true">:</span>
+                    <div class="countdown__unit"><span class="countdown__num" data-cd="m">00</span><span class="countdown__label">Mins</span></div>
+                    <span class="countdown__sep" aria-hidden="true">:</span>
+                    <div class="countdown__unit"><span class="countdown__num" data-cd="s">00</span><span class="countdown__label">Sec</span></div>
+                  </div>
+                </div>
+                <div class="offer-card__vials">
+                  <img src="uploads/vials/tirzepatide.webp" alt="Compounded tirzepatide vial" width="427" height="800" />
+                  <span class="offer-card__plus" aria-hidden="true">+</span>
+                  <img src="uploads/vials/nad-plus.webp" alt="NAD+ vial" width="422" height="800" />
+                </div>
+              </div>
+
+              <!-- reference's scarcity numbers — static stand-ins -->
+              <div class="spots" data-claimed="1295" data-total="2300">
+                <p class="spots__head">Only 2300 spots at this price — <b>1295 claimed</b></p>
+                <div class="spots__nums"><b>1295</b><span>2300</span></div>
+                <div class="spots__bar" role="progressbar" aria-valuemin="0" aria-valuemax="2300" aria-valuenow="1295" aria-label="Spots claimed">
+                  <span class="spots__fill"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lbd-facts">
+        <div class="fact">
+          <svg class="ico"><use href="#i-shield" /></svg>
+          <div class="fact__text">
+            <b>Licensed US Providers</b>
+            <p>Care from licensed medical professionals.</p>
+          </div>
+        </div>
+        <div class="fact">
+          <svg class="ico"><use href="#i-truck" /></svg>
+          <div class="fact__text">
+            <b>Discreet Shipping</b>
+            <p>Fast, private, and reliable delivery.</p>
+          </div>
+        </div>
+        <div class="fact">
+          <svg class="ico"><use href="#i-dollar" /></svg>
+          <div class="fact__text">
+            <b>No Hidden Fees</b>
+            <p>Transparent pricing. No surprises.</p>
+          </div>
+        </div>
+        <div class="fact">
+          <svg class="ico"><use href="#i-lock" /></svg>
+          <div class="fact__text">
+            <b>Your Price. Locked In.</b>
+            <p>No surprises ever, at any dose.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+
+    <div class="ticker ticker--dark" data-screen-label="LD Ticker Dark" aria-label="Highlights">
+      <ul class="ticker__track">
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>100% online medical visit + GLP-1 &amp; GLP-1/GIP options available.</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Same price every month. No price hike. Cancel anytime.</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Prescription &amp; telehealth visits included. No insurance required.</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Free shipping. Ships within 48 hours of your prescription.</li>
+      </ul>
+    </div>
+
+      <!-- =================================================================== -->
+      <!-- Trust strip                                                          -->
+      <!-- =================================================================== -->
+      <section class="section section--tight t-white" data-screen-label="LD Trust">
+        <div class="lbd-trust reveal">
+        <div class="fact">
+          <span class="ico-badge"><svg class="ico"><use href="#i-shield" /></svg></span>
+          <div class="fact__text">
+            <b>US-Licensed Pharmacy</b>
+            <p>Partnered, HIPAA-compliant facilities</p>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="ico-badge"><svg class="ico"><use href="#i-clipboard" /></svg></span>
+          <div class="fact__text">
+            <b>Personalized Treatments</b>
+            <p>A plan tuned to your body</p>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="ico-badge"><svg class="ico"><use href="#i-award" /></svg></span>
+          <div class="fact__text">
+            <b>Dedicated Wellness Coaches</b>
+            <p>Support beyond the prescription</p>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="ico-badge"><svg class="ico"><use href="#i-stethoscope" /></svg></span>
+          <div class="fact__text">
+            <b>1:1 Medical Support</b>
+            <p>Your care team, one message away</p>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- How it works                                                         -->
+      <!-- =================================================================== -->
+      <section class="section t-mist" id="how-it-works" data-screen-label="LD How">
+        <div class="content">
+          <div class="how__intro reveal">
+            <div class="section__intro">
+              <h2 class="h-split h2">How <em>Chime Health</em> Works.</h2>
+              <h3 class="eyebrow eyebrow--teal">How it works</h3>
+            </div>
+            <p class="lede">
+              Chime offers a personalized path to weight loss, guided by licensed
+              medical professionals. From a short online assessment straight to
+              your front door with delivery, we handle everything for you.
+            </p>
+          </div>
+
+          <div class="grid-3 how__cards">
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.1s">
+              <div class="step-card__body" style="gap: 16px">
+                <div class="step-card__media step-card__media--contain">
+                  <img src="uploads/wieght_loss_md.webp" alt="Telehealth video visit with a provider on a phone" width="1100" height="1261" loading="lazy" />
+                </div>
+                <h3 class="h4">Start Your <em>Free Chime Path Assessment™</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 1</h4>
+                <p class="copy">
+                  Complete our quick online assessment to see if you may qualify
+                  for prescription weight-loss treatment — no cost, no obligation.
+                </p>
+              </div>
+            </article>
+
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.2s">
+              <div class="step-card__body" style="gap: 16px">
+                <div class="step-card__media">
+                  <img src="assets/photo-start.jpg" alt="Licensed provider in a clinic hallway" width="970" height="646" loading="lazy" />
+                </div>
+                <h3 class="h4">Get Prescribed <em>Easily</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 2</h4>
+                <p class="copy">
+                  A licensed provider reviews your intake. If treatment is
+                  appropriate, your prescription goes to a licensed U.S. pharmacy
+                  partner — a quick telehealth visit is available when needed.
+                </p>
+              </div>
+            </article>
+
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.3s">
+              <div class="step-card__body" style="gap: 16px">
+                <div class="step-card__media">
+                  <img src="uploads/2vials.webp" alt="Medication box and vials ready to ship" width="816" height="804" loading="lazy" />
+                </div>
+                <h3 class="h4">Receive <em>Your Medication</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 3</h4>
+                <p class="copy">
+                  Your prescription ships discreetly to your door with tracking,
+                  and your care team stays one message away at every refill.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Estimate                                                             -->
+      <!-- =================================================================== -->
+      <section class="section" data-screen-label="LD Estimate">
+        <div class="content">
+          <div class="section__intro reveal">
+            <h2 class="h-split h2">Ready To Reach <em>Your Goal Weight?</em></h2>
+            <h3 class="eyebrow eyebrow--teal">Your potential</h3>
+          </div>
+
+          <div class="estimate">
+            <article class="card estimate__card reveal" style="--rd: 0.1s">
+              <h3 class="estimate__title">Your <em>estimate.</em></h3>
+              <p class="copy" style="color: var(--ink-2)">
+                It's not magic. It's <strong>metabolic science</strong>. GLP-1 is
+                a naturally occurring hormone that regulates appetite and blood
+                sugar, improving your metabolism and knocking out cravings.
+              </p>
+
+              <div class="proj">
+                <div>
+                  <span class="k">Current weight</span>
+                  <p class="estimate__cur"><b id="lbdWeightVal">305</b><small>lbs</small></p>
+                </div>
+                <div class="proj__slider">
+                  <label class="sr-only" for="lbdWeight">Current weight in pounds</label>
+                  <div class="proj__track">
+                    <input type="range" id="lbdWeight" class="proj__range" min="140" max="400" step="1" value="305" />
+                    <span class="proj__fill" id="lbdFill" aria-hidden="true"></span>
+                    <span class="proj__knob" id="lbdKnob" aria-hidden="true"></span>
+                  </div>
+                  <div class="proj__scale"><span>140 lbs</span><span>400 lbs</span></div>
+                </div>
+                <div class="estimate__result" aria-live="polite">
+                  <span class="k">You could lose</span>
+                  <p class="v"><span id="lbdLoss">46</span><small>lbs</small></p>
+                </div>
+                <p class="proj__foot">
+                  This calculator provides an estimate only and is not a
+                  prediction of your individual results. Actual weight loss
+                  depends on multiple clinical factors and is determined in
+                  consultation with your healthcare provider.
+                </p>
+              </div>
+            </article>
+
+            <figure class="estimate__photo reveal" style="--rd: 0.2s">
+              <img src="uploads/hf_20260715_175520_37b982f3-c380-43c9-bc9c-8d50b3441ae1.webp" alt="Chime member training on an elliptical" width="1920" height="1072" loading="lazy" />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Why Chime                                                            -->
+      <!-- =================================================================== -->
+      <section class="section t-white" data-screen-label="LD Why">
+        <div class="content">
+          <div class="section__intro reveal">
+            <h2 class="h-split h2">Why we're better at <em>weight loss</em></h2>
+            <h3 class="eyebrow eyebrow--teal">The Chime difference</h3>
+          </div>
+
+          <div class="lbd-timeline">
+            <figure class="lbd-timeline__photo reveal" style="--rd: 0.1s">
+              <img src="uploads/hf_20260702_042318_5749878e-ec06-4b35-8bef-d1e9b5d0bc05.webp" alt="Two Chime members jogging together outdoors" width="1600" height="1067" loading="lazy" />
+            </figure>
+            <ul class="steps-list reveal" style="--rd: 0.2s">
+              <li><span class="k">Today</span><span class="v">Free NAD+ ($160 value) with any 6+ month plan</span></li>
+              <li><span class="k">Within 1 day</span><span class="v">A licensed provider reviews your intake and writes your Rx, if appropriate</span></li>
+              <li><span class="k">Within 48 hours</span><span class="v">Your order ships from a licensed U.S. pharmacy partner</span></li>
+              <li><span class="k">Expedited delivery</span><span class="v">Discreet packaging, tracked to your door</span></li>
+              <li><span class="k">Ongoing</span><span class="v">Begin treatment with 1:1 medical support and your Wellness Coach</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- FAQ                                                                  -->
+      <!-- =================================================================== -->
+      <section class="section t-mist lbd-faq" id="faq" data-screen-label="LD FAQ">
+        <div class="content faq">
+          <div class="faq__aside">
+            <h2 class="faq__title reveal">Frequently asked <em>questions</em></h2>
+          </div>
+
+          <div class="faq__list reveal">
+            <details class="faq__item">
+              <summary>
+                Which pharmacies fill prescriptions for Chime members?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>When a prescription is medically appropriate, it may be fulfilled by a licensed U.S. pharmacy partner.</p>
+                <p>Chime does not manufacture, compound, or dispense medications.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                In which states is Chime available?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>Provider availability and prescribing authority vary by state. A licensed provider in your state of residence reviews your medical intake and determines whether treatment is appropriate.</p>
+                <p>If treatment is not yet available where you live, you will be told during the assessment before anything is charged.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What happens after I complete my assessment?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>Your next steps may include:</p>
+                <ul class="faq__list-inline">
+                  <li>• Reviewing your recommended Chime path</li>
+                  <li>• Viewing relevant program or pricing information</li>
+                  <li>• Creating or accessing your Chime account</li>
+                  <li>• Completing medical intake if you choose to continue</li>
+                  <li>• Provider review</li>
+                  <li>• Prescription treatment, if medically appropriate</li>
+                  <li>• Fulfillment through a licensed U.S. pharmacy partner, when applicable</li>
+                  <li>• Tracking your journey through your patient portal</li>
+                  <li>• Accessing relevant membership and support resources</li>
+                </ul>
+                <p>Your care team is available throughout at <a href="mailto:hello@chimehealth.com">hello@chimehealth.com</a>.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                Do I need insurance?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>No. Chime is a self-pay service — you do not need insurance to complete the assessment, see a provider, or receive treatment. Pricing is shown before you commit.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What should I know about GLP-1 medications?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>Chime may provide access to provider-guided GLP-1 or GLP-1/GIP treatment options when medically appropriate. Completing the assessment does not guarantee a prescription; eligibility and treatment decisions are determined by a licensed provider after medical review.</p>
+                <p>Compounded medications are not FDA-approved. The FDA does not evaluate compounded medications for safety, effectiveness, or quality in the same way it reviews FDA-approved drugs.</p>
+                <p>Your provider reviews your medical history, current medications, and contraindications (including a personal or family history of medullary thyroid carcinoma or MEN2 syndrome) to determine whether treatment is appropriate for you.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What if I want to pause or cancel?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>You and your provider decide together whether to continue at each refill. If you stop GLP-1 treatment, your provider may recommend a tapering schedule, and can discuss strategies for long-term weight management — weight regain after discontinuation is common.</p>
+                <p>Prescription products cannot be returned once shipped, so please review our <a href="return-refund-policy.html">Return &amp; Refund Policy</a> before ordering.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What is included in my membership?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>Chime Membership is designed to be the ongoing relationship layer of the Chime experience. Depending on the program selected, membership may provide access to:</p>
+                <ul class="faq__list-inline">
+                  <li>• Provider messaging</li>
+                  <li>• Educational resources</li>
+                  <li>• Progress and program tracking</li>
+                  <li>• Medication tracking and refill support</li>
+                  <li>• Personalized recommendations</li>
+                  <li>• Patient portal resources</li>
+                  <li>• Ongoing support</li>
+                </ul>
+                <p>Specific membership benefits, pricing, and availability should be confirmed on the relevant membership or offer page.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What is the minimum age to enroll with Chime?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>You must be at least 18 years of age (or the age of majority where you live) to complete the Chime Path Assessment™ and receive treatment through Chime. GLP-1 medications are not prescribed to anyone under 18 through this platform.</p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                What happens if my BMI falls below 25?
+                <span class="plus" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__body">
+                <p>GLP-1 treatment for weight management is generally indicated for obesity, or for overweight with a related condition. As your weight changes, your provider reassesses and may adjust your dose, move you to a maintenance plan, or pause treatment depending on your goals and risk factors.</p>
+                <p>Clinical decisions always remain with the licensed provider.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Closing / pricing                                                    -->
+      <!-- =================================================================== -->
+      <section class="section t-white" id="pricing" data-screen-label="LD Closing">
+        <div class="lbd-closing">
+          <div class="lbd-closing__copy reveal">
+            <h2 class="h-split h2">Get Started For <em>Only $110/month</em></h2>
+            <h3 class="eyebrow eyebrow--teal">Feel confident in your skin</h3>
+            <a class="btn btn--terra" href="chimeAssessment.html">Get Started</a>
+            <ul class="checks">
+              <li>
+                <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                <span>Same price, every dose, transparent pricing.</span>
+              </li>
+              <li>
+                <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                <span>Unlimited check-ins with your care team.</span>
+              </li>
+              <li>
+                <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                <span>No insurance required.</span>
+              </li>
+              <li>
+                <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                <span>Free, discreet delivery.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="lbd-closing__art reveal" style="--rd: 0.15s" aria-hidden="true">
+            <img src="uploads/vials/tirzepatide.webp" alt="" width="427" height="800" loading="lazy" />
+            <img src="uploads/vials/semaglutide.webp" alt="" width="427" height="800" loading="lazy" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- Footer                                                                 -->
+    <!-- ===================================================================== -->
+    <footer class="site-footer" data-screen-label="LD Footer">
+      <div class="site-footer__inner">
+        <div class="contact">
+          <h2 class="h3">Contact Us</h2>
+          <div class="contact__actions">
+            <a class="btn btn--sand" href="chimeAssessment.html">Get Started</a>
+            <a class="btn btn--ghost" href="mailto:hello@chimehealth.com">Email Us</a>
+          </div>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-brand">
+            <img src="assets/logo-white.png" alt="Chime Health" width="428" height="193" loading="lazy" />
+            <p>Personalized GLP-1 treatment — led by licensed providers, built around your journey.</p>
+            <img src="uploads/badge-compounded-usa.webp" alt="Compounded in the U.S.A." width="85" height="76" loading="lazy" style="width: 73px" />
+          </div>
+          <nav class="footer-nav" aria-label="Company">
+            <h3>Company</h3>
+            <a href="index.html">Home</a>
+            <a href="weight-loss.html">Weight Loss</a>
+            <a href="faq.html">FAQ's</a>
+            <a href="mailto:hello@chimehealth.com">Contact Us</a>
+          </nav>
+          <nav class="footer-nav" aria-label="Legal">
+            <h3>Legal</h3>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+            <a href="telehealth-consent.html">Telehealth Consent</a>
+            <a href="return-refund-policy.html">Return &amp; Refund Policy</a>
+            <a href="shipping-policy.html">Shipping Policy</a>
+          </nav>
+        </div>
+
+        <div class="site-footer__legal">
+          <hr />
+          <p class="footer-fine">
+            Individual results vary. Compounded medications are available
+            subject to provider review and are not guaranteed to be prescribed.
+            These statements have not been evaluated by the Food and Drug
+            Administration.
+          </p>
+          <p class="footer-fine">
+            Certain treatment plans may involve compounded medications when
+            determined appropriate by a licensed healthcare provider. Compounded
+            medications are not approved by the U.S. Food and Drug Administration
+            (FDA) and have not been evaluated by the FDA for safety,
+            effectiveness, or quality. Chime does not manufacture, compound, or
+            dispense medications. Product imagery may be illustrative; actual
+            medication appearance may differ.
+          </p>
+          <p class="footer-fine">
+            The weight-loss estimate on this page is an illustration only, not a
+            prediction of individual results. Completing the assessment does not
+            guarantee a prescription; all treatment decisions are made by a
+            licensed provider.
+          </p>
+          <div class="legal-links">
+            <span>Copyright © 2026 Chime Health</span><span class="sep">|</span>
+            <span>All Rights Reserved</span><span class="sep">|</span>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a><span class="sep">|</span>
+            <a href="return-refund-policy.html">Refund Policy</a><span class="sep">|</span>
+            <a href="telehealth-consent.html">Consent to Telehealth</a><span class="sep">|</span>
+            <a href="privacy-policy.html">Privacy Policy</a><span class="sep">|</span>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="ui_kits/amerilean/amerilean.js?v=20260877" defer></script>
+    <script src="ui_kits/labor-day/labor-day.js?v=20260884" defer></script>
+  </body>
+</html>
