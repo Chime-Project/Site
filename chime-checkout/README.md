@@ -68,7 +68,11 @@ plan-length → checkout path carries the selection.
   careers, referral and Osano links are gone.
 - **CTAs.** The black `bg-slate-950` pills wear the DS primary skin — blue-500,
   white label, blue-800 hover. Apple Pay stays black (Apple's rule).
-- **Vials.** The only asset swap: `images/vial-semaglutide.webp` /
+- **Care+ badge.** The three "Remedy Care+" warranty seals on checkout (order
+  summary, Care+ card, value-stack thumbnail) are one inline SVG built by the
+  script (`care_badge`): the source hexagon on a blue-500 → blue-800 gradient,
+  "WEIGHT LOSS / Chime Care+ / WARRANTY" in Quicksand.
+- **Vials.** The only photo swap: `images/vial-semaglutide.webp` /
   `vial-tirzepatide.webp` (copies of `uploads/vials/*.webp`) replace the
   product shots, contain-fit on a mist tile (`img[src*="images/vial-"]`).
 - **Copy.** "Remedy Meds" / "RemedyMeds" / "Remedy" → "Chime Health" / "Chime";
@@ -81,9 +85,7 @@ plan-length → checkout path carries the selection.
 
 ## Still RemedyMeds — flagged, not changed (per "only swap the vials")
 
-- Artwork carrying their brand: the yellow "Remedy Care+" warranty seal
-  (`images/image_9.png` in the order summary, `weightloss-warranty.svg/.webp`
-  in the Care+ card), the delivery van with an "R" mark (`free-delivery.png`),
+- Artwork carrying their brand: the delivery van with an "R" mark (`free-delivery.png`),
   the "Remedy" box in `all-in-one.png`, the Forbes Health "#1 GLP-1" badge and
   Forbes / USA Today logos on the plan cards, all 18 before/after photos and
   the six reviewer names, avatars and quotes.
