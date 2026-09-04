@@ -27,6 +27,8 @@ a.chime-back:hover { background: #bdd2f6; }
 }
 @media (max-width: 375px) { .site-logo { height: 20px; } }
 button[data-testid="checkout-button"] { box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); }
+/* the inline Care+ badge must not shrink inside the Care+ card's flex row */
+svg[aria-label="Chime Care+ Weight Loss Warranty"] { flex: none; }
 /* Apple Pay keeps Apple's black button (brand requirement) */
 button.bg-black { background-color: #000; }
 
