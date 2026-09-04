@@ -103,7 +103,13 @@ medications (`TREATMENT_PRICING` in the page's inline script mirrors
 collapsed "More plans" row. That is the one open item: if the funnel's old
 ladder ($596 per 3 months) is the real one, only that table changes.
 
-The Spanish mirror (`questionnaire/es/step18.html`) still shows the old list.
+The Spanish mirror (`questionnaire/es/step18.html`) carries the same stage
+(2026-09-04): the radiogroup element and the inline script were copied from
+`step18.html` and translated; radio values, `data-slot`s and the pricing table
+are identical. Captions and the stored `selectedPlanName` are Spanish
+("3 meses + 1 gratis"); the treatment heading shows the Spanish name from
+step 17 while the `selectedPlan*:` keys stay on the English treatment name,
+which is what `es/step19.html` looks up.
 
 ### Chime theme (2026-09-04)
 
@@ -136,8 +142,24 @@ The quiz is now Chime-branded on every page (EN and ES):
   the compounding disclaimer; step 19's Terms and Privacy links now open the
   site's `terms-conditions.html` and `privacy-policy.html` (they were
   `javascript:void(0)`).
-- The css link is at `?v=20260885`. `css/landing.css`, `slick*.css` and the
-  old AmeriLean favicon/logo files are unreferenced leftovers from the copy.
+- **Vials.** Steps 17 and 18 show the landing's Chime vials
+  (`images/vial-semaglutide.webp`, `images/vial-tirzepatide.webp`, copies of
+  `../images/semaglutide.webp` / `tirzepatide.webp`) instead of the funnel's
+  square product shots on AmeriLean's green backdrop. They are tall cut-outs,
+  so a rule at the end of the sheet sets `object-fit: contain` on a mist
+  gradient tile for any `img[src*="vial-"]`; step 18's inline script maps
+  each treatment to the matching file.
+- **Trap (fixed 2026-09-04, same day):** the first remap also rewrote the hex
+  inside Tailwind's escaped arbitrary-value *selectors* (`.bg-\[\#4B5647\]`
+  became `.bg-\[\#324563\]`), so those classes stopped matching the markup —
+  the sticky Continue button went transparent and headings fell back to black.
+  The sheet was rebuilt from the funnel original with a values-only remap
+  (`(?<!\\)#hex`); the escaped selector hexes must always stay exactly as the
+  markup writes them (case included). Step headings (`.text-[#606D5B]`) are
+  pinned to blue-900 rather than the ramp's blue-400.
+- The css link is at `?v=20260886`. `css/landing.css`, `slick*.css` and the
+  old AmeriLean favicon/logo/product images are unreferenced leftovers from
+  the copy.
 
 Still open: step 19 posts to `ajax.php?method=new_order_prospect`, which
 needs a backend. Not a blocker for reviewing the flow.
