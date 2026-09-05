@@ -31,7 +31,9 @@
         return;
       }
       var t = plan.terms[state.term];
-      cta.disabled = false; cta.textContent = "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " \u2013 " + plan.name;
+      cta.disabled = false;
+      cta.textContent = state.term === 3 ? "Continue with 3 months + 1 free"
+        : "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " – " + plan.name;
       note.textContent = state.term === 1 ? chimeMoney(t.charge) + " billed monthly. No free month. Pause or cancel anytime."
         : chimeMoney(t.charge) + " today, covers " + t.covers + " months (" + (t.covers - state.term) + " free). Next charge in " + t.covers + " months.";
     });
