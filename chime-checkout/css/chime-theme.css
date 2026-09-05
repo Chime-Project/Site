@@ -28,8 +28,17 @@ a.chime-back:hover { background: #bdd2f6; }
 @media (max-width: 375px) { .site-logo { height: 20px; } }
 button[data-testid="checkout-button"] { box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); }
 /* "Our recommendation" cards: per-medication link into the merged section */
-a.rec-link { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; color: #485e89; text-decoration: none; }
-a.rec-link:hover { color: #324563; text-decoration: underline; }
+.rec-link { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; color: #485e89; }
+a.rec-card { color: inherit; text-decoration: none; cursor: pointer; border-radius: 1rem; transition: transform .15s ease, box-shadow .15s ease; }
+a.rec-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(38, 53, 77, 0.16); }
+a.rec-card:hover .rec-link { color: #324563; text-decoration: underline; }
+a.rec-card:focus-visible { outline: 3px solid #6580bc; outline-offset: 2px; }
+/* the Semaglutide alternative is the smaller, secondary card */
+.rec-card--compact > div:first-child { max-width: 5.5rem; }
+.rec-card--compact > div:last-child { padding: 10px 16px; }
+.rec-card--compact .rec-title { font-size: 1rem; margin-bottom: 4px; }
+.rec-card--compact p { font-size: 12px; line-height: 1.4; }
+.rec-card--compact .rec-link { font-size: 12px; margin-top: 6px; }
 [data-med][id] { scroll-margin-top: 16px; }
 .rec-card > div:last-child { min-width: 0; }
 .rec-title { flex-wrap: wrap; row-gap: 4px; }

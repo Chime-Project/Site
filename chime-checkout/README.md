@@ -72,6 +72,10 @@ plan-length → checkout path carries the selection.
   summary, Care+ card, value-stack thumbnail) are one inline SVG built by the
   script (`care_badge`): the source hexagon on a blue-500 → blue-800 gradient,
   "WEIGHT LOSS / Chime Care+ / WARRANTY" in Quicksand.
+- **Delivery van.** `images/free-delivery-chime.png` is the source illustration
+  with the "R(+)" on the van painted out, the Chime mark (`assets/mark-slate.png`)
+  in its place and the "Always FREE Delivery" badge on blue-700 (PIL, in the
+  build: `chime_delivery_image`).
 - **Vials.** The only photo swap: `images/vial-semaglutide.webp` /
   `vial-tirzepatide.webp` (copies of `uploads/vials/*.webp`) replace the
   product shots, contain-fit on a mist tile (`img[src*="images/vial-"]`).
@@ -85,7 +89,7 @@ plan-length → checkout path carries the selection.
 
 ## Still RemedyMeds — flagged, not changed (per "only swap the vials")
 
-- Artwork carrying their brand: the delivery van with an "R" mark (`free-delivery.png`),
+- Artwork carrying their brand:
   the "Remedy" box in `all-in-one.png`, the Forbes Health "#1 GLP-1" badge and
   Forbes / USA Today logos on the plan cards, all 18 before/after photos and
   the six reviewer names, avatars and quotes.
