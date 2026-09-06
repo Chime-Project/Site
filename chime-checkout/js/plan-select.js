@@ -15,6 +15,20 @@
   
   var state = { med: null, term: null };
   var phone = function () { return window.matchMedia("(max-width: 767px)").matches; };
+  var motionOK = window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // The card's checkout button pulses blue-500 <-> blue-800 (with a one-time ring flash) while the
+  // 3-month plan is the selection (user request 2026-09-05); any other choice stops and clears it.
+  var ctaPulse = {};
+  function pulseCta(med, on) {
+    var cta = document.querySelector('[data-mp="' + med + '"] [data-mp-cta]'); if (!cta || !motionOK) return;
+    if (on && !ctaPulse[med]) {
+      gsap.fromTo(cta, { boxShadow: "0 0 0 0 rgba(101, 128, 188, 0.65)" }, { boxShadow: "0 0 0 16px rgba(101, 128, 188, 0)", duration: 0.9, ease: "power2.out" });
+      ctaPulse[med] = gsap.fromTo(cta, { backgroundColor: "#7fa0d9", scale: 1 },
+        { backgroundColor: "#26354d", scale: 1.035, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.15 });
+    } else if (!on && ctaPulse[med]) {
+      ctaPulse[med].kill(); ctaPulse[med] = null; gsap.killTweensOf(cta); gsap.set(cta, { clearProps: "backgroundColor,boxShadow,transform" });
+    }
+  }
   function render() {
     document.querySelectorAll("[data-mp]").forEach(function (block) {
       var med = block.dataset.mp, mine = med === state.med, plan = CHIME_PLANS[med];
@@ -25,6 +39,7 @@
       });
       var cta = block.querySelector("[data-mp-cta]"), note = block.querySelector("[data-mp-note]");
       var card = block.closest("[data-med]"); if (card) card.setAttribute("data-selected", mine ? "true" : "false");
+      pulseCta(med, mine && state.term === 3);
       if (!mine) {
         cta.disabled = true; cta.textContent = "Choose a plan length";
         note.textContent = "Every 4th month is free \u2014 forever \u2014 on the 3- and 6-month plans. Pick a length to see what you pay today.";
