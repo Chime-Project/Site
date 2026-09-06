@@ -22,9 +22,11 @@
   function pulseCta(med, on) {
     var cta = document.querySelector('[data-mp="' + med + '"] [data-mp-cta]'); if (!cta || !motionOK) return;
     if (on && !ctaPulse[med]) {
-      gsap.fromTo(cta, { boxShadow: "0 0 0 0 rgba(101, 128, 188, 0.65)" }, { boxShadow: "0 0 0 16px rgba(101, 128, 188, 0)", duration: 0.9, ease: "power2.out" });
-      ctaPulse[med] = gsap.fromTo(cta, { backgroundColor: "#7fa0d9", scale: 1 },
-        { backgroundColor: "#26354d", scale: 1.035, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.15 });
+      // colour pulse + a stroke ring that grows and brightens with it; scale kept to a barely-there 1.2%
+      ctaPulse[med] = gsap.fromTo(cta,
+        { backgroundColor: "#6580bc", scale: 1, boxShadow: "0 0 0 0px rgba(148, 186, 242, 0), 0 8px 18px rgba(101, 128, 188, 0.3)" },
+        { backgroundColor: "#324563", scale: 1.012, boxShadow: "0 0 0 4px rgba(148, 186, 242, 0.95), 0 10px 22px rgba(101, 128, 188, 0.4)",
+          duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.15 });
     } else if (!on && ctaPulse[med]) {
       ctaPulse[med].kill(); ctaPulse[med] = null; gsap.killTweensOf(cta); gsap.set(cta, { clearProps: "backgroundColor,boxShadow,transform" });
     }
