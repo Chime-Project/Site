@@ -5,13 +5,17 @@
    Nothing is preselected (user request 2026-09-04). */
 (function () {
   var CHIME_PLANS = {
-    sema: { key: "sema", name: "Semaglutide", full: "Compounded Semaglutide (GLP-1)", retail: 279, image: "images/vial-semaglutide.webp",
-            terms: { 1: { rate: 249, covers: 1, charge: 249, effective: 249 }, 3: { rate: 149, covers: 4, charge: 447, effective: 112 }, 6: { rate: 139, covers: 8, charge: 834, effective: 104 } } },
-    tirz: { key: "tirz", name: "Tirzepatide", full: "Compounded Tirzepatide (GLP-1/GIP)", retail: 389, image: "images/vial-tirzepatide.webp",
-            terms: { 1: { rate: 359, covers: 1, charge: 359, effective: 359 }, 3: { rate: 185, covers: 4, charge: 555, effective: 139 }, 6: { rate: 172, covers: 8, charge: 1032, effective: 129 } } }
+    sema: { key: "sema", name: "Semaglutide", full: "Compounded Semaglutide (GLP-1)", image: "images/vial-semaglutide.webp",
+            terms: { 1: { rate: 299, charge: 299, covers: 1, retail: 349, retailTotal: 349, effective: 299 },
+                     3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 },
+                     6: { rate: 199, charge: 1194, covers: 6, retail: 349, retailTotal: 2094, effective: 199 } } },
+    tirz: { key: "tirz", name: "Tirzepatide", full: "Compounded Tirzepatide (GLP-1/GIP)", image: "images/vial-tirzepatide.webp",
+            terms: { 1: { rate: 359, charge: 359, covers: 1, retail: 399, retailTotal: 399, effective: 359 },
+                     3: { rate: 299, charge: 897, covers: 4, retail: 399, retailTotal: 1596, effective: 224.25 },
+                     6: { rate: 299, charge: 1794, covers: 8, retail: 399, retailTotal: 3192, effective: 224.25 } } }
   };
   var CHIME_TERM_LABEL = { 1: "monthly", 3: "3 months + 1 free", 6: "6 months" };
-  function chimeMoney(n) { return "$" + n.toLocaleString("en-US"); }
+  function chimeMoney(n) { return "$" + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })); }
   
   var state = { med: null, term: null };
   var phone = function () { return window.matchMedia("(max-width: 767px)").matches; };
@@ -44,15 +48,16 @@
       pulseCta(med, mine && state.term === 3);
       if (!mine) {
         cta.disabled = true; cta.textContent = "Choose a plan length";
-        note.textContent = "Every 4th month is free \u2014 forever \u2014 on the 3- and 6-month plans. Pick a length to see what you pay today.";
+        note.textContent = "Commit to 3 months and every 4th month is free \u2014 forever. Pick a length to see what you pay today.";
         return;
       }
       var t = plan.terms[state.term];
       cta.disabled = false;
-      cta.textContent = state.term === 3 ? "Start Losing Weight - 4th Month FREE FOR LIFE"
-        : "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " – " + plan.name;
-      note.textContent = state.term === 1 ? chimeMoney(t.charge) + " billed monthly. No free month. Pause or cancel anytime."
-        : chimeMoney(t.charge) + " today, covers " + t.covers + " months (" + (t.covers - state.term) + " free). Next charge in " + t.covers + " months.";
+      if (state.term === 3) cta.innerHTML = '<span class="mp-cta-l1">Start Losing Weight Now</span><span class="mp-cta-l2">4th Month FREE FOR LIFE</span>';
+      else cta.textContent = "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " \u2013 " + plan.name;
+      var free = t.covers - state.term;
+      note.textContent = state.term === 1 ? chimeMoney(t.charge) + " billed monthly (retail " + chimeMoney(t.retail) + "/mo). No free month. Pause or cancel anytime."
+        : chimeMoney(t.charge) + " today, covers " + t.covers + " months" + (free ? " (" + free + " free)" : "") + ". Next charge in " + t.covers + " months.";
     });
     var img = document.getElementById("sticky-med-img"), name = document.getElementById("sticky-med-name");
     if (state.med && img) img.src = CHIME_PLANS[state.med].image;

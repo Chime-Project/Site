@@ -3,13 +3,17 @@
    Without a selection the page shows Semaglutide, 3 months + 1 free. */
 (function () {
   var CHIME_PLANS = {
-    sema: { key: "sema", name: "Semaglutide", full: "Compounded Semaglutide (GLP-1)", retail: 279, image: "images/vial-semaglutide.webp",
-            terms: { 1: { rate: 249, covers: 1, charge: 249, effective: 249 }, 3: { rate: 149, covers: 4, charge: 447, effective: 112 }, 6: { rate: 139, covers: 8, charge: 834, effective: 104 } } },
-    tirz: { key: "tirz", name: "Tirzepatide", full: "Compounded Tirzepatide (GLP-1/GIP)", retail: 389, image: "images/vial-tirzepatide.webp",
-            terms: { 1: { rate: 359, covers: 1, charge: 359, effective: 359 }, 3: { rate: 185, covers: 4, charge: 555, effective: 139 }, 6: { rate: 172, covers: 8, charge: 1032, effective: 129 } } }
+    sema: { key: "sema", name: "Semaglutide", full: "Compounded Semaglutide (GLP-1)", image: "images/vial-semaglutide.webp",
+            terms: { 1: { rate: 299, charge: 299, covers: 1, retail: 349, retailTotal: 349, effective: 299 },
+                     3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 },
+                     6: { rate: 199, charge: 1194, covers: 6, retail: 349, retailTotal: 2094, effective: 199 } } },
+    tirz: { key: "tirz", name: "Tirzepatide", full: "Compounded Tirzepatide (GLP-1/GIP)", image: "images/vial-tirzepatide.webp",
+            terms: { 1: { rate: 359, charge: 359, covers: 1, retail: 399, retailTotal: 399, effective: 359 },
+                     3: { rate: 299, charge: 897, covers: 4, retail: 399, retailTotal: 1596, effective: 224.25 },
+                     6: { rate: 299, charge: 1794, covers: 8, retail: 399, retailTotal: 3192, effective: 224.25 } } }
   };
   var CHIME_TERM_LABEL = { 1: "monthly", 3: "3 months + 1 free", 6: "6 months" };
-  function chimeMoney(n) { return "$" + n.toLocaleString("en-US"); }
+  function chimeMoney(n) { return "$" + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })); }
   
   var q = new URLSearchParams(location.search), med = q.get("med"), term = +q.get("term"), stored = null;
   try { stored = JSON.parse(sessionStorage.getItem("chime:checkout-selection") || "null"); } catch (err) {}

@@ -101,6 +101,8 @@ html { scroll-behavior: smooth; }
 .mp-note { margin: 10px 0 0; font-size: 12px; line-height: 1.4; color: #485e89; }
 .mp-cta { display: block; width: 100%; margin-top: 10px; border: 0; border-radius: 9999px; background: #6580bc; color: #fff; font: inherit; font-weight: 700; font-size: 15px; padding: 14px 16px; cursor: pointer; box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); transition: background-color .15s ease; }
 .mp-cta:hover { background: #324563; }
+.mp-cta span { display: block; }
+.mp-cta-l2 { margin-top: 2px; font-size: 12px; letter-spacing: .04em; opacity: .92; }
 .mp-cta[disabled] { background: #bdd2f6; color: #324563; box-shadow: none; cursor: not-allowed; }
 .mp-plus { margin: 16px 0 8px; font-size: 12px; font-weight: 700; color: #26354d; }
 /* the green callout from questionnaire step 18 lives inside the 3-month row (tokens green-100/200/800/700) */

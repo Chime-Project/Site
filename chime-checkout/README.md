@@ -33,10 +33,15 @@ plan-length → checkout path carries the selection.
    `chime:checkout-selection`). `product.html?med=…&term=…` preselects (the
    checkout's Back link uses it). The sticky bar's Buy Now scrolls to the
    chosen card's button, else to the section.
-2. `js/plan-select.js` holds the price ladder (the Chime plans landing's:
-   semaglutide $249 / $149 ($447 per 4 months, $112 effective) / $139 ($834
-   per 8 months, $104); tirzepatide $359 / $185 ($555, $139) / $172 ($1,032,
-   $129)); the rows are rendered statically from the same table in the build.
+2. `js/plan-select.js` holds the client's price ladder (2026-09-06): Semaglutide
+   $299/mo monthly (retail $349), $249/mo on 3 months + 1 free ($747 due today,
+   $186.75/mo avg incl. the free month, retail $1,396), $199/mo on 6 months
+   ($1,194 due today, retail $2,094); Tirzepatide $359 (retail $399), $299 on
+   3 months + 1 free ($897 today, $224.25 avg, retail $1,596), $299 on 6 months
+   ($1,794 today, retail $3,192 = 8 months, so 2 free). Rows are rendered
+   statically from the same table in the build (`PLANS_PY`). Flag: the
+   Semaglutide 6-month retail ($2,094 = 6 × $349) implies no free month while
+   the Tirzepatide one implies two — carried as given.
 3. `js/checkout-selection.js` reads the URL (fallback: sessionStorage; default
    Semaglutide, 3 months) and fills the order summary: plan name, vial, term
    badge, "{Med} · {term} (N months)" line, both charge figures and both
@@ -96,6 +101,6 @@ plan-length → checkout path carries the selection.
 - Claims and numbers: "America's #1 GLP-1 Weight Loss Program", 200,000+ /
   300,000+ members, 4.7 rating, 94.6% / 94.8%, 2x, −14 lbs, 48-hour delivery,
   FSA/HSA eligibility, the value-stack prices ($129 … $179). Plan prices are
-  the Chime plans-landing ladder — a repo stand-in, not confirmed pricing.
+  the client's 2026-09-06 ladder (see The flow).
 - Behaviour: nothing submits (no backend); Apple Pay is a static button; the
   State select defaults to Arkansas.
