@@ -57,7 +57,8 @@
       else cta.textContent = "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " \u2013 " + plan.name;
       var free = t.covers - state.term;
       note.textContent = state.term === 1 ? chimeMoney(t.charge) + " billed monthly (retail " + chimeMoney(t.retail) + "/mo). No free month. Pause or cancel anytime."
-        : chimeMoney(t.charge) + " today, covers " + t.covers + " months" + (free ? " (" + free + " free)" : "") + ". Next charge in " + t.covers + " months.";
+        : state.term === 6 ? chimeMoney(t.charge) + " due today \u00b7 retail " + chimeMoney(t.retailTotal) + "."
+        : chimeMoney(t.charge) + " today, covers " + t.covers + " months (" + free + " free). Next charge in " + t.covers + " months.";
     });
     var img = document.getElementById("sticky-med-img"), name = document.getElementById("sticky-med-name");
     if (state.med && img) img.src = CHIME_PLANS[state.med].image;

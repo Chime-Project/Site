@@ -24,7 +24,7 @@
   function setText(sel, text) { document.querySelectorAll(sel).forEach(function (n) { n.textContent = text; }); }
   setText("[data-sel=med]", plan.name);
   setText("[data-sel=term-badge]", CHIME_TERM_LABEL[term]);
-  setText("[data-sel=plan-line]", plan.name + " \u00b7 " + CHIME_TERM_LABEL[term] + (term === 1 ? "" : " (" + t.covers + " months)"));
+  setText("[data-sel=plan-line]", plan.name + " \u00b7 " + CHIME_TERM_LABEL[term] + (term === 3 ? " (" + t.covers + " months)" : ""));
   setText("[data-sel=charge]", chimeMoney(t.charge));
   setText("[data-sel=perday]", "$" + perDay.toFixed(2));
   document.querySelectorAll("[data-sel=img]").forEach(function (i) { i.src = plan.image; i.alt = plan.name; });

@@ -105,9 +105,10 @@ html { scroll-behavior: smooth; }
 .mp-cta-l2 { margin-top: 2px; font-size: 12px; letter-spacing: .04em; opacity: .92; }
 .mp-cta[disabled] { background: #bdd2f6; color: #324563; box-shadow: none; cursor: not-allowed; }
 .mp-plus { margin: 16px 0 8px; font-size: 12px; font-weight: 700; color: #26354d; }
-/* the green callout from questionnaire step 18 lives inside the 3-month row (tokens green-100/200/800/700) */
-.mp-row[data-term="3"] { grid-template-areas: "r name price" "r sub sub" "r free free"; }
-.mp-free { grid-area: free; position: relative; display: block; margin-top: 6px; background: #dcfce7; color: #016630; border-radius: 8px; padding: 7px 10px 7px 30px; font-weight: 700; font-size: 12px; line-height: 1.4; box-shadow: inset 0 0 0 1px #b9f8cf; }
-.mp-free::before { content: ""; position: absolute; left: 9px; top: 8px; width: 14px; height: 14px; border-radius: 50%; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23008236' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 62% no-repeat; }
+/* the 3-month row: green callout (questionnaire step 18 colours) with the "+1" seal on it, above the price */
+.mp-row[data-term="3"] { grid-template-areas: "r free free" "r name price" "r sub sub"; }
+.mp-free { grid-area: free; position: relative; display: block; margin: 0 0 8px; background: #dcfce7; color: #016630; border-radius: 8px; padding: 8px 62px 8px 30px; font-weight: 700; font-size: 12px; line-height: 1.4; box-shadow: inset 0 0 0 1px #b9f8cf; }
+.mp-free::before { content: ""; position: absolute; left: 9px; top: 9px; width: 14px; height: 14px; border-radius: 50%; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23008236' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 62% no-repeat; }
 .mp-free em { font-style: normal; color: #008236; }
+.mp-row[data-term="3"] .mp-seal { position: absolute; right: 10px; top: 8px; width: 50px; height: 50px; transform: rotate(-8deg); filter: drop-shadow(0 3px 6px rgba(38, 53, 77, 0.22)); pointer-events: none; }
 @media (max-width: 767px) { .mp-price { font-size: 18px; } }
