@@ -38,10 +38,22 @@ then open http://localhost:8791/chime-plans-landing/
 
 ## Prices
 
-Identical to the AmeriLean version (semaglutide $112/mo and tirzepatide
-$139/mo effective on the 3-month plan; every 4th month free on 3- and 6-month
-plans). `ui_kits/shared/data/products.js` notes that Chime's own GLP-1 numbers
-have not landed yet, so these are borrowed until they do.
+The client's ladder (2026-09-06, applied 2026-09-07 — the same table as
+`chime-checkout/js/plan-select.js`), held in `js/plans.js`:
+
+| | Semaglutide | Tirzepatide |
+|---|---|---|
+| 1 month | $299/mo (retail $349) | $359/mo (retail $399) |
+| 3 months + FREE month | $249/mo · $747 due today covers 4 · $186.75/mo avg · retail $1,396 | $299/mo · $897 due today covers 4 · $224.25/mo avg · retail $1,596 |
+| 6 months | $199/mo · $1,194 due today · retail $2,094 | $299/mo · $1,794 due today · retail $3,192 |
+
+Rendering rules: the 3-month cards headline the rate with "+ FREE month" and
+the average in the sub-line; the 6-month cards carry no free-month wording
+(rate, due today, retail); savings are stated against retail. The Tirzepatide
+6-month retail ($3,192 = 8 × $399) implies two free months while the
+Semaglutide one ($2,094 = 6 × $349) implies none — carried as given. The
+AmeriLean sibling (`amerilean-plans-landing/`) still has its own borrowed
+numbers.
 
 ## Questionnaire (`questionnaire/`)
 
@@ -51,9 +63,8 @@ The 19-step GLPQuizFR assessment, copied from
 CTA (masthead, hero, how-it-works, comparison bar, FAQ, closing, mobile sticky
 bar) goes to `questionnaire/step1.html`. The plan-card buttons go there too
 and carry the selection as `?med=sema|tirz&term=1|3|6`; `js/plans.js` rewrites
-the href whenever the 1/3/6 toggle changes. The quiz does not read those
-parameters yet (its step 18 has its own plan cards at $596 / $896 per 3-month
-cycle), so the price ladder still has to be reconciled before launch.
+the href whenever the 1/3/6 toggle changes. Step 18 reads them to pre-select
+the same plan length and shows the same ladder (see Prices above).
 
 What the copy leaves out, following the funnel's own deploy bundle
 (`scripts/deploy-stage.mjs`): the `.php` sources (Pages cannot run them; the
@@ -98,12 +109,14 @@ reaching step 19 without clicking carried no plan), and step 1 now keeps the
 landing's `?term=1|3|6` (and `?med=`) in sessionStorage as `landingTerm` /
 `landingMed`, which step 18 uses to pre-select the same plan length.
 
-Prices: the 1 / 3 / 6-month figures are the landing's ladder for both
+Prices: the 1 / 3 / 6-month figures are the client's ladder for both
 medications (`TREATMENT_PRICING` in the page's inline script mirrors
-`js/plans.js`; the stored price is the charge today, e.g. `$447.00`). The
-12-month supply and medication-only plans keep the funnel's own figures under a
-collapsed "More plans" row. That is the one open item: if the funnel's old
-ladder ($596 per 3 months) is the real one, only that table changes.
+`js/plans.js`; the stored price is the charge today, e.g. `$747.00`). Step 17's
+"From $…" badges read $199 (semaglutide) and $299 (tirzepatide), the lowest
+monthly rate of each. Under the collapsed "More plans" row, medication-only is
+one month at retail ($349 / $399) and the 12-month supply still shows the
+funnel's own $150/mo ($1,800) — the one figure the client ladder does not
+cover.
 
 The Spanish mirror (`questionnaire/es/step18.html`) carries the same stage
 (2026-09-04): the radiogroup element and the inline script were copied from
