@@ -28,8 +28,8 @@ plan-length → checkout path carries the selection.
    rows**, its own Start button and the checkout's "Your plan, all in" rows as
    struck price → green FREE. Rows since the 2026-09-07 client audio: **Monthly
    Plan** (rate, "No free month. Pause or cancel anytime." inside the box),
-   **3 Month Plan** (rate, big green "+ 4th month free for life", the green
-   "Every 4th month free, forever." line across, "No mid-plan price increases.",
+   **3 Month Plan** (rate, the green "Every 4th month free, forever." line
+   across, "No mid-plan price increases.",
    "$747 due today · includes 4 months", the "+1" seal on the row's corner) and,
    on this folder only, **6 Month Plan** (rate, "$1,194 due today · includes 6
    months"). No note under the rows any more. Product names carry no
