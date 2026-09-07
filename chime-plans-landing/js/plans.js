@@ -4,8 +4,13 @@
  * questionnaire (questionnaire/step1.html) and carry the medication and term
  * as ?med=sema|tirz&term=1|3|6 so the choice made here is not lost.
  *
- * Rule: commit to 3 months or more and every 4th month is free, for as long
- * as the patient stays enrolled. "effective" = charge ÷ months covered.
+ * Client price ladder (2026-09-06, the same table as
+ * chime-checkout/js/plan-select.js): "rate" is the per-month price, "charge"
+ * what is billed today, "covers" the months that charge pays for (the free
+ * month included), "retail" the per-month list price and "retailTotal" the
+ * list price of the whole span; "effective" = charge ÷ covers. Commit to 3
+ * months and every 4th month is free, for as long as the patient stays
+ * enrolled. The 6-month rows carry no free-month wording (client request).
  */
 (function () {
   "use strict";
@@ -13,20 +18,20 @@
   var PLANS = {
     sema: {
       short: "Semaglutide",
-      retail: 279,
+      retail: 349,
       terms: {
-        1: { rate: 249, covers: 1, charge: 249, effective: 249 },
-        3: { rate: 149, covers: 4, charge: 447, effective: 112 },
-        6: { rate: 139, covers: 8, charge: 834, effective: 104 },
+        1: { rate: 299, covers: 1, charge: 299, retailTotal: 349, effective: 299 },
+        3: { rate: 249, covers: 4, charge: 747, retailTotal: 1396, effective: 186.75 },
+        6: { rate: 199, covers: 6, charge: 1194, retailTotal: 2094, effective: 199 },
       },
     },
     tirz: {
       short: "Tirzepatide",
-      retail: 389,
+      retail: 399,
       terms: {
-        1: { rate: 359, covers: 1, charge: 359, effective: 359 },
-        3: { rate: 185, covers: 4, charge: 555, effective: 139 },
-        6: { rate: 172, covers: 8, charge: 1032, effective: 129 },
+        1: { rate: 359, covers: 1, charge: 359, retailTotal: 399, effective: 359 },
+        3: { rate: 299, covers: 4, charge: 897, retailTotal: 1596, effective: 224.25 },
+        6: { rate: 299, covers: 8, charge: 1794, retailTotal: 3192, effective: 224.25 },
       },
     },
   };
@@ -36,29 +41,33 @@
       offer: "Flexible monthly plan",
       offerStrong: "No free month",
       label: "Per month",
-      note: "Pay as you go. The free month comes with the 3- and 6-month plans.",
+      note: "Pay as you go. The free month comes with the 3-month plan.",
       cta: "Start monthly – ",
       unit: "/mo",
     },
     3: {
       offer: "Commit to 3 Months",
       offerStrong: "& Get EVERY 4TH MONTH FREE",
-      label: "Effective price with your free month",
+      label: "Per month, plus your free month",
       note: "Most popular. 4 months for the price of 3, every cycle, for as long as you stay enrolled.",
       cta: "Start 3 months – ",
       unit: "/mo",
     },
     6: {
       offer: "Commit to 6 Months",
-      offerStrong: "& Get MONTHS 4 AND 8 FREE",
-      label: "Effective price with 2 free months",
-      note: "Best value. 8 months for the price of 6, every cycle, for as long as you stay enrolled.",
+      offerStrong: "& Lock in your rate",
+      label: "Per month, paid up front",
+      note: "Best value. One payment covers the full 6 months and the price is locked for the whole term.",
       cta: "Start 6 months – ",
       unit: "/mo",
     },
   };
 
-  function money(n) { return "$" + n.toLocaleString("en-US"); }
+  function money(n) {
+    return "$" + (Number.isInteger(n)
+      ? n.toLocaleString("en-US")
+      : n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+  }
 
   function setText(root, sel, text) {
     var node = root.querySelector(sel);
@@ -70,25 +79,26 @@
     if (!med) return;
     var t = med.terms[term];
     var copy = TERM_COPY[term];
-    var monthlySameSpan = med.terms[1].rate * t.covers;
 
     var offer = card.querySelector(".plan__offer");
     if (offer) offer.classList.toggle("is-plain", term === 1);
     setText(card, "[data-offer]", copy.offer);
     setText(card, "[data-offer-strong]", copy.offerStrong);
     setText(card, "[data-price-label]", copy.label);
-    setText(card, "[data-price]", money(t.effective));
+    setText(card, "[data-price]", money(t.rate));
     setText(
       card, "[data-note]",
-      term === 1
-        ? "retail " + money(med.retail) + "/mo"
-        : "rate " + money(t.rate) + "/mo · retail " + money(med.retail) + "/mo"
+      term === 3
+        ? money(t.effective) + "/mo avg incl. the free month · retail " + money(med.retail) + "/mo"
+        : "retail " + money(med.retail) + "/mo"
     );
     setText(
       card, "[data-bill]",
       term === 1
         ? money(t.charge) + " billed monthly. Pause or cancel anytime."
-        : money(t.charge) + " today, covers " + t.covers + " months. Next charge in " + t.covers + " months."
+        : term === 3
+          ? money(t.charge) + " today, covers " + t.covers + " months. Next charge in " + t.covers + " months."
+          : money(t.charge) + " today · retail " + money(t.retailTotal) + "."
     );
     var save = card.querySelector("[data-save]");
     if (save) {
@@ -98,8 +108,8 @@
         save.className = "is-lose";
       } else {
         save.textContent =
-          "Save " + money(monthlySameSpan - t.charge) + " vs monthly over " + t.covers + " months" +
-          (term === 3 ? " · 3 free months a year" : "");
+          "Save " + money(t.retailTotal - t.charge) + " vs retail" +
+          (term === 3 ? " over " + t.covers + " months · 3 free months a year" : "");
         save.className = "is-save";
       }
     }
@@ -124,19 +134,26 @@
     var termLabel = term === 1 ? "Monthly plan" : term + "-month plan";
     setText(box, "[data-hero-badge]", HERO_BADGE[term]);
     setText(box, "[data-hero-term]", termLabel + " · " + med.short);
-    setText(box, "[data-hero-price]", money(t.effective));
-    setText(box, "[data-hero-rate]", term === 1 ? "retail " + money(med.retail) + "/mo" : "effective · rate " + money(t.rate) + "/mo");
+    setText(box, "[data-hero-price]", money(t.rate));
+    setText(
+      box, "[data-hero-rate]",
+      term === 3
+        ? "+ FREE month · " + money(t.effective) + "/mo avg"
+        : "retail " + money(med.retail) + "/mo"
+    );
     setText(
       box, "[data-hero-bill]",
       term === 1
         ? money(t.charge) + " billed monthly. Pause or cancel anytime."
-        : money(t.charge) + " today, covers " + t.covers + " months. Next charge in " + t.covers + " months."
+        : term === 3
+          ? money(t.charge) + " today, covers " + t.covers + " months. Next charge in " + t.covers + " months."
+          : money(t.charge) + " today · retail " + money(t.retailTotal) + "."
     );
     setText(
       box, "[data-hero-anchor]",
-      term === 1
-        ? "No free month on monthly. The 3-month plan works out to " + money(med.terms[3].effective) + "/mo."
-        : "Monthly without commitment: " + money(med.terms[1].rate) + "/mo, no free month."
+      term === 3
+        ? "Monthly without commitment: " + money(med.terms[1].rate) + "/mo, no free month."
+        : "The 3-month plan is " + money(med.terms[3].rate) + "/mo and every 4th month is free."
     );
   }
 
