@@ -17,7 +17,7 @@
         defaultBtn.setAttribute("data-state", "checked");
         defaultBtn.setAttribute("aria-checked", "true");
         defaultBtn.innerHTML =
-          '<span style="width:8px;height:8px;border-radius:9999px;background:#324563;display:block;"></span>';
+          '<span style="width:8px;height:8px;border-radius:9999px;background:#1E2A44;display:block;"></span>';
       }
 
       group.addEventListener("click", function (e) {
@@ -41,7 +41,7 @@
         btn.setAttribute("data-state", "checked");
         btn.setAttribute("aria-checked", "true");
         btn.innerHTML =
-          '<span style="width:8px;height:8px;border-radius:9999px;background:#324563;display:block;"></span>';
+          '<span style="width:8px;height:8px;border-radius:9999px;background:#1E2A44;display:block;"></span>';
       });
     });
   }

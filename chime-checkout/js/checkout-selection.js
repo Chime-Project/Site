@@ -18,7 +18,7 @@
   var q = new URLSearchParams(location.search), med = q.get("med"), term = +q.get("term"), stored = null;
   try { stored = JSON.parse(sessionStorage.getItem("chime:checkout-selection") || "null"); } catch (err) {}
   if (!CHIME_PLANS[med] && stored && CHIME_PLANS[stored.med]) { med = stored.med; term = +stored.term; }
-  if (!CHIME_PLANS[med]) med = "sema";
+  if (!CHIME_PLANS[med]) med = Object.keys(CHIME_PLANS)[0];
   if (!CHIME_PLANS[med].terms[term]) term = 3;
   var plan = CHIME_PLANS[med], t = plan.terms[term], perDay = t.charge / (t.covers * 30);
   function setText(sel, text) { document.querySelectorAll(sel).forEach(function (n) { n.textContent = text; }); }

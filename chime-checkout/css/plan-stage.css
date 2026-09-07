@@ -71,44 +71,41 @@
 html { scroll-behavior: smooth; }
 #products { scroll-margin-top: 16px; }
 [data-med][id] { transition: outline-color .15s ease, box-shadow .15s ease; outline: 3px solid transparent; outline-offset: 0; }
-[data-med][data-selected="true"] { outline-color: #6580bc; box-shadow: 0 18px 40px rgba(38, 53, 77, 0.22); }
+[data-med][data-selected="true"] { outline-color: #2b45c5; box-shadow: 0 18px 40px rgba(2, 6, 23, 0.18); }
 .sv-radio > span { display: block; width: 8px; height: 8px; border-radius: 9999px; }
 .sv-list--value li { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-.sv-list--value .sv-val { white-space: nowrap; font-size: 11.5px; font-weight: 700; color: #485e89; }
-.sv-list--value .sv-val s { color: #90a1b9; font-weight: 400; margin-right: 4px; }
+/* "the free is green" (client audio 2026-09-07, item 3): bigger, green, clean */
+.sv-list--value .sv-val { white-space: nowrap; font-size: 13px; font-weight: 700; color: #16a34a; }
+.sv-list--value .sv-val s { color: #9ca3af; font-weight: 400; margin-right: 4px; }
 .mp { text-align: left; }
 .mp-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.mp-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #485e89; }
-.mp-seal { width: 54px; height: 54px; flex: none; transform: rotate(-8deg); filter: drop-shadow(0 3px 6px rgba(38, 53, 77, 0.2)); }
+.mp-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #374151; }
 .mp-rows { display: grid; gap: 8px; }
-.mp-row { position: relative; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; grid-template-areas: "r name price" "r sub sub"; column-gap: 10px; row-gap: 2px; align-items: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; cursor: pointer; outline: 2px solid transparent; outline-offset: 0; transition: outline-color .15s ease, background-color .15s ease; }
-.mp-row:hover { border-color: #bdd2f6; }
-/* the 3-month option is the highlighted one (user request 2026-09-04) — emphasised, not preselected */
-.mp-row[data-term="3"] { border: 2px solid #6580bc; background: #eff3fc; box-shadow: 0 10px 24px rgba(101, 128, 188, 0.22); padding: 12px 12px; }
-.mp-row[data-term="3"] .mp-tag { background: #6580bc; color: #fff; }
-.mp-row[data-term="3"] .mp-price { color: #485e89; font-size: 22px; }
-.mp-row[data-term="3"]:hover { border-color: #485e89; }
-.mp-row[data-term="3"] { overflow: hidden; transform-origin: 50% 50%; will-change: transform; }
+.mp-row { position: relative; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; grid-template-areas: "r name price" "r sub sub" "r due due"; column-gap: 10px; row-gap: 2px; align-items: center; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; cursor: pointer; outline: 2px solid transparent; outline-offset: 0; transition: outline-color .15s ease, background-color .15s ease; }
+.mp-row:hover { border-color: #c7d2fe; }
+/* the 3-month option is the highlighted one — emphasised, not preselected; two levels under the price */
+.mp-row[data-term="3"] { grid-template-areas: "r name price" "r big big" "r free free" "r sub sub" "r due due"; border: 2px solid #2b45c5; background: #f5f7fe; box-shadow: 0 10px 24px rgba(43, 69, 197, 0.18); padding: 12px 12px; transform-origin: 50% 50%; will-change: transform; }
+.mp-row[data-term="3"] .mp-price { font-size: 22px; margin-right: 34px; }
+.mp-row[data-term="3"]:hover { border-color: #020617; }
+.mp-shine-clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
 .mp-shine { position: absolute; top: -20%; bottom: -20%; left: -45%; width: 38%; opacity: 0; pointer-events: none; transform: skewX(-18deg); background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%); }
-.mp-row:has(.sv-radio[data-state="checked"]) { outline-color: #324563; background: #eff3fc; }
+/* the "+1" seal sits on the row's top-right corner (client audio item 9: "move this badge onto the corner") */
+.mp-corner { position: absolute; top: -12px; right: -10px; width: 52px; height: 52px; pointer-events: none; z-index: 1; }
+.mp-corner .mp-seal { width: 100%; height: 100%; transform: rotate(-8deg); filter: drop-shadow(0 3px 6px rgba(2, 6, 23, 0.25)); }
+.mp-row:has(.sv-radio[data-state="checked"]) { outline-color: #020617; background: #f5f7fe; }
 .mp-row .sv-radio { position: static; grid-area: r; }
-.mp-name { grid-area: name; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 700; font-size: 14px; color: #26354d; }
-.mp-tag { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #485e89; background: #dae5fa; border-radius: 9999px; padding: 2px 7px; white-space: nowrap; }
-.mp-price { grid-area: price; font-weight: 700; font-size: 20px; line-height: 1; color: #26354d; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mp-name { grid-area: name; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 700; font-size: 15px; color: #020617; }
+.mp-price { grid-area: price; font-weight: 700; font-size: 20px; line-height: 1; color: #020617; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .mp-price sup { font-size: 11px; position: relative; top: -6px; }
-.mp-price small { font-size: 11px; font-weight: 400; color: #485e89; }
-.mp-sub { grid-area: sub; font-size: 11.5px; line-height: 1.35; color: #485e89; }
-.mp-note { margin: 10px 0 0; font-size: 12px; line-height: 1.4; color: #485e89; }
-.mp-cta { display: block; width: 100%; margin-top: 10px; border: 0; border-radius: 9999px; background: #6580bc; color: #fff; font: inherit; font-weight: 700; font-size: 15px; padding: 14px 16px; cursor: pointer; box-shadow: 0 8px 18px rgba(101, 128, 188, 0.3); transition: background-color .15s ease; }
-.mp-cta:hover { background: #324563; }
+.mp-price small { font-size: 11px; font-weight: 400; color: #4b5563; }
+.mp-big { grid-area: big; margin-top: 4px; font-weight: 800; font-size: 16px; line-height: 1.2; color: #16a34a; letter-spacing: -0.01em; }
+.mp-free { grid-area: free; display: block; margin: 6px 0 2px; background: #dcfce7; color: #15803d; border-radius: 8px; padding: 7px 10px; font-weight: 700; font-size: 13px; line-height: 1.3; box-shadow: inset 0 0 0 1px #bbf7d0; }
+.mp-sub { grid-area: sub; font-size: 12px; line-height: 1.4; color: #4b5563; }
+.mp-due { grid-area: due; margin-top: 4px; font-size: 13px; font-weight: 700; color: #020617; }
+.mp-cta { display: block; width: 100%; margin-top: 12px; border: 0; border-radius: 9999px; background: #020617; color: #fff; font: inherit; font-weight: 600; font-size: 15px; padding: 14px 16px; cursor: pointer; box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25); transition: background-color .15s ease; }
+.mp-cta:hover { background: #2b45c5; }
 .mp-cta span { display: block; }
 .mp-cta-l2 { margin-top: 2px; font-size: 12px; letter-spacing: .04em; opacity: .92; }
-.mp-cta[disabled] { background: #bdd2f6; color: #324563; box-shadow: none; cursor: not-allowed; }
-.mp-plus { margin: 16px 0 8px; font-size: 12px; font-weight: 700; color: #26354d; }
-/* the 3-month row: green callout (questionnaire step 18 colours) with the "+1" seal on it, above the price */
-.mp-row[data-term="3"] { grid-template-areas: "r name price" "r free free" "r sub sub"; }
-.mp-free { grid-area: free; position: relative; display: block; margin: 6px 0 6px; background: #dcfce7; color: #016630; border-radius: 8px; padding: 8px 62px 8px 30px; font-weight: 700; font-size: 12px; line-height: 1.4; box-shadow: inset 0 0 0 1px #b9f8cf; }
-.mp-free::before { content: ""; position: absolute; left: 9px; top: 9px; width: 14px; height: 14px; border-radius: 50%; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23008236' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 62% no-repeat; }
-.mp-free em { font-style: normal; color: #008236; }
-.mp-free .mp-seal { position: absolute; right: 6px; top: 50%; width: 48px; height: 48px; transform: translateY(-50%) rotate(-8deg); filter: drop-shadow(0 3px 6px rgba(38, 53, 77, 0.22)); pointer-events: none; }
-@media (max-width: 767px) { .mp-price { font-size: 18px; } }
+.mp-cta[disabled] { background: #e5e7eb; color: #6b7280; box-shadow: none; cursor: not-allowed; }
+.mp-plus { margin: 16px 0 8px; font-size: 12px; font-weight: 700; color: #020617; }
+@media (max-width: 767px) { .mp-price { font-size: 18px; } .mp-row[data-term="3"] .mp-price { font-size: 20px; } }

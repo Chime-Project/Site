@@ -28,8 +28,8 @@
     if (on && !ctaPulse[med]) {
       // colour pulse + a stroke ring that grows and brightens with it; scale kept to a barely-there 1.2%
       ctaPulse[med] = gsap.fromTo(cta,
-        { backgroundColor: "#6580bc", scale: 1, boxShadow: "0 0 0 0px rgba(148, 186, 242, 0), 0 8px 18px rgba(101, 128, 188, 0.3)" },
-        { backgroundColor: "#324563", scale: 1.012, boxShadow: "0 0 0 4px rgba(148, 186, 242, 0.95), 0 10px 22px rgba(101, 128, 188, 0.4)",
+        { backgroundColor: "#020617", scale: 1, boxShadow: "0 0 0 0px rgba(43, 69, 197, 0), 0 8px 18px rgba(2, 6, 23, 0.25)" },
+        { backgroundColor: "#2b45c5", scale: 1.012, boxShadow: "0 0 0 4px rgba(43, 69, 197, 0.45), 0 10px 22px rgba(43, 69, 197, 0.35)",
           duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.15 });
     } else if (!on && ctaPulse[med]) {
       ctaPulse[med].kill(); ctaPulse[med] = null; gsap.killTweensOf(cta); gsap.set(cta, { clearProps: "backgroundColor,boxShadow,transform" });
@@ -43,26 +43,17 @@
         r.setAttribute("aria-checked", on ? "true" : "false"); r.setAttribute("data-state", on ? "checked" : "unchecked");
         r.innerHTML = on ? "<span></span>" : "";
       });
-      var cta = block.querySelector("[data-mp-cta]"), note = block.querySelector("[data-mp-note]");
+      var cta = block.querySelector("[data-mp-cta]");
       var card = block.closest("[data-med]"); if (card) card.setAttribute("data-selected", mine ? "true" : "false");
       pulseCta(med, mine && state.term === 3);
-      if (!mine) {
-        cta.disabled = true; cta.textContent = "Choose a plan length";
-        note.textContent = "Commit to 3 months and every 4th month is free \u2014 forever. Pick a length to see what you pay today.";
-        return;
-      }
-      var t = plan.terms[state.term];
+      if (!mine) { cta.disabled = true; cta.textContent = "Choose a plan length"; return; }
       cta.disabled = false;
       if (state.term === 3) cta.innerHTML = '<span class="mp-cta-l1">Start Losing Weight Now</span><span class="mp-cta-l2">4th Month FREE FOR LIFE</span>';
       else cta.textContent = "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " \u2013 " + plan.name;
-      var free = t.covers - state.term;
-      note.textContent = state.term === 1 ? chimeMoney(t.charge) + " billed monthly (retail " + chimeMoney(t.retail) + "/mo). No free month. Pause or cancel anytime."
-        : state.term === 6 ? chimeMoney(t.charge) + " due today \u00b7 retail " + chimeMoney(t.retailTotal) + "."
-        : chimeMoney(t.charge) + " today, covers " + t.covers + " months (" + free + " free). Next charge in " + t.covers + " months.";
     });
     var img = document.getElementById("sticky-med-img"), name = document.getElementById("sticky-med-name");
     if (state.med && img) img.src = CHIME_PLANS[state.med].image;
-    if (state.med && name) name.textContent = "Microdose " + CHIME_PLANS[state.med].name;
+    if (state.med && name) name.textContent = CHIME_PLANS[state.med].name;
   }
   // GSAP pulse on the highlighted 3-month rows (user request 2026-09-04): border and ground breathe
   // between two Chime blues while the row is on screen, stop once a plan is chosen, off under
@@ -73,11 +64,11 @@
       var tag = row.querySelector(".mp-tag"), shine = row.querySelector(".mp-shine");
       // one cycle ≈ 2.6s: breathe up with a colour/glow swing, shine sweeps through, the pill pops, breathe back
       var tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5, paused: true });
-      tl.to(row, { scale: 1.03, borderColor: "#94baf2", backgroundColor: "#dae5fa", boxShadow: "0 18px 40px rgba(101, 128, 188, 0.55)", duration: 1.0, ease: "sine.inOut" }, 0)
+      tl.to(row, { scale: 1.03, borderColor: "#8a9be0", backgroundColor: "#e6ecfb", boxShadow: "0 18px 40px rgba(43, 69, 197, 0.35)", duration: 1.0, ease: "sine.inOut" }, 0)
         .fromTo(shine, { left: "-45%", opacity: 1 }, { left: "125%", duration: 0.9, ease: "power2.inOut" }, 0.15)
         .to(tag, { scale: 1.06, duration: 0.4, ease: "sine.inOut" }, 0.5)
         .to(tag, { scale: 1, duration: 0.45, ease: "sine.inOut" }, 0.9)
-        .to(row, { scale: 1, borderColor: "#6580bc", backgroundColor: "#eff3fc", boxShadow: "0 10px 24px rgba(101, 128, 188, 0.22)", duration: 1.0, ease: "sine.inOut" }, 1.05);
+        .to(row, { scale: 1, borderColor: "#2b45c5", backgroundColor: "#f5f7fe", boxShadow: "0 10px 24px rgba(43, 69, 197, 0.18)", duration: 1.0, ease: "sine.inOut" }, 1.05);
       pulses.push({ row: row, tag: tag, shine: shine, tl: tl, entered: false });
     });
     if (pulses.length && "IntersectionObserver" in window) {

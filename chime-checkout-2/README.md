@@ -18,18 +18,19 @@ then http://localhost:8791/chime-checkout-2/product.html → `checkout.html`.
 
 ## What differs from `chime-checkout/`
 
-- **Two plan rows per medication, not three.** Monthly Start Plan and
-  3 + 1 Month Transformation; the 6 Month Enhanced row, its ladder entry and its
-  `6 months` term label are gone from `js/plan-select.js`,
-  `js/checkout-selection.js` and the static rows. Prices are the client's
+- **Two plan rows per medication, not three.** Monthly Plan and 3 Month Plan
+  (row anatomy as documented in `chime-checkout/README.md`); the 6 Month Plan
+  row, its ladder entry and its `6 months` term label are gone from
+  `js/plan-select.js`, `js/checkout-selection.js` and the static rows. The
+  client prefers this version (2026-09-07 audio). Prices are the client's
   2026-09-06 ladder: Semaglutide $299/mo monthly (retail $349), $249/mo on
   3 months + 1 free ($747 due today, $186.75/mo avg incl. the free month, retail
   $1,396); Tirzepatide $359 (retail $399), $299 on 3 months + 1 free ($897
   today, $224.25 avg, retail $1,596).
 - **URLs only accept `term=1|3`.** `checkout.html?term=6` (or any other value)
   falls back to 3 months + 1 free, as does a missing selection.
-- **Cache-bust `?v=` is its own value** (`20260917` at first build) so the two
-  folders' sheets and scripts never share a cached URL.
+- **Cache-bust `?v=` is its own value** (`20260919` since the 2026-09-07 look
+  change) so the folders' sheets and scripts never share a cached URL.
 
 Everything else — flow, theme, chrome, Care+ badge, delivery van, vials, what is
 still RemedyMeds and flagged — is exactly as documented in

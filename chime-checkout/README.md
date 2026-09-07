@@ -25,10 +25,15 @@ plan-length → checkout path carries the selection.
 1. One block per medication does everything (real merge, 2026-09-04): the hero
    CTA scrolls to `#products`; each medication card keeps its vial, badges,
    press strip, name, rating and member count, then carries **its own plan-length
-   rows** (1 / 3 / 6 months with rate, free-month tag, effective price and
-   savings), a live "what you pay today" note, its own Start button and the
-   checkout's "Your plan, all in" rows as struck price → FREE. The old
-   INCLUDED block and the separate plan stage are gone. **Nothing is
+   rows**, its own Start button and the checkout's "Your plan, all in" rows as
+   struck price → green FREE. Rows since the 2026-09-07 client audio: **Monthly
+   Plan** (rate, "No free month. Pause or cancel anytime." inside the box),
+   **3 Month Plan** (rate, big green "+ 4th month free for life", the green
+   "Every 4th month free, forever." line across, "No mid-plan price increases.",
+   "$747 due today · includes 3 months", the "+1" seal on the row's corner) and,
+   on this folder only, **6 Month Plan** (rate, "$1,194 due today · includes 6
+   months"). No note under the rows any more. Product names carry no
+   "Microdose". "Our recommendation" is one card, Tirzepatide. **Nothing is
    preselected**: picking a row selects medication + length together (the
    other card clears), enables that card's "Start 3 months – Tirzepatide"
    button, and on phones scrolls it into view; the button opens
@@ -54,19 +59,14 @@ plan-length → checkout path carries the selection.
 
 ## What changed from the source
 
-- **Colours.** The compiled Tailwind sheets keep their selectors; every colour
-  *value* was remapped to a `tokens/colors.css` primitive. The `data-theme`
-  block is now `[data-theme=chime]`: background sand-50, text blue-800,
-  headlines/dark bands blue-900, brand blue-500 (text uses `--brand-ink`
-  blue-700 for AA), accent blue-400, muted blue-50/100, borders slate-200/300,
-  destructive red-600. RemedyMeds navy `#00112c` → blue-900, greys → slate,
-  orange/yellow/green/purple → the blue ramp (stars are blue-500), reds → the
-  red ramp. Inline `style`/`fill` values and the inline scripts got the same
-  map; class names were never touched (an escaped `.bg-\[\#…\]` selector must
-  keep its hex).
-- **Type.** Quicksand replaces Inter / Playfair / Figtree / Manrope / Work Sans
-  / Anton (`css/chime-theme.css` imports it from Google Fonts; the 43
-  self-hosted woff2 files were dropped). No italics.
+- **Look: the source's own (2026-09-07 client audio, "let's not brand it too
+  much").** Fonts (Inter / Playfair / Manrope / Work Sans / Anton, self-hosted
+  woff2), the RemedyMeds palette (`data-theme` block renamed to
+  `[data-theme=chime]`, values untouched), the green "In-Stock" and
+  "Most Affordable / Weekly Injectable" badges and the black CTA pills are all
+  as in the original. The colour/font remap in the build is behind
+  `ORIGINAL_LOOK = True` and off. Chime-only pieces (Care+ badge, delivery van
+  badge, Back link, vial tiles) use the source's brand blue.
 - **Chrome.** Chime wordmark (`images/logo-chime.svg`, white variant
   `logo-white.svg` generated from `assets/logo-main.svg`), `favicon-chime.png`,
   no phone slot, footer contact `hello@chimehealth.com`, footer columns link
@@ -74,8 +74,6 @@ plan-length → checkout path carries the selection.
   Notice, Privacy Policy, Return & Refund Policy, Shipping Policy, FAQs, Weight
   Loss, Wellness, Labs). LegitScript badge, Facebook group, help centre,
   careers, referral and Osano links are gone.
-- **CTAs.** The black `bg-slate-950` pills wear the DS primary skin — blue-500,
-  white label, blue-800 hover. Apple Pay stays black (Apple's rule).
 - **Care+ badge.** The three "Remedy Care+" warranty seals on checkout (order
   summary, Care+ card, value-stack thumbnail) are one inline SVG built by the
   script (`care_badge`): the source hexagon on a blue-500 → blue-800 gradient,
