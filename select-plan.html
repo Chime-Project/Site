@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Select Your Treatment &amp; Plan</title>
+<meta name="description" content="Choose your medication and plan length. Same price at every dosage level, no hidden fees, everything included.">
+<meta name="robots" content="noindex">
+<!-- Select treatment + plan — the AmeriLean tr12m funnel step
+     (https://qualify.amerilean.com/glp/tr12m/step40.php) rebuilt on the Chime
+     theme (2026-09-07): styles.css tokens + Quicksand, page styles in
+     ui_kits/select-plan/select-plan.css, behaviour in select-plan.js. No React,
+     no CDN scripts. Chrome is the bare logo-only lockup cart.html and
+     membership.html use.
+
+     PLANS are the three chime-checkout/product.html plans (the client's
+     2026-09-06 price ladder, the same numbers the checkout reads):
+       Semaglutide  $299/mo · $249/mo +1 free ($747 today) · $199/mo ($1,194 today)
+       Tirzepatide  $359/mo · $299/mo +1 free ($897 today) · $299/mo ($1,794 today)
+     "You are saving" = retail total − due today (retail $349 / $399 per month;
+     the Tirzepatide 6-month retail total is 8 months, as in the ladder).
+     The source's 12-month plan and "$120 off first shipment" offer are not
+     carried; the Chime offer is the 3-month plan's 4th month free, for life.
+     Each "Select Plan" is a real link into chime-checkout/checkout.html?med&term
+     (the checkout already reads those parameters and falls back to the
+     sessionStorage entry select-plan.js also writes).
+
+     CARRIED FROM THE SOURCE AND FLAGGED — none is a Chime claim:
+       • "Only N discounts left" + the 10-minute reservation countdown
+       • "N patients chose this today" live counters (start at the source's
+         12,870 / 16,308 and tick up like the source's)
+       • "Excellent 4.8 · 100,000+ happy customers" (was a Trustpilot image;
+         rendered as text so no Trustpilot mark is shown)
+       • "As seen on Forbes Health"
+       • 0% installments over 12 months with Affirm / Klarna / Afterpay,
+         HSA/FSA, Apple Pay / Google Pay — confirm the merchant account
+       • "All plans include" list and "How it works" copy
+     The source's EN/ES language switch is not carried (English only). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css?v=20260921">
+<link rel="stylesheet" href="ui_kits/select-plan/select-plan.css?v=20260921">
+</head>
+<body>
+
+<div class="offer-wrap">
+  <p class="offer" data-screen-label="SP Offer">🎉 Every 4th month <b>FREE</b> &mdash; for life, on the 3&#8209;month plan</p>
+</div>
+
+<header class="topbar">
+  <a href="index.html" aria-label="Chime Health — home">
+    <img src="assets/logo-main.svg" alt="Chime Health" width="1095" height="138">
+  </a>
+</header>
+
+<main class="page" id="main">
+
+  <div class="reserve" data-screen-label="SP Reserve">
+    <div>Only <b id="discountCount" data-start="34" data-floor="9" data-min-s="3" data-max-s="9">34</b> discounts left.</div>
+    <div class="reserve-timer">Yours is reserved for <span class="timer"><span id="countdown" data-seconds="599">9:59</span> min</span></div>
+  </div>
+
+  <div class="hero" data-screen-label="SP Headline">
+    <h1 class="headline"><span class="hl">Same Price. All Dosage Levels.</span></h1>
+    <p class="subline">No Hidden Fees. Everything Included.</p>
+  </div>
+
+  <!-- Step 1 -->
+  <section class="step" id="select-product" data-screen-label="SP Step 1">
+    <div class="step-head"><span class="step-pill">Step 1</span><h2 class="step-title">Select Treatment</h2></div>
+
+    <div class="treatments" role="radiogroup" aria-label="Treatment">
+      <button type="button" class="treat" id="treatment-sema" data-treatment="sema" role="radio" aria-checked="false">
+        <span class="treat-tile"><img src="uploads/vials/semaglutide.webp" alt="" width="418" height="800"></span>
+        <span class="treat-body">
+          <span class="treat-name">Semaglutide</span>
+          <span class="treat-desc">Proven, effective, more affordable.</span>
+          <span class="treat-tag treat-tag--afford"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z"/><path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" clip-rule="evenodd"/><path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z"/></svg>Most Affordable</span>
+          <span class="treat-live"><span class="live-dot" aria-hidden="true"></span><span class="live-count" data-start="12870" data-max-add="4" data-interval="4500">12,870</span> patients chose this today</span>
+        </span>
+        <span class="treat-radio" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="treat" id="treatment-tirz" data-treatment="tirz" role="radio" aria-checked="false">
+        <span class="treat-tile"><img src="uploads/vials/tirzepatide.webp" alt="" width="427" height="800"></span>
+        <span class="treat-body">
+          <span class="treat-name">Tirzepatide</span>
+          <span class="treat-desc">Faster results, dual-action, but more expensive.</span>
+          <span class="treat-tag treat-tag--fast"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd"/></svg>Fastest Results</span>
+          <span class="treat-live"><span class="live-dot" aria-hidden="true"></span><span class="live-count" data-start="16308" data-max-add="4" data-interval="4500">16,308</span> patients chose this today</span>
+        </span>
+        <span class="treat-radio" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="step" id="select-price" hidden data-screen-label="SP Step 2">
+    <div class="step-head"><span class="step-pill">Step 2</span><h2 class="step-title">Select Your Plan</h2></div>
+    <p class="step-lede">Lock in your savings without a big upfront payment. Use free financing or pay in full with your card.</p>
+    <p class="step-for">Plans for <b id="planFor">Semaglutide</b></p>
+
+      <div class="plan-options" id="plan-options-sema" hidden data-screen-label="Plans Semaglutide">
+        <article class="plan" data-term="1" data-screen-label="Plan Semaglutide 1">
+          <div class="plan-head"><h3 class="plan-name">Monthly Plan</h3></div>
+          <div class="plan-meta"><div class="plan-desc">No free month. Pause or cancel anytime.</div><div class="plan-supply">4 Week Supply</div></div>
+          
+          <p class="plan-save">You are saving <b>$50</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=sema&amp;term=1" data-med="sema" data-term="1" aria-label="Select the Semaglutide monthly plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><s class="cta-was">$349/month</s></span><span class="cta-sub">PAY ONLY <b>$299</b> PER MONTH</span></a>
+        </article>
+        <article class="plan" data-term="3" data-screen-label="Plan Semaglutide 3"><span class="plan-corner" aria-hidden="true"><svg class="seal" viewBox="0 0 120 120" role="img" aria-label="4th month free, for life"><defs><path id="sealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><circle cx="60" cy="60" r="57" fill="#f7f3e4" stroke="#324563" stroke-width="3" stroke-dasharray="4 3"/><circle cx="60" cy="60" r="51" fill="none" stroke="#324563" stroke-width="1.2"/><circle cx="60" cy="60" r="31" fill="none" stroke="#324563" stroke-width="1.2"/><text font-family="Quicksand, sans-serif" font-size="9.6" font-weight="700" fill="#324563" letter-spacing="1.4"><textPath href="#sealPath">4TH MONTH FREE · FOR LIFE · 4TH MONTH FREE · FOR LIFE ·</textPath></text><text x="60" y="69" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="27" font-weight="700" fill="#324563">+1</text></svg></span>
+          <div class="plan-head"><h3 class="plan-name">3 Month Plan</h3><span class="badge badge--pop">Most Popular</span></div><p class="plan-big">+ 4th month free for life</p>
+          <div class="plan-meta"><div class="plan-desc"><span class="plan-free">Every 4th month free, forever.</span><span class="plan-sub">No mid-plan price increases.</span></div><div class="plan-supply">12 Week Supply</div></div>
+          <div class="plan-fin">
+            <div><b>Easy 0% Installments</b><span>Spread payments over 12 months.</span></div>
+            <div class="fin-marks" aria-label="Affirm, Klarna, Afterpay"><img src="ui_kits/select-plan/img/affirm-mark.svg" alt="Affirm" width="16" height="16"><img src="ui_kits/select-plan/img/klarna-mark.svg" alt="Klarna" width="16" height="16"><img src="ui_kits/select-plan/img/afterpay-mark.svg" alt="Afterpay" width="17" height="16"></div>
+          </div>
+          <p class="plan-save">You are saving <b>$649</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=sema&amp;term=3" data-med="sema" data-term="3" aria-label="Select the Semaglutide 3 month plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><span class="cta-price">$249/mo</span></span><span class="cta-sub">$747 due today &middot; includes 3 months</span></a>
+        </article>
+        <article class="plan" data-term="6" data-screen-label="Plan Semaglutide 6">
+          <div class="plan-head"><h3 class="plan-name">6 Month Plan</h3></div>
+          <div class="plan-meta"><div class="plan-desc">Your ultimate plan for lasting results and consistency</div><div class="plan-supply">24 Week Supply</div></div>
+          <div class="plan-fin">
+            <div><b>Easy 0% Installments</b><span>Spread payments over 12 months.</span></div>
+            <div class="fin-marks" aria-label="Affirm, Klarna, Afterpay"><img src="ui_kits/select-plan/img/affirm-mark.svg" alt="Affirm" width="16" height="16"><img src="ui_kits/select-plan/img/klarna-mark.svg" alt="Klarna" width="16" height="16"><img src="ui_kits/select-plan/img/afterpay-mark.svg" alt="Afterpay" width="17" height="16"></div>
+          </div>
+          <p class="plan-save">You are saving <b>$900</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=sema&amp;term=6" data-med="sema" data-term="6" aria-label="Select the Semaglutide 6 month plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><span class="cta-price">$199/mo</span></span><span class="cta-sub">$1,194 due today &middot; includes 6 months</span></a>
+        </article>
+      </div>
+      <div class="plan-options" id="plan-options-tirz" hidden data-screen-label="Plans Tirzepatide">
+        <article class="plan" data-term="1" data-screen-label="Plan Tirzepatide 1">
+          <div class="plan-head"><h3 class="plan-name">Monthly Plan</h3></div>
+          <div class="plan-meta"><div class="plan-desc">No free month. Pause or cancel anytime.</div><div class="plan-supply">4 Week Supply</div></div>
+          
+          <p class="plan-save">You are saving <b>$40</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=tirz&amp;term=1" data-med="tirz" data-term="1" aria-label="Select the Tirzepatide monthly plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><s class="cta-was">$399/month</s></span><span class="cta-sub">PAY ONLY <b>$359</b> PER MONTH</span></a>
+        </article>
+        <article class="plan" data-term="3" data-screen-label="Plan Tirzepatide 3"><span class="plan-corner" aria-hidden="true"><svg class="seal" viewBox="0 0 120 120" role="img" aria-label="4th month free, for life"><defs><path id="sealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><circle cx="60" cy="60" r="57" fill="#f7f3e4" stroke="#324563" stroke-width="3" stroke-dasharray="4 3"/><circle cx="60" cy="60" r="51" fill="none" stroke="#324563" stroke-width="1.2"/><circle cx="60" cy="60" r="31" fill="none" stroke="#324563" stroke-width="1.2"/><text font-family="Quicksand, sans-serif" font-size="9.6" font-weight="700" fill="#324563" letter-spacing="1.4"><textPath href="#sealPath">4TH MONTH FREE · FOR LIFE · 4TH MONTH FREE · FOR LIFE ·</textPath></text><text x="60" y="69" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="27" font-weight="700" fill="#324563">+1</text></svg></span>
+          <div class="plan-head"><h3 class="plan-name">3 Month Plan</h3><span class="badge badge--pop">Most Popular</span></div><p class="plan-big">+ 4th month free for life</p>
+          <div class="plan-meta"><div class="plan-desc"><span class="plan-free">Every 4th month free, forever.</span><span class="plan-sub">No mid-plan price increases.</span></div><div class="plan-supply">12 Week Supply</div></div>
+          <div class="plan-fin">
+            <div><b>Easy 0% Installments</b><span>Spread payments over 12 months.</span></div>
+            <div class="fin-marks" aria-label="Affirm, Klarna, Afterpay"><img src="ui_kits/select-plan/img/affirm-mark.svg" alt="Affirm" width="16" height="16"><img src="ui_kits/select-plan/img/klarna-mark.svg" alt="Klarna" width="16" height="16"><img src="ui_kits/select-plan/img/afterpay-mark.svg" alt="Afterpay" width="17" height="16"></div>
+          </div>
+          <p class="plan-save">You are saving <b>$699</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=tirz&amp;term=3" data-med="tirz" data-term="3" aria-label="Select the Tirzepatide 3 month plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><span class="cta-price">$299/mo</span></span><span class="cta-sub">$897 due today &middot; includes 3 months</span></a>
+        </article>
+        <article class="plan" data-term="6" data-screen-label="Plan Tirzepatide 6">
+          <div class="plan-head"><h3 class="plan-name">6 Month Plan</h3></div>
+          <div class="plan-meta"><div class="plan-desc">Your ultimate plan for lasting results and consistency</div><div class="plan-supply">24 Week Supply</div></div>
+          <div class="plan-fin">
+            <div><b>Easy 0% Installments</b><span>Spread payments over 12 months.</span></div>
+            <div class="fin-marks" aria-label="Affirm, Klarna, Afterpay"><img src="ui_kits/select-plan/img/affirm-mark.svg" alt="Affirm" width="16" height="16"><img src="ui_kits/select-plan/img/klarna-mark.svg" alt="Klarna" width="16" height="16"><img src="ui_kits/select-plan/img/afterpay-mark.svg" alt="Afterpay" width="17" height="16"></div>
+          </div>
+          <p class="plan-save">You are saving <b>$1,398</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=tirz&amp;term=6" data-med="tirz" data-term="6" aria-label="Select the Tirzepatide 6 month plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><span class="cta-price">$299/mo</span></span><span class="cta-sub">$1,794 due today &middot; includes 6 months</span></a>
+        </article>
+      </div>
+  </section>
+
+  <!-- Trust -->
+  <section class="trust" data-screen-label="SP Trust">
+    <p class="rating"><b>Excellent 4.8</b><span class="stars" aria-label="4.8 out of 5 stars"><i></i><i></i><i></i><i></i><i class="half"></i></span><span class="rating-count">100,000+<br>happy customers</span></p>
+    <p class="seen">As seen on</p>
+    <img class="forbes" src="ui_kits/select-plan/img/forbes-health.svg" alt="Forbes Health" width="1491" height="204">
+  </section>
+
+  <section class="info" data-screen-label="SP Includes">
+    <h2 class="info-title">All Plans Include</h2>
+    <ul class="includes">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>Free Dosage Increases</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>Treatment changes at any time</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>Unlimited Free Doctor Consults</li>
+      <li><img src="ui_kits/select-plan/img/truck.svg" alt="" width="20" height="20">Free Expedited Shipping</li>
+      <li><img src="ui_kits/select-plan/img/kit.svg" alt="" width="20" height="20">Home Injection Kit Included</li>
+      <li><img src="ui_kits/select-plan/img/chat.svg" alt="" width="20" height="20">24/7 Customer Support</li>
+    </ul>
+  </section>
+
+  <section class="info" data-screen-label="SP How">
+    <h2 class="info-title">How It Works</h2>
+    <p class="info-text">Each month includes one shot per week, for a total of four shots. Your provider will start you on a low dose and gradually increase it to your ideal level, helping you lose weight safely and effectively.</p>
+  </section>
+
+  <section class="info" data-screen-label="SP Payment">
+    <h2 class="info-title">All major credit cards accepted</h2>
+    <div class="marks">
+      <img src="ui_kits/select-plan/img/visa.svg" alt="Visa"><img src="ui_kits/select-plan/img/mastercard.svg" alt="Mastercard"><img src="ui_kits/select-plan/img/amex.svg" alt="American Express"><img src="ui_kits/select-plan/img/discover.svg" alt="Discover"><img src="ui_kits/select-plan/img/apple-pay.svg" alt="Apple Pay"><img src="ui_kits/select-plan/img/google-pay.svg" alt="Google Pay">
+    </div>
+    <img class="hsa" src="ui_kits/select-plan/img/hsa-fsa.webp" alt="HSA/FSA Accepted" width="200" height="40">
+    <h2 class="info-title info-title--tight">Buy Now, Pay Later</h2>
+    <div class="marks">
+      <img src="ui_kits/select-plan/img/afterpay.webp" alt="Afterpay" width="69" height="24"><img src="ui_kits/select-plan/img/klarna.png" alt="Klarna"><img src="ui_kits/select-plan/img/affirm.png" alt="Affirm">
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot" data-screen-label="SP Footer">
+  <a href="terms-conditions.html">Terms</a><span aria-hidden="true">&middot;</span><a href="privacy-policy.html">Privacy</a><span aria-hidden="true">&middot;</span><a href="return-refund-policy.html">Returns</a>
+</footer>
+
+<script src="ui_kits/select-plan/select-plan.js?v=20260921"></script>
+</body>
+</html>
