@@ -84,7 +84,7 @@ html { scroll-behavior: smooth; }
 .mp-row { position: relative; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; grid-template-areas: "r name price" "r sub sub" "r due due"; column-gap: 10px; row-gap: 2px; align-items: center; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; cursor: pointer; outline: 2px solid transparent; outline-offset: 0; transition: outline-color .15s ease, background-color .15s ease; }
 .mp-row:hover { border-color: #c7d2fe; }
 /* the 3-month option is the highlighted one — emphasised, not preselected; two levels under the price */
-.mp-row[data-term="3"] { grid-template-areas: "r name price" "r big big" "r free free" "r sub sub" "r due due"; border: 2px solid #2b45c5; background: #f5f7fe; box-shadow: 0 10px 24px rgba(43, 69, 197, 0.18); padding: 12px 12px; transform-origin: 50% 50%; will-change: transform; }
+.mp-row[data-term="3"] { grid-template-areas: "r name price" "r free free" "r big big" "r sub sub" "r due due"; border: 2px solid #2b45c5; background: #f5f7fe; box-shadow: 0 10px 24px rgba(43, 69, 197, 0.18); padding: 12px 12px; transform-origin: 50% 50%; will-change: transform; }
 .mp-row[data-term="3"] .mp-price { font-size: 22px; margin-right: 34px; }
 .mp-row[data-term="3"]:hover { border-color: #020617; }
 .mp-shine-clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
@@ -98,8 +98,8 @@ html { scroll-behavior: smooth; }
 .mp-price { grid-area: price; font-weight: 700; font-size: 20px; line-height: 1; color: #020617; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .mp-price sup { font-size: 11px; position: relative; top: -6px; }
 .mp-price small { font-size: 11px; font-weight: 400; color: #4b5563; }
-.mp-big { grid-area: big; margin-top: 4px; font-weight: 800; font-size: 16px; line-height: 1.2; color: #16a34a; letter-spacing: -0.01em; }
-.mp-free { grid-area: free; display: block; margin: 6px 0 2px; background: #dcfce7; color: #15803d; border-radius: 8px; padding: 7px 10px; font-weight: 700; font-size: 13px; line-height: 1.3; box-shadow: inset 0 0 0 1px #bbf7d0; }
+.mp-big { grid-area: big; margin: 2px 0 4px; font-weight: 800; font-size: 16px; line-height: 1.2; color: #16a34a; letter-spacing: -0.01em; }
+.mp-free { grid-area: free; display: block; margin: 8px 0 4px; background: #dcfce7; color: #15803d; border-radius: 8px; padding: 7px 10px; font-weight: 700; font-size: 13px; line-height: 1.3; box-shadow: inset 0 0 0 1px #bbf7d0; }
 .mp-sub { grid-area: sub; font-size: 12px; line-height: 1.4; color: #4b5563; }
 .mp-due { grid-area: due; margin-top: 4px; font-size: 13px; font-weight: 700; color: #020617; }
 .mp-cta { display: block; width: 100%; margin-top: 12px; border: 0; border-radius: 9999px; background: #020617; color: #fff; font: inherit; font-weight: 600; font-size: 15px; padding: 14px 16px; cursor: pointer; box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25); transition: background-color .15s ease; }
