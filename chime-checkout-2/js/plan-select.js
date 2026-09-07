@@ -1,20 +1,18 @@
-/* chime-checkout/product.html: each medication card carries its own plan-length rows; picking a row
+/* chime-checkout-2/product.html: each medication card carries its own plan-length rows; picking a row
    selects medication + length together and the card's Start button opens checkout.html?med&term.
    Prices are the client's ladder (also chime-plans-landing/js/plans.js); every 4th month free on
-   the 3- and 6-month plans. The selection also lands in sessionStorage "chime:checkout-selection".
+   the 3-month plan. The selection also lands in sessionStorage "chime:checkout-selection".
    Nothing is preselected (user request 2026-09-04). */
 (function () {
   var CHIME_PLANS = {
     sema: { key: "sema", name: "Semaglutide", full: "Compounded Semaglutide (GLP-1)", image: "images/vial-semaglutide.webp",
             terms: { 1: { rate: 299, charge: 299, covers: 1, retail: 349, retailTotal: 349, effective: 299 },
-                     3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 },
-                     6: { rate: 199, charge: 1194, covers: 6, retail: 349, retailTotal: 2094, effective: 199 } } },
+                     3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 } } },
     tirz: { key: "tirz", name: "Tirzepatide", full: "Compounded Tirzepatide (GLP-1/GIP)", image: "images/vial-tirzepatide.webp",
             terms: { 1: { rate: 359, charge: 359, covers: 1, retail: 399, retailTotal: 399, effective: 359 },
-                     3: { rate: 299, charge: 897, covers: 4, retail: 399, retailTotal: 1596, effective: 224.25 },
-                     6: { rate: 299, charge: 1794, covers: 8, retail: 399, retailTotal: 3192, effective: 224.25 } } }
+                     3: { rate: 299, charge: 897, covers: 4, retail: 399, retailTotal: 1596, effective: 224.25 } } }
   };
-  var CHIME_TERM_LABEL = { 1: "monthly", 3: "3 months + 1 free", 6: "6 months" };
+  var CHIME_TERM_LABEL = { 1: "monthly", 3: "3 months + 1 free" };
   function chimeMoney(n) { return "$" + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })); }
   
   var state = { med: null, term: null };
