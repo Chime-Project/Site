@@ -1,4 +1,4 @@
-/* Chime Health — select-plan.html behaviour.
+/* Chime Health — select-plan.html + select-plan-v2.html behaviour.
    Ported from the AmeriLean step40.js: the reservation countdown, the
    "discounts left" counter, the per-treatment live counters, the Step 1 →
    Step 2 reveal, and the plan hand-off. The hand-off is the only thing that
@@ -47,10 +47,20 @@
     setInterval(function () { v += Math.floor(Math.random() * (add + 1)); el.textContent = fmt(v); }, every);
   });
 
-  /* Step 1 → Step 2 */
-  var step2 = document.getElementById("select-price"),
+  /* Step 1 (treatment) → [Step 2 (second product), v2 only] → plans */
+  var ADDONS = { tesa: "Tesamorelin", nad: "NAD+" };
+  var stepPlans = document.getElementById("select-price"),
+      stepAddon = document.getElementById("select-addon"),
       planFor = document.getElementById("planFor"),
-      treats = document.querySelectorAll(".treat[data-treatment]");
+      planAddon = document.getElementById("planAddon"),
+      treats = document.querySelectorAll(".treat[data-treatment]"),
+      addons = document.querySelectorAll(".treat[data-addon]"),
+      chosenAddon = null;
+  function reveal(el, scroll) {
+    if (!el) return;
+    el.hidden = false;
+    if (scroll) el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }
   function select(med, scroll) {
     if (!NAMES[med]) return;
     Array.prototype.forEach.call(treats, function (b) {
@@ -60,14 +70,31 @@
       o.hidden = o.id !== "plan-options-" + med;
     });
     if (planFor) planFor.textContent = NAMES[med];
-    if (step2) {
-      step2.hidden = false;
-      if (scroll) step2.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    }
+    /* v2: the plans wait for the second product; v1: the plans come straight after the treatment */
+    if (stepAddon) reveal(stepAddon, scroll); else reveal(stepPlans, scroll);
+    if (stepAddon && chosenAddon) reveal(stepPlans, false);
     try { sessionStorage.setItem("chime:select-plan-med", med); } catch (e) {}
+  }
+  function selectAddon(addon, scroll) {
+    if (!ADDONS[addon]) return;
+    chosenAddon = addon;
+    Array.prototype.forEach.call(addons, function (b) {
+      b.setAttribute("aria-checked", b.getAttribute("data-addon") === addon ? "true" : "false");
+    });
+    if (planAddon) { planAddon.querySelector("b").textContent = ADDONS[addon]; planAddon.hidden = false; }
+    Array.prototype.forEach.call(document.querySelectorAll("a.plan-cta[data-med]"), function (a) {
+      var base = a.getAttribute("data-href") || a.getAttribute("href");
+      a.setAttribute("data-href", base);
+      a.setAttribute("href", base + "&addon=" + addon);
+    });
+    reveal(stepPlans, scroll);
+    try { sessionStorage.setItem("chime:select-plan-addon", addon); } catch (e) {}
   }
   Array.prototype.forEach.call(treats, function (b) {
     b.addEventListener("click", function () { select(b.getAttribute("data-treatment"), true); });
+  });
+  Array.prototype.forEach.call(addons, function (b) {
+    b.addEventListener("click", function () { selectAddon(b.getAttribute("data-addon"), true); });
   });
 
   /* Plan hand-off: remember the choice the way checkout.html's fallback expects, then follow the link. */
@@ -75,11 +102,14 @@
     var a = e.target.closest && e.target.closest("a.plan-cta[data-med]");
     if (!a) return;
     try {
-      sessionStorage.setItem("chime:checkout-selection", JSON.stringify({ med: a.getAttribute("data-med"), term: +a.getAttribute("data-term") }));
+      var sel = { med: a.getAttribute("data-med"), term: +a.getAttribute("data-term") };
+      if (chosenAddon) sel.addon = chosenAddon;
+      sessionStorage.setItem("chime:checkout-selection", JSON.stringify(sel));
     } catch (err) {}
   });
 
   /* ?med=sema|tirz preselects (deep links, and coming back from the checkout). */
-  var q = new URLSearchParams(location.search).get("med");
-  if (NAMES[q]) select(q, false);
+  var q = new URLSearchParams(location.search), qm = q.get("med"), qa = q.get("addon");
+  if (NAMES[qm]) select(qm, false);
+  if (stepAddon && ADDONS[qa]) selectAddon(qa, false);
 })();

@@ -3,10 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chime Health — Select Your Treatment &amp; Plan</title>
-<meta name="description" content="Choose your medication and plan length. Same price at every dosage level, no hidden fees, everything included.">
+<title>Chime Health — Build Your Package</title>
+<meta name="description" content="Choose your medication, the second product in your package, and your plan length. Same price at every dosage level, no hidden fees, everything included.">
 <meta name="robots" content="noindex">
-<!-- Select treatment + plan — the AmeriLean tr12m funnel step
+<!-- v2 of select-plan.html (2026-09-08): a PACKAGE flow — Step 1 treatment, Step 2 the second
+     product in the package (Tesamorelin or NAD+, same card style as Step 1), Step 3 the plans.
+     Prices are the same ladder as v1 until the client sends the bundle price points; the
+     add-on is passed to the checkout as ?addon=tesa|nad (and stored in sessionStorage) but the
+     checkout does not display it yet.
+
+     Select treatment + plan — the AmeriLean tr12m funnel step
      (https://qualify.amerilean.com/glp/tr12m/step40.php) rebuilt on the Chime
      theme (2026-09-07): styles.css tokens + Quicksand, page styles in
      ui_kits/select-plan/select-plan.css, behaviour in select-plan.js. No React,
@@ -94,9 +100,39 @@
     </div>
   </section>
 
-  <!-- Step 2 -->
-  <section class="step" id="select-price" hidden data-screen-label="SP Step 2">
-    <div class="step-head"><span class="step-pill">Step 2</span><h2 class="step-title">Select Your Plan</h2></div>
+  <!-- Step 2: the second product in the package -->
+  <section class="step" id="select-addon" hidden data-screen-label="SP Step 2 Addon">
+    <div class="step-head"><span class="step-pill">Step 2</span><h2 class="step-title">Select Your Second Product</h2></div>
+    <p class="step-lede">Every package pairs your GLP-1 with a second product. Pick the one that fits your goals.</p>
+
+    <div class="treatments" role="radiogroup" aria-label="Second product">
+      <button type="button" class="treat" id="addon-tesa" data-addon="tesa" role="radio" aria-checked="false">
+        <span class="treat-tile"><img src="uploads/vials/tesamorelin.webp" alt="" width="365" height="800"></span>
+        <span class="treat-body">
+          <span class="treat-name">Tesamorelin</span>
+          <span class="treat-desc">Peptide support for lean mass and metabolism.</span>
+          <span class="treat-tag treat-tag--fast"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd"/></svg>Lean Mass &amp; Metabolism</span>
+          <span class="treat-live"><span class="live-dot" aria-hidden="true"></span><span class="live-count" data-start="8412" data-max-add="3" data-interval="5200">8,412</span> patients chose this today</span>
+        </span>
+        <span class="treat-radio" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="treat" id="addon-nad" data-addon="nad" role="radio" aria-checked="false">
+        <span class="treat-tile"><img src="uploads/vials/nad-plus.webp" alt="" width="422" height="800"></span>
+        <span class="treat-body">
+          <span class="treat-name">NAD+</span>
+          <span class="treat-desc">Cellular energy, focus and recovery support.</span>
+          <span class="treat-tag treat-tag--afford"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd"/></svg>Energy &amp; Recovery</span>
+          <span class="treat-live"><span class="live-dot" aria-hidden="true"></span><span class="live-count" data-start="11276" data-max-add="4" data-interval="4800">11,276</span> patients chose this today</span>
+        </span>
+        <span class="treat-radio" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="step" id="select-price" hidden data-screen-label="SP Step 3">
+    <div class="step-head"><span class="step-pill">Step 3</span><h2 class="step-title">Select Your Plan</h2></div>
     <p class="step-lede">Lock in your savings without a big upfront payment. Use free financing or pay in full with your card.</p>
   <div class="info info--in-step" data-screen-label="SP Includes">
     <h3 class="info-title">All Plans Include</h3>
@@ -110,7 +146,7 @@
       <li><span>Chime Weight Loss Warranty</span><span class="inc-val"><s>$179</s> FREE</span></li>
     </ul>
   </div>
-    <p class="step-for">Plans for <b id="planFor">Semaglutide</b></p>
+    <p class="step-for">Plans for <b id="planFor">Semaglutide</b><span id="planAddon" hidden> + <b></b></span></p>
 
       <div class="plan-options" id="plan-options-sema" hidden data-screen-label="Plans Semaglutide">
         <article class="plan" data-term="1" data-screen-label="Plan Semaglutide 1">
