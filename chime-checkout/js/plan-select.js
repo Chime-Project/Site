@@ -48,8 +48,10 @@
       pulseCta(med, mine && state.term === 3);
       if (!mine) { cta.disabled = true; cta.textContent = "Choose a plan length"; return; }
       cta.disabled = false;
-      if (state.term === 3) cta.innerHTML = '<span class="mp-cta-l1">Start Losing Weight Now</span><span class="mp-cta-l2">4th Month FREE FOR LIFE</span>';
-      else cta.textContent = "Start " + (state.term === 1 ? "monthly" : state.term + " months") + " \u2013 " + plan.name;
+      // every button leads with "Start Losing Weight Now" (client, 2026-09-07); the second line names the plan
+      var l2 = state.term === 3 ? "4th Month FREE FOR LIFE" : plan.name + (state.term === 1 ? " Monthly" : " " + state.term + " Month Plan");
+      cta.innerHTML = '<span class="mp-cta-l1">Start Losing Weight Now</span><span class="mp-cta-l2"></span>';
+      cta.lastChild.textContent = l2;
     });
     var img = document.getElementById("sticky-med-img"), name = document.getElementById("sticky-med-name");
     if (state.med && img) img.src = CHIME_PLANS[state.med].image;
