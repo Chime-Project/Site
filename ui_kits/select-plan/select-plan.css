@@ -193,11 +193,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--focus-ring); ou
 }
 .plan-desc .plan-sub { display: block; font-size: var(--text-sm); }
 .plan-supply { flex: none; font-size: 1rem; font-weight: var(--font-weight-semibold); text-align: right; white-space: nowrap; color: var(--ink); }
-.plan-fin { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
-.plan-fin b { display: block; font-size: 1rem; font-weight: var(--font-weight-semibold); line-height: 1.3; }
-.plan-fin span { display: block; font-size: var(--text-sm); line-height: 1.3; color: var(--ink-2); }
-.fin-marks { display: flex; align-items: center; gap: 8px; flex: none; }
-.fin-marks img { display: block; width: 24px; height: 24px; }
 .plan-save {
   margin: 16px 0 0; padding: 7px 10px;
   border: 2px dashed color-mix(in srgb, var(--good) 35%, transparent);
