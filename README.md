@@ -50,6 +50,8 @@ The homepage is `index.html`. Pages:
 | `/nad.html` | NAD+ add‑on page, Chime theme (`ui_kits/nad/NadPage.jsx`) |
 | `/cart.html` | Plan selection → checkout (`ui_kits/cart/`), bare chrome by design |
 | `/chimeUpsell01–03.html` | NAD+ / Tesamorelin / Zofran checkout upsells, Chime theme (token‑wired) |
+| `/select-plan.html` | Select treatment → select plan, the AmeriLean `tr12m/step40` funnel step on the Chime theme (`ui_kits/select-plan/`, no React). Semaglutide / Tirzepatide, then the chime‑checkout plan ladder (Monthly, 3 Month + 4th month free for life, 6 Month); each *Select Plan* links into `chime-checkout/checkout.html?med&term`. `noindex`, bare chrome. AmeriLean claims carried over are flagged in the file's head comment |
+| `/select-plan-v2.html` | The package variant: Step 1 treatment → Step 2 second product (Tesamorelin / NAD+, same card style) → Step 3 plans, Monthly and 3 Month only; the add‑on rides into the checkout as `&addon=tesa|nad` (the checkout does not display it yet). Same kit and script as v1; bundle prices are stand‑ins until the client confirms them |
 | `/upsell01–03.html`, `/nad2.html`, `/upsellPopups.html` | Amerilean‑branded twins of the above — self‑contained (own CSS/JS, no site stylesheet, no React) |
 | `/faq.html` | Full FAQ, all categories (`ChimeFaqBrowser`) |
 | `/privacy-policy.html` etc. | 4 legal pages¹ |
@@ -79,6 +81,8 @@ chime/
 ├── assessment.html         # v1 funnel, retired but still supplies AssessmentControls.jsx
 ├── nad.html                # NAD+ add-on page (Chime)
 ├── cart.html               # Plan selection → checkout
+├── select-plan.html        # Select treatment → plan (AmeriLean step40 on the Chime theme) → chime-checkout
+├── select-plan-v2.html     # …package variant: + a Tesamorelin / NAD+ step, 1M + 3M plans only
 ├── chimeUpsell01..03.html  # Checkout upsells (Chime theme)
 ├── upsell01..03.html       # …and their Amerilean-branded, self-contained twins,
 ├── nad2.html / upsellPopups.html   # plus the Amerilean NAD+ page and pop-up variants
@@ -123,6 +127,7 @@ chime/
 │   │   └── AssessmentFlow.jsx      # v1 engine + page component
 │   ├── cart/               #   CartFlow, CartControls, cart-data.js, cart-tests.js (node ui_kits/cart/cart-tests.js)
 │   ├── nad/                #   NadPage.jsx (nad.html; the layout the executive page is built on)
+│   ├── select-plan/        #   select-plan.css / select-plan.js (shared by select-plan.html + -v2) + img/ payment marks — no React
 │   └── shared/             #   cross-page building blocks
 │       ├── ui/             #     Button, Icon, Eyebrow, Reveal, CheckItem
 │       ├── common/         #     FaqAccordion, RxCarousel, MembershipPanel, LegalPage
