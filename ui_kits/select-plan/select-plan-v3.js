@@ -1,4 +1,4 @@
-/* Chime Health — funnel.html: the round Back button.
+/* Chime Health — select-plan-v3.html: the round Back button.
    Everything else on the page (reservation countdown, live counters, treatment →
    plans reveal, checkout hand-off) is ui_kits/select-plan/select-plan.js.
    Back goes to the previous page when there is one from this site, otherwise
