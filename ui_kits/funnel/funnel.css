@@ -1,0 +1,175 @@
+/* ==========================================================================
+   Chime Health — Funnel checkout step (funnel.html)
+
+   Layered over ui_kits/select-plan/select-plan.css: this file only adds what
+   the Trinity Meds m2 checkout step (uploads/newfunnel.png) has and select-plan
+   does not — the masthead with the press strip, the round Back button, the
+   dashed reservation box, pill treatment tags, the <details> accordions, the
+   payment card and the white legal footer — and re-grounds the page on the
+   blue tint the reference uses. Every colour resolves to a semantic token.
+   ========================================================================== */
+
+:root {
+  --col: 640px;
+  --canvas: color-mix(in srgb, var(--accent-subtle) 55%, var(--bg-elevated)); /* the reference's pale blue ground */
+  --canvas-deep: var(--accent-subtle);
+}
+
+body.funnel { background: var(--canvas); }
+
+/* ---- Masthead: logo + "featured coverage in" ------------------------------ */
+.masthead {
+  background: var(--card);
+  border-bottom: 1px solid color-mix(in srgb, var(--tint-edge) 50%, transparent);
+}
+.masthead-in {
+  max-width: 1100px; margin: 0 auto; padding: 14px var(--gutter);
+  display: flex; align-items: center; justify-content: center; gap: 36px;
+}
+.masthead-in .logo { display: block; }
+.masthead-in .logo img { display: block; height: 38px; width: auto; }
+.press { display: flex; align-items: center; gap: 14px; }
+.press-label { font-size: var(--text-sm); font-weight: var(--font-weight-semibold); line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); text-align: center; }
+.press-stars { display: inline-flex; gap: 2px; }
+.press-stars i { display: block; width: 14px; height: 14px; background: var(--good) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z'/%3E%3C/svg%3E") center / 78% no-repeat; border-radius: 2px; }
+.press-mark { display: block; height: 22px; width: auto; }
+
+/* ---- Page column ----------------------------------------------------------- */
+.page { position: relative; padding-top: 22px; padding-bottom: 56px; }
+
+/* ---- Back --------------------------------------------------------------------- */
+.back {
+  position: absolute; left: var(--gutter); top: 24px;
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--card); color: var(--ink);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  transition: transform var(--transition-base) var(--ease-in-out), box-shadow var(--transition-base) var(--ease-in-out);
+}
+.back:hover { transform: translateX(-2px); box-shadow: var(--shadow-lg); }
+.back svg { width: 22px; height: 22px; }
+@media (min-width: 1040px) {
+  .back { left: -240px; top: 26px; }
+}
+
+/* ---- Reservation box (dashed, like the reference) --------------------------- */
+.reserve--dashed {
+  margin: 0;
+  padding: 12px 20px;
+  border: 2px dashed var(--select);
+  background: color-mix(in srgb, var(--tint-edge) 45%, var(--tint));
+  color: var(--select);
+  font-size: 1.1875rem;
+  font-weight: var(--font-weight-bold);
+}
+.reserve--dashed #countdown { font-size: inherit; font-variant-numeric: tabular-nums; }
+.subline--mark { margin: 12px 0 0; text-align: center; font-size: 1.0625rem; font-weight: var(--font-weight-bold); color: var(--mark); }
+
+/* ---- Treatment cards: pill tags + solid tint tiles ---------------------------- */
+.step { margin-top: 36px; }
+.treat-tile { background: var(--canvas-deep); }
+.treat-tag {
+  margin-top: 6px; padding: 3px 10px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-weight: var(--font-weight-semibold);
+}
+.treat-tag svg { display: none; }
+.treat-tag--afford { background: var(--good-bg); color: var(--good); }
+.treat-tag--fast { background: var(--tint); color: var(--mark); }
+.treat-live { margin-top: 8px; font-size: var(--text-xs); font-weight: var(--font-weight-medium); color: var(--ink-2); }
+
+/* ---- Accordions ---------------------------------------------------------------- */
+.acc {
+  margin-top: 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+.acc summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 16px 20px;
+  font-size: 1.375rem; font-weight: var(--font-weight-medium); line-height: 1.2;
+}
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary::after {
+  content: ""; flex: none; width: 12px; height: 12px;
+  border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg) translateY(-3px);
+  transition: transform var(--transition-base) var(--ease-in-out);
+}
+.acc[open] summary::after { transform: rotate(-135deg) translateY(-3px); }
+.acc-body { padding: 4px 20px 20px; font-size: 1.0625rem; line-height: 1.55; }
+.acc-body p { margin: 0; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.checks li { position: relative; padding-left: 30px; font-size: 1.0625rem; line-height: 1.35; }
+.checks li::before {
+  content: ""; position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: var(--radius-sm);
+  background: var(--good-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300A63E' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 64% no-repeat;
+}
+
+/* ---- Payment card --------------------------------------------------------------- */
+.paycard {
+  margin-top: 20px; padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xs);
+}
+.paycard .info-title { font-size: 1rem; }
+.paycard .info-title--tight { margin-top: 20px; }
+.paycard .marks { margin-top: 12px; gap: 8px; }
+.paycard .marks img { height: 34px; }
+.paycard .marks--bnpl img { height: 40px; }
+.paycard .hsa { height: 34px; margin-top: 18px; }
+
+/* ---- Rating row ---------------------------------------------------------------------- */
+.rating--tp { margin-top: 26px; }
+.rating--tp b { font-size: 1rem; }
+.rating--tp .stars i { width: 22px; height: 22px; }
+.rating--tp .rating-count { font-size: var(--text-xs); }
+
+/* ---- Legal footer (white) ---------------------------------------------------------- */
+.legal { background: var(--card); border-top: 1px solid var(--line); }
+.legal-in { max-width: 1100px; margin: 0 auto; padding: 36px var(--gutter) 40px; }
+.legal-fine { margin: 0 0 14px; font-size: var(--text-xs); line-height: 1.65; color: var(--ink-3); text-align: justify; }
+.legal-row { display: flex; align-items: flex-start; gap: 28px; margin-top: 30px; }
+.legal-badges { display: flex; align-items: center; gap: 22px; flex: none; }
+.legal-badges img { display: block; height: 56px; width: auto; }
+.legal-links { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 0; list-style: none; font-size: var(--text-sm); font-weight: var(--font-weight-semibold); }
+.legal-links a { text-decoration: none; }
+.legal-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.legal-support { margin: 26px 0 0; font-size: var(--text-sm); }
+.legal-support a { color: var(--mark); text-decoration: none; }
+.legal-support a:hover { text-decoration: underline; }
+
+/* ---- Phones ------------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .masthead-in { flex-direction: column; gap: 10px; padding: 12px var(--gutter); }
+  .masthead-in .logo img { height: 30px; }
+  .press { gap: 10px; }
+  .press-label { font-size: var(--text-xs); }
+  .page { padding-top: 70px; }
+  .back { top: 14px; width: 40px; height: 40px; }
+  .reserve--dashed { font-size: 1rem; padding: 10px 14px; }
+  .subline--mark { font-size: 1rem; }
+  .acc summary { font-size: 1.25rem; padding: 14px 16px; }
+  .acc-body { padding: 2px 16px 16px; font-size: 1rem; }
+  .checks li { font-size: 1rem; }
+  .paycard { padding: 16px; }
+  .paycard .marks img { height: 28px; }
+  .paycard .marks--bnpl img { height: 34px; }
+  .legal-row { flex-direction: column; gap: 22px; }
+  .legal-fine { text-align: left; }
+}
+
+/* the accordion titles are real headings inside the <summary> */
+.acc summary .acc-title { margin: 0; font: inherit; }
+
+/* pills hug their text (the treat body is a flex column, so spans would stretch) */
+.treat-tag { align-self: flex-start; }
+/* the Compounded-in-USA seal is white line-art (drawn for the dark site footer), so it gets a primary-blue tile */
+.legal-badges .badge-usa { padding: 8px 10px; border-radius: var(--radius-lg); background: var(--select); height: 64px; }

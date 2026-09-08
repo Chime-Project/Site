@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chime Health — Select Your Treatment</title>
+<meta name="description" content="Choose your GLP-1 medication and your plan. No hidden fees, everything included, same price at every dose.">
+<meta name="robots" content="noindex">
+<!-- Funnel checkout step (2026-09-08): the Trinity Meds m2 checkout page
+     (trinitymeds.com/m2/checkout?funnel=m2, reference uploads/newfunnel.png,
+     untracked) rebuilt on the Chime theme. Same stack and script as
+     select-plan.html: styles.css tokens + Quicksand, select-plan.css for the
+     cards/plans, ui_kits/funnel/funnel.css for what this layout adds
+     (masthead + press strip, Back, dashed reservation box, accordions,
+     payment card, white legal footer). No React, no CDN scripts.
+
+     Flow: Step 1 picks the treatment → Step 2 shows the plans for it
+     (Monthly / 3 Month, the same client price ladder as select-plan-v2 and
+     chime-checkout-2) → "Select Plan" is a real link into
+     chime-checkout/checkout.html?med&term (select-plan.js also stores the
+     choice in sessionStorage for the checkout's fallback).
+
+     CARRIED FROM THE REFERENCE AND FLAGGED — none is a Chime claim:
+       • "Your price is reserved for 9:59" countdown
+       • "N patients chose this today" live counters
+       • "Featured coverage in" + "Excellent 4.8 · 100,000+ happy customers"
+         (the reference shows Forbes / WebMD / Yahoo and Trustpilot 4.4 ·
+         125,000+; only the Forbes Health mark select-plan already carries is
+         shown, the rating is the select-plan text)
+       • "All Plans Include" list (bundle & save, free clinician consultations,
+         free expedited shipping, home injection kit, 24/7 support)
+       • Apple Pay, HSA/FSA, Afterpay / Klarna — confirm the merchant account
+       • LegitScript badge — Chime's certification is not confirmed
+     The reference's pharmacy list and OpenLoop legal text are NOT copied; the
+     footer paragraphs are Chime's (labor-day.html / glp1-plan.html). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css?v=20260931">
+<link rel="stylesheet" href="ui_kits/select-plan/select-plan.css?v=20260931">
+<link rel="stylesheet" href="ui_kits/funnel/funnel.css?v=20260931">
+</head>
+<body class="funnel">
+
+<header class="masthead" data-screen-label="FN Masthead">
+  <div class="masthead-in">
+    <a class="logo" href="index.html" aria-label="Chime Health — home">
+      <img src="assets/logo-main.svg" alt="Chime Health" width="1095" height="138">
+    </a>
+    <div class="press">
+      <span class="press-label">Featured<br>coverage in</span>
+      <span class="press-stars" aria-label="5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+      <img class="press-mark" src="ui_kits/select-plan/img/forbes-health.svg" alt="Forbes Health" width="1491" height="204">
+    </div>
+  </div>
+</header>
+
+<main class="page" id="main">
+
+  <a class="back" id="funnelBack" href="index.html" aria-label="Back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </a>
+
+  <div class="reserve reserve--dashed" data-screen-label="FN Reserve">🎉 Your price is reserved for <span id="countdown" data-seconds="599">9:59</span></div>
+  <p class="subline subline--mark" data-screen-label="FN Subline">No Hidden Fees. Everything Included.</p>
+
+  <!-- Step 1 -->
+  <section class="step" id="select-product" data-screen-label="FN Step 1">
+    <div class="step-head"><span class="step-pill">Step 1</span><h2 class="step-title">Select Treatment</h2></div>
+
+    <div class="treatments" role="radiogroup" aria-label="Treatment">
+      <button type="button" class="treat" id="treatment-sema" data-treatment="sema" role="radio" aria-checked="false">
+        <span class="treat-tile"><img src="uploads/vials/semaglutide.webp" alt="" width="418" height="800"></span>
+        <span class="treat-body">
+          <span class="treat-name">GLP-1 (Compounded Semaglutide)</span>
+          <span class="treat-desc">Proven, effective, more affordable.</span>
+          <span class="treat-tag treat-tag--afford">More Affordable</span>
+          <span class="treat-live"><span class="live-dot" aria-hidden="true"></span><span class="live-count" data-start="11774" data-max-add="4" data-interval="4500">11,774</span> patients chose this today</span>
+        </span>
+        <span class="treat-radio" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="treat" id="treatment-tirz" data-treatment="tirz" role="radio" aria-checked="false">
+        <span class="treat-tile"><img src="uploads/vials/tirzepatide.webp" alt="" width="427" height="800"></span>
+        <span class="treat-body">
+          <span class="treat-name">GLP-1 / GIP (Compounded Tirzepatide)</span>
+          <span class="treat-desc">Faster results, dual-action, but more expensive.</span>
+          <span class="treat-tag treat-tag--fast">Fastest Results</span>
+          <span class="treat-live"><span class="live-dot" aria-hidden="true"></span><span class="live-count" data-start="17850" data-max-add="4" data-interval="4500">17,850</span> patients chose this today</span>
+        </span>
+        <span class="treat-radio" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Step 2: plans for the chosen treatment -->
+  <section class="step" id="select-price" hidden data-screen-label="FN Step 2">
+    <div class="step-head"><span class="step-pill">Step 2</span><h2 class="step-title">Select Your Plan</h2></div>
+    <p class="step-lede">Lock in your savings without a big upfront payment. Pay in full with your card or use Buy Now, Pay Later.</p>
+    <p class="step-for">Plans for <b id="planFor">Semaglutide</b></p>
+
+      <div class="plan-options" id="plan-options-sema" hidden data-screen-label="Plans Semaglutide">
+        <article class="plan" data-term="1" data-screen-label="Plan Semaglutide 1">
+          <div class="plan-head"><h3 class="plan-name">Monthly Plan</h3></div>
+          <div class="plan-meta"><div class="plan-desc">No free month. Pause or cancel anytime.</div><div class="plan-supply">4 Week Supply</div></div>
+          <p class="plan-save">You are saving <b>$50</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=sema&amp;term=1" data-med="sema" data-term="1" aria-label="Select the Semaglutide monthly plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><s class="cta-was">$349/month</s></span><span class="cta-sub">PAY ONLY <b>$299</b> PER MONTH</span></a>
+        </article>
+        <article class="plan" data-term="3" data-screen-label="Plan Semaglutide 3"><span class="plan-corner" aria-hidden="true"><svg class="seal" viewBox="0 0 120 120" role="img" aria-label="4th month free, for life"><defs><path id="sealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><circle cx="60" cy="60" r="57" fill="#f7f3e4" stroke="#324563" stroke-width="3" stroke-dasharray="4 3"/><circle cx="60" cy="60" r="51" fill="none" stroke="#324563" stroke-width="1.2"/><circle cx="60" cy="60" r="31" fill="none" stroke="#324563" stroke-width="1.2"/><text font-family="Quicksand, sans-serif" font-size="9.6" font-weight="700" fill="#324563" letter-spacing="1.4"><textPath href="#sealPath">4TH MONTH FREE · FOR LIFE · 4TH MONTH FREE · FOR LIFE ·</textPath></text><text x="60" y="69" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="27" font-weight="700" fill="#324563">+1</text></svg></span>
+          <div class="plan-head"><h3 class="plan-name">3 Month Plan</h3><span class="badge badge--pop">Most Popular</span></div>
+          <div class="plan-meta"><div class="plan-desc"><span class="plan-free">Every 4th month free, forever.</span><span class="plan-sub">No mid-plan price increases.</span></div><div class="plan-supply">16 Week Supply</div></div>
+          <p class="plan-save">You are saving <b>$649</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=sema&amp;term=3" data-med="sema" data-term="3" aria-label="Select the Semaglutide 3 month plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><span class="cta-price">$249/mo</span></span><span class="cta-sub">$747 due today &middot; includes 4 months</span></a>
+        </article>
+      </div>
+      <div class="plan-options" id="plan-options-tirz" hidden data-screen-label="Plans Tirzepatide">
+        <article class="plan" data-term="1" data-screen-label="Plan Tirzepatide 1">
+          <div class="plan-head"><h3 class="plan-name">Monthly Plan</h3></div>
+          <div class="plan-meta"><div class="plan-desc">No free month. Pause or cancel anytime.</div><div class="plan-supply">4 Week Supply</div></div>
+          <p class="plan-save">You are saving <b>$40</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=tirz&amp;term=1" data-med="tirz" data-term="1" aria-label="Select the Tirzepatide monthly plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><s class="cta-was">$399/month</s></span><span class="cta-sub">PAY ONLY <b>$359</b> PER MONTH</span></a>
+        </article>
+        <article class="plan" data-term="3" data-screen-label="Plan Tirzepatide 3"><span class="plan-corner" aria-hidden="true"><svg class="seal" viewBox="0 0 120 120" role="img" aria-label="4th month free, for life"><defs><path id="sealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><circle cx="60" cy="60" r="57" fill="#f7f3e4" stroke="#324563" stroke-width="3" stroke-dasharray="4 3"/><circle cx="60" cy="60" r="51" fill="none" stroke="#324563" stroke-width="1.2"/><circle cx="60" cy="60" r="31" fill="none" stroke="#324563" stroke-width="1.2"/><text font-family="Quicksand, sans-serif" font-size="9.6" font-weight="700" fill="#324563" letter-spacing="1.4"><textPath href="#sealPath">4TH MONTH FREE · FOR LIFE · 4TH MONTH FREE · FOR LIFE ·</textPath></text><text x="60" y="69" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="27" font-weight="700" fill="#324563">+1</text></svg></span>
+          <div class="plan-head"><h3 class="plan-name">3 Month Plan</h3><span class="badge badge--pop">Most Popular</span></div>
+          <div class="plan-meta"><div class="plan-desc"><span class="plan-free">Every 4th month free, forever.</span><span class="plan-sub">No mid-plan price increases.</span></div><div class="plan-supply">16 Week Supply</div></div>
+          <p class="plan-save">You are saving <b>$699</b></p>
+          <a class="plan-cta" href="chime-checkout/checkout.html?med=tirz&amp;term=3" data-med="tirz" data-term="3" aria-label="Select the Tirzepatide 3 month plan"><span class="cta-line"><span class="cta-label">Select Plan</span><span class="cta-dot" aria-hidden="true">&bull;</span><span class="cta-price">$299/mo</span></span><span class="cta-sub">$897 due today &middot; includes 4 months</span></a>
+        </article>
+      </div>
+  </section>
+
+  <details class="acc" open data-screen-label="FN Includes">
+    <summary><h2 class="acc-title">All Plans Include</h2></summary>
+    <div class="acc-body">
+      <ul class="checks">
+        <li>Bundle &amp; save options</li>
+        <li>Unlimited free licensed clinician consultations</li>
+        <li>Free expedited shipping*</li>
+        <li>Home injection kit</li>
+        <li>24/7 customer support</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc" open data-screen-label="FN How">
+    <summary><h2 class="acc-title">How It Works</h2></summary>
+    <div class="acc-body">
+      <p>Each month includes one shot per week, for a total of four shots. Your provider will start you on a low dose and gradually increase it to your ideal level, helping you lose weight safely and effectively.</p>
+    </div>
+  </details>
+
+  <section class="paycard" data-screen-label="FN Payment">
+    <h2 class="info-title">All major credit cards accepted</h2>
+    <div class="marks">
+      <img src="ui_kits/select-plan/img/visa.svg" alt="Visa"><img src="ui_kits/select-plan/img/mastercard.svg" alt="Mastercard"><img src="ui_kits/select-plan/img/amex.svg" alt="American Express"><img src="ui_kits/select-plan/img/discover.svg" alt="Discover"><img src="ui_kits/select-plan/img/apple-pay.svg" alt="Apple Pay">
+    </div>
+    <img class="hsa" src="ui_kits/select-plan/img/hsa-fsa.webp" alt="HSA/FSA Eligible" width="200" height="40">
+    <h2 class="info-title info-title--tight">Buy Now, Pay Later</h2>
+    <div class="marks marks--bnpl">
+      <img src="ui_kits/select-plan/img/afterpay.webp" alt="Afterpay" width="69" height="24"><img src="ui_kits/select-plan/img/klarna.png" alt="Klarna">
+    </div>
+  </section>
+
+  <p class="rating rating--tp" data-screen-label="FN Rating"><b>Excellent 4.8</b><span class="stars" aria-label="4.8 out of 5 stars"><i></i><i></i><i></i><i></i><i class="half"></i></span><span class="rating-count">100,000+<br>happy customers</span></p>
+
+</main>
+
+<footer class="legal" data-screen-label="FN Legal">
+  <div class="legal-in">
+    <p class="legal-fine">Individual results vary. Compounded medications are available subject to provider review and are not guaranteed to be prescribed. These statements have not been evaluated by the Food and Drug Administration. Completing the assessment does not create a provider-patient relationship; a licensed provider will evaluate medical appropriateness through a telehealth consultation before any prescription is issued, and providers retain sole discretion over all prescribing decisions. A prescription is never guaranteed.</p>
+    <p class="legal-fine">Certain treatment plans may involve compounded medications when determined appropriate by a licensed healthcare provider. Compounded medications are not approved by the U.S. Food and Drug Administration (FDA) and have not been evaluated by the FDA for safety, effectiveness, or quality. Compounded medications are prepared by state-licensed 503A compounding pharmacies. Chime does not manufacture, compound, or dispense medications. Product imagery may be illustrative; actual medication appearance may differ.</p>
+    <p class="legal-fine">Individual results vary based on starting weight, medical history, program adherence, diet, and exercise. Any weight-loss figures referenced on this website are illustrations only and are not derived from clinical trials or peer-reviewed studies. Not all members experience the same results. Consult your healthcare provider before beginning any weight management program. *Free expedited shipping applies to plans shipped within the continental U.S.</p>
+    <div class="legal-row">
+      <div class="legal-badges">
+        <img src="uploads/legitscript.png" alt="LegitScript certified" width="292" height="316" loading="lazy">
+        <img class="badge-usa" src="uploads/badge-compounded-usa.webp" alt="Compounded in the U.S.A." width="204" height="182" loading="lazy">
+      </div>
+      <ul class="legal-links">
+        <li><a href="index.html">About Us</a></li>
+        <li><a href="terms-conditions.html">Terms &amp; Conditions</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="hipaa-notice.html">Notice of Privacy Practices</a></li>
+        <li><a href="telehealth-consent.html">Telehealth Consent</a></li>
+        <li><a href="return-refund-policy.html">Refund &amp; Cancellation</a></li>
+        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+      </ul>
+    </div>
+    <p class="legal-support">For support: <a href="mailto:hello@chimehealth.com">hello@chimehealth.com</a></p>
+  </div>
+</footer>
+
+<script src="ui_kits/select-plan/select-plan.js?v=20260931"></script>
+<script src="ui_kits/funnel/funnel.js?v=20260931"></script>
+</body>
+</html>
