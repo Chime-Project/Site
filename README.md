@@ -57,6 +57,7 @@ The homepage is `index.html`. Pages:
 | `/chime-checkout-2/product.html` → `checkout.html` | The **two‑length** version the client prefers (Asana "2 Month Selection New Page"): same page, only Monthly and 3 Month + 1 free per medication, no 6‑month anywhere. Built with `build-chime-checkout.py two`; own `?v=` and README |
 | `/chime-checkout-glp-squared/product.html` → `checkout.html` | The **single‑product** version for GLP Squared: one card, no medication choice, Monthly and 3 Month + 1 free. Built with `build-chime-checkout.py one`. ⚠️ Prices are the Tirzepatide ladder as a stand‑in until the client sends GLP Squared's |
 | `/chime-checkout-bonus/product.html` | The 1 + 3 checkout as a **combo offer**: every plan comes with a BONUS FREE NAD+ ($299 value) — both vials on each card tile, bonus ribbon in the hero, a why-both strip, the NAD+ callout above the plan rows, and the bonus line + badge in the checkout summary (`build-chime-checkout.py bonus`). Prices are still the 1 + 3 ladder; the $299 value and the combo copy are flagged in its README |
+| `/chime-checkout-bonus-tesa/product.html` | The combo offer above with **Tesamorelin** as the free gift instead of NAD+ — same layout and emphasis, every "NAD+" swapped for "Tesamorelin", `vial-tesamorelin.webp` on the tiles (`build-chime-checkout.py bonus-tesa`). The "$299 value" is a stand-in carried over from the NAD+ edition — flagged in its README |
 | `/chime-plans-landing/` (+ `questionnaire/`) | 1/3/6‑month plan landing on the Chime theme with the client price ladder (`js/plans.js`), and the 19‑step GLPQuizFR questionnaire port (EN + `es/`); step 18 is the plan stage, step 17 the treatment badges. `amerilean-plans-landing/` is its AmeriLean‑branded sibling |
 | `/upsell01–03.html`, `/nad2.html`, `/upsellPopups.html` | Amerilean‑branded twins of the above — self‑contained (own CSS/JS, no site stylesheet, no React) |
 | `/faq.html` | Full FAQ, all categories (`ChimeFaqBrowser`) |
@@ -94,6 +95,7 @@ chime/
 ├── chime-checkout-2/       # …the two-length version: Monthly + 3 Month + 1 free only
 ├── chime-checkout-glp-squared/  # …the single-product version (GLP Squared, stand-in prices)
 ├── chime-checkout-bonus/    # …combo edition: GLP-1 + BONUS FREE NAD+ ($299 value) on every plan (build MODE bonus)
+├── chime-checkout-bonus-tesa/ # …the combo edition with Tesamorelin as the free gift (build MODE bonus-tesa; $299 value is a stand-in)
 ├── chime-plans-landing/    # 1/3/6-month plan landing + 19-step questionnaire (EN + es/); amerilean-plans-landing/ is its twin
 ├── chimeUpsell01..03.html  # Checkout upsells (Chime theme)
 ├── upsell01..03.html       # …and their Amerilean-branded, self-contained twins,
