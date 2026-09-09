@@ -1,0 +1,120 @@
+/* chime-checkout-bonus/product.html: each medication card carries its own plan-length rows; picking a row
+   selects medication + length together and the card's Start button opens checkout.html?med&term.
+   Prices are the client's ladder (also chime-plans-landing/js/plans.js); every 4th month free on
+   the 3-month plan. The selection also lands in sessionStorage "chime:checkout-selection".
+   Nothing is preselected (user request 2026-09-04). */
+(function () {
+  var CHIME_PLANS = {
+    sema: { key: "sema", name: "Semaglutide + NAD+", full: "Compounded Semaglutide (GLP-1) + NAD+", image: "images/vial-semaglutide.webp",
+            terms: { 1: { rate: 299, charge: 299, covers: 1, retail: 349, retailTotal: 349, effective: 299 },
+                     3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 } } },
+    tirz: { key: "tirz", name: "Tirzepatide + NAD+", full: "Compounded Tirzepatide (GLP-1/GIP) + NAD+", image: "images/vial-tirzepatide.webp",
+            terms: { 1: { rate: 359, charge: 359, covers: 1, retail: 399, retailTotal: 399, effective: 359 },
+                     3: { rate: 299, charge: 897, covers: 4, retail: 399, retailTotal: 1596, effective: 224.25 } } }
+  };
+  var CHIME_TERM_LABEL = { 1: "monthly", 3: "3 months + 1 free" };
+  function chimeMoney(n) { return "$" + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })); }
+  
+  var state = { med: null, term: null };
+  var phone = function () { return window.matchMedia("(max-width: 767px)").matches; };
+  var motionOK = window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // The card's checkout button pulses blue-500 <-> blue-800 (with a one-time ring flash) while the
+  // 3-month plan is the selection (user request 2026-09-05); any other choice stops and clears it.
+  var ctaPulse = {};
+  function pulseCta(med, on) {
+    var cta = document.querySelector('[data-mp="' + med + '"] [data-mp-cta]'); if (!cta || !motionOK) return;
+    if (on && !ctaPulse[med]) {
+      // colour pulse + a stroke ring that grows and brightens with it; scale kept to a barely-there 1.2%
+      ctaPulse[med] = gsap.fromTo(cta,
+        { backgroundColor: "#020617", scale: 1, boxShadow: "0 0 0 0px rgba(43, 69, 197, 0), 0 8px 18px rgba(2, 6, 23, 0.25)" },
+        { backgroundColor: "#2b45c5", scale: 1.012, boxShadow: "0 0 0 4px rgba(43, 69, 197, 0.45), 0 10px 22px rgba(43, 69, 197, 0.35)",
+          duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.15 });
+    } else if (!on && ctaPulse[med]) {
+      ctaPulse[med].kill(); ctaPulse[med] = null; gsap.killTweensOf(cta); gsap.set(cta, { clearProps: "backgroundColor,boxShadow,transform" });
+    }
+  }
+  function render() {
+    document.querySelectorAll("[data-mp]").forEach(function (block) {
+      var med = block.dataset.mp, mine = med === state.med, plan = CHIME_PLANS[med];
+      block.querySelectorAll(".mp-row").forEach(function (row) {
+        var on = mine && +row.dataset.term === state.term, r = row.querySelector(".sv-radio");
+        r.setAttribute("aria-checked", on ? "true" : "false"); r.setAttribute("data-state", on ? "checked" : "unchecked");
+        r.innerHTML = on ? "<span></span>" : "";
+      });
+      var cta = block.querySelector("[data-mp-cta]");
+      var card = block.closest("[data-med]"); if (card) card.setAttribute("data-selected", mine ? "true" : "false");
+      pulseCta(med, mine && state.term === 3);
+      if (!mine) { cta.disabled = true; cta.textContent = "Choose a plan length"; return; }
+      cta.disabled = false;
+      // every button leads with "Start Losing Weight Now" (client, 2026-09-07); the second line names the plan
+      var l2 = state.term === 3 ? "4th Month FREE FOR LIFE" : plan.name + (state.term === 1 ? " Monthly" : " " + state.term + " Month Plan");
+      cta.innerHTML = '<span class="mp-cta-l1">Start Losing Weight Now</span><span class="mp-cta-l2"></span>';
+      cta.lastChild.textContent = l2;
+    });
+    var img = document.getElementById("sticky-med-img"), name = document.getElementById("sticky-med-name");
+    if (state.med && img) img.src = CHIME_PLANS[state.med].image;
+    if (state.med && name) name.textContent = CHIME_PLANS[state.med].name;
+  }
+  // GSAP pulse on the highlighted 3-month rows (user request 2026-09-04): border and ground breathe
+  // between two Chime blues while the row is on screen, stop once a plan is chosen, off under
+  // prefers-reduced-motion.
+  var pulses = [];
+  if (window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll('.mp-row[data-term="3"]').forEach(function (row) {
+      var tag = row.querySelector(".mp-tag"), shine = row.querySelector(".mp-shine");
+      // one cycle ≈ 2.6s: breathe up with a colour/glow swing, shine sweeps through, the pill pops, breathe back
+      var tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5, paused: true });
+      tl.to(row, { scale: 1.03, borderColor: "#8a9be0", backgroundColor: "#e6ecfb", boxShadow: "0 18px 40px rgba(43, 69, 197, 0.35)", duration: 1.0, ease: "sine.inOut" }, 0)
+        .fromTo(shine, { left: "-45%", opacity: 1 }, { left: "125%", duration: 0.9, ease: "power2.inOut" }, 0.15)
+        .to(tag, { scale: 1.06, duration: 0.4, ease: "sine.inOut" }, 0.5)
+        .to(tag, { scale: 1, duration: 0.45, ease: "sine.inOut" }, 0.9)
+        .to(row, { scale: 1, borderColor: "#2b45c5", backgroundColor: "#f5f7fe", boxShadow: "0 10px 24px rgba(43, 69, 197, 0.18)", duration: 1.0, ease: "sine.inOut" }, 1.05);
+      pulses.push({ row: row, tag: tag, shine: shine, tl: tl, entered: false });
+    });
+    if (pulses.length && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var p = pulses.filter(function (x) { return x.row === en.target; })[0]; if (!p) return;
+          if (en.isIntersecting && !state.term) {
+            if (!p.entered) { p.entered = true; gsap.from(p.row, { y: -10, duration: 0.7, ease: "bounce.out" }); }   // first sight: a little drop-in
+            p.tl.play();
+          } else p.tl.pause();
+        });
+      }, { threshold: 0.4 });
+      pulses.forEach(function (p) { io.observe(p.row); });
+    }
+  }
+  function stopPulse() {
+    pulses.forEach(function (p) { p.tl.kill(); gsap.killTweensOf([p.row, p.tag, p.shine]); gsap.set([p.row, p.tag, p.shine], { clearProps: "all" }); });
+    pulses = [];
+  }
+  function select(med, term, opts) {
+    if (!CHIME_PLANS[med] || !CHIME_PLANS[med].terms[term]) return;
+    state.med = med; state.term = term; render(); stopPulse();
+    if (!(opts && opts.quiet) && phone()) {
+      var cta = document.querySelector('[data-mp="' + med + '"] [data-mp-cta]');
+      if (cta) cta.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+  function goCheckout() {
+    if (!state.med || !state.term) return;
+    var med = CHIME_PLANS[state.med], t = med.terms[state.term];
+    var sel = { med: state.med, medName: med.name, treatment: med.full, term: state.term, termLabel: CHIME_TERM_LABEL[state.term],
+                rate: t.rate, charge: t.charge, covers: t.covers, effective: t.effective };
+    try { sessionStorage.setItem("chime:checkout-selection", JSON.stringify(sel)); } catch (err) {}
+    location.href = "checkout.html?med=" + state.med + "&term=" + state.term;
+  }
+  document.querySelectorAll("[data-mp]").forEach(function (block) {
+    block.addEventListener("click", function (e) {
+      if (e.target.closest("[data-mp-cta]")) { if (state.med === block.dataset.mp) goCheckout(); return; }
+      var row = e.target.closest(".mp-row"); if (row) select(block.dataset.mp, +row.dataset.term);
+    });
+  });
+  function sticky() {
+    var target = state.med ? document.querySelector('[data-mp="' + state.med + '"] [data-mp-cta]') : document.getElementById("products");
+    if (target) target.scrollIntoView({ behavior: "smooth", block: state.med ? "center" : "start" });
+  }
+  window.ChimeFlow = { select: select, sticky: sticky, current: function () { return { med: state.med, term: state.term }; } };
+  var q = new URLSearchParams(location.search), med = q.get("med"), term = +q.get("term");
+  if (CHIME_PLANS[med] && CHIME_PLANS[med].terms[term]) select(med, term, { quiet: true }); else render();
+})();
