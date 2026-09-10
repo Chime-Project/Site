@@ -65,7 +65,7 @@
     />
     <link rel="stylesheet" href="ui_kits/amerilean/amerilean.css?v=20260879" />
     <link rel="stylesheet" href="ui_kits/amerilean/chime-theme.css?v=20260880" />
-    <link rel="stylesheet" href="ui_kits/police-offer/police-offer.css?v=20260934" />
+    <link rel="stylesheet" href="ui_kits/police-offer/police-offer.css?v=20260935" />
   </head>
   <body>
 <svg
@@ -1279,7 +1279,8 @@
     <div class="po-bar" id="poBar" hidden data-screen-label="PO Bar">
       <div class="po-bar__text">
         <span class="po-bar__label" id="poBarLabel"></span>
-        <b id="poBarPrice"></b>
+        <span class="po-bar__price"><s class="po-bar__reg" id="poBarReg" hidden></s><b id="poBarPrice"></b></span>
+        <span class="po-bar__save" id="poBarSave" hidden></span>
       </div>
       <a class="btn btn--sand btn--sm" id="poBarLink" href="police-offer-checkout.html">Checkout</a>
     </div>
@@ -1358,6 +1359,6 @@
     </footer>
 
     <script src="ui_kits/amerilean/amerilean.js?v=20260877" defer></script>
-    <script src="ui_kits/police-offer/police-offer.js?v=20260934" defer></script>
+    <script src="ui_kits/police-offer/police-offer.js?v=20260935" defer></script>
   </body>
 </html>

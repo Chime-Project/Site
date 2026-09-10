@@ -149,6 +149,8 @@
     bar: $("poBar"),
     barLabel: $("poBarLabel"),
     barPrice: $("poBarPrice"),
+    barReg: $("poBarReg"),
+    barSave: $("poBarSave"),
     barLink: $("poBarLink"),
     sum: {
       med: $("poSumMed"), gift: $("poSumGift"), term: $("poSumTerm"),
@@ -272,6 +274,11 @@
     if (complete) {
       setText(el.barLabel, q.medName + " · " + (q.term === 3 ? "3 month" : "Monthly") + " · + " + q.giftName);
       setText(el.barPrice, money(q.total));
+      // the bar is the only price a phone sees while scrolling — say the code took
+      show(el.barReg, q.discount > 0);
+      setText(el.barReg, money(q.regular));
+      show(el.barSave, q.discount > 0);
+      setText(el.barSave, "Code applied · you save " + money(q.discount));
     }
 
     // order summary (step 2, and the lander's preview if present)

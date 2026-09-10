@@ -875,11 +875,31 @@ html {
   font-weight: 600;
   color: var(--mist);
 }
+.po-bar__price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.po-bar__reg {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mist);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
 .po-bar b {
   font-size: 22px;
   line-height: 1.1;
   color: var(--sand);
   font-variant-numeric: tabular-nums;
+}
+.po-bar__save {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sand);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .po-bar .btn {
   flex: none;
@@ -1372,7 +1392,7 @@ html {
     padding-bottom: 0;
   }
   body.has-po-bar {
-    padding-bottom: 76px;
+    padding-bottom: 96px;
   }
   .ticker__item {
     padding: 10px 20px;
