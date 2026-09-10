@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout | Police Appreciation Offer | Chime Health</title>
+    <meta name="description" content="Step 2 of 2: check out your officer-priced Chime plan." />
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health — Police appreciation offer, STEP 2 of 2 (the checkout).
+         Step 1 is police-offer.html (the lander with the offer box); its
+         "Continue to checkout" carries the selection here as
+         ?med=sema|tirz&gift=tesa|nad&term=1|3&code=…, with sessionStorage
+         "chime:police-offer" as the fallback. Same stack and kit as step 1
+         (ui_kits/police-offer/), same script: the order summary, the code
+         form and the checkout form all read one state.
+         Prototype: the form validates and formats like chime-checkout but has
+         no backend — a valid submit stores the order in sessionStorage
+         ("chime:police-offer-order", last-4 only) and shows the success state,
+         which hands off to the medical intake (chimeAssessment.html). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="ui_kits/amerilean/amerilean.css?v=20260879" />
+    <link rel="stylesheet" href="ui_kits/amerilean/chime-theme.css?v=20260880" />
+    <link rel="stylesheet" href="ui_kits/police-offer/police-offer.css?v=20260934" />
+  </head>
+  <body class="po-step2">
+<svg
+      id="sprite"
+      aria-hidden="true"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path
+          d="M 0 5.25 L 3.75 9 L 12.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-cross" viewBox="0 0 24 24">
+        <path
+          d="M 13.5 0 L 0 13.5"
+          fill="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 13.5 13.5 L 0 0"
+          fill="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock-sm" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 13.125)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-dumbbell" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(15 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15 5.25)"
+        ></path>
+        <path
+          d="M 0 0 L 2.25 0 C 2.664 0 3 0.336 3 0.75 L 3 8.25 C 3 8.664 2.664 9 2.25 9 L 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(18.75 7.5)"
+        ></path>
+        <path
+          d="M 3 9 L 0.75 9 C 0.336 9 0 8.664 0 8.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 12)"
+        ></path>
+        <path
+          d="M 0 0 L 1.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(21.75 12)"
+        ></path>
+        <path
+          d="M 0 0 L 1.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(0.75 12)"
+        ></path>
+      </symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24">
+        <path
+          d="M 11.1 0.771 L 19.299 15.008 C 19.874 16.012 19.131 17.25 17.948 17.25 L 1.549 17.25 C 0.366 17.25 -0.376 16.012 0.198 15.008 L 8.398 0.771 C 8.988 -0.257 10.509 -0.257 11.1 0.771 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.251 3)"
+        ></path>
+        <path
+          d="M 11.1 0.771 L 19.299 15.008 C 19.874 16.012 19.131 17.25 17.948 17.25 L 1.549 17.25 C 0.366 17.25 -0.376 16.012 0.198 15.008 L 8.398 0.771 C 8.988 -0.257 10.509 -0.257 11.1 0.771 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.251 3)"
+        ></path>
+        <path
+          d="M 0 3.75 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 9.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 15.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-unlock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.564 0 7.152 1.288 7.5 3"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 L 0 0 L 9 0 L 9 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 6)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 0 L 9 0 L 9 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 6)"
+        ></path>
+        <path
+          d="M 0 0.75 C 0 0.336 0.336 0 0.75 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 17.25 C 15 17.664 14.664 18 14.25 18 L 0.75 18 C 0.336 18 0 17.664 0 17.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.001)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(7.125 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(14.625 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(7.125 16.5)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 16.5)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(14.625 16.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24">
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(15.75 5.25)"
+        ></path>
+        <path
+          d="M 0 0 L 0 16.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 20.25)"
+        ></path>
+        <path
+          d="M 0 3 L 13.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 5.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-bell-off" viewBox="0 0 24 24">
+        <path
+          d="M 5.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 5.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 0 L 15 16.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 7.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 8.25)"
+        ></path>
+        <path
+          d="M 0 0 C 0.998 1.133 0.998 2.832 0 3.966"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(18 10.019)"
+        ></path>
+        <path
+          d="M 12 6.722 L 12 13.247 L 5.25 7.997 L 0.75 7.997 C 0.336 7.997 0 7.661 0 7.247 L 0 1.247 C 0 0.833 0.336 0.497 0.75 0.497 L 5.25 0.497 L 5.889 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 7.753)"
+        ></path>
+        <path
+          d="M 0 2.905 L 3.736 0 L 3.736 7.015"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(10.514 3)"
+        ></path>
+        <path
+          d="M 0 0 C 2.292 2.562 2.292 6.438 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(20.782 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 L 9 7.5 L 15 9.75 L 4.5 21 L 6 13.5 L 0 11.25 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 10.5 0 L 9 7.5 L 15 9.75 L 4.5 21 L 6 13.5 L 0 11.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 6.75 C 15 7.164 14.664 7.5 14.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 12)"
+        ></path>
+        <path
+          d="M 0.75 4.5 C 0.336 4.5 0 4.164 0 3.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 17.25 0 C 17.664 0 18 0.336 18 0.75 L 18 3.75 C 18 4.164 17.664 4.5 17.25 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 7.5)"
+        ></path>
+        <path
+          d="M 15 0 L 15 6.75 C 15 7.164 14.664 7.5 14.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 12"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 7.5)"
+        ></path>
+        <path
+          d="M 4.574 0.676 C 5.45 1.552 5.501 3.026 4.574 3.847 C 2.989 5.25 0 5.25 0 5.25 C 0 5.25 0 2.262 1.406 0.676 C 2.225 -0.251 3.698 -0.199 4.574 0.676 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 2.25)"
+        ></path>
+        <path
+          d="M 0.676 0.676 C -0.199 1.552 -0.251 3.026 0.676 3.847 C 2.262 5.25 5.25 5.25 5.25 5.25 C 5.25 5.25 5.25 2.262 3.844 0.676 C 3.026 -0.251 1.552 -0.199 0.676 0.676 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6.75 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 C 10.988 0.649 11.251 1.438 11.25 2.25 L 11.25 3 L 3.75 3 L 3.75 2.25 C 3.749 1.438 4.012 0.649 4.5 0 L 0.75 0 C 0.336 0 0 0.336 0 0.75 L 0 16.5 C 0 16.914 0.336 17.25 0.75 17.25 L 14.25 17.25 C 14.664 17.25 15 16.914 15 16.5 L 15 0.75 C 15 0.336 14.664 0 14.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 14.25)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 11.25)"
+        ></path>
+        <path
+          d="M 10.5 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 16.5 C 15 16.914 14.664 17.25 14.25 17.25 L 0.75 17.25 C 0.336 17.25 0 16.914 0 16.5 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-stethoscope" viewBox="0 0 24 24">
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(18.375 13.875)"
+        ></path>
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 L 6 8.25 C 8.071 8.25 9.75 6.571 9.75 4.5 L 9.75 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 13.5)"
+        ></path>
+        <path
+          d="M 8.25 0 L 10.5 0 L 10.5 4.422 C 10.5 7.307 8.205 9.712 5.319 9.75 C 3.915 9.769 2.562 9.224 1.562 8.237 C 0.563 7.25 0 5.904 0 4.5 L 0 0 L 2.25 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 2.25 L 0 2.25 L 0 6 C 0 6.414 0.336 6.75 0.75 6.75 L 3 6.75 C 3 5.507 4.007 4.5 5.25 4.5 C 6.493 4.5 7.5 5.507 7.5 6.75 L 13.5 6.75 C 13.5 5.507 14.507 4.5 15.75 4.5 C 16.993 4.5 18 5.507 18 6.75 L 20.25 6.75 C 20.664 6.75 21 6.414 21 6 L 21 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 11.25)"
+        ></path>
+        <path
+          d="M 0 0 L 3.992 0 C 4.298 0 4.573 0.185 4.688 0.469 L 6 3.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 15 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 13.5)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 15.75)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 15.75)"
+        ></path>
+        <path
+          d="M 6 0 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 18)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0 L 6 6 C 6 6.414 5.664 6.75 5.25 6.75 L 3 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 11.25)"
+        ></path>
+        <path
+          d="M 3 12 L 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15 0 L 15 9.878"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 6)"
+        ></path>
+      </symbol>
+      <symbol id="i-award" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 3.358 3.358 0 7.5 0 C 11.642 0 15 3.358 15 7.5 C 15 11.642 11.642 15 7.5 15 C 3.358 15 0 11.642 0 7.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 9 0 L 9 7.5 L 4.499 5.25 L 0 7.5 L 0 0.001"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 15)"
+        ></path>
+      </symbol>
+      <symbol id="i-utensils" viewBox="0 0 24 24">
+        <path
+          d="M 5.25 12 L 0 12 C 0 12 0 2.25 5.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(14.25 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 12)"
+        ></path>
+        <path
+          d="M 5.25 12 L 0 12 C 0 12 0 2.25 5.25 0 L 5.25 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(14.25 3.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 C 5.821 8.25 7.5 6.571 7.5 4.5 L 6.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-thumbs-up" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0 7.5 L 3.75 0 C 5.407 0 6.75 1.343 6.75 3 L 6.75 5.25 L 12.75 5.25 C 13.18 5.25 13.59 5.435 13.875 5.758 C 14.159 6.081 14.292 6.51 14.238 6.938 L 13.113 15.938 C 13.018 16.687 12.381 17.25 11.625 17.25 L 0 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 0 3 L 2.25 5.25 L 7.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 9.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-timer" viewBox="0 0 24 24">
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 0 L 0 5.25 L 5.25 5.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 6.75)"
+        ></path>
+      </symbol>
+          <symbol id="i-star" viewBox="0 0 24 24">
+        <path
+          d="M12 2.6l2.9 5.9 6.5 .95-4.7 4.6 1.1 6.5L12 17.5l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"
+          fill="currentColor"
+          stroke="none"
+        ></path>
+      </symbol>
+          <symbol id="i-dollar" viewBox="0 0 24 24">
+        <path
+          d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+        ></path>
+      </symbol>
+    </svg>
+
+    <p class="offer-bar" data-screen-label="PC Offer Bar">
+      A thank-you to our police officers —
+      <em>officer pricing with code <code>SERVE20</code> + a free product with every plan</em>
+    </p>
+
+    <header class="masthead" data-screen-label="PC Masthead">
+      <div class="masthead__inner">
+        <a class="masthead__logo" href="police-offer.html" aria-label="Chime Health home">
+          <img src="assets/logo-slate.png" alt="Chime Health" width="428" height="193" />
+        </a>
+        <span class="po-stepper" aria-label="Step 2 of 2"><b>Step 2</b> of 2 · Checkout</span>
+        <div class="masthead__actions">
+          <a class="btn btn--ghost btn--sm po-back" href="police-offer.html#offer">&larr; Back to your offer</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section t-mist" id="checkout" data-screen-label="PC Checkout">
+        <div class="content">
+          <div class="section__intro section__intro--center reveal">
+            <h2 class="h-split h2">Checkout</h2>
+            <h3 class="eyebrow eyebrow--teal">About two minutes</h3>
+          </div>
+          <div class="po-checkout">
+            <!-- prototype form: validates and formats like chime-checkout, no
+                 backend — a valid submit stores the order in sessionStorage and
+                 shows the success state, which hands off to the medical intake -->
+            <form class="po-form reveal" id="poForm" style="--rd: 0.1s" novalidate data-screen-label="PC Checkout Form">
+              <p class="po-form__error" id="poFormError" hidden tabindex="-1"></p>
+
+              <fieldset class="po-fieldset">
+                <legend class="po-legend">Contact</legend>
+                <div class="po-grid">
+                  <div class="po-field">
+                    <label for="poFirst">First name</label>
+                    <input id="poFirst" name="firstName" type="text" autocomplete="given-name" required data-msg="Enter your first name." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field">
+                    <label for="poLast">Last name</label>
+                    <input id="poLast" name="lastName" type="text" autocomplete="family-name" required data-msg="Enter your last name." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field">
+                    <label for="poEmail">Email</label>
+                    <input id="poEmail" name="email" type="email" inputmode="email" autocomplete="email" required data-kind="email" data-msg="Enter a valid email address." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field">
+                    <label for="poPhone">Mobile phone</label>
+                    <input id="poPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required data-kind="phone" data-msg="Enter a 10-digit US phone number." placeholder="(555) 555-5555" />
+                    <p class="po-field__msg"></p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="po-fieldset">
+                <legend class="po-legend">Shipping address</legend>
+                <div class="po-grid">
+                  <div class="po-field po-field--wide">
+                    <label for="poAddr1">Address line 1</label>
+                    <input id="poAddr1" name="address1" type="text" autocomplete="shipping address-line1" required data-msg="Enter your street address." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field po-field--wide">
+                    <label for="poAddr2">Address line 2 <span class="po-opt">(optional)</span></label>
+                    <input id="poAddr2" name="address2" type="text" autocomplete="shipping address-line2" placeholder="Apt., suite, unit number, etc." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field">
+                    <label for="poCity">City</label>
+                    <input id="poCity" name="city" type="text" autocomplete="shipping address-level2" required data-msg="Enter your city." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field po-field--split">
+                    <div class="po-field">
+                      <label for="poState">State</label>
+                      <select id="poState" name="state" autocomplete="shipping address-level1" required data-msg="Choose your state.">
+                        <option value="">Select</option>
+                        <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>DC</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+                      </select>
+                      <p class="po-field__msg"></p>
+                    </div>
+                    <div class="po-field">
+                      <label for="poZip">ZIP</label>
+                      <input id="poZip" name="zip" type="text" inputmode="numeric" autocomplete="shipping postal-code" required data-kind="zip" data-msg="Enter a 5-digit ZIP code." maxlength="10" />
+                      <p class="po-field__msg"></p>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="po-fieldset">
+                <legend class="po-legend">Payment <span class="po-secure"><svg class="ico"><use href="#i-lock-sm" /></svg>Secure</span></legend>
+                <div class="po-grid">
+                  <div class="po-field po-field--wide">
+                    <label for="poCardName">Name on card</label>
+                    <input id="poCardName" name="cardName" type="text" autocomplete="cc-name" required data-msg="Enter the name on the card." />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field po-field--wide">
+                    <label for="poCard">Card number</label>
+                    <input id="poCard" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" required data-kind="card" data-msg="Enter a valid card number." placeholder="1234 5678 9012 3456" maxlength="23" />
+                    <p class="po-field__msg"></p>
+                  </div>
+                  <div class="po-field po-field--split">
+                    <div class="po-field">
+                      <label for="poExpiry">Expiration (MM/YY)</label>
+                      <input id="poExpiry" name="expiry" type="text" inputmode="numeric" autocomplete="cc-exp" required data-kind="expiry" data-msg="Enter a valid expiration date." placeholder="MM / YY" maxlength="7" />
+                      <p class="po-field__msg"></p>
+                    </div>
+                    <div class="po-field">
+                      <label for="poCvc">CVC</label>
+                      <input id="poCvc" name="cvc" type="text" inputmode="numeric" autocomplete="cc-csc" required data-kind="cvc" data-msg="Enter the 3 or 4 digit code." placeholder="123" maxlength="4" />
+                      <p class="po-field__msg"></p>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="po-fieldset">
+                <legend class="po-legend">Consent</legend>
+                <div class="po-checks">
+                  <label class="po-check">
+                    <input type="checkbox" id="poConsentTele" name="consentTelehealth" required data-msg="Please agree to the telehealth consent to continue." />
+                    <span>I have read and agree to the <a href="telehealth-consent.html" target="_blank" rel="noopener">Telehealth Consent</a> and understand a licensed provider decides whether treatment is appropriate after my medical intake.</span>
+                  </label>
+                  <label class="po-check">
+                    <input type="checkbox" id="poConsentTerms" name="consentTerms" required data-msg="Please agree to the terms and privacy policy to continue." />
+                    <span>I agree to the <a href="terms-conditions.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>, <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="return-refund-policy.html" target="_blank" rel="noopener">Return &amp; Refund Policy</a>.</span>
+                  </label>
+                  <p class="po-check__msg" id="poConsentMsg"></p>
+                </div>
+              </fieldset>
+
+              <div class="po-form__foot">
+                <button class="btn btn--terra po-form__submit" id="poSubmit" type="submit">Place my order <span id="poSubmitTotal"></span></button>
+                <p class="po-form__fine">
+                  A licensed provider reviews every order before anything ships.
+                  Officer pricing requires a valid code.
+                </p>
+              </div>
+            </form>
+
+            <div class="po-success" id="poSuccess" hidden tabindex="-1" data-screen-label="PC Success">
+              <span class="po-success__mark" aria-hidden="true"><svg class="ico"><use href="#i-check" /></svg></span>
+              <h3 class="h3">Order received — thank you for your service.</h3>
+              <p class="lede">
+                One more step: a short medical intake so a licensed provider can
+                review your plan. It takes a few minutes, and your officer
+                price is saved to <b id="poSuccessEmail"></b>.
+              </p>
+              <a class="btn btn--terra" href="chimeAssessment.html">Start my medical intake</a>
+              <p class="po-form__fine">Order reference <b id="poSuccessRef"></b>. Questions? <a href="mailto:hello@chimehealth.com">hello@chimehealth.com</a></p>
+            </div>
+            <aside class="po-summary-card reveal" style="--rd: 0.2s" aria-live="polite">
+              <div class="po-summary-card__head">
+                <h3>Your order</h3>
+                <a class="po-summary-card__edit" href="police-offer.html#offer">Edit plan</a>
+              </div>
+              <p class="po-summary-card__empty" id="poSumEmpty">
+                Nothing picked yet. <a href="police-offer.html#offer">Build your plan on the offer page</a> and come back here.
+              </p>
+              <div id="poSumBody" hidden>
+                <div class="po-summary-card__row"><span class="k">Plan</span><span class="v" id="poSumMed"></span></div>
+                <div class="po-summary-card__row"><span class="k">Supply</span><span class="v" id="poSumTerm"></span></div>
+                <div class="po-summary-card__row po-summary-card__row--free"><span class="k">Free product</span><span class="v" id="poSumGift"></span></div>
+                <div class="po-summary-card__row" id="poSumCodeRow" hidden><span class="k">Code</span><span class="v" id="poSumCode"></span></div>
+                <div class="po-summary-card__row"><span class="k">Regular price</span><span class="v" id="poSumReg"></span></div>
+                <div class="po-summary-card__row po-summary-card__row--disc" id="poSumDiscRow" hidden><span class="k">Officer discount</span><span class="v" id="poSumDisc"></span></div>
+                <div class="po-summary-card__total"><span class="k">Due today</span><span class="v" id="poSumTotal"></span></div>
+                <p class="po-summary-card__per" id="poSumPer"></p>
+              </div>
+              <form class="po-code po-code--light" id="poCodeForm" novalidate>
+                <label class="po-code__label" for="poCode">Officer code</label>
+                <div class="po-code__row">
+                  <input id="poCode" name="code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Enter your code" aria-describedby="poCodeMsg" />
+                  <button class="btn btn--terra btn--sm" type="submit">Apply</button>
+                </div>
+                <p class="po-code__msg" id="poCodeMsg" aria-live="polite"></p>
+              </form>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- Footer                                                                 -->
+    <!-- ===================================================================== -->
+    <footer class="site-footer" data-screen-label="PC Footer">
+      <div class="site-footer__inner">
+        <div class="contact">
+          <h2 class="h3">Questions before you order?</h2>
+          <div class="contact__actions">
+            <a class="btn btn--sand" href="police-offer.html#offer">See my officer price</a>
+            <a class="btn btn--ghost" href="mailto:hello@chimehealth.com">Email Us</a>
+          </div>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-brand">
+            <img src="assets/logo-white.png" alt="Chime Health" width="428" height="193" loading="lazy" />
+            <p>Personalized GLP-1 treatment — led by licensed providers, built around your journey.</p>
+            <img src="uploads/badge-compounded-usa.webp" alt="Compounded in the U.S.A." width="85" height="76" loading="lazy" style="width: 73px" />
+          </div>
+          <nav class="footer-nav" aria-label="Company">
+            <h3>Company</h3>
+            <a href="index.html">Home</a>
+            <a href="weight-loss.html">Weight Loss</a>
+            <a href="faq.html">FAQ's</a>
+            <a href="mailto:hello@chimehealth.com">Contact Us</a>
+          </nav>
+          <nav class="footer-nav" aria-label="Legal">
+            <h3>Legal</h3>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+            <a href="telehealth-consent.html">Telehealth Consent</a>
+            <a href="return-refund-policy.html">Return &amp; Refund Policy</a>
+            <a href="shipping-policy.html">Shipping Policy</a>
+          </nav>
+        </div>
+
+        <div class="site-footer__legal">
+          <hr />
+          <p class="footer-fine">
+            Individual results vary. Compounded medications are available
+            subject to provider review and are not guaranteed to be prescribed.
+            These statements have not been evaluated by the Food and Drug
+            Administration.
+          </p>
+          <p class="footer-fine">
+            Certain treatment plans may involve compounded medications when
+            determined appropriate by a licensed healthcare provider. Compounded
+            medications are not approved by the U.S. Food and Drug Administration
+            (FDA) and have not been evaluated by the FDA for safety,
+            effectiveness, or quality. Chime does not manufacture, compound, or
+            dispense medications. Product imagery may be illustrative; actual
+            medication appearance may differ.
+          </p>
+          <p class="footer-fine">
+            Officer pricing requires a valid code at checkout and cannot be
+            combined with other offers. Placing an order does not guarantee a
+            prescription; all treatment decisions are made by a licensed
+            provider after your medical intake.
+          </p>
+          <div class="legal-links">
+            <span>Copyright © 2026 Chime Health</span><span class="sep">|</span>
+            <span>All Rights Reserved</span><span class="sep">|</span>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a><span class="sep">|</span>
+            <a href="return-refund-policy.html">Refund Policy</a><span class="sep">|</span>
+            <a href="telehealth-consent.html">Consent to Telehealth</a><span class="sep">|</span>
+            <a href="privacy-policy.html">Privacy Policy</a><span class="sep">|</span>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+    <script src="ui_kits/amerilean/amerilean.js?v=20260877" defer></script>
+    <script src="ui_kits/police-offer/police-offer.js?v=20260934" defer></script>
+  </body>
+</html>

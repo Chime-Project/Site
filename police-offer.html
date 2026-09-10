@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A Thank-You to Our Police Officers | Chime Health</title>
+    <meta
+      name="description"
+      content="Offers meant to give back to those who serve and protect. Officer pricing on every Chime weight-loss plan, plus a free product with every order. Pick your plan, enter your code, check out in about two minutes."
+    />
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health — Police appreciation offer, STEP 1 of 2 (requested by
+         Devin 2026-09-09; plan in POLICE-OFFER-PLAN.md). This page: hero →
+         "Offers meant to give back to those who serve and protect" → How it
+         works (4 steps) → the offer box (medication → free product → plan →
+         code → price). "Continue to checkout" carries the selection to STEP 2,
+         police-offer-checkout.html (?med&gift&term&code + sessionStorage), the
+         way chime-checkout's product.html → checkout.html works. Layout comes from the SHARED ui_kits/amerilean/
+         amerilean.css re-tokened by chime-theme.css (the labor-day.html
+         stack), plus ui_kits/police-offer/police-offer.css + .js, forked
+         from the Labor Day kit so the two campaign pages stay independent.
+         The picker mirrors select-plan-v2.html (treatment → second product →
+         Monthly / 3 Month) and the prices are the chime-checkout ladder.
+
+         STAND-IN CONTENT — flagged to the client, not silently invented:
+         · The code and the discount. "SERVE20" = 20% off the plan is a
+           placeholder in police-offer.js (CODES); the real code, amount
+           (percent or flat), stacking rule and end date are still to come.
+         · Eligibility: nothing is verified — the code is the only gate.
+         · "$299 value" for the free product is the bonus checkouts' figure
+           (chime-checkout-bonus); Chime's own NAD+ 1-month price is $160.
+         · No countdown or scarcity numbers on purpose (no end date given;
+           a thank-you page should not pressure).
+         · Checkout (step 2, police-offer-checkout.html): a prototype form
+           that validates and formats like chime-checkout but, like every
+           chime-checkout* page, has no backend — a valid submit stores the
+           order in sessionStorage ("chime:police-offer-order") and shows a
+           success state that hands off to the medical intake
+           (chimeAssessment.html), which still has to happen before any
+           prescription. Nothing is charged.
+         · Hero photo: uploads/police-hero.webp (+ -mobile crop) is an
+           AI-generated image (Higgsfield gpt_image_2, 2026-09-10) of four
+           officers in white dress shirts and peaked caps, no badges, patches
+           or department markings — Devin's "simple straight forward TOF
+           image of male and female police officers", revised to "more
+           uniform people with hat and white shirt". Replace with licensed
+           photography if the client prefers real people.
+         · Copy: "Offers meant to give back to those who serve and protect"
+           is the client's line. Everything else is Chime voice from existing
+           site copy — no press, ratings or counters.
+         No AOS/CDN scripts — reveal-on-scroll runs in amerilean.js. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="A Thank-You to Our Police Officers | Chime Health" />
+    <meta
+      property="og:description"
+      content="Officer pricing on every plan, plus a free product on us. Offers meant to give back to those who serve and protect."
+    />
+    <meta property="og:image" content="uploads/vials/tirzepatide.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="ui_kits/amerilean/amerilean.css?v=20260879" />
+    <link rel="stylesheet" href="ui_kits/amerilean/chime-theme.css?v=20260880" />
+    <link rel="stylesheet" href="ui_kits/police-offer/police-offer.css?v=20260934" />
+  </head>
+  <body>
+<svg
+      id="sprite"
+      aria-hidden="true"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path
+          d="M 0 5.25 L 3.75 9 L 12.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-cross" viewBox="0 0 24 24">
+        <path
+          d="M 13.5 0 L 0 13.5"
+          fill="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 13.5 13.5 L 0 0"
+          fill="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-lock-sm" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 13.125)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-dumbbell" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(15 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0 C 3.414 0 3.75 0.336 3.75 0.75 L 3.75 12.75 C 3.75 13.164 3.414 13.5 3 13.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15 5.25)"
+        ></path>
+        <path
+          d="M 0 0 L 2.25 0 C 2.664 0 3 0.336 3 0.75 L 3 8.25 C 3 8.664 2.664 9 2.25 9 L 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(18.75 7.5)"
+        ></path>
+        <path
+          d="M 3 9 L 0.75 9 C 0.336 9 0 8.664 0 8.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 3 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 12)"
+        ></path>
+        <path
+          d="M 0 0 L 1.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(21.75 12)"
+        ></path>
+        <path
+          d="M 0 0 L 1.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(0.75 12)"
+        ></path>
+      </symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24">
+        <path
+          d="M 11.1 0.771 L 19.299 15.008 C 19.874 16.012 19.131 17.25 17.948 17.25 L 1.549 17.25 C 0.366 17.25 -0.376 16.012 0.198 15.008 L 8.398 0.771 C 8.988 -0.257 10.509 -0.257 11.1 0.771 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.251 3)"
+        ></path>
+        <path
+          d="M 11.1 0.771 L 19.299 15.008 C 19.874 16.012 19.131 17.25 17.948 17.25 L 1.549 17.25 C 0.366 17.25 -0.376 16.012 0.198 15.008 L 8.398 0.771 C 8.988 -0.257 10.509 -0.257 11.1 0.771 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.251 3)"
+        ></path>
+        <path
+          d="M 0 3.75 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 9.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 15.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-unlock" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 11.25 C 16.5 11.664 16.164 12 15.75 12 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 8.25)"
+        ></path>
+        <path
+          d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.564 0 7.152 1.288 7.5 3"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 L 0 0 L 9 0 L 9 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 6)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 0 L 9 0 L 9 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 6)"
+        ></path>
+        <path
+          d="M 0 0.75 C 0 0.336 0.336 0 0.75 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 17.25 C 15 17.664 14.664 18 14.25 18 L 0.75 18 C 0.336 18 0 17.664 0 17.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.001)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(7.125 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(14.625 12.75)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(7.125 16.5)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(10.875 16.5)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(14.625 16.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24">
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(15.75 5.25)"
+        ></path>
+        <path
+          d="M 0 0 L 0 16.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 20.25)"
+        ></path>
+        <path
+          d="M 0 3 L 13.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 5.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 9.157 1.875 9.75 3 9.75 C 4.125 9.75 6 9.157 6 7.5 L 3 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 5.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-bell-off" viewBox="0 0 24 24">
+        <path
+          d="M 5.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 5.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 8.25)"
+        ></path>
+        <path
+          d="M 0 0 L 15 16.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 7.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 8.25)"
+        ></path>
+        <path
+          d="M 0 0 C 0.998 1.133 0.998 2.832 0 3.966"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(18 10.019)"
+        ></path>
+        <path
+          d="M 12 6.722 L 12 13.247 L 5.25 7.997 L 0.75 7.997 C 0.336 7.997 0 7.661 0 7.247 L 0 1.247 C 0 0.833 0.336 0.497 0.75 0.497 L 5.25 0.497 L 5.889 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 7.753)"
+        ></path>
+        <path
+          d="M 0 2.905 L 3.736 0 L 3.736 7.015"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(10.514 3)"
+        ></path>
+        <path
+          d="M 0 0 C 2.292 2.562 2.292 6.438 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(20.782 7.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 L 9 7.5 L 15 9.75 L 4.5 21 L 6 13.5 L 0 11.25 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 10.5 0 L 9 7.5 L 15 9.75 L 4.5 21 L 6 13.5 L 0 11.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+      </symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 6.75 C 15 7.164 14.664 7.5 14.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 12)"
+        ></path>
+        <path
+          d="M 0.75 4.5 C 0.336 4.5 0 4.164 0 3.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 17.25 0 C 17.664 0 18 0.336 18 0.75 L 18 3.75 C 18 4.164 17.664 4.5 17.25 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 7.5)"
+        ></path>
+        <path
+          d="M 15 0 L 15 6.75 C 15 7.164 14.664 7.5 14.25 7.5 L 0.75 7.5 C 0.336 7.5 0 7.164 0 6.75 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 12"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 7.5)"
+        ></path>
+        <path
+          d="M 4.574 0.676 C 5.45 1.552 5.501 3.026 4.574 3.847 C 2.989 5.25 0 5.25 0 5.25 C 0 5.25 0 2.262 1.406 0.676 C 2.225 -0.251 3.698 -0.199 4.574 0.676 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 2.25)"
+        ></path>
+        <path
+          d="M 0.676 0.676 C -0.199 1.552 -0.251 3.026 0.676 3.847 C 2.262 5.25 5.25 5.25 5.25 5.25 C 5.25 5.25 5.25 2.262 3.844 0.676 C 3.026 -0.251 1.552 -0.199 0.676 0.676 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(6.75 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24">
+        <path
+          d="M 10.5 0 C 10.988 0.649 11.251 1.438 11.25 2.25 L 11.25 3 L 3.75 3 L 3.75 2.25 C 3.749 1.438 4.012 0.649 4.5 0 L 0.75 0 C 0.336 0 0 0.336 0 0.75 L 0 16.5 C 0 16.914 0.336 17.25 0.75 17.25 L 14.25 17.25 C 14.664 17.25 15 16.914 15 16.5 L 15 0.75 C 15 0.336 14.664 0 14.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 14.25)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9 11.25)"
+        ></path>
+        <path
+          d="M 10.5 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 16.5 C 15 16.914 14.664 17.25 14.25 17.25 L 0.75 17.25 C 0.336 17.25 0 16.914 0 16.5 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 4.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+        <path
+          d="M 0 4.5 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-stethoscope" viewBox="0 0 24 24">
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z"
+          fill="currentColor"
+          transform="translate(18.375 13.875)"
+        ></path>
+        <path
+          d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(16.5 12)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 L 6 8.25 C 8.071 8.25 9.75 6.571 9.75 4.5 L 9.75 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 13.5)"
+        ></path>
+        <path
+          d="M 8.25 0 L 10.5 0 L 10.5 4.422 C 10.5 7.307 8.205 9.712 5.319 9.75 C 3.915 9.769 2.562 9.224 1.562 8.237 C 0.563 7.25 0 5.904 0 4.5 L 0 0 L 2.25 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24">
+        <path
+          d="M 15 0 L 15 2.25 L 0 2.25 L 0 6 C 0 6.414 0.336 6.75 0.75 6.75 L 3 6.75 C 3 5.507 4.007 4.5 5.25 4.5 C 6.493 4.5 7.5 5.507 7.5 6.75 L 13.5 6.75 C 13.5 5.507 14.507 4.5 15.75 4.5 C 16.993 4.5 18 5.507 18 6.75 L 20.25 6.75 C 20.664 6.75 21 6.414 21 6 L 21 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 11.25)"
+        ></path>
+        <path
+          d="M 0 0 L 3.992 0 C 4.298 0 4.573 0.185 4.688 0.469 L 6 3.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 7.5)"
+        ></path>
+        <path
+          d="M 0 0 L 15 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 13.5)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(15.75 15.75)"
+        ></path>
+        <path
+          d="M 0 2.25 C 0 1.007 1.007 0 2.25 0 C 3.493 0 4.5 1.007 4.5 2.25 C 4.5 3.493 3.493 4.5 2.25 4.5 C 1.007 4.5 0 3.493 0 2.25 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(5.25 15.75)"
+        ></path>
+        <path
+          d="M 6 0 L 0 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(9.75 18)"
+        ></path>
+        <path
+          d="M 0 0 L 6 0 L 6 6 C 6 6.414 5.664 6.75 5.25 6.75 L 3 6.75"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(17.25 11.25)"
+        ></path>
+        <path
+          d="M 3 12 L 0.75 12 C 0.336 12 0 11.664 0 11.25 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15 0 L 15 9.878"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 6)"
+        ></path>
+      </symbol>
+      <symbol id="i-award" viewBox="0 0 24 24">
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 0 7.5 C 0 3.358 3.358 0 7.5 0 C 11.642 0 15 3.358 15 7.5 C 15 11.642 11.642 15 7.5 15 C 3.358 15 0 11.642 0 7.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(4.5 1.5)"
+        ></path>
+        <path
+          d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 4.5)"
+        ></path>
+        <path
+          d="M 9 0 L 9 7.5 L 4.499 5.25 L 0 7.5 L 0 0.001"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 15)"
+        ></path>
+      </symbol>
+      <symbol id="i-utensils" viewBox="0 0 24 24">
+        <path
+          d="M 5.25 12 L 0 12 C 0 12 0 2.25 5.25 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(14.25 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 4.5"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 3.75)"
+        ></path>
+        <path
+          d="M 0 0 L 0 9"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 12)"
+        ></path>
+        <path
+          d="M 5.25 12 L 0 12 C 0 12 0 2.25 5.25 0 L 5.25 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(14.25 3.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 C 5.821 8.25 7.5 6.571 7.5 4.5 L 6.75 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3.75 3.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-thumbs-up" viewBox="0 0 24 24">
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0.75 0 L 5.25 0 L 5.25 0 L 5.25 9.75 L 5.25 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 L 0 0.75 C 0 0.336 0.336 0 0.75 0 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 9.75)"
+        ></path>
+        <path
+          d="M 0 7.5 L 3.75 0 C 5.407 0 6.75 1.343 6.75 3 L 6.75 5.25 L 12.75 5.25 C 13.18 5.25 13.59 5.435 13.875 5.758 C 14.159 6.081 14.292 6.51 14.238 6.938 L 13.113 15.938 C 13.018 16.687 12.381 17.25 11.625 17.25 L 0 17.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(7.5 2.25)"
+        ></path>
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(2.25 2.25)"
+        ></path>
+        <path
+          d="M 0 3 L 2.25 5.25 L 7.5 0"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(8.25 9.75)"
+        ></path>
+      </symbol>
+      <symbol id="i-timer" viewBox="0 0 24 24">
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill-opacity="var(--if,0)"
+          fill="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(3 3)"
+        ></path>
+        <path
+          d="M 0 0 L 0 5.25 L 5.25 5.25"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+          transform="translate(12 6.75)"
+        ></path>
+      </symbol>
+          <symbol id="i-star" viewBox="0 0 24 24">
+        <path
+          d="M12 2.6l2.9 5.9 6.5 .95-4.7 4.6 1.1 6.5L12 17.5l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"
+          fill="currentColor"
+          stroke="none"
+        ></path>
+      </symbol>
+          <symbol id="i-dollar" viewBox="0 0 24 24">
+        <path
+          d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+          fill="transparent"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="var(--isw,1.5)"
+          stroke="currentColor"
+        ></path>
+      </symbol>
+    </svg>
+
+    <!-- ===================================================================== -->
+    <!-- Top bars: highlights ticker + offer bar                                -->
+    <!-- ===================================================================== -->
+    <div class="ticker" data-screen-label="PO Ticker" aria-label="Highlights">
+      <ul class="ticker__track">
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Dedicated Wellness Coaches</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Licensed US Providers</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>HIPAA Protected</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Next-Day Shipping Available</li>
+        <li class="ticker__item"><svg class="ico"><use href="#i-check" /></svg>Same Price at Every Dose</li>
+      </ul>
+    </div>
+    <p class="offer-bar" data-screen-label="PO Offer Bar">
+      A thank-you to our police officers —
+      <em>officer pricing with code <code>SERVE20</code> + a free product with every plan</em>
+    </p>
+
+    <!-- ===================================================================== -->
+    <!-- Header                                                                 -->
+    <!-- ===================================================================== -->
+    <header class="masthead" data-screen-label="PO Masthead">
+      <div class="masthead__inner">
+        <a class="masthead__logo" href="police-offer.html" aria-label="Chime Health home">
+          <img src="assets/logo-slate.png" alt="Chime Health" width="428" height="193" />
+        </a>
+        <nav class="masthead__nav" aria-label="Page">
+          <a href="#how-it-works">How it works</a>
+          <a href="#offer">Your offer</a>
+        </nav>
+        <div class="masthead__actions">
+          <a class="btn btn--terra btn--sm" href="#offer">See my officer price</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =================================================================== -->
+      <!-- Hero                                                                 -->
+      <!-- =================================================================== -->
+      <section class="hero po-hero" data-screen-label="PO Hero">
+        <div class="po-hero__inner">
+          <div class="po-hero__copy">
+            <span class="pill pill--clay"
+              ><svg class="ico"><use href="#i-shield" /></svg>Police Appreciation Offer</span
+            >
+            <h1 class="h-split h1">To those who serve and protect: <em>thank you.</em></h1>
+            <p class="lede">
+              Officer pricing on every plan, plus a free product on us. Pick
+              your plan, enter your code, and check out in about two minutes.
+            </p>
+            <a class="btn btn--terra po-hero__cta" href="#offer">See my officer price</a>
+          </div>
+          <!-- generated hero (Higgsfield gpt_image_2, 2026-09-10): two officers in
+               generic navy uniforms, no insignia — see the head comment -->
+          <figure class="po-hero__photo">
+            <picture>
+              <source media="(max-width: 809px)" srcset="uploads/police-hero-mobile.webp" />
+              <img
+                src="uploads/police-hero.webp"
+                alt="Four police officers in white dress uniforms and service caps standing together in a clinic"
+                width="1600"
+                height="1063"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </picture>
+          </figure>
+          <div class="po-hero__side">
+            <div class="offer-card">
+              <div class="seal" aria-hidden="true">
+                <small>Thank you</small>
+                <b>Officers</b>
+                <small>for your service</small>
+              </div>
+              <div class="offer-card__top">
+                <p class="offer-card__title">
+                  <em>Officer pricing</em> with your code, plus a free product with every plan
+                </p>
+                <div class="offer-card__vials">
+                  <img src="uploads/vials/tirzepatide.webp" alt="Compounded tirzepatide vial" width="427" height="800" />
+                  <span class="offer-card__plus" aria-hidden="true">+</span>
+                  <img src="uploads/vials/nad-plus.webp" alt="NAD+ vial" width="422" height="800" />
+                </div>
+              </div>
+              <ul class="checks">
+                <li>
+                  <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                  <span>Semaglutide or Tirzepatide, same price at every dose</span>
+                </li>
+                <li>
+                  <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                  <span>Free Tesamorelin or NAD+ with your plan</span>
+                </li>
+                <li>
+                  <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
+                  <span>Monthly, or 3 months with every 4th month free</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="po-facts">
+          <div class="fact">
+            <svg class="ico"><use href="#i-shield" /></svg>
+            <div class="fact__text">
+              <b>Licensed US Providers</b>
+              <p>Care from licensed medical professionals.</p>
+            </div>
+          </div>
+          <div class="fact">
+            <svg class="ico"><use href="#i-truck" /></svg>
+            <div class="fact__text">
+              <b>Discreet Shipping</b>
+              <p>Fast, private, and reliable delivery.</p>
+            </div>
+          </div>
+          <div class="fact">
+            <svg class="ico"><use href="#i-dollar" /></svg>
+            <div class="fact__text">
+              <b>No Hidden Fees</b>
+              <p>Transparent pricing. No surprises.</p>
+            </div>
+          </div>
+          <div class="fact">
+            <svg class="ico"><use href="#i-lock" /></svg>
+            <div class="fact__text">
+              <b>Your Price. Locked In.</b>
+              <p>No surprises ever, at any dose.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Give back                                                            -->
+      <!-- =================================================================== -->
+      <section class="section section--tight t-white" id="give-back" data-screen-label="PO Give Back">
+        <div class="po-give">
+          <div class="po-give__copy reveal">
+            <div class="section__intro">
+              <h2 class="h-split h2">Offers meant to give back to <em>those who serve and protect</em></h2>
+              <h3 class="eyebrow eyebrow--teal">A thank-you from Chime</h3>
+            </div>
+            <p class="lede">
+              Long shifts, late calls and time on your feet make it hard to put
+              your own health first. This page is our way of saying thank you:
+              officer pricing on every Chime weight-loss plan, a free product with
+              your order, and the same licensed-provider care every member gets.
+            </p>
+          </div>
+          <div class="po-give__points">
+            <div class="fact reveal" style="--rd: 0.1s">
+              <span class="ico-badge"><svg class="ico"><use href="#i-dollar" /></svg></span>
+              <div class="fact__text">
+                <b>Officer pricing with your code</b>
+                <p>Enter it once. Your price updates before you pay.</p>
+              </div>
+            </div>
+            <div class="fact reveal" style="--rd: 0.2s">
+              <span class="ico-badge"><svg class="ico"><use href="#i-gift" /></svg></span>
+              <div class="fact__text">
+                <b>A free product with every plan</b>
+                <p>Tesamorelin or NAD+, your pick, on us.</p>
+              </div>
+            </div>
+            <div class="fact reveal" style="--rd: 0.3s">
+              <span class="ico-badge"><svg class="ico"><use href="#i-lock" /></svg></span>
+              <div class="fact__text">
+                <b>Same price at every dose</b>
+                <p>No hidden fees. No mid-plan price increases.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- How it works                                                         -->
+      <!-- =================================================================== -->
+      <section class="section t-mist" id="how-it-works" data-screen-label="PO How">
+        <div class="content">
+          <div class="how__intro reveal">
+            <div class="section__intro">
+              <h2 class="h-split h2">How it works: <em>4 simple steps</em></h2>
+              <h3 class="eyebrow eyebrow--teal">How it works</h3>
+            </div>
+            <p class="lede">
+              Two steps: build your plan and see your officer price here, then
+              check out on the next page. A licensed provider takes it from there.
+            </p>
+          </div>
+
+          <div class="po-steps">
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.1s">
+              <div class="step-card__body" style="gap: 14px">
+                <div class="step-card__media step-card__media--contain">
+                  <img src="uploads/2vials.webp" alt="Two medication vials" width="816" height="804" loading="lazy" />
+                </div>
+                <h3 class="h4">Pick your medication <em>and your free product</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 1</h4>
+                <p class="copy">
+                  Semaglutide or Tirzepatide, then Tesamorelin or NAD+ on us.
+                  Choose Monthly or 3 months with every 4th month free.
+                </p>
+              </div>
+            </article>
+
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.2s">
+              <div class="step-card__body" style="gap: 14px">
+                <div class="step-card__media">
+                  <img src="uploads/executive-labs-review.webp" alt="Reviewing results on a laptop" width="1600" height="1067" loading="lazy" />
+                </div>
+                <h3 class="h4">Enter your <em>officer code</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 2</h4>
+                <p class="copy">
+                  You see the regular price first. Apply your code and your
+                  officer price replaces it, before you enter a card.
+                </p>
+              </div>
+            </article>
+
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.3s">
+              <div class="step-card__body" style="gap: 14px">
+                <div class="step-card__media step-card__media--contain">
+                  <img src="uploads/wieght_loss_md.webp" alt="Telehealth visit with a provider on a phone" width="1100" height="1261" loading="lazy" />
+                </div>
+                <h3 class="h4">Check out in <em>about two minutes</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 3</h4>
+                <p class="copy">
+                  Contact, shipping and payment on the next page. Then a short
+                  medical intake so a licensed provider can review your plan.
+                </p>
+              </div>
+            </article>
+
+            <article class="card card--pad-lg card--porcelain reveal" style="--rd: 0.4s">
+              <div class="step-card__body" style="gap: 14px">
+                <div class="step-card__media">
+                  <img src="uploads/pen.webp" alt="Injection pen ready to ship" width="1200" height="800" loading="lazy" />
+                </div>
+                <h3 class="h4">Provider review, <em>then delivery</em></h3>
+                <h4 class="eyebrow eyebrow--teal">Step 4</h4>
+                <p class="copy">
+                  If treatment is appropriate, your prescription ships discreetly
+                  from a licensed U.S. pharmacy within 48 hours, with tracking.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- The offer box                                                        -->
+      <!-- =================================================================== -->
+      <section class="section t-white" id="offer" data-screen-label="PO Offer">
+        <div class="content">
+          <div class="section__intro section__intro--center reveal">
+            <span class="po-stepper" aria-label="Step 1 of 2"><b>Step 1</b> of 2 · Build your plan</span>
+            <h2 class="h-split h2">Build your plan, <em>see your officer price</em></h2>
+            <h3 class="eyebrow eyebrow--teal">Your offer</h3>
+          </div>
+
+          <div class="po-offer reveal" style="--rd: 0.1s">
+            <!-- code strip -->
+            <div class="po-offer__strip">
+              <form class="po-code" id="poCodeForm" novalidate>
+                <label class="po-code__label" for="poCode">Officer code</label>
+                <div class="po-code__row">
+                  <input
+                    id="poCode"
+                    name="code"
+                    type="text"
+                    inputmode="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    placeholder="Enter your code"
+                    aria-describedby="poCodeMsg"
+                  />
+                  <button class="btn btn--sand btn--sm" type="submit">Apply</button>
+                </div>
+                <p class="po-code__msg" id="poCodeMsg" aria-live="polite"></p>
+              </form>
+              <div class="po-strip-price" id="poStripPrice" hidden aria-live="polite">
+                <span class="k">Your price</span>
+                <span class="po-strip-price__reg" id="poStripReg"></span>
+                <span class="po-strip-price__now" id="poStripNow" hidden></span>
+              </div>
+            </div>
+
+            <!-- 1. medication -->
+            <div class="po-step" data-po-step="med">
+              <div class="po-step__head">
+                <span class="po-step__num" aria-hidden="true">1</span>
+                <h3 class="h4">Pick your <em>medication</em></h3>
+                <span class="po-step__note">Same price at every dose</span>
+              </div>
+              <div class="po-tiles" role="radiogroup" aria-label="Medication">
+                <button type="button" class="po-tile" role="radio" aria-checked="false" data-med="sema">
+                  <span class="po-tile__art"><img src="uploads/vials/semaglutide.webp" alt="" width="418" height="800" /></span>
+                  <span class="po-tile__body">
+                    <span class="po-tile__name">Semaglutide</span>
+                    <span class="po-tile__desc">Proven, effective, more affordable.</span>
+                    <span class="po-tile__price">From $249/mo</span>
+                  </span>
+                  <span class="po-tile__radio" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="po-tile" role="radio" aria-checked="false" data-med="tirz">
+                  <span class="po-tile__badge">Recommended</span>
+                  <span class="po-tile__art"><img src="uploads/vials/tirzepatide.webp" alt="" width="427" height="800" /></span>
+                  <span class="po-tile__body">
+                    <span class="po-tile__name">Tirzepatide</span>
+                    <span class="po-tile__desc">Faster results, dual-action.</span>
+                    <span class="po-tile__price">From $299/mo</span>
+                  </span>
+                  <span class="po-tile__radio" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. free product -->
+            <div class="po-step" data-po-step="gift">
+              <div class="po-step__head">
+                <span class="po-step__num" aria-hidden="true">2</span>
+                <h3 class="h4">Pick your <em>free product</em></h3>
+                <span class="po-step__note">Included with every plan</span>
+              </div>
+              <div class="po-tiles" role="radiogroup" aria-label="Free product">
+                <button type="button" class="po-tile" role="radio" aria-checked="false" data-gift="tesa">
+                  <span class="po-tile__art"><img src="uploads/vials/tesamorelin.webp" alt="" width="365" height="800" /></span>
+                  <span class="po-tile__body">
+                    <span class="po-tile__name">Tesamorelin</span>
+                    <span class="po-tile__desc">Peptide support for lean mass and metabolism.</span>
+                    <span class="po-tile__free"><svg class="ico" style="width:14px;height:14px"><use href="#i-gift" /></svg>FREE <s>$299 value</s></span>
+                  </span>
+                  <span class="po-tile__radio" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="po-tile" role="radio" aria-checked="false" data-gift="nad">
+                  <span class="po-tile__art"><img src="uploads/vials/nad-plus.webp" alt="" width="422" height="800" /></span>
+                  <span class="po-tile__body">
+                    <span class="po-tile__name">NAD+</span>
+                    <span class="po-tile__desc">Cellular energy, focus and recovery support.</span>
+                    <span class="po-tile__free"><svg class="ico" style="width:14px;height:14px"><use href="#i-gift" /></svg>FREE <s>$299 value</s></span>
+                  </span>
+                  <span class="po-tile__radio" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. plan -->
+            <div class="po-step" data-po-step="term">
+              <div class="po-step__head">
+                <span class="po-step__num" aria-hidden="true">3</span>
+                <h3 class="h4">Pick your <em>plan</em></h3>
+                <span class="po-step__note">Pause or cancel anytime</span>
+              </div>
+              <div class="po-tiles" role="radiogroup" aria-label="Plan length">
+                <button type="button" class="po-tile po-term" role="radio" aria-checked="false" data-term="1">
+                  <span class="po-tile__body">
+                    <span class="po-tile__name">Monthly plan</span>
+                    <span class="po-term__rate" data-po-rate>from $299/mo</span>
+                    <span class="po-term__due" data-po-due>4-week supply</span>
+                    <span class="po-tile__desc">No free month. Pause or cancel anytime.</span>
+                  </span>
+                  <span class="po-tile__radio" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="po-tile po-term" role="radio" aria-checked="false" data-term="3">
+                  <span class="po-tile__badge">Most popular</span>
+                  <span class="po-tile__body">
+                    <span class="po-tile__name">3 month plan</span>
+                    <span class="po-term__rate" data-po-rate>from $249/mo</span>
+                    <span class="po-term__due" data-po-due>Includes a free 4th month</span>
+                    <span class="po-term__free">Every 4th month free, forever.</span>
+                    <span class="po-tile__desc">No mid-plan price increases.</span>
+                  </span>
+                  <span class="po-tile__radio" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- price + CTA -->
+            <div class="po-summary" id="poSummary">
+              <div class="po-summary__lines" aria-live="polite">
+                <p class="po-summary__pick" id="poPick">Pick your medication, your free product and a plan to see your price.</p>
+                <div class="po-summary__price" id="poPrice" hidden>
+                  <span class="po-summary__reg" id="poReg"></span>
+                  <span class="po-summary__now" id="poNow" hidden></span>
+                  <span class="po-summary__per" id="poPer"></span>
+                </div>
+                <p class="po-summary__save" id="poSave" hidden></p>
+                <p class="po-summary__hint" id="poHint">Have a code? Enter it at the top of this box to see your officer price.</p>
+              </div>
+              <a class="btn btn--terra po-summary__cta is-disabled" id="poCta" href="police-offer-checkout.html" aria-disabled="true">Continue to checkout</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- Checkout                                                             -->
+      <!-- =================================================================== -->
+    </main>
+
+    <!-- sticky mobile price bar (shown once the plan is complete) -->
+    <div class="po-bar" id="poBar" hidden data-screen-label="PO Bar">
+      <div class="po-bar__text">
+        <span class="po-bar__label" id="poBarLabel"></span>
+        <b id="poBarPrice"></b>
+      </div>
+      <a class="btn btn--sand btn--sm" id="poBarLink" href="police-offer-checkout.html">Checkout</a>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Footer                                                                 -->
+    <!-- ===================================================================== -->
+    <footer class="site-footer" data-screen-label="PO Footer">
+      <div class="site-footer__inner">
+        <div class="contact">
+          <h2 class="h3">Questions before you order?</h2>
+          <div class="contact__actions">
+            <a class="btn btn--sand" href="#offer">See my officer price</a>
+            <a class="btn btn--ghost" href="mailto:hello@chimehealth.com">Email Us</a>
+          </div>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-brand">
+            <img src="assets/logo-white.png" alt="Chime Health" width="428" height="193" loading="lazy" />
+            <p>Personalized GLP-1 treatment — led by licensed providers, built around your journey.</p>
+            <img src="uploads/badge-compounded-usa.webp" alt="Compounded in the U.S.A." width="85" height="76" loading="lazy" style="width: 73px" />
+          </div>
+          <nav class="footer-nav" aria-label="Company">
+            <h3>Company</h3>
+            <a href="index.html">Home</a>
+            <a href="weight-loss.html">Weight Loss</a>
+            <a href="faq.html">FAQ's</a>
+            <a href="mailto:hello@chimehealth.com">Contact Us</a>
+          </nav>
+          <nav class="footer-nav" aria-label="Legal">
+            <h3>Legal</h3>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+            <a href="telehealth-consent.html">Telehealth Consent</a>
+            <a href="return-refund-policy.html">Return &amp; Refund Policy</a>
+            <a href="shipping-policy.html">Shipping Policy</a>
+          </nav>
+        </div>
+
+        <div class="site-footer__legal">
+          <hr />
+          <p class="footer-fine">
+            Individual results vary. Compounded medications are available
+            subject to provider review and are not guaranteed to be prescribed.
+            These statements have not been evaluated by the Food and Drug
+            Administration.
+          </p>
+          <p class="footer-fine">
+            Certain treatment plans may involve compounded medications when
+            determined appropriate by a licensed healthcare provider. Compounded
+            medications are not approved by the U.S. Food and Drug Administration
+            (FDA) and have not been evaluated by the FDA for safety,
+            effectiveness, or quality. Chime does not manufacture, compound, or
+            dispense medications. Product imagery may be illustrative; actual
+            medication appearance may differ.
+          </p>
+          <p class="footer-fine">
+            Officer pricing requires a valid code at checkout and cannot be
+            combined with other offers. Placing an order does not guarantee a
+            prescription; all treatment decisions are made by a licensed
+            provider after your medical intake.
+          </p>
+          <div class="legal-links">
+            <span>Copyright © 2026 Chime Health</span><span class="sep">|</span>
+            <span>All Rights Reserved</span><span class="sep">|</span>
+            <a href="terms-conditions.html">Terms &amp; Conditions</a><span class="sep">|</span>
+            <a href="return-refund-policy.html">Refund Policy</a><span class="sep">|</span>
+            <a href="telehealth-consent.html">Consent to Telehealth</a><span class="sep">|</span>
+            <a href="privacy-policy.html">Privacy Policy</a><span class="sep">|</span>
+            <a href="hipaa-notice.html">Notice of Privacy Practices</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="ui_kits/amerilean/amerilean.js?v=20260877" defer></script>
+    <script src="ui_kits/police-offer/police-offer.js?v=20260934" defer></script>
+  </body>
+</html>
