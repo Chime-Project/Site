@@ -850,6 +850,40 @@ html {
 .po-summary__cta {
   min-width: 260px;
 }
+/* Plan chosen → the checkout buttons go blue and pulse a little, the way the
+   chime-checkout "Start Losing Weight" button does (client, 2026-09-11):
+   ground breathes navy ↔ blue with a soft ring, scale a barely-there 1.2%.
+   Same colours as chime-checkout's GSAP tween (#020617 ↔ #2b45c5), done in
+   CSS here because this page does not load GSAP. */
+.btn.is-live {
+  background: #2b45c5;
+  color: var(--white);
+  box-shadow: 0 0 0 4px rgba(43, 69, 197, 0.45), 0 10px 22px rgba(43, 69, 197, 0.35);
+  animation: po-cta-pulse 1.7s ease-in-out 0.15s infinite;
+  will-change: transform, box-shadow, background-color;
+}
+.btn.is-live:hover {
+  background: #020617;
+  color: var(--white);
+  animation-play-state: paused;
+}
+@keyframes po-cta-pulse {
+  0%, 100% {
+    background-color: #020617;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(43, 69, 197, 0), 0 8px 18px rgba(2, 6, 23, 0.25);
+  }
+  50% {
+    background-color: #2b45c5;
+    transform: scale(1.012);
+    box-shadow: 0 0 0 4px rgba(43, 69, 197, 0.45), 0 10px 22px rgba(43, 69, 197, 0.35);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn.is-live {
+    animation: none; /* stays blue with the ring, just doesn't breathe */
+  }
+}
 .btn.is-disabled {
   background: var(--mist-600);
   color: var(--porcelain);
@@ -1187,8 +1221,19 @@ html {
   font-weight: 600;
 }
 .po-summary-card__row--free .v,
-.po-summary-card__row--disc .v {
+.po-summary-card__row--disc .v,
+.po-summary-card__row--save .v {
   color: var(--teal-800);
+}
+.po-summary-card__row--save {
+  padding-top: 10px;
+  font-weight: 700;
+}
+.po-summary-card__row--save .k {
+  white-space: nowrap;
+}
+.po-summary-card__row--save .v {
+  text-align: right;
 }
 .po-summary-card__total {
   display: flex;

@@ -93,7 +93,9 @@
       total: total,
       perMonth: round2(total / plan.months),
       regularPerMonth: round2(regular / plan.months),
-      savings: discount,
+      // "you save" = the code's discount + the free product's value (client,
+      // 2026-09-11: without the code they would buy that product too)
+      savings: round2(discount + (GIFTS[sel.gift] ? GIFTS[sel.gift].value : 0)),
     };
   }
 
@@ -159,10 +161,16 @@
       codeRow: $("poSumCodeRow"), code: $("poSumCode"),
       reg: $("poSumReg"), discRow: $("poSumDiscRow"), disc: $("poSumDisc"),
       total: $("poSumTotal"), per: $("poSumPer"), empty: $("poSumEmpty"), body: $("poSumBody"),
+      saveRow: $("poSumSaveRow"), save: $("poSumSave"),
     },
   };
 
   function setText(node, text) { if (node) node.textContent = text; }
+  // " ($100 off + free Tesamorelin, a $299 value)" — how the savings add up
+  function saveDetail(q) {
+    if (!q.giftName) return "";
+    return " (" + money(q.discount) + " off + free " + q.giftName + ", a " + money(q.giftValue) + " value)";
+  }
   function show(node, on) { if (node) node.hidden = !on; }
 
   function checkoutHref() {
@@ -264,7 +272,7 @@
       setText(el.per, (q.term === 3 ? "due today · " + money(q.perMonth) + "/mo · 3 months of supply" : "billed monthly · 4-week supply")
         + (q.giftName ? " · free " + q.giftName : "") + " · shipping included");
       show(el.save, q.discount > 0);
-      setText(el.save, (q.codeLabel || "Code") + " applied — you save " + money(q.discount));
+      setText(el.save, (q.codeLabel || "Code") + " applied — you save " + money(q.savings) + saveDetail(q));
       show(el.hint, q.discount === 0);
     }
 
@@ -283,8 +291,14 @@
       el.cta.setAttribute("href", href);
       el.cta.setAttribute("aria-disabled", complete ? "false" : "true");
       el.cta.classList.toggle("is-disabled", !complete);
+      // plan chosen → the button turns blue and pulses (the chime-checkout
+      // "Start Losing Weight" treatment; client request 2026-09-11)
+      el.cta.classList.toggle("is-live", !!complete);
     }
-    if (el.barLink) el.barLink.setAttribute("href", href);
+    if (el.barLink) {
+      el.barLink.setAttribute("href", href);
+      el.barLink.classList.toggle("is-live", !!complete);
+    }
     show(el.bar, !!complete);
     document.body.classList.toggle("has-po-bar", !!complete);
     if (complete) {
@@ -294,7 +308,7 @@
       show(el.barReg, q.discount > 0);
       setText(el.barReg, money(q.regular));
       show(el.barSave, q.discount > 0);
-      setText(el.barSave, "Code applied · you save " + money(q.discount));
+      setText(el.barSave, "Code applied · you save " + money(q.savings));
     }
 
     // order summary (step 2, and the lander's preview if present)
@@ -310,6 +324,8 @@
       show(el.sum.discRow, q.discount > 0);
       setText(el.sum.disc, "-" + money(q.discount));
       setText(el.sum.total, money(q.total));
+      show(el.sum.saveRow, q.discount > 0);
+      setText(el.sum.save, money(q.savings) + saveDetail(q));
       setText(el.sum.per, money(q.perMonth) + " per month · prescription fee and shipping included");
     }
 

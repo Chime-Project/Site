@@ -73,6 +73,14 @@ t("percent and flat codes still work through the same table", function () {
   assert.strictEqual(P.quote({ med: "sema", term: 1, code: "TESTFLAT" }).total, 0);
   delete P.CODES.TESTPCT; delete P.CODES.TESTFLAT;
 });
+t("savings = code discount + the free product's value (client 2026-09-11)", function () {
+  assert.strictEqual(P.quote({ med: "sema", term: 1, gift: "tesa", code: "HOUSTONPOLICE" }).savings, 399);
+  assert.strictEqual(P.quote({ med: "tirz", term: 3, gift: "nad", code: "HOUSTONPOLICE" }).savings, 899);
+  assert.strictEqual(P.quote({ med: "sema", term: 1, gift: "tesa" }).savings, 299);
+  assert.strictEqual(P.quote({ med: "sema", term: 1, code: "HOUSTONPOLICE" }).savings, 100);
+  assert.strictEqual(P.quote({ med: "sema", term: 1 }).savings, 0);
+  assert.strictEqual(P.quote({ med: "sema", term: 1, code: "HOUSTONPOLICE" }).total, 299); // the total is unchanged
+});
 t("money(): whole dollars have no cents, cents are padded, thousands grouped", function () {
   assert.strictEqual(P.money(747), "$747");
   assert.strictEqual(P.money(1497), "$1,497");
