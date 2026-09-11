@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Neuropathy Protocol | Chime Health</title>
+    <meta name="description" content="Select your neuropathy protocol: a 3-month protocol or a 1-month supply, provider reviewed, shipped free." />
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health — Neuropathy offer page, STEP 2 of the funnel (the page
+         neuropathy-quiz.html hands off to; client request 2026-09-11, plan in
+         NEUROPATHY-QUIZ-RIP-PLAN.md, Asana 1218408894451054). Reference:
+         standardmeds.com/dosage/neuropathy, carried section for section: provider note → the two protocol cards → prescription card →
+         "Protocol includes" → timeline → compare table → reviews → patient
+         portal → about → lifestyle image → FAQ → final CTA → footer + sticky
+         CTA. Stylesheet: ui_kits/neuropathy-quiz/neuropathy-offer.css (the
+         reference's module de-hashed). Self-contained; no amerilean stack.
+         The CTAs open chime-checkout/checkout.html?med=neuro&term=3|1 — the
+         checkout's selection script gained a `neuro` plan for this (the
+         client, 2026-09-11: "the checkout there will have to be cleaned up").
+
+         STAND-IN CONTENT — flagged to the client, not silently invented:
+         · Product + prices are the reference's: "NeuroCalmRX" (compounded
+           Low-Dose Naltrexone 4.5mg + B12), $99/mo × 3 = $297 or $169
+           monthly. Chime has no neuropathy product; the bottle is the
+           client's requested PLACEHOLDER (uploads/neuropathy/
+           bottle-placeholder.webp, AI-generated blank bottle).
+         · The provider is generic ("Your Chime Provider"); the reference
+           names Dr. Kirten S. Parekh, a Standard Meds surgeon. Every
+           "Dr. Parekh" in the copy reads "your provider".
+         · The reference's onboarding video (a VSL player + "do not navigate
+           away" bar) is dropped (Luis, 2026-09-11); the portal screenshot is a CSS mock; the
+           lifestyle photo is a Chime stock image; review avatars are
+           silhouettes. The four reviews, the 4.7★ rating and the
+           "53-64% of patients" claim are the reference's, not Chime's.
+         · Medical claims (LDN mechanism, timelines, "cannot be taken with
+           opioids") are the reference's — provider/counsel review needed. -->
+    <link rel="stylesheet" href="ui_kits/neuropathy-quiz/neuropathy-offer.css?v=20260937" />
+  </head>
+  <body class="no-body">
+    <div class="no-page" id="noPage">
+      <header class="no-siteHeader" data-screen-label="NO Header">
+        <div class="no-wrap no-headerInner">
+          <a class="no-logo" href="index.html" aria-label="Chime Health"><img src="assets/logo-slate.png" alt="Chime Health" /></a>
+          <a href="mailto:hello@chimehealth.com" class="no-supportLink">hello@chimehealth.com</a>
+        </div>
+      </header>
+
+      <section class="no-doctorCard no-fadeIn" data-screen-label="NO Provider note">
+        <div class="no-doctorHeader">
+          <div class="no-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 24c0-5.5 4.5-9 10-9s10 3.5 10 9z"/></svg></div>
+          <div>
+            <div class="no-doctorName">Your Chime Provider</div>
+            <div class="no-doctorCred">Board-Certified Physician &middot; Chime Medical Team</div>
+            <div class="no-doctorVerified">&#10003; Verified Provider</div>
+          </div>
+        </div>
+        <div class="no-doctorMessage"><strong>I'm starting you on a 3-month protocol.</strong> Your nerves didn't get this way overnight. Start with 3 months &mdash; I'll add a free reassessment at day 90 to adjust dosage if needed.</div>
+      </section>
+
+      <section class="no-offers" id="offers" data-screen-label="NO Offers">
+        <div class="no-offersHeader"><h1 class="no-offersTitle">Select Your Protocol Below</h1></div>
+        <div class="no-offerCardGrid">
+          <div class="no-offerCard no-offerRecommended no-fadeIn is-selected" data-plan="3mo">
+            <div class="no-offerInner">
+              <span class="no-offerBadge">Best Value &mdash; Save $210</span>
+              <div class="no-bottles no-bottles--three" aria-hidden="true">
+                <img src="uploads/neuropathy/bottle-placeholder.webp" alt="" loading="lazy" /><img src="uploads/neuropathy/bottle-placeholder.webp" alt="NeuroCalmRX, 3-month protocol (placeholder bottle)" /><img src="uploads/neuropathy/bottle-placeholder.webp" alt="" loading="lazy" />
+              </div>
+              <div class="no-offerSupply">90-Day Supply</div>
+              <div class="no-offerTitle">3-Month Protocol</div>
+              <div class="no-offerPrice"><span class="no-offerAmount">$99</span><span class="no-offerPer">/month</span><span class="no-offerWas">$169/mo</span></div>
+              <div class="no-offerTotal">Total: $297 &middot; + FREE SHIPPING</div>
+              <a href="chime-checkout/checkout.html?med=neuro&amp;term=3" class="no-offerCta no-offerCtaPrimary" data-checkout="3mo">&#128722; START MY 3-MONTH PROTOCOL</a>
+              <div class="no-offerPaymentIcons"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>DISCOVER</span></div>
+              <ul class="no-offerFeatures">
+                <li>Full 90-day treatment cycle (clinically recommended)</li>
+                <li>Free reassessment with your provider at day 90</li>
+                <li>24/7 patient portal &mdash; message your care team anytime</li>
+                <li>Free shipping every month</li>
+                <li>Priority pharmacy processing</li>
+                <li>Dose adjustment included if needed</li>
+              </ul>
+              <div class="no-offerSavings">You save $210 vs. monthly</div>
+            </div>
+          </div>
+          <div class="no-offerCard no-offerBasic no-fadeIn" data-plan="1mo">
+            <span class="no-offerBadge">Starter</span>
+            <div class="no-bottles" aria-hidden="true"><img src="uploads/neuropathy/bottle-placeholder.webp" alt="NeuroCalmRX, 1-month supply (placeholder bottle)" loading="lazy" /></div>
+            <div class="no-offerSupply">30-Day Supply</div>
+            <div class="no-offerTitle">1-Month Supply</div>
+            <div class="no-offerPrice"><span class="no-offerAmount">$169</span><span class="no-offerPer">/month</span></div>
+            <div class="no-offerTotal">Total: $169 &middot; + FREE SHIPPING</div>
+            <a href="chime-checkout/checkout.html?med=neuro&amp;term=1" class="no-offerCta no-offerCtaSecondary" data-checkout="1mo">&#128722; START 1-MONTH SUPPLY</a>
+            <div class="no-offerPaymentIcons"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>DISCOVER</span></div>
+            <ul class="no-offerFeatures">
+              <li>30-day supply of NeuroCalmRX</li>
+              <li>Provider consultation included</li>
+              <li>Patient portal access</li>
+              <li>Free shipping</li>
+            </ul>
+          </div>
+        </div>
+        <div class="no-trustBar">
+          <div class="no-trustItem"><span class="no-trustCheck">&#10003;</span> Free shipping</div>
+          <div class="no-trustItem"><span class="no-trustCheck">&#10003;</span> Cancel anytime</div>
+          <div class="no-trustItem"><span class="no-trustCheck">&#10003;</span> All 50 states</div>
+        </div>
+      </section>
+
+      <section class="no-rxCard no-fadeIn" data-screen-label="NO Prescription">
+        <div class="no-rxCardHead"><span aria-hidden="true">&#128203;</span> Your Prescription Details</div>
+        <div class="no-rxCardBody">
+          <div class="no-rxName">NeuroCalmRX</div>
+          <div class="no-rxSub">Custom-compounded for your profile</div>
+          <div class="no-rxRow"><span class="no-rxLabel">Active Ingredients</span><span class="no-rxValue">LDN 4.5mg + B12</span></div>
+          <div class="no-rxRow"><span class="no-rxLabel">Form</span><span class="no-rxValue">Oral Capsule</span></div>
+          <div class="no-rxRow"><span class="no-rxLabel">Dosing</span><span class="no-rxValue">1 capsule at bedtime</span></div>
+          <div class="no-rxRow"><span class="no-rxLabel">Ships In</span><span class="no-rxValue">3-5 business days</span></div>
+          <div class="no-rxBadges"><span class="no-rxBadge">&#10003; Prescription-grade</span><span class="no-rxBadge">&#10003; Custom-compounded</span><span class="no-rxBadge">&#10003; Provider-monitored</span></div>
+        </div>
+      </section>
+
+      <section class="no-section no-fadeIn" data-screen-label="NO Includes">
+        <div class="no-sectionLabel">Everything You Get</div>
+        <h2>Your NeuroCalmRX Protocol Includes:</h2>
+        <div class="no-incItem"><div class="no-incIcon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><div class="no-incText"><strong>Custom-Compounded NeuroCalmRX</strong><span>Mixed fresh by a specialty pharmacy. Not mass-produced. Not sitting on a shelf.</span></div></div>
+        <div class="no-incItem"><div class="no-incIcon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg></div><div class="no-incText"><strong>Licensed Provider Overseeing Your Care</strong><span>A real doctor reviews your health history and monitors your progress. Not a chatbot.</span></div></div>
+        <div class="no-incItem"><div class="no-incIcon"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></div><div class="no-incText"><strong>Free Shipping Every Time</strong><span>Discreet packaging straight to your door. No pharmacy lines.</span></div></div>
+        <div class="no-incItem"><div class="no-incIcon"><svg viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div><div class="no-incText"><strong>24/7 Patient Portal Access</strong><span>Message your care team anytime. Get answers from a medical professional &mdash; day or night.</span></div></div>
+        <div class="no-incItem"><div class="no-incIcon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="no-incText"><strong>Free Reassessment at 90 Days</strong><span>Your provider reviews your progress and adjusts your plan. No extra charge.</span></div></div>
+      </section>
+
+      <section class="no-section no-fadeIn" data-screen-label="NO Timeline">
+        <div class="no-sectionLabel">Your Timeline</div>
+        <h2>What Most Patients Feel</h2>
+        <div class="no-timeline">
+          <div class="no-tlItem"><div class="no-tlDot no-tlDot--teal">1</div><div class="no-tlContent"><h4>Weeks 1-2: Your Body Adjusts</h4><p>Some vivid dreams. Maybe mild nausea. Both are normal and fade fast.</p></div></div>
+          <div class="no-tlItem"><div class="no-tlDot">2</div><div class="no-tlContent"><h4>Weeks 3-4: The Quiet Starts</h4><p>You sleep through the night. The burning gets softer. The pins and needles lose their edge.</p></div></div>
+          <div class="no-tlItem"><div class="no-tlDot no-tlDot--orange">3</div><div class="no-tlContent"><h4>Months 2-3: The Shift</h4><p>The fire turns down. You slide on socks without wincing. You feel your feet again.</p></div></div>
+        </div>
+        <p class="no-tlNote">Every body is different. Results aren't guaranteed. But the pattern holds for most.</p>
+      </section>
+
+      <section class="no-section no-fadeIn" data-screen-label="NO Compare">
+        <h2>NeuroCalmRX vs. What You've Tried</h2>
+        <table class="no-compareTable">
+          <thead><tr><th scope="col"><span class="sr-only"></span></th><th scope="col">Others</th><th scope="col">NeuroCalmRX</th></tr></thead>
+          <tbody>
+            <tr><td>Goes after the root cause</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+            <tr><td>No brain fog or "zombie" feeling</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+            <tr><td>Custom-compounded for you</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+            <tr><td>24/7 access to a real provider</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+            <tr><td>No weight gain side effects</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+            <tr><td>Ships to your door free</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+            <tr><td>Works while you sleep</td><td class="no-compareNo">&#10007;</td><td class="no-compareYes">&#10003;</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="no-section no-fadeIn" data-screen-label="NO Reviews">
+        <div class="no-sectionLabel">Patient Results</div>
+        <h2>Real People. Real Relief.</h2>
+        <div class="no-review">
+          <div class="no-reviewStars" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="no-reviewText">&ldquo;I was up every night with burning feet. By week 4, I slept 6 hours straight for the first time in years. I actually cried.&rdquo;</div>
+          <div class="no-reviewFooter"><div class="no-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 24c0-5.5 4.5-9 10-9s10 3.5 10 9z"/></svg></div><div><div class="no-reviewAuthor">Linda M., 62</div><div class="no-reviewDetail">Ohio &middot; <span class="no-reviewVerified">&#10003; Verified Patient</span></div></div></div>
+        </div>
+        <div class="no-review">
+          <div class="no-reviewStars" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="no-reviewText">&ldquo;Gabapentin for 2 years. Felt like a zombie but the pain was still there. NeuroCalmRX actually helped. No fog. No weight gain. I feel like myself again.&rdquo;</div>
+          <div class="no-reviewFooter"><div class="no-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 24c0-5.5 4.5-9 10-9s10 3.5 10 9z"/></svg></div><div><div class="no-reviewAuthor">Robert K., 58</div><div class="no-reviewDetail">Florida &middot; <span class="no-reviewVerified">&#10003; Verified Patient</span></div></div></div>
+        </div>
+        <div class="no-review">
+          <div class="no-reviewStars" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="no-reviewText">&ldquo;I'd spent $400 a month on supplements. This one capsule did more in 6 weeks than all of them combined. I wish I'd found this two years ago.&rdquo;</div>
+          <div class="no-reviewFooter"><div class="no-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 24c0-5.5 4.5-9 10-9s10 3.5 10 9z"/></svg></div><div><div class="no-reviewAuthor">Patricia W., 55</div><div class="no-reviewDetail">Arizona &middot; <span class="no-reviewVerified">&#10003; Verified Patient</span></div></div></div>
+        </div>
+        <div class="no-review">
+          <div class="no-reviewStars" aria-label="4 out of 5">&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="no-reviewText">&ldquo;I'm 3 weeks in. Not a miracle yet. But I slept 5 hours without waking to the burning. That hasn't happened in a long time. My provider says the real shift comes around month 2. I'm staying.&rdquo;</div>
+          <div class="no-reviewFooter"><div class="no-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 24c0-5.5 4.5-9 10-9s10 3.5 10 9z"/></svg></div><div><div class="no-reviewAuthor">Gary S., 71</div><div class="no-reviewDetail">Pennsylvania &middot; <span class="no-reviewVerified">&#10003; Verified Patient</span></div></div></div>
+        </div>
+      </section>
+
+      <section class="no-section no-portalSection no-fadeIn" data-screen-label="NO Portal">
+        <div class="no-sectionLabel">Your Care Team</div>
+        <h2>You're Never Alone in This.</h2>
+        <p>Most doctors give you 7 minutes. We give you 24/7 access to a medical professional who knows your case.</p>
+        <div class="no-portalMock" aria-hidden="true">
+          <div class="no-bubble no-bubble--me">The burning is worse tonight. Is that normal in week 1?</div>
+          <div class="no-bubbleMeta" style="align-self:flex-end">You &middot; 2:14 AM</div>
+          <div class="no-bubble">Yes &mdash; week 1 flares are common while your nerves adjust. Keep the bedtime dose, hydrate, and message me if it lasts past 3 nights.</div>
+          <div class="no-bubbleMeta">Your provider &middot; 2:41 AM</div>
+        </div>
+        <div class="no-portalFeature"><div class="no-pfIcon">&#128172;</div><div><h4>Message Your Provider Anytime</h4><p>New symptom at 2am? Don't Google it. Ask your care team directly. Average response: under 4 hours.</p></div></div>
+        <div class="no-portalFeature"><div class="no-pfIcon">&#128202;</div><div><h4>Track Your Progress</h4><p>Log symptoms. See how far you've come. Your provider uses this to fine-tune your treatment.</p></div></div>
+        <div class="no-portalFeature"><div class="no-pfIcon">&#128260;</div><div><h4>Dose Adjustments &mdash; No Extra Visits</h4><p>If something needs to change, your provider adjusts it in the portal. No 3-week wait.</p></div></div>
+      </section>
+
+      <section class="no-section no-smSection no-fadeIn" data-screen-label="NO About">
+        <div class="no-sectionLabel">About Us</div>
+        <h2>Who Is Chime Health?</h2>
+        <p>You've been bounced between doctors who give you 7 minutes. Told "just take Gabapentin" by someone who didn't look at your chart.</p>
+        <p><strong>We built Chime Health because that system is broken.</strong></p>
+        <div class="no-smStatGrid">
+          <div class="no-smStat"><div class="no-smStatNum">24/7</div><div class="no-smStatTxt">Provider Access</div></div>
+          <div class="no-smStat"><div class="no-smStatNum">3-5</div><div class="no-smStatTxt">Day Delivery</div></div>
+          <div class="no-smStat"><div class="no-smStatNum">50</div><div class="no-smStatTxt">States Served</div></div>
+          <div class="no-smStat"><div class="no-smStatNum">4.7&#9733;</div><div class="no-smStatTxt">Patient Rating</div></div>
+        </div>
+        <div class="no-smPromise"><span class="no-check">&#10003;</span><p><strong>Real provider</strong> &mdash; not a call center, not a chatbot. A medical professional who reads your file.</p></div>
+        <div class="no-smPromise"><span class="no-check">&#10003;</span><p><strong>Mixed for you</strong> &mdash; custom-compounded in small batches by a licensed specialty pharmacy.</p></div>
+        <div class="no-smPromise"><span class="no-check">&#10003;</span><p><strong>No waiting weeks</strong> &mdash; message your care team from home, any time. Average response: under 4 hours.</p></div>
+        <div class="no-smPromise"><span class="no-check">&#10003;</span><p><strong>Meds to your door</strong> &mdash; no pharmacy lines. No insurance fights. No explaining your condition to a stranger.</p></div>
+        <div class="no-smPromise"><span class="no-check">&#10003;</span><p><strong>Progress tracked</strong> &mdash; regular check-ins, dose adjustments, and a free reassessment at 90 days.</p></div>
+      </section>
+
+      <section class="no-lifestyleImg no-fadeIn" data-screen-label="NO Lifestyle">
+        <img src="assets/photo-wellness.jpg" alt="" loading="lazy" />
+        <div class="no-lifestyleCaption">"I walked barefoot across my kitchen floor for the first time in two years."</div>
+      </section>
+
+      <section class="no-section no-fadeIn" id="faq" data-screen-label="NO FAQ">
+        <h2>Common Questions</h2>
+        <div class="no-faqItem no-faqOpen"><button type="button" class="no-faqQ" aria-expanded="true"><span>Is NeuroCalmRX safe? What about side effects?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">Naltrexone has been FDA-approved since 1984. At low doses, most people handle it well. Common first-week effects are vivid dreams and mild nausea &mdash; both fade fast. No brain fog. No weight gain. Your provider monitors you the whole way.</div></div>
+        <div class="no-faqItem"><button type="button" class="no-faqQ" aria-expanded="false"><span>How fast will I feel a difference?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">Most patients notice better sleep around weeks 3-4. The burning starts to quiet down after that. By months 2-3, the shift is hard to miss. That's why your provider recommends the 3-month protocol.</div></div>
+        <div class="no-faqItem"><button type="button" class="no-faqQ" aria-expanded="false"><span>I've tried Gabapentin, Lyrica, and every supplement. Why is this different?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">Gabapentin and Lyrica block the pain signal. When they wear off, the pain comes right back &mdash; often worse. And they come with brain fog and weight gain. NeuroCalmRX does two things: LDN calms the fire inside your nerves, and B12 feeds the nerve fibers so they can heal. It goes after the cause, not just the symptom.</div></div>
+        <div class="no-faqItem"><button type="button" class="no-faqQ" aria-expanded="false"><span>Can I take this with my other medications?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">NeuroCalmRX cannot be taken with opioid medications. Your provider reviews everything you're on before writing your prescription. That's why the health form matters &mdash; and why you have a real provider, not a bot.</div></div>
+        <div class="no-faqItem"><button type="button" class="no-faqQ" aria-expanded="false"><span>Why can't I just get LDN from my regular doctor?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">Most doctors don't know about low-dose naltrexone for nerve pain. Big drug companies don't push it because it's generic &mdash; there's no profit in it. Chime Health handles the provider, the compounding pharmacy, and the shipping.</div></div>
+        <div class="no-faqItem"><button type="button" class="no-faqQ" aria-expanded="false"><span>What if it doesn't work for me?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">Every body is different. Studies show 53-64% of patients report meaningful improvement. If after 90 days you're not seeing results, your provider works with you on next steps at no extra cost.</div></div>
+        <div class="no-faqItem"><button type="button" class="no-faqQ" aria-expanded="false"><span>Is this a subscription? Can I cancel?</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="no-faqA">The 3-month protocol is a one-time payment of $297 ($99/month). After 3 months, you decide if you want to continue. No auto-renewal surprise. The 1-month option is $169/month, cancel anytime. No hidden fees.</div></div>
+      </section>
+
+      <section class="no-section no-finalCta no-fadeIn" data-screen-label="NO Final CTA">
+        <h2>Your Nerves Are Still Talking.<br />Let's Give Them What They Need.</h2>
+        <p>Every night you wait is another night of burning feet and broken sleep. Your protocol is ready. Your provider is standing by.</p>
+        <a href="chime-checkout/checkout.html?med=neuro&amp;term=3" class="no-ctaBtn" id="noFinalCta" data-checkout="selected">Start My 3-Month Protocol &rarr;</a>
+        <div class="no-ctaSub">Free shipping &middot; Provider included &middot; Cancel anytime</div>
+        <div class="no-trustBar">
+          <div class="no-trustItem"><span class="no-trustCheck">&#10003;</span> Secure checkout</div>
+          <div class="no-trustItem"><span class="no-trustCheck">&#10003;</span> HIPAA-compliant</div>
+          <div class="no-trustItem"><span class="no-trustCheck">&#10003;</span> No hidden fees</div>
+        </div>
+      </section>
+
+      <footer class="no-footer" data-screen-label="NO Footer">
+        <div class="no-wrap">
+          <a class="no-logo" href="index.html" aria-label="Chime Health"><img src="assets/logo-white.png" alt="Chime Health" /></a>
+          <p>NeuroCalmRX is a compounded medication not reviewed or approved by the FDA for this specific use. Results may vary and are not guaranteed. NeuroCalmRX cannot be taken with opioid medications. A licensed Chime Health provider must review your health history before prescribing.</p>
+          <div class="no-footerLinks"><a href="terms-conditions.html">Terms &amp; Conditions</a><a href="privacy-policy.html">Privacy Policy</a><a href="telehealth-consent.html">Telehealth Consent</a><a href="mailto:hello@chimehealth.com">Contact Us</a></div>
+          <p>&copy; 2026 Chime Health. All rights reserved.</p>
+        </div>
+      </footer>
+
+      <div class="no-stickyCta" id="noSticky" data-screen-label="NO Sticky CTA">
+        <a href="chime-checkout/checkout.html?med=neuro&amp;term=3" class="no-stickyCtaBtn" id="noStickyBtn" data-checkout="selected">Start My 3-Month Protocol &mdash; $99/mo &rarr;</a>
+        <div class="no-stickySub">Free shipping &middot; Cancel anytime</div>
+      </div>
+    </div>
+
+    <script>
+      // The reference's page behaviour: plan selection (3mo default) drives the
+      // sticky + final CTA, one FAQ open at a time, fade-in on scroll, the sticky
+      // bar shows once the offer cards scroll away. Checkout hand-off = the
+      // chime-checkout selection key, so checkout.html shows NeuroCalmRX.
+      (function () {
+        var PLANS = {
+          "3mo": { term: 3, sticky: "Start My 3-Month Protocol — $99/mo →", final: "Start My 3-Month Protocol →", charge: 297 },
+          "1mo": { term: 1, sticky: "Start 1-Month Supply — $169/mo →", final: "Start 1-Month Supply →", charge: 169 },
+        };
+        var selected = "3mo";
+        var cards = document.querySelectorAll("[data-plan]");
+        var sticky = document.getElementById("noSticky"), stickyBtn = document.getElementById("noStickyBtn"), finalBtn = document.getElementById("noFinalCta");
+        function checkoutHref(plan) { return "chime-checkout/checkout.html?med=neuro&term=" + PLANS[plan].term; }
+        function select(plan) {
+          selected = plan;
+          cards.forEach(function (c) { c.classList.toggle("is-selected", c.getAttribute("data-plan") === plan); });
+          stickyBtn.textContent = PLANS[plan].sticky; stickyBtn.href = checkoutHref(plan);
+          finalBtn.textContent = PLANS[plan].final; finalBtn.href = checkoutHref(plan);
+        }
+        cards.forEach(function (c) {
+          c.addEventListener("click", function (e) { if (!e.target.closest("a")) select(c.getAttribute("data-plan")); });
+        });
+        function store(plan) {
+          try {
+            sessionStorage.setItem("chime:checkout-selection", JSON.stringify({
+              med: "neuro", medName: "NeuroCalmRX", treatment: "Compounded Low-Dose Naltrexone + B12", term: PLANS[plan].term,
+              termLabel: plan === "3mo" ? "3-month protocol" : "monthly", charge: PLANS[plan].charge, source: "neuropathy-offer",
+            }));
+          } catch (err) { /* private mode */ }
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: "nq_checkout_clicked", quiz: "neuropathy", plan: plan });
+        }
+        document.querySelectorAll("[data-checkout]").forEach(function (a) {
+          a.addEventListener("click", function () {
+            var p = a.getAttribute("data-checkout"); store(p === "selected" ? selected : p);
+          });
+        });
+        // FAQ: one open at a time (first open by default)
+        document.querySelectorAll(".no-faqQ").forEach(function (q) {
+          q.addEventListener("click", function () {
+            var item = q.parentNode, open = item.classList.contains("no-faqOpen");
+            document.querySelectorAll(".no-faqItem").forEach(function (i) { i.classList.remove("no-faqOpen"); i.querySelector(".no-faqQ").setAttribute("aria-expanded", "false"); });
+            if (!open) { item.classList.add("no-faqOpen"); q.setAttribute("aria-expanded", "true"); }
+          });
+        });
+        // Fade-in + sticky
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var fades = document.querySelectorAll(".no-fadeIn");
+        if (!("IntersectionObserver" in window) || reduce) {
+          fades.forEach(function (el) { el.classList.add("no-fadeInVisible"); });
+          sticky.classList.add("no-stickyCtaVisible");
+        } else {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("no-fadeInVisible"); io.unobserve(en.target); } });
+          }, { threshold: 0.1 });
+          fades.forEach(function (el) { io.observe(el); });
+          var offers = document.getElementById("offers");
+          new IntersectionObserver(function (entries) {
+            sticky.classList.toggle("no-stickyCtaVisible", !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0);
+          }, { threshold: 0 }).observe(offers);
+        }
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "nq_pdp_viewed", quiz: "neuropathy" });
+      })();
+    </script>
+  </body>
+</html>

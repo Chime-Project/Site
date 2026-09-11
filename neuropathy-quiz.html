@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Free Neuropathy Assessment | Chime Health</title>
+    <meta name="description" content="A free 3-minute neuropathy assessment. Answer a few questions about your symptoms and see your next steps." />
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health — Neuropathy quiz, STEP 1 of the funnel (client request
+         2026-09-11: "rip this quiz funnel and logic too … keep it as close as
+         possible to the original"; plan in NEUROPATHY-QUIZ-RIP-PLAN.md, Asana
+         1218408894451054). Reference: standardmeds.com/quiz/neuropathy. The
+         20-step state machine, every question/option/message, the five
+         disqualifier paths, the 3-month soft block, the autocomplete pickers
+         and the lead form are carried 1:1 in ui_kits/neuropathy-quiz/
+         (neuropathy-quiz-data.js = copy + lists, neuropathy-quiz.js = the
+         machine, neuropathy-quiz.css = the reference's stylesheet de-hashed).
+         "See My Results" stores the answers in sessionStorage
+         ("chime:neuropathy-quiz") and hands off to STEP 2,
+         neuropathy-offer.html?ue&up (no backend, like every Chime prototype).
+         Self-contained stack: this page does not load amerilean.css /
+         chime-theme.css / React. Tests: node ui_kits/neuropathy-quiz/neuropathy-quiz-tests.js
+
+         STAND-IN CONTENT — flagged to the client, not silently invented:
+         · Product: "NeuroCalmRX" (the reference's compounded Low-Dose
+           Naltrexone + B12) is a Standard Meds product; Chime has no
+           neuropathy product yet. Name kept as the client's placeholder.
+         · The lead card is signed "— Chime Medical Team"; the reference
+           signs "Dr. Kirten Parekh", a Standard Meds provider.
+         · Medical rules (disqualifiers, the pregnancy notice, both consent
+           texts) name Naltrexone and are the reference's — provider/counsel
+           review before this goes live under Chime.
+         · The "Excellent ★★★★★ 4.7 / 5" row is the reference's
+           Trustpilot-style badge; Chime has no such score.
+         · Like the reference there is no Back button.
+         · Analytics: the reference's events are pushed to window.dataLayer
+           (nq_start_quiz, nq_quiz_progress, nq_lead, …) for a future GTM. -->
+    <link rel="stylesheet" href="ui_kits/neuropathy-quiz/neuropathy-quiz.css?v=20260937" />
+  </head>
+  <body class="nq-body">
+    <div class="nq-wrap" data-screen-label="NQ Quiz">
+      <header class="nq-header" data-screen-label="NQ Header">
+        <a class="nq-logo" href="index.html" aria-label="Chime Health"><img src="assets/logo-slate.png" alt="Chime Health" /></a>
+        <div class="nq-tpBar" aria-label="Excellent, 4.7 out of 5">
+          <span class="nq-tpLabel">Excellent</span>
+          <span class="nq-tpStars" aria-hidden="true">
+            <span class="nq-tpStar"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></span>
+            <span class="nq-tpStar"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></span>
+            <span class="nq-tpStar"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></span>
+            <span class="nq-tpStar"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></span>
+            <span class="nq-tpStar nq-tpStarHalf"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></span>
+          </span>
+          <span class="nq-tpScore">4.7 / 5</span>
+        </div>
+      </header>
+
+      <div class="nq-progressWrap" id="nqProgress" data-screen-label="NQ Progress">
+        <div class="nq-progressTrack" role="progressbar" aria-label="Assessment progress"><div class="nq-progressFill" id="nqFill"></div></div>
+        <div class="nq-progressLabel" id="nqLabel" aria-live="polite"></div>
+      </div>
+
+      <main class="nq-step" id="nqCard" data-screen-label="NQ Card" aria-live="polite"></main>
+
+      <footer class="nq-foot" data-screen-label="NQ Footer">
+        &copy; 2026 Chime Health &middot;
+        <a href="terms-conditions.html">Terms</a><a href="privacy-policy.html">Privacy</a><a href="telehealth-consent.html">Telehealth Consent</a><a href="hipaa-notice.html">HIPAA</a>
+      </footer>
+    </div>
+    <div id="nqModal" hidden></div>
+
+    <script src="ui_kits/neuropathy-quiz/neuropathy-quiz-data.js?v=20260937"></script>
+    <script src="ui_kits/neuropathy-quiz/neuropathy-quiz.js?v=20260937"></script>
+  </body>
+</html>
