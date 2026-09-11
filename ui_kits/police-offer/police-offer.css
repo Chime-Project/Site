@@ -766,6 +766,18 @@ html {
   color: var(--slate);
   font-variant-numeric: tabular-nums;
 }
+.po-term__rate s {
+  margin-right: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.po-step__includes {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
 .po-term__due {
   font-size: 14px;
   color: var(--ink-2);

@@ -23,9 +23,14 @@
          Monthly / 3 Month) and the prices are the chime-checkout ladder.
 
          STAND-IN CONTENT — flagged to the client, not silently invented:
-         · The code and the discount. "SERVE20" = 20% off the plan is a
-           placeholder in police-offer.js (CODES); the real code, amount
-           (percent or flat), stacking rule and end date are still to come.
+         · Prices and the code are the client's 2026-09-10 sheet: regular
+           $399 / $999 (Semaglutide) and $499 / $1,497 (Tirzepatide); code
+           HOUSTONPOLICE shows the police rates $299 / $747 and $399 / $897
+           (police-offer.js CODES, type "rates"). The client's "$747
+           ($249/month)" is ÷ 3, so this page's 3 Month Package is 3 months
+           of supply with NO free 4th month (the chime-checkout ladder's
+           "+1 free" is dropped here) — confirm with the client. End date:
+           none given.
          · Eligibility: nothing is verified — the code is the only gate.
          · "$299 value" for the free product is the bonus checkouts' figure
            (chime-checkout-bonus); Chime's own NAD+ 1-month price is $160.
@@ -888,7 +893,7 @@
     </div>
     <p class="offer-bar" data-screen-label="PO Offer Bar">
       A thank-you to our police officers —
-      <em>officer pricing with code <code>SERVE20</code> + a free product with every plan</em>
+      <em>officer pricing with code <code>HOUSTONPOLICE</code> + a free product with every plan</em>
     </p>
 
     <!-- ===================================================================== -->
@@ -966,7 +971,7 @@
                 </li>
                 <li>
                   <span class="dot"><svg class="ico"><use href="#i-check" /></svg></span>
-                  <span>Monthly, or 3 months with every 4th month free</span>
+                  <span>Monthly, or a 3 Month Package. Shipping included.</span>
                 </li>
               </ul>
             </div>
@@ -1073,7 +1078,7 @@
                 <h4 class="eyebrow eyebrow--teal">Step 1</h4>
                 <p class="copy">
                   Semaglutide or Tirzepatide, then Tesamorelin or NAD+ on us.
-                  Choose Monthly or 3 months with every 4th month free.
+                  Choose Monthly or the 3 Month Package.
                 </p>
               </div>
             </article>
@@ -1175,7 +1180,7 @@
                   <span class="po-tile__body">
                     <span class="po-tile__name">Semaglutide</span>
                     <span class="po-tile__desc">Proven, effective, more affordable.</span>
-                    <span class="po-tile__price">From $249/mo</span>
+                    <span class="po-tile__price" data-po-med-price>From $333/mo</span>
                   </span>
                   <span class="po-tile__radio" aria-hidden="true"></span>
                 </button>
@@ -1185,7 +1190,7 @@
                   <span class="po-tile__body">
                     <span class="po-tile__name">Tirzepatide</span>
                     <span class="po-tile__desc">Faster results, dual-action.</span>
-                    <span class="po-tile__price">From $299/mo</span>
+                    <span class="po-tile__price" data-po-med-price>From $499/mo</span>
                   </span>
                   <span class="po-tile__radio" aria-hidden="true"></span>
                 </button>
@@ -1232,24 +1237,24 @@
                 <button type="button" class="po-tile po-term" role="radio" aria-checked="false" data-term="1">
                   <span class="po-tile__body">
                     <span class="po-tile__name">Monthly plan</span>
-                    <span class="po-term__rate" data-po-rate>from $299/mo</span>
+                    <span class="po-term__rate"><s data-po-reg hidden></s><span data-po-rate>from $399/mo</span></span>
                     <span class="po-term__due" data-po-due>4-week supply</span>
-                    <span class="po-tile__desc">No free month. Pause or cancel anytime.</span>
+                    <span class="po-tile__desc">Pause or cancel anytime.</span>
                   </span>
                   <span class="po-tile__radio" aria-hidden="true"></span>
                 </button>
                 <button type="button" class="po-tile po-term" role="radio" aria-checked="false" data-term="3">
                   <span class="po-tile__badge">Most popular</span>
                   <span class="po-tile__body">
-                    <span class="po-tile__name">3 month plan</span>
-                    <span class="po-term__rate" data-po-rate>from $249/mo</span>
-                    <span class="po-term__due" data-po-due>Includes a free 4th month</span>
-                    <span class="po-term__free">Every 4th month free, forever.</span>
+                    <span class="po-tile__name">3 Month Package</span>
+                    <span class="po-term__rate"><s data-po-reg hidden></s><span data-po-rate>from $999</span></span>
+                    <span class="po-term__due" data-po-due>3 months of supply</span>
                     <span class="po-tile__desc">No mid-plan price increases.</span>
                   </span>
                   <span class="po-tile__radio" aria-hidden="true"></span>
                 </button>
               </div>
+              <p class="po-step__includes">Every price includes the prescription fee, your medication, your choice of NAD+ or Tesamorelin, and shipping.</p>
             </div>
 
             <!-- price + CTA -->

@@ -12,34 +12,35 @@
   "use strict";
 
   // ---- Data ---------------------------------------------------------------
-  // The client's 2026-09-06 ladder, the same numbers chime-checkout reads
-  // (chime-checkout/js/plan-select.js). `due` is what is charged today,
-  // `months` how many months of supply that covers (3-month plans ship a
-  // free 4th month), `retail` the struck comparison total on the checkouts.
+  // The client's 2026-09-10 sheet: a regular price and a police rate per
+  // plan. `months` = months of supply (the client's "$747 ($249/month)" is
+  // $747 ÷ 3, so the 3 Month Package is 3 months here — no free 4th month on
+  // this page; flagged). Prices include the prescription fee, the
+  // medication, the free product and shipping.
   var PLANS = {
     sema: {
       name: "Semaglutide",
-      1: { rate: 299, due: 299, months: 1, retail: 349 },
-      3: { rate: 249, due: 747, months: 4, retail: 1396 },
+      1: { regular: 399, police: 299, months: 1 },
+      3: { regular: 999, police: 747, months: 3 },
     },
     tirz: {
       name: "Tirzepatide",
-      1: { rate: 359, due: 359, months: 1, retail: 399 },
-      3: { rate: 299, due: 897, months: 4, retail: 1596 },
+      1: { regular: 499, police: 399, months: 1 },
+      3: { regular: 1497, police: 897, months: 3 },
     },
   };
-  var TERMS = { 1: "Monthly plan", 3: "3 month plan" };
-  // Free product: $0 on the order; "$299 value" is the bonus checkouts'
-  // stand-in figure (chime-checkout-bonus), flagged in the page head comment.
+  var TERMS = { 1: "Monthly plan", 3: "3 Month Package" };
+  // Free product ("Bonus"): $0 on the order; "$299 value" is the bonus
+  // checkouts' stand-in figure (chime-checkout-bonus), flagged in the head comment.
   var GIFTS = {
     tesa: { name: "Tesamorelin", value: 299 },
     nad: { name: "NAD+", value: 299 },
   };
-  // ⚠ PLACEHOLDER CODE. Nobody has sent the real code or amount yet.
-  // `percent` takes value% off the plan's due-today figure; `flat` takes
-  // $value off (never below $0). The free product is never discounted.
+  // The code the client asked for (2026-09-10). `rates` charges each plan's
+  // `police` price; `percent` / `flat` are still supported for future codes.
+  // The free product is never discounted.
   var CODES = {
-    SERVE20: { type: "percent", value: 20, label: "Officer pricing" },
+    HOUSTONPOLICE: { type: "rates", label: "Houston Police rate" },
   };
 
   // ---- Pure helpers -------------------------------------------------------
@@ -66,12 +67,12 @@
     if (!plan) return null;
     var key = normalizeCode(sel.code);
     var code = CODES[key] || null;
-    var regular = plan.due;
+    var regular = plan.regular;
     var discount = 0;
     if (code) {
-      discount = code.type === "percent"
-        ? round2((regular * code.value) / 100)
-        : Math.min(regular, round2(code.value));
+      if (code.type === "rates") discount = round2(regular - plan.police);
+      else if (code.type === "percent") discount = round2((regular * code.value) / 100);
+      else discount = Math.min(regular, round2(code.value));
     }
     var total = round2(regular - discount);
     return {
@@ -84,14 +85,15 @@
       giftValue: GIFTS[sel.gift] ? GIFTS[sel.gift].value : 0,
       code: code ? key : null,
       codeLabel: code ? code.label : null,
-      rate: plan.rate,
+      codeType: code ? code.type : null,
       months: plan.months,
-      retail: plan.retail,
       regular: regular,
+      police: plan.police,
       discount: discount,
       total: total,
       perMonth: round2(total / plan.months),
-      savings: round2(plan.retail - total),
+      regularPerMonth: round2(regular / plan.months),
+      savings: discount,
     };
   }
 
@@ -188,20 +190,34 @@
     });
   }
 
-  // Term tiles carry the rate for the chosen medication ("from" until one is picked).
+  // Medication tiles show the lowest per-month price; plan tiles the price
+  // for the chosen medication. Both switch to the police rate once a code is in.
+  function codeOn() { return !!(state.code && CODES[state.code]); }
+  function priceFor(plan) { return codeOn() ? plan.police : plan.regular; }
   function renderTerms() {
     if (!box) return;
+    box.querySelectorAll("[data-po-med-price]").forEach(function (el) {
+      var med = el.closest("[data-med]").getAttribute("data-med");
+      var lo = Math.min(priceFor(PLANS[med][1]) / 1, priceFor(PLANS[med][3]) / 3);
+      setText(el, (codeOn() ? "Police rate from " : "From ") + money(Math.round(lo)) + "/mo");
+    });
     box.querySelectorAll("[data-term]").forEach(function (t) {
       var term = t.getAttribute("data-term");
       var plan = state.med ? PLANS[state.med][term] : null;
-      var rate = t.querySelector("[data-po-rate]"), due = t.querySelector("[data-po-due]");
+      var rate = t.querySelector("[data-po-rate]"), reg = t.querySelector("[data-po-reg]"), due = t.querySelector("[data-po-due]");
       if (plan) {
-        setText(rate, money(plan.rate) + "/mo");
-        setText(due, term === "3" ? money(plan.due) + " today · includes 4 months" : "Billed monthly · 4-week supply");
+        var now = priceFor(plan);
+        setText(rate, money(now) + (term === "1" ? "/mo" : ""));
+        show(reg, codeOn());
+        setText(reg, money(plan.regular));
+        setText(due, term === "3"
+          ? money(Math.round(now / 3)) + "/mo · 3 months of supply" + (codeOn() ? " · police rate" : "")
+          : "Billed monthly · 4-week supply" + (codeOn() ? " · police rate" : ""));
       } else {
-        var lo = Math.min(PLANS.sema[term].rate, PLANS.tirz[term].rate);
-        setText(rate, "from " + money(lo) + "/mo");
-        setText(due, term === "3" ? "Includes a free 4th month" : "4-week supply");
+        var lo = Math.min(priceFor(PLANS.sema[term]), priceFor(PLANS.tirz[term]));
+        setText(rate, "from " + money(lo) + (term === "1" ? "/mo" : ""));
+        show(reg, false);
+        setText(due, term === "3" ? "3 months of supply" : "4-week supply");
       }
     });
   }
@@ -245,8 +261,8 @@
       if (el.reg) el.reg.classList.toggle("is-struck", q.discount > 0);
       show(el.now, q.discount > 0);
       setText(el.now, money(q.total));
-      setText(el.per, (q.term === 3 ? "due today · " + money(q.perMonth) + "/mo · includes 4 months" : "billed monthly · 4-week supply")
-        + (q.giftName ? " · free " + q.giftName : ""));
+      setText(el.per, (q.term === 3 ? "due today · " + money(q.perMonth) + "/mo · 3 months of supply" : "billed monthly · 4-week supply")
+        + (q.giftName ? " · free " + q.giftName : "") + " · shipping included");
       show(el.save, q.discount > 0);
       setText(el.save, (q.codeLabel || "Code") + " applied — you save " + money(q.discount));
       show(el.hint, q.discount === 0);
@@ -287,14 +303,14 @@
     if (complete) {
       setText(el.sum.med, q.medName + " — " + q.termName);
       setText(el.sum.gift, q.giftName + " · $" + q.giftValue + " value");
-      setText(el.sum.term, q.term === 3 ? "4 months of supply (3 + 1 free)" : "1 month of supply");
+      setText(el.sum.term, q.term === 3 ? "3 months of supply" : "1 month of supply");
       show(el.sum.codeRow, q.discount > 0);
       setText(el.sum.code, q.code + " · " + q.codeLabel);
       setText(el.sum.reg, money(q.regular));
       show(el.sum.discRow, q.discount > 0);
       setText(el.sum.disc, "-" + money(q.discount));
       setText(el.sum.total, money(q.total));
-      setText(el.sum.per, money(q.perMonth) + " per month of supply");
+      setText(el.sum.per, money(q.perMonth) + " per month · prescription fee and shipping included");
     }
 
     persist(q);
@@ -343,7 +359,7 @@
     state.code = key;
     if (el.codeInput) el.codeInput.value = key;
     var c = CODES[key];
-    codeMessage(c.label + " applied: " + (c.type === "percent" ? c.value + "% off" : money(c.value) + " off") + " your plan.", "ok");
+    codeMessage(c.label + " applied: " + (c.type === "rates" ? "police pricing on every plan." : c.type === "percent" ? c.value + "% off your plan." : money(c.value) + " off your plan."), "ok");
     render();
     return true;
   }
