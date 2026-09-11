@@ -681,6 +681,24 @@ select.nq-field {
   }
   .nq-step {
     padding: 24px 18px 20px;
+    /* Luis 2026-09-11: on phones the answers sit right under the question.
+       The reference (and desktop here) anchors YES/NO + Continue to the
+       card's bottom edge with margin-top:auto, which on a tall phone
+       viewport leaves the answers a screen away from the question. */
+    flex: 0 0 auto;
+  }
+  .nq-btnRow {
+    margin-top: 0;
+    padding-top: 8px;
+  }
+  .nq-btnCta {
+    margin-top: 8px;
+  }
+  .nq-dqCard .nq-btnRow {
+    padding-top: 0;
+  }
+  .nq-dqPage {
+    flex: 1;
   }
 }
 @media (prefers-reduced-motion: reduce) {
