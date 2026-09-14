@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Personalized Tirzepatide | Chime Health</title>
+    <meta name="description" content="Provider-prescribed. Personalized to your dose. Made in a licensed U.S. pharmacy." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#eff3fc" />
+    <!-- Chime Health — Tirzepatide product page (TOF). Rip of
+         ronanrx.com/tirzepatide (client request 2026-09-14, plan in
+         TIRZEPATIDE-PDP-RIP-PLAN.md), carried section for section: header →
+         gallery + buybox (receipt, coupon, "Already on tirzepatide?" switch
+         door with the per-dose picker) → value-prop row (Chime addition, the
+         four facts the AmeriLean / police / Labor Day pages use — client
+         request) → What this is → Your history (dark band) → statement band →
+         helix line → pharmacy film → dose ladder → intake copy → How it works
+         → FAQ → disclaimer + Explore → footer + sticky CTA.
+         Stack: ui_kits/pdp/ — pdp.css (the reference's rules re-tokened),
+         pdp-data.js (ONE ENTRY PER PRODUCT; this page renders the receipts,
+         dose panel, ladder, FAQ and explore links from it — a second product
+         page is a copy of this shell with data-product="<key>" and a new entry),
+         pdp.js (vanilla port of the reference's nine Stimulus controllers).
+         Tests: node ui_kits/pdp/pdp-tests.js. No React, no CDN scripts.
+
+         PRIMARY CTA IS INTENTIONALLY BLANK (Luis, 2026-09-14: "keep blank the
+         primary cta"): every "Get Tirzepatide RX" button has href="#" and a
+         click does nothing. To wire it, set cta.href in pdp-data.js.
+
+         STAND-IN CONTENT — flagged to the client, not silently invented:
+         · Prices, the $39 physician fee with the first month free, the
+           FOUNDERS78 launch coupon and the 67% pill are the reference's
+           (RonanRx). Chime's checkout prices Tirzepatide $359/mo, $897 for
+           3 months, $1,794 for 6 (a term ladder, fee included). Every number
+           lives in pdp-data.js; the client's ladder drops in there.
+         · The process copy is the reference's, kept on request ("keep the
+           same process"): four-minute questions with no card, license photo
+           OCR, physician review in writing or a 20-minute video visit,
+           temperature-controlled overnight shipping, same-day written cancel,
+           "if it isn't right for you, you won't be charged". Each needs a
+           Chime yes/no before this page is indexed.
+         · Media: the gallery turntable and the pharmacy film are cuts of
+           uploads/chime-glp1-hero-motion.mp4 (the Chime GLP-1 hero video),
+           the stills are the Chime tirzepatide vial art and a frame of
+           uploads/assesstV1.mp4; the reference's labelled-vial photography and
+           compounding-hood film are not carried. Replace when product
+           photography exists (uploads/pdp/).
+         · The footer note ("health platform… not your treating provider") is
+           the reference's wording with Chime's name — counsel wording needed.
+         · Compounding disclaimers ("not Mounjaro or Zepbound… not
+           FDA-approved… has not been studied") are generic and carried
+           verbatim; listed for counsel all the same. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="ui_kits/pdp/pdp.css?v=20260939" />
+  </head>
+  <body class="pdp-body" data-product="tirzepatide">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="i-clipboard" viewBox="0 0 24 24"> <path d="M 10.5 0 C 10.988 0.649 11.251 1.438 11.25 2.25 L 11.25 3 L 3.75 3 L 3.75 2.25 C 3.749 1.438 4.012 0.649 4.5 0 L 0.75 0 C 0.336 0 0 0.336 0 0.75 L 0 16.5 C 0 16.914 0.336 17.25 0.75 17.25 L 14.25 17.25 C 14.664 17.25 15 16.914 15 16.5 L 15 0.75 C 15 0.336 14.664 0 14.25 0 Z" fill-opacity="var(--if,0)" fill="currentColor" transform="translate(4.5 3.75)" ></path> <path d="M 0 0 L 6 0" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(9 14.25)" ></path> <path d="M 0 0 L 6 0" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(9 11.25)" ></path> <path d="M 10.5 0 L 14.25 0 C 14.664 0 15 0.336 15 0.75 L 15 16.5 C 15 16.914 14.664 17.25 14.25 17.25 L 0.75 17.25 C 0.336 17.25 0 16.914 0 16.5 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 4.5 0" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(4.5 3.75)" ></path> <path d="M 0 4.5 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 4.5 Z" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(8.25 2.25)" ></path> </symbol>
+        <symbol id="i-stethoscope" viewBox="0 0 24 24"> <path d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z" fill-opacity="var(--if,0)" fill="currentColor" transform="translate(16.5 12)" ></path> <path d="M 0 1.125 C 0 0.504 0.504 0 1.125 0 C 1.746 0 2.25 0.504 2.25 1.125 C 2.25 1.746 1.746 2.25 1.125 2.25 C 0.504 2.25 0 1.746 0 1.125 Z" fill="currentColor" transform="translate(18.375 13.875)" ></path> <path d="M 0 3 C 0 1.343 1.343 0 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 Z" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(16.5 12)" ></path> <path d="M 0 0 L 0 4.5 C 0 6.571 1.679 8.25 3.75 8.25 L 6 8.25 C 8.071 8.25 9.75 6.571 9.75 4.5 L 9.75 4.5" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(9.75 13.5)" ></path> <path d="M 8.25 0 L 10.5 0 L 10.5 4.422 C 10.5 7.307 8.205 9.712 5.319 9.75 C 3.915 9.769 2.562 9.224 1.562 8.237 C 0.563 7.25 0 5.904 0 4.5 L 0 0 L 2.25 0" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(4.5 3.75)" ></path> </symbol>
+        <symbol id="i-award" viewBox="0 0 24 24"> <path d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z" fill-opacity="var(--if,0)" fill="currentColor" transform="translate(7.5 4.5)" ></path> <path d="M 0 7.5 C 0 3.358 3.358 0 7.5 0 C 11.642 0 15 3.358 15 7.5 C 15 11.642 11.642 15 7.5 15 C 3.358 15 0 11.642 0 7.5 Z" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(4.5 1.5)" ></path> <path d="M 0 4.5 C 0 2.015 2.015 0 4.5 0 C 6.985 0 9 2.015 9 4.5 C 9 6.985 6.985 9 4.5 9 C 2.015 9 0 6.985 0 4.5 Z" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(7.5 4.5)" ></path> <path d="M 9 0 L 9 7.5 L 4.499 5.25 L 0 7.5 L 0 0.001" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(7.5 15)" ></path> </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"> <path d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z" fill-opacity="var(--if,0)" fill="currentColor" transform="translate(2.25 2.25)" ></path> <path d="M 2.856 16.644 C 1.993 15.782 2.565 13.97 2.126 12.908 C 1.671 11.813 0 10.922 0 9.75 C 0 8.578 1.671 7.688 2.126 6.592 C 2.565 5.531 1.993 3.718 2.856 2.856 C 3.718 1.993 5.531 2.565 6.592 2.126 C 7.692 1.671 8.578 0 9.75 0 C 10.922 0 11.813 1.671 12.908 2.126 C 13.97 2.565 15.782 1.993 16.644 2.856 C 17.507 3.718 16.935 5.53 17.374 6.592 C 17.829 7.692 19.5 8.578 19.5 9.75 C 19.5 10.922 17.829 11.813 17.374 12.908 C 16.935 13.97 17.507 15.782 16.644 16.644 C 15.782 17.507 13.97 16.935 12.908 17.374 C 11.813 17.829 10.922 19.5 9.75 19.5 C 8.578 19.5 7.688 17.829 6.592 17.374 C 5.531 16.935 3.718 17.507 2.856 16.644 Z" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(2.25 2.25)" ></path> <path d="M 0 3 L 2.25 5.25 L 7.5 0" fill="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--isw,1.5)" stroke="currentColor" transform="translate(8.25 9.75)" ></path> </symbol>
+      </defs>
+    </svg>
+
+    <div class="product-page">
+      <header class="hdr" data-screen-label="PDP Header">
+        <a class="wordmark hdr-logo" aria-label="Chime Health home" href="index.html"><img src="assets/logo-slate.png" alt="Chime Health" /></a>
+        <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu">
+          <span class="nav-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+        <ul id="primary-nav" class="nav-primary" data-collapsed="true">
+          <li><a href="weight-loss.html">Weight Loss</a></li>
+          <li><a href="wellness.html">Wellness</a></li>
+          <li><a href="labs.html">Labs</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a class="nav-signin" href="chimeAssessment.html">Take the assessment</a></li>
+        </ul>
+      </header>
+
+      <div class="pdp">
+        <div class="pdp-media" data-screen-label="PDP Gallery">
+          <div class="frame">
+            <video muted loop playsinline preload="metadata" aria-hidden="true"
+                   poster="uploads/pdp/tirzepatide-turn-poster.webp" src="uploads/pdp/tirzepatide-turn.mp4"
+                   style="object-position:center" data-fit="cover"></video>
+            <img alt="" src="" hidden decoding="async" style="object-position:center" data-fit="cover" />
+          </div>
+          <div class="thumbs" aria-label="Product media">
+            <button class="thumb" type="button" data-on="1" aria-label="Turn" aria-pressed="true"
+                    data-type="video" data-source="uploads/pdp/tirzepatide-turn.mp4" data-poster="uploads/pdp/tirzepatide-turn-poster.webp"
+                    data-position="center" data-fit="cover" data-alt="A compounded tirzepatide vial">
+              <img src="uploads/pdp/tirzepatide-turn-poster.webp" alt="" loading="lazy" decoding="async" />
+              <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            </button>
+            <button class="thumb" type="button" data-on="0" aria-label="Front" aria-pressed="false"
+                    data-type="image" data-source="uploads/pdp/tirzepatide-front.webp" data-position="center" data-fit="cover"
+                    data-alt="Compounded tirzepatide in a Chime Health vial">
+              <img src="uploads/pdp/tirzepatide-front.webp" alt="" loading="lazy" decoding="async" />
+            </button>
+            <button class="thumb" type="button" data-on="0" aria-label="Label" aria-pressed="false"
+                    data-type="image" data-source="uploads/pdp/tirzepatide-label.webp" data-position="center 50%" data-fit="cover"
+                    data-alt="The label on a compounded tirzepatide vial">
+              <img src="uploads/pdp/tirzepatide-label.webp" alt="" loading="lazy" decoding="async" style="object-position:center 50%" />
+            </button>
+            <button class="thumb" type="button" data-on="0" aria-label="Family" aria-pressed="false"
+                    data-type="image" data-source="uploads/pdp/tirzepatide-family.webp" data-position="center 45%" data-fit="cover"
+                    data-alt="Compounded semaglutide and tirzepatide vials">
+              <img src="uploads/pdp/tirzepatide-family.webp" alt="" loading="lazy" decoding="async" style="object-position:center 45%" />
+            </button>
+            <button class="thumb" type="button" data-on="0" aria-label="Lifestyle" aria-pressed="false"
+                    data-type="image" data-source="uploads/pdp/lifestyle.webp" data-position="center 30%" data-fit="cover"
+                    data-alt="A patient after her workout">
+              <img src="uploads/pdp/lifestyle.webp" alt="" loading="lazy" decoding="async" style="object-position:center 30%" />
+            </button>
+          </div>
+        </div>
+
+        <div class="buybox" data-screen-label="PDP Buybox">
+          <div class="ftop" data-applied>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span data-pdp-html="coupon.strip">Founders Special Launch Deal Activated</span>
+          </div>
+          <h1 data-pdp="name">Tirzepatide</h1>
+          <p class="bb-made" data-pdp="made">Prepared for one patient</p>
+          <p class="bb-desc" data-pdp="desc">Taken once weekly at a dose set by a licensed physician.</p>
+
+          <div class="bb-badges">
+            <div class="bdg"><span class="bdg-t">
+              <span class="bdg-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 16 1.5 1.5"/><path d="m14 8-1.5-1.5"/><path d="M15 2c-1.8 2-2.5 4-2.8 6"/><path d="m16.5 10.5 1 1"/><path d="m17 6-2.9-2.9"/><path d="M2 15c6.7-6 13.3 0 20-6"/><path d="m20 9 .9.9"/><path d="M3.1 14.1 4 15"/><path d="m6.5 12.5 1 1"/><path d="m7 18 2.9 2.9"/><path d="M9 22c1.8-2 2.5-4 2.8-6"/></svg></span>
+              <b>Made for you</b></span><span>Patient-specific dose</span>
+            </div>
+            <div class="bdg"><span class="bdg-t">
+              <span class="bdg-ico flag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.3 2q2 0 3.1-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-7.3-2A6 6 0 0 0 4 15"/></svg></span>
+              <b>Made in USA</b></span><span>Licensed U.S. pharmacy</span>
+            </div>
+          </div>
+
+          <div class="rcpt" role="group" aria-label="Pricing" data-pdp-slot="rcpt-intro"></div>
+
+          <div class="promo-form" data-coupon-form hidden>
+            <input type="text" placeholder="Enter code" aria-label="Coupon code" autocomplete="off" data-coupon-code />
+            <button class="btn" type="button" data-coupon-apply>Apply</button>
+          </div>
+          <p class="err" role="alert" data-coupon-error hidden></p>
+
+          <div class="bb-swpanel" id="product-current-treatment" hidden>
+            <label class="swp-lb" for="swp-dose">Your current prescribed dose</label>
+            <span class="swp-wrap">
+              <select id="swp-dose" class="swp-sel" aria-describedby="current-dose-help"></select>
+              <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <div class="rcpt swp-out" role="group" data-pdp-slot="rcpt-panel"></div>
+            <p class="fine" id="current-dose-help" data-pdp-slot="unknown-dose" data-pdp="unknownDoseNote" hidden></p>
+          </div>
+
+          <a class="btn" id="pdp-cta" href="#" data-pdp-cta>
+            <span data-cta-get data-pdp-html="cta.get">Get Tirzepatide RX</span>
+            <span data-cta-switch data-pdp-html="cta.switch" hidden>Switch your prescription to us</span>
+            <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <button type="button" class="bb-switch" id="switch-door" aria-expanded="false" aria-controls="product-current-treatment">
+            <span class="bb-switch-txt" data-door-open data-pdp-html="door.open"><b>Already on tirzepatide?</b> See your price.</span>
+            <span class="bb-switch-txt" data-door-back data-pdp-html="door.back" hidden><b>No, I’m new to tirzepatide.</b> Go back.</span>
+            <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="bb-checklist">
+            <li><svg viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>A physician reviews your history first. If it isn’t right for you, you won’t be charged.</li>
+            <li><svg viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Shipped temperature-controlled, overnight or two-day air.</li>
+            <li><svg viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Cancel anytime. Confirmed in writing the same day.</li>
+          </ul>
+          <div class="bb-links">
+            <button type="button" data-applied data-coupon-remove>Remove code</button>
+            <button type="button" aria-expanded="false" data-unapplied data-coupon-toggle hidden>Have a coupon code?
+              <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+            <a href="#ladder-sect">See the dose ladder
+              <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+          </div>
+
+          <div class="paywith" data-unapplied hidden>
+            <div class="cards" aria-label="Accepted cards"><span class="cbrand visa">VISA</span>
+              <span class="cbrand mc"><i></i><i></i></span><span class="cbrand amex">AMEX</span>
+              <span class="cbrand dsc">DISCOVER</span></div>
+            <p class="powered">Powered by <b>stripe</b></p>
+          </div>
+        </div>
+      </div>
+
+      <section class="props reveal" aria-label="Why Chime" data-screen-label="PDP Value Props">
+        <div class="props-in">
+          <div class="prop">
+            <span class="prop-ico"><svg><use href="#i-shield" /></svg></span>
+            <div><b>US-Licensed Pharmacy</b><span>Partnered, HIPAA-compliant facilities</span></div>
+          </div>
+          <div class="prop">
+            <span class="prop-ico"><svg><use href="#i-clipboard" /></svg></span>
+            <div><b>Personalized Treatments</b><span>A plan tuned to your body</span></div>
+          </div>
+          <div class="prop">
+            <span class="prop-ico"><svg><use href="#i-award" /></svg></span>
+            <div><b>Dedicated Wellness Coaches</b><span>Support beyond the prescription</span></div>
+          </div>
+          <div class="prop">
+            <span class="prop-ico"><svg><use href="#i-stethoscope" /></svg></span>
+            <div><b>1:1 Medical Support</b><span>Your care team, one message away</span></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="band light" data-screen-label="PDP What">
+        <div class="sect">
+          <h2>What this is</h2>
+          <p>This compounded medication contains tirzepatide.</p>
+          <p>A licensed pharmacy prepares it for one patient against a prescription written in that patient’s name, at the strength selected by their physician.</p>
+          <p>The patient-specific compounded medication has not been studied. It is not a branded product, is not Mounjaro or Zepbound, and is not FDA-approved.</p>
+        </div>
+      </div>
+
+      <div class="band dark" id="dose-journey" data-screen-label="PDP History">
+        <div class="dj-in dj-in-text">
+          <div class="dj-copy">
+            <h2 class="dj-h"><span>Your history.</span><span>Your physician’s review.</span></h2>
+            <p>Share the medication and dose you currently take, anything you tried before, and what you would like to discuss.</p>
+            <p>A licensed physician reviews your information before deciding whether to prescribe. They select the medication and dose and review any later prescription changes.</p>
+            <p><b>The doctor's fee is $39 at 2.5 mg and $39 at 15 mg.</b> Your dose changing does not change what you pay your doctor.</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="stmt" aria-labelledby="stmt-title" data-screen-label="PDP Statement">
+        <div class="stmt-atmos" aria-hidden="true">
+          <img src="uploads/pdp/tirzepatide-front.webp" alt="" width="1200" height="1600" />
+          <span class="stmt-orb stmt-orb-a"></span>
+          <span class="stmt-orb stmt-orb-b"></span>
+        </div>
+        <div class="stmt-in">
+          <h2 id="stmt-title" class="stmt-line">Tell your physician about your treatment.</h2>
+          <p class="stmt-kicker">Your prescription starts with a review</p>
+          <p class="stmt-sub stmt-blurline">Share your current medication, dose and treatment history.</p>
+          <p class="stmt-fixed reveal">Your physician decides whether to prescribe.</p>
+        </div>
+      </section>
+
+      <div class="band light solo-band" data-screen-label="PDP Helix">
+        <div class="solo-in">
+          <span class="solo-ico" aria-hidden="true">
+            <svg class="hx-mark" viewBox="0 0 64 44" role="img" aria-label="Hand-drawn double helix"><path class="hx-draw hx-rung hx-r1" pathLength="1" d="M6.1 11.3 L5.8 32.7" /><path class="hx-draw hx-rung hx-r2" pathLength="1" d="M23.9 12.9 L24.2 31.1" /><path class="hx-draw hx-rung hx-r3" pathLength="1" d="M30.1 9.9  L29.9 34.1" /><path class="hx-draw hx-rung hx-r4" pathLength="1" d="M36.1 12.8 L35.8 31.2" /><path class="hx-draw hx-rung hx-r5" pathLength="1" d="M53.9 11.2 L54.2 32.8" /><path class="hx-draw hx-strand hx-strand-b" pathLength="100" d="M2 35.7 C12.3 36.1, 19.7 8.2, 30 8.3 C40.1 8.4, 47.9 35.9, 58 35.8" /><path class="hx-draw hx-strand hx-strand-a" pathLength="100" d="M2 8.4 C12.1 7.9, 19.9 36.2, 30 35.8 C40.3 35.5, 47.7 8.1, 58 8.2" /><path class="hx-halo hx-crossing" d="M13.2 17.5 C14.4 19.2, 17.6 24.8, 18.8 26.5" /><path class="hx-over-a hx-crossing" d="M12 15.9 C14 18.6, 18 25.4, 20 28.1" /><path class="hx-halo hx-crossing" d="M41.2 17.5 C42.4 19.2, 45.6 24.8, 46.8 26.5" /><path class="hx-over-b hx-crossing" d="M40 15.9 C42 18.6, 46 25.4, 48 28.1" /></svg>
+          </span>
+          <p class="solo-line">With Chime Health, your compounded dose is personalized <span class="solo-hl">specifically for you</span>, by prescription.</p>
+        </div>
+      </div>
+
+      <section class="film" aria-label="Inside the pharmacy" data-src="uploads/pdp/pharmacy-film.mp4" data-screen-label="PDP Film">
+        <video class="film-video" muted loop playsinline preload="none" poster="uploads/pdp/pharmacy-film-poster.webp" aria-hidden="true"></video>
+        <div class="film-scrim" aria-hidden="true"></div>
+        <div class="film-in">
+          <p class="film-line">Every vial is made for one patient.</p>
+        </div>
+        <button class="film-toggle" type="button" aria-label="Pause video" aria-pressed="false" data-play-label="Play video" data-pause-label="Pause video">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 5h3v14H7zm7 0h3v14h-3z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden><path fill="currentColor" d="m8 5 11 7-11 7z"/></svg>
+        </button>
+      </section>
+
+      <div class="band light" data-screen-label="PDP Ladder">
+        <div class="sect" id="ladder-sect">
+          <h2 data-applied><span data-pdp-html="ladder.h2Applied">Already on tirzepatide? See your discounted price.</span><span class="offpill" data-pdp-html="coupon.pill">Founders Special</span></h2>
+          <h2 data-unapplied hidden data-pdp-html="ladder.h2Unapplied">Already on tirzepatide? See what you could pay.</h2>
+          <p>The table shows common fixed-dose reference points. Your doctor selects the strength written on your patient-specific prescription and can change it after reviewing your care. <a href="#dose-journey">See the dose journey.</a></p>
+          <p data-applied data-pdp-html="ladder.pApplied"></p>
+          <p data-unapplied hidden data-pdp-html="ladder.pUnapplied"></p>
+          <div data-pdp-slot="ladder"></div>
+          <p class="fine" data-applied data-pdp-html="ladder.fineApplied"></p>
+          <p class="fine" data-unapplied hidden data-pdp-html="ladder.fineUnapplied"></p>
+        </div>
+      </div>
+
+      <div class="band light" data-screen-label="PDP Intake">
+        <div class="sect">
+          <h2>From your intake to a prescription</h2>
+          <p>Your medication request and current treatment are included in the information your physician reviews.</p>
+          <p>If the physician prescribes, the pharmacy receives their prescription with the selected medication and dose.</p>
+          <p>You can contact your care team in your patient message thread.</p>
+        </div>
+      </div>
+
+      <div class="band light" data-screen-label="PDP How">
+        <div class="how-in">
+          <figure class="how-photo"><img src="uploads/pdp/lifestyle.webp" alt="A patient after her workout" loading="lazy" decoding="async" /></figure>
+          <div class="how-content">
+            <h2 class="how-h">How it works</h2>
+            <ol class="how-steps">
+              <li class="reveal"><span class="how-num">1</span><div><b>Answer a few questions.</b><span>About four minutes. Your goal, your history, your state. No card, no account.</span></div></li>
+              <li class="reveal"><span class="how-num">2</span><div><b>Photograph your license.</b><span>We read your name, date of birth, and height off it so you do not have to type them, and we show you what we read.</span></div></li>
+              <li class="reveal"><span class="how-num">3</span><div><b>A physician reviews it.</b><span>If tirzepatide is right for you, they write a patient-specific prescription and set your dose.</span></div></li>
+              <li class="reveal"><span class="how-num">4</span><div><b>The pharmacy compounds and ships it.</b><span>Cold chain, tracked, no shipping charge.</span></div></li>
+            </ol>
+            <a class="btn how-cta" href="#" data-pdp-cta>
+              <span data-cta-get data-pdp-html="cta.get">Get Tirzepatide RX</span>
+              <span data-cta-switch data-pdp-html="cta.switch" hidden>Switch your prescription to us</span>
+              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="band light" data-screen-label="PDP FAQ">
+        <div class="sect">
+          <h2>Common questions</h2>
+          <div data-pdp-slot="faq"></div>
+        </div>
+      </div>
+
+      <div class="sect" data-screen-label="PDP Disclaimer">
+        <p class="fine">Compounded tirzepatide is not Mounjaro or Zepbound. Compounded medications are prepared by licensed pharmacies and are not FDA-approved drug products. This page is not medical advice. Not an emergency service: for urgent or severe symptoms call your doctor or 911.</p>
+      </div>
+
+      <nav class="sect product-discovery" aria-label="Prescription care pages" data-screen-label="PDP Explore">
+        <h2>Explore prescription care</h2>
+        <ul data-pdp-slot="explore"></ul>
+      </nav>
+
+      <div class="foot" data-screen-label="PDP Footer">
+        <div class="in">
+          <p><b>Chime Health</b> connects you with licensed providers and licensed pharmacies. It is a health platform and is not your treating provider.</p>
+          <p><a href="mailto:hello@chimehealth.com">hello@chimehealth.com</a></p>
+        </div>
+      </div>
+
+      <div class="sticky-cta" data-show="0" data-screen-label="PDP Sticky">
+        <div class="in">
+          <span class="px-wrap">
+            <span class="px" data-sticky-price>From $78</span>
+            <a class="sw" href="#switch-door" data-open-door>Already on tirzepatide?</a>
+          </span>
+          <a class="btn" href="#" data-pdp-cta>
+            <span data-cta-get data-pdp-html="cta.get">Get Tirzepatide RX</span>
+            <span data-cta-switch data-pdp-html="cta.switch" hidden>Switch your prescription to us</span>
+            <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="pdp-footer" data-screen-label="PDP Legal">
+      <nav aria-label="Footer navigation">
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-conditions.html">Terms</a>
+        <a href="telehealth-consent.html">Telehealth Consent</a>
+        <a href="hipaa-notice.html">HIPAA Notice</a>
+        <a href="return-refund-policy.html">Returns &amp; Refunds</a>
+        <a href="shipping-policy.html">Shipping</a>
+      </nav>
+    </footer>
+
+    <script src="ui_kits/pdp/pdp-data.js?v=20260939"></script>
+    <script src="ui_kits/pdp/pdp.js?v=20260939"></script>
+  </body>
+</html>
