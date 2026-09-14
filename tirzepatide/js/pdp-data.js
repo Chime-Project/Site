@@ -1,5 +1,5 @@
 // Chime Health — product page (PDP) template data: ONE ENTRY PER PRODUCT.
-// tirzepatide.html is the first instance (rip of ronanrx.com/tirzepatide,
+// tirzepatide/index.html is the first instance (rip of ronanrx.com/tirzepatide,
 // client request 2026-09-14, plan in TIRZEPATIDE-PDP-RIP-PLAN.md). A second
 // product page = a copy of the HTML shell with data-product="<key>" and a new
 // entry here; pdp.js renders the buybox receipts, the dose panel, the ladder
@@ -19,7 +19,7 @@
     tirzepatide: {
       key: "tirzepatide",
       name: "Tirzepatide",
-      page: "tirzepatide.html",
+      page: "./",
       made: "Prepared for one patient",
       desc: "Taken once weekly at a dose set by a licensed physician.",
 
@@ -129,13 +129,13 @@
 
       // "Explore" links — only pages that exist in this repo.
       explore: [
-        { label: "Tirzepatide", href: "tirzepatide.html" },
-        { label: "NAD+", href: "nad.html" },
-        { label: "GLP-1 Plan", href: "glp1-plan.html" },
-        { label: "Longevity Plan", href: "longevity-plan.html" },
-        { label: "Weight Loss", href: "weight-loss.html" },
-        { label: "Wellness", href: "wellness.html" },
-        { label: "Labs", href: "labs.html" }
+        { label: "Tirzepatide", href: "./" },
+        { label: "NAD+", href: "../nad.html" },
+        { label: "GLP-1 Plan", href: "../glp1-plan.html" },
+        { label: "Longevity Plan", href: "../longevity-plan.html" },
+        { label: "Weight Loss", href: "../weight-loss.html" },
+        { label: "Wellness", href: "../wellness.html" },
+        { label: "Labs", href: "../labs.html" }
       ]
     }
   };

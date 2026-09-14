@@ -16,23 +16,25 @@
          request) → What this is → Your history (dark band) → statement band →
          helix line → pharmacy film → dose ladder → intake copy → How it works
          → FAQ → disclaimer + Explore → footer + sticky CTA.
-         Stack: ui_kits/pdp/ — pdp.css (the reference's rules re-tokened),
-         pdp-data.js (ONE ENTRY PER PRODUCT; this page renders the receipts,
-         dose panel, ladder, FAQ and explore links from it — a second product
-         page is a copy of this shell with data-product="<key>" and a new entry),
-         pdp.js (vanilla port of the reference's nine Stimulus controllers).
-         Tests: node ui_kits/pdp/pdp-tests.js. No React, no CDN scripts.
+         Lives in its own folder (Luis, 2026-09-14: one folder per landing
+         page / funnel): tirzepatide/ = index.html + css/pdp.css (the
+         reference's rules re-tokened) + js/pdp-data.js (ONE ENTRY PER
+         PRODUCT; this page renders the receipts, dose panel, ladder, FAQ and
+         explore links from it) + js/pdp.js (vanilla port of the reference's
+         nine Stimulus controllers) + images/. A second product page = copy
+         this folder, set data-product="<key>", add a data entry. Tests:
+         node tirzepatide/js/pdp-tests.js. No React, no CDN scripts.
 
          PRIMARY CTA IS INTENTIONALLY BLANK (Luis, 2026-09-14: "keep blank the
          primary cta"): every "Get Tirzepatide RX" button has href="#" and a
-         click does nothing. To wire it, set cta.href in pdp-data.js.
+         click does nothing. To wire it, set cta.href in js/pdp-data.js.
 
          STAND-IN CONTENT — flagged to the client, not silently invented:
          · Prices, the $39 physician fee with the first month free, the
            FOUNDERS78 launch coupon and the 67% pill are the reference's
            (RonanRx). Chime's checkout prices Tirzepatide $359/mo, $897 for
            3 months, $1,794 for 6 (a term ladder, fee included). Every number
-           lives in pdp-data.js; the client's ladder drops in there.
+           lives in js/pdp-data.js; the client's ladder drops in there.
          · The process copy is the reference's, kept on request ("keep the
            same process"): four-minute questions with no card, license photo
            OCR, physician review in writing or a 20-minute video visit,
@@ -41,7 +43,7 @@
            Chime yes/no before this page is indexed.
          · Media: the vial stills are composed from the client's amber Chime
            vial set (uploads/drive.zip, 2026-09-14 — the whole set is in
-           uploads/vials/amber/ for the next product pages): front, label
+           ../uploads/vials/amber/ for the next product pages): front, label
            close-up, cap detail, a Semaglutide + Tirzepatide pair; the film
            band is a slow push-in on that pair (no turntable clip: the only
            video shows the old navy vial); the lifestyle still is a frame of
@@ -58,7 +60,7 @@
       href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="ui_kits/pdp/pdp.css?v=20260939" />
+    <link rel="stylesheet" href="css/pdp.css?v=20260939" />
   </head>
   <body class="pdp-body" data-product="tirzepatide">
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -72,16 +74,16 @@
 
     <div class="product-page">
       <header class="hdr" data-screen-label="PDP Header">
-        <a class="wordmark hdr-logo" aria-label="Chime Health home" href="index.html"><img src="assets/logo-slate.png" alt="Chime Health" /></a>
+        <a class="wordmark hdr-logo" aria-label="Chime Health home" href="../index.html"><img src="images/logo-slate.png" alt="Chime Health" /></a>
         <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu">
           <span class="nav-bars" aria-hidden="true"><span></span><span></span><span></span></span>
         </button>
         <ul id="primary-nav" class="nav-primary" data-collapsed="true">
-          <li><a href="weight-loss.html">Weight Loss</a></li>
-          <li><a href="wellness.html">Wellness</a></li>
-          <li><a href="labs.html">Labs</a></li>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a class="nav-signin" href="chimeAssessment.html">Take the assessment</a></li>
+          <li><a href="../weight-loss.html">Weight Loss</a></li>
+          <li><a href="../wellness.html">Wellness</a></li>
+          <li><a href="../labs.html">Labs</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a class="nav-signin" href="../chimeAssessment.html">Take the assessment</a></li>
         </ul>
       </header>
 
@@ -89,33 +91,33 @@
         <div class="pdp-media" data-screen-label="PDP Gallery">
           <div class="frame">
             <video muted loop playsinline preload="metadata" aria-hidden="true" hidden style="object-position:center" data-fit="cover"></video>
-            <img alt="Compounded tirzepatide in a Chime Health vial" src="uploads/pdp/tirzepatide-front.webp" decoding="async" style="object-position:center" data-fit="cover" />
+            <img alt="Compounded tirzepatide in a Chime Health vial" src="images/tirzepatide-front.webp" decoding="async" style="object-position:center" data-fit="cover" />
           </div>
           <div class="thumbs" aria-label="Product media">
             <button class="thumb" type="button" data-on="1" aria-label="Front" aria-pressed="true"
-                    data-type="image" data-source="uploads/pdp/tirzepatide-front.webp" data-position="center" data-fit="cover"
+                    data-type="image" data-source="images/tirzepatide-front.webp" data-position="center" data-fit="cover"
                     data-alt="Compounded tirzepatide in a Chime Health vial">
-              <img src="uploads/pdp/tirzepatide-front.webp" alt="" loading="lazy" decoding="async" />
+              <img src="images/tirzepatide-front.webp" alt="" loading="lazy" decoding="async" />
             </button>
             <button class="thumb" type="button" data-on="0" aria-label="Label" aria-pressed="false"
-                    data-type="image" data-source="uploads/pdp/tirzepatide-label.webp" data-position="center 50%" data-fit="cover"
+                    data-type="image" data-source="images/tirzepatide-label.webp" data-position="center 50%" data-fit="cover"
                     data-alt="The label on a compounded tirzepatide vial">
-              <img src="uploads/pdp/tirzepatide-label.webp" alt="" loading="lazy" decoding="async" style="object-position:center 50%" />
+              <img src="images/tirzepatide-label.webp" alt="" loading="lazy" decoding="async" style="object-position:center 50%" />
             </button>
             <button class="thumb" type="button" data-on="0" aria-label="Cap" aria-pressed="false"
-                    data-type="image" data-source="uploads/pdp/tirzepatide-cap.webp" data-position="center 40%" data-fit="cover"
+                    data-type="image" data-source="images/tirzepatide-cap.webp" data-position="center 40%" data-fit="cover"
                     data-alt="The cap and seal of a compounded tirzepatide vial">
-              <img src="uploads/pdp/tirzepatide-cap.webp" alt="" loading="lazy" decoding="async" style="object-position:center 40%" />
+              <img src="images/tirzepatide-cap.webp" alt="" loading="lazy" decoding="async" style="object-position:center 40%" />
             </button>
             <button class="thumb" type="button" data-on="0" aria-label="Family" aria-pressed="false"
-                    data-type="image" data-source="uploads/pdp/tirzepatide-family.webp" data-position="center" data-fit="cover"
+                    data-type="image" data-source="images/tirzepatide-family.webp" data-position="center" data-fit="cover"
                     data-alt="Compounded semaglutide and tirzepatide vials">
-              <img src="uploads/pdp/tirzepatide-family.webp" alt="" loading="lazy" decoding="async" />
+              <img src="images/tirzepatide-family.webp" alt="" loading="lazy" decoding="async" />
             </button>
             <button class="thumb" type="button" data-on="0" aria-label="Lifestyle" aria-pressed="false"
-                    data-type="image" data-source="uploads/pdp/lifestyle.webp" data-position="center 30%" data-fit="cover"
+                    data-type="image" data-source="images/lifestyle.webp" data-position="center 30%" data-fit="cover"
                     data-alt="A patient after her workout">
-              <img src="uploads/pdp/lifestyle.webp" alt="" loading="lazy" decoding="async" style="object-position:center 30%" />
+              <img src="images/lifestyle.webp" alt="" loading="lazy" decoding="async" style="object-position:center 30%" />
             </button>
           </div>
         </div>
@@ -233,7 +235,7 @@
 
       <section class="stmt" aria-labelledby="stmt-title" data-screen-label="PDP Statement">
         <div class="stmt-atmos" aria-hidden="true">
-          <img src="uploads/pdp/tirzepatide-front.webp" alt="" width="1200" height="1600" />
+          <img src="images/tirzepatide-front.webp" alt="" width="1200" height="1600" />
           <span class="stmt-orb stmt-orb-a"></span>
           <span class="stmt-orb stmt-orb-b"></span>
         </div>
@@ -254,8 +256,8 @@
         </div>
       </div>
 
-      <section class="film" aria-label="Inside the pharmacy" data-src="uploads/pdp/pharmacy-film.mp4" data-screen-label="PDP Film">
-        <video class="film-video" muted loop playsinline preload="none" poster="uploads/pdp/pharmacy-film-poster.webp" aria-hidden="true"></video>
+      <section class="film" aria-label="Inside the pharmacy" data-src="images/pharmacy-film.mp4" data-screen-label="PDP Film">
+        <video class="film-video" muted loop playsinline preload="none" poster="images/pharmacy-film-poster.webp" aria-hidden="true"></video>
         <div class="film-scrim" aria-hidden="true"></div>
         <div class="film-in">
           <p class="film-line">Every vial is made for one patient.</p>
@@ -290,7 +292,7 @@
 
       <div class="band light" data-screen-label="PDP How">
         <div class="how-in">
-          <figure class="how-photo"><img src="uploads/pdp/lifestyle.webp" alt="A patient after her workout" loading="lazy" decoding="async" /></figure>
+          <figure class="how-photo"><img src="images/lifestyle.webp" alt="A patient after her workout" loading="lazy" decoding="async" /></figure>
           <div class="how-content">
             <h2 class="how-h">How it works</h2>
             <ol class="how-steps">
@@ -348,16 +350,16 @@
 
     <footer class="pdp-footer" data-screen-label="PDP Legal">
       <nav aria-label="Footer navigation">
-        <a href="privacy-policy.html">Privacy</a>
-        <a href="terms-conditions.html">Terms</a>
-        <a href="telehealth-consent.html">Telehealth Consent</a>
-        <a href="hipaa-notice.html">HIPAA Notice</a>
-        <a href="return-refund-policy.html">Returns &amp; Refunds</a>
-        <a href="shipping-policy.html">Shipping</a>
+        <a href="../privacy-policy.html">Privacy</a>
+        <a href="../terms-conditions.html">Terms</a>
+        <a href="../telehealth-consent.html">Telehealth Consent</a>
+        <a href="../hipaa-notice.html">HIPAA Notice</a>
+        <a href="../return-refund-policy.html">Returns &amp; Refunds</a>
+        <a href="../shipping-policy.html">Shipping</a>
       </nav>
     </footer>
 
-    <script src="ui_kits/pdp/pdp-data.js?v=20260939"></script>
-    <script src="ui_kits/pdp/pdp.js?v=20260939"></script>
+    <script src="js/pdp-data.js?v=20260939"></script>
+    <script src="js/pdp.js?v=20260939"></script>
   </body>
 </html>
