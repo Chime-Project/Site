@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chime Health pages | Preview links</title>
+    <meta name="description" content="Every Chime Health and AmeriLean page with its file name, a short description and the live preview link." />
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health — page index sheet (client request, 2026-09-13: "a quick sheet
+         with the preview link and a quick description and the file name").
+         Static, self-contained, no React, no site stylesheet. Grouped by purpose;
+         descriptions are client language, not build notes. Not linked from the
+         nav; share the URL directly. Keep the rows in step with README.md's
+         pages table when a page is added or renamed. Prints to A4/Letter. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --blue-900: #1b263a; --blue-800: #26354d; --blue-700: #324563;
+        --accent: #6580bc; --accent-hover: #5871a5;
+        --pastel-1: #94baf2; --pastel-2: #bdd2f6; --pastel-3: #dae5fa; --pastel-4: #eff3fc;
+        --cream: #fffefb; --ivory: #f7f3e4; --sand: #efe9d3;
+        --slate: #314158; --muted: #62748e; --hairline: #e2e8f0; --green: #00a63e;
+        --ease: cubic-bezier(0.2, 0, 0, 1);
+      }
+      * { box-sizing: border-box; }
+      html { color-scheme: light; }
+      body {
+        margin: 0; background: var(--cream); color: var(--slate);
+        font-family: "Quicksand", "Nunito", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-weight: 500; font-size: 16px; line-height: 1.45;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--accent); text-decoration: none; transition: color .2s var(--ease); }
+      a:hover { color: var(--accent-hover); text-decoration: underline; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 24px 80px; }
+
+      .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+      .head img { height: 40px; width: auto; display: block; }
+      h1 { font-weight: 600; font-size: 40px; line-height: 1.1; letter-spacing: -0.01em; color: var(--blue-700); margin: 16px 0 8px; }
+      .lede { font-size: 18px; color: var(--muted); margin: 0; max-width: 640px; }
+      .meta { font-size: 14px; color: var(--muted); margin-top: 8px; }
+      .meta code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: var(--pastel-4); padding: 2px 6px; border-radius: 6px; }
+
+      .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 40px; padding: 0; list-style: none; }
+      .toc a { display: inline-block; padding: 8px 16px; border-radius: 9999px; background: var(--pastel-4); color: var(--blue-700); font-size: 14px; font-weight: 600; }
+      .toc a:hover { background: var(--pastel-3); text-decoration: none; }
+
+      section { margin-bottom: 48px; }
+      h2 { font-weight: 600; font-size: 26px; line-height: 1.15; color: var(--blue-700); margin: 0 0 4px; }
+      .sub { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+
+      .card { background: #fff; border: 1px solid var(--hairline); border-radius: 20px; box-shadow: 0 12px 24px rgba(50,69,99,0.10); overflow: hidden; }
+      table { width: 100%; border-collapse: collapse; }
+      th { text-align: left; font-weight: 600; font-size: 13px; color: var(--muted); padding: 14px 20px; border-bottom: 1px solid var(--hairline); background: var(--pastel-4); }
+      td { padding: 16px 20px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+      tr:last-child td { border-bottom: 0; }
+      td.page { font-weight: 600; color: var(--blue-800); white-space: nowrap; }
+      td.file code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: var(--blue-700); background: var(--pastel-4); padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+      td.file code + code { margin-top: 6px; display: inline-block; }
+      td.desc { color: var(--slate); }
+      td.link a { display: inline-block; padding: 7px 14px; border-radius: 9999px; background: var(--accent); color: #fff; font-weight: 600; font-size: 14px; white-space: nowrap; transition: background .2s var(--ease); }
+      td.link a:hover { background: var(--accent-hover); text-decoration: none; }
+      td.link a + a { margin-top: 6px; }
+      .note { font-size: 13px; color: var(--muted); display: block; margin-top: 4px; }
+
+      footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--hairline); font-size: 14px; color: var(--muted); }
+
+      @media (max-width: 760px) {
+        .wrap { padding: 32px 16px 56px; }
+        h1 { font-size: 30px; }
+        thead { display: none; }
+        table, tbody, tr, td { display: block; width: 100%; }
+        tr { padding: 14px 16px; border-bottom: 1px solid var(--hairline); }
+        tr:last-child { border-bottom: 0; }
+        td { padding: 3px 0; border: 0; }
+        td.page { white-space: normal; font-size: 17px; }
+        td.file code { white-space: normal; word-break: break-all; }
+        td.link { padding-top: 8px; }
+      }
+      @media print {
+        body { background: #fff; }
+        .wrap { max-width: none; padding: 0; }
+        .toc, footer .hide-print { display: none; }
+        .card { box-shadow: none; break-inside: auto; }
+        tr { break-inside: avoid; }
+        td.link a { background: none; color: var(--accent); padding: 0; font-size: 12px; }
+        td.link a::after { content: " " attr(href); font-weight: 500; color: var(--muted); white-space: normal; word-break: break-all; }
+        h2 { break-after: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="head">
+        <div>
+          <img src="assets/logo-slate.png" alt="Chime Health" />
+          <h1>Chime Health pages</h1>
+          <p class="lede">Every page built so far, with its file name, a short description and the live preview link.</p>
+          <p class="meta">All links open on the live site at <code>chime-project.github.io/Site/</code>. Updated 13 September 2026.</p>
+        </div>
+      </header>
+
+      <ul class="toc">
+        <li><a href="#core">Core site</a></li>
+        <li><a href="#executive">Executive landings</a></li>
+        <li><a href="#offers">Offers and funnels</a></li>
+        <li><a href="#checkout">Plan selection and checkout</a></li>
+        <li><a href="#amerilean">AmeriLean pages</a></li>
+        <li><a href="#legal">Legal pages</a></li>
+      </ul>
+
+      <section id="core">
+        <h2>Core site</h2>
+        <p class="sub">The public Chime Health site and the pages linked from its navigation.</p>
+        <div class="card"><table>
+          <thead><tr><th>Page</th><th>File name</th><th>Description</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td class="page">Homepage</td><td class="file"><code>index.html</code></td><td class="desc">The main Chime Health site: hero, weight loss, labs, wellness, how it works and FAQ sections.</td><td class="link"><a href="https://chime-project.github.io/Site/" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Weight Loss</td><td class="file"><code>weight-loss.html</code></td><td class="desc">The GLP-1 weight-loss program landing page with plans, process and provider oversight.</td><td class="link"><a href="https://chime-project.github.io/Site/weight-loss.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Health, Energy &amp; Wellness</td><td class="file"><code>wellness.html</code></td><td class="desc">The energy and wellness program landing page: symptoms, goals and treatment paths.</td><td class="link"><a href="https://chime-project.github.io/Site/wellness.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Labs &amp; Health Insights</td><td class="file"><code>labs.html</code></td><td class="desc">The lab testing landing page: panels, insight cards, tiers and the panel configurator.</td><td class="link"><a href="https://chime-project.github.io/Site/labs.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Health assessment</td><td class="file"><code>chimeAssessment.html</code></td><td class="desc">The intake questionnaire every "Get started" button on the site leads to.</td><td class="link"><a href="https://chime-project.github.io/Site/chimeAssessment.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">FAQ</td><td class="file"><code>faq.html</code></td><td class="desc">The full FAQ, all categories, using the reviewed FAQ copy.</td><td class="link"><a href="https://chime-project.github.io/Site/faq.html" target="_blank" rel="noopener">Open</a></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section id="executive">
+        <h2>Executive landings</h2>
+        <p class="sub">Three landing pages for the executive audience. Reached from ads and email, not from the site navigation.</p>
+        <div class="card"><table>
+          <thead><tr><th>Page</th><th>File name</th><th>Description</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td class="page">Executive Weight Loss</td><td class="file"><code>executive-weight-loss.html</code></td><td class="desc">Weight loss for executives: the same program framed around performance and time.</td><td class="link"><a href="https://chime-project.github.io/Site/executive-weight-loss.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Executive Labs</td><td class="file"><code>executive-labs.html</code></td><td class="desc">Lab testing and health insights for executives, with the tiers and configurator in one section.</td><td class="link"><a href="https://chime-project.github.io/Site/executive-labs.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Executive Wellness</td><td class="file"><code>executive-wellness.html</code></td><td class="desc">Energy and wellness for executives, with the symptom cards and a "Did you know?" wall.</td><td class="link"><a href="https://chime-project.github.io/Site/executive-wellness.html" target="_blank" rel="noopener">Open</a></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section id="offers">
+        <h2>Offers and funnels</h2>
+        <p class="sub">Campaign landings, product pages and multi-step funnels on the Chime theme.</p>
+        <div class="card"><table>
+          <thead><tr><th>Page</th><th>File name</th><th>Description</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td class="page">Plans landing</td><td class="file"><code>chime-plans-landing/index.html</code></td><td class="desc">The 1, 3 and 6-month GLP-1 plan landing page with the confirmed price ladder.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-plans-landing/" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Plans questionnaire</td><td class="file"><code>chime-plans-landing/questionnaire/step1.html</code><br /><code>chime-plans-landing/questionnaire/es/step1.html</code></td><td class="desc">The 19-step questionnaire that follows the plans landing, in English and Spanish. Step 18 is the plan stage.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-plans-landing/questionnaire/step1.html" target="_blank" rel="noopener">Open English</a><br /><a href="https://chime-project.github.io/Site/chime-plans-landing/questionnaire/es/step1.html" target="_blank" rel="noopener">Open Spanish</a></td></tr>
+            <tr><td class="page">3-Month GLP-1 Plan</td><td class="file"><code>glp1-plan.html</code></td><td class="desc">Product page for the 3-month GLP-1 plan with the 4th month free.</td><td class="link"><a href="https://chime-project.github.io/Site/glp1-plan.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Longevity Lifestyle Plan</td><td class="file"><code>longevity-plan.html</code></td><td class="desc">Product page for the combined GLP-1 and NAD+ longevity plan.</td><td class="link"><a href="https://chime-project.github.io/Site/longevity-plan.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Membership selector</td><td class="file"><code>membership.html</code></td><td class="desc">Choose-your-membership step comparing the plan options side by side.</td><td class="link"><a href="https://chime-project.github.io/Site/membership.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">NAD+ add-on</td><td class="file"><code>nad.html</code></td><td class="desc">Product page for NAD+ as an add-on to a weight-loss plan.</td><td class="link"><a href="https://chime-project.github.io/Site/nad.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Labor Day offer</td><td class="file"><code>labor-day.html</code></td><td class="desc">Seasonal promotion: free NAD+ with any 6-month or longer plan.</td><td class="link"><a href="https://chime-project.github.io/Site/labor-day.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Police appreciation offer</td><td class="file"><code>police-offer.html</code><br /><code>police-offer-checkout.html</code></td><td class="desc">Two-step offer for officers: pick medication, free product, plan and enter the officer code, then check out with the discount applied.</td><td class="link"><a href="https://chime-project.github.io/Site/police-offer.html" target="_blank" rel="noopener">Open step 1</a><br /><a href="https://chime-project.github.io/Site/police-offer-checkout.html" target="_blank" rel="noopener">Open step 2</a></td></tr>
+            <tr><td class="page">Neuropathy quiz</td><td class="file"><code>neuropathy-quiz.html</code></td><td class="desc">20-step neuropathy screening quiz that ends in a lead form and hands off to the offer page.</td><td class="link"><a href="https://chime-project.github.io/Site/neuropathy-quiz.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Neuropathy offer</td><td class="file"><code>neuropathy-offer.html</code></td><td class="desc">The protocol page after the quiz: provider note, 3-month and 1-month options, what's included, reviews and FAQ.</td><td class="link"><a href="https://chime-project.github.io/Site/neuropathy-offer.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Neuropathy offer v2</td><td class="file"><code>neuropathy-offer-v2.html</code></td><td class="desc">Working copy of the neuropathy offer page for the next round of changes. Identical to v1 today.</td><td class="link"><a href="https://chime-project.github.io/Site/neuropathy-offer-v2.html" target="_blank" rel="noopener">Open</a></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section id="checkout">
+        <h2>Plan selection and checkout</h2>
+        <p class="sub">The steps between choosing a treatment and paying. Checkouts are prototypes with no payment backend.</p>
+        <div class="card"><table>
+          <thead><tr><th>Page</th><th>File name</th><th>Description</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td class="page">Select plan</td><td class="file"><code>select-plan.html</code></td><td class="desc">Pick Semaglutide or Tirzepatide, then a Monthly, 3-month or 6-month plan.</td><td class="link"><a href="https://chime-project.github.io/Site/select-plan.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Select plan v2</td><td class="file"><code>select-plan-v2.html</code></td><td class="desc">Package version: treatment, then a second product (Tesamorelin or NAD+), then Monthly or 3-month.</td><td class="link"><a href="https://chime-project.github.io/Site/select-plan-v2.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Select plan v3</td><td class="file"><code>select-plan-v3.html</code></td><td class="desc">Funnel checkout step with press strip, reservation timer, plan details accordions and payment card.</td><td class="link"><a href="https://chime-project.github.io/Site/select-plan-v3.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Cart</td><td class="file"><code>cart.html</code></td><td class="desc">Plan selection and checkout in one page, minimal header and footer.</td><td class="link"><a href="https://chime-project.github.io/Site/cart.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Checkout, 1 / 3 / 6 months</td><td class="file"><code>chime-checkout/product.html</code><br /><code>chime-checkout/checkout.html</code></td><td class="desc">Two-step checkout: one card per medication with Monthly, 3-month and 6-month rows, then the order form.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-checkout/product.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Checkout, 1 / 3 months</td><td class="file"><code>chime-checkout-2/product.html</code><br /><code>chime-checkout-2/checkout.html</code></td><td class="desc">The two-length version: Monthly and 3-month plus one free, no 6-month option.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-checkout-2/product.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Checkout, GLP Squared</td><td class="file"><code>chime-checkout-glp-squared/product.html</code><br /><code>chime-checkout-glp-squared/checkout.html</code></td><td class="desc">Single-product version: one card, no medication choice, Monthly and 3-month plus one free.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-checkout-glp-squared/product.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Checkout, bonus NAD+</td><td class="file"><code>chime-checkout-bonus/product.html</code><br /><code>chime-checkout-bonus/checkout.html</code></td><td class="desc">Combo offer: every plan comes with free NAD+, shown on the cards, the hero and the order summary.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-checkout-bonus/product.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Checkout, bonus Tesamorelin</td><td class="file"><code>chime-checkout-bonus-tesa/product.html</code><br /><code>chime-checkout-bonus-tesa/checkout.html</code></td><td class="desc">The same combo offer with Tesamorelin as the free product instead of NAD+.</td><td class="link"><a href="https://chime-project.github.io/Site/chime-checkout-bonus-tesa/product.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Upsell: NAD+</td><td class="file"><code>chimeUpsell01.html</code></td><td class="desc">Post-checkout upsell adding NAD+ to the plan.</td><td class="link"><a href="https://chime-project.github.io/Site/chimeUpsell01.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Upsell: Tesamorelin</td><td class="file"><code>chimeUpsell02.html</code></td><td class="desc">Post-checkout upsell adding Tesamorelin to the plan.</td><td class="link"><a href="https://chime-project.github.io/Site/chimeUpsell02.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Upsell: Zofran</td><td class="file"><code>chimeUpsell03.html</code></td><td class="desc">Post-checkout upsell adding Zofran to the plan.</td><td class="link"><a href="https://chime-project.github.io/Site/chimeUpsell03.html" target="_blank" rel="noopener">Open</a></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section id="amerilean">
+        <h2>AmeriLean pages</h2>
+        <p class="sub">AmeriLean-branded versions of the Chime pages above, with their own look.</p>
+        <div class="card"><table>
+          <thead><tr><th>Page</th><th>File name</th><th>Description</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td class="page">AmeriLean 3-Month GLP-1 Plan</td><td class="file"><code>amerilean.html</code></td><td class="desc">AmeriLean product page for the 3-month GLP-1 plan with the 4th month free.</td><td class="link"><a href="https://chime-project.github.io/Site/amerilean.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">AmeriLean plans landing</td><td class="file"><code>amerilean-plans-landing/index.html</code></td><td class="desc">AmeriLean version of the 1, 3 and 6-month plan landing page.</td><td class="link"><a href="https://chime-project.github.io/Site/amerilean-plans-landing/" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">AmeriLean NAD+ add-on</td><td class="file"><code>nad2.html</code></td><td class="desc">AmeriLean version of the NAD+ add-on page.</td><td class="link"><a href="https://chime-project.github.io/Site/nad2.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">AmeriLean upsell: NAD+</td><td class="file"><code>upsell01.html</code></td><td class="desc">AmeriLean post-checkout upsell adding NAD+.</td><td class="link"><a href="https://chime-project.github.io/Site/upsell01.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">AmeriLean upsell: Tesamorelin</td><td class="file"><code>upsell02.html</code></td><td class="desc">AmeriLean post-checkout upsell adding Tesamorelin.</td><td class="link"><a href="https://chime-project.github.io/Site/upsell02.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">AmeriLean upsell: Zofran</td><td class="file"><code>upsell03.html</code></td><td class="desc">AmeriLean post-checkout upsell adding Zofran.</td><td class="link"><a href="https://chime-project.github.io/Site/upsell03.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">AmeriLean upgrade pop-ups</td><td class="file"><code>upsellPopups.html</code></td><td class="desc">The checkout upgrade pop-ups, shown on one page for review.</td><td class="link"><a href="https://chime-project.github.io/Site/upsellPopups.html" target="_blank" rel="noopener">Open</a></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section id="legal">
+        <h2>Legal pages</h2>
+        <p class="sub">Policies linked from the site footer and the checkout disclosures.</p>
+        <div class="card"><table>
+          <thead><tr><th>Page</th><th>File name</th><th>Description</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td class="page">Privacy Policy</td><td class="file"><code>privacy-policy.html</code></td><td class="desc">How Chime Health collects and uses personal information.</td><td class="link"><a href="https://chime-project.github.io/Site/privacy-policy.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Terms &amp; Conditions</td><td class="file"><code>terms-conditions.html</code></td><td class="desc">Terms of use for the site and services.</td><td class="link"><a href="https://chime-project.github.io/Site/terms-conditions.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Telehealth Consent</td><td class="file"><code>telehealth-consent.html</code></td><td class="desc">Consent to receive care through telehealth.</td><td class="link"><a href="https://chime-project.github.io/Site/telehealth-consent.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">HIPAA Notice</td><td class="file"><code>hipaa-notice.html</code></td><td class="desc">Notice of privacy practices for health information.</td><td class="link"><a href="https://chime-project.github.io/Site/hipaa-notice.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Shipping Policy</td><td class="file"><code>shipping-policy.html</code></td><td class="desc">How and when orders ship.</td><td class="link"><a href="https://chime-project.github.io/Site/shipping-policy.html" target="_blank" rel="noopener">Open</a></td></tr>
+            <tr><td class="page">Return &amp; Refund Policy</td><td class="file"><code>return-refund-policy.html</code></td><td class="desc">Returns and refunds for prescription and non-prescription orders.</td><td class="link"><a href="https://chime-project.github.io/Site/return-refund-policy.html" target="_blank" rel="noopener">Open</a></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <footer>
+        Chime Health · Page index for review. Checkouts and forms on these pages are prototypes and do not take payment.
+      </footer>
+    </div>
+  </body>
+</html>
