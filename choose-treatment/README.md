@@ -1,0 +1,58 @@
+# Chime Health — Choose Your Treatment (plan-selection checkout step)
+
+Rip of **https://intake.wellmedr.com/approval-confirmation** (client, 2026-09-16, via Luis: "rip this as is,
+don't change colors or anything, just swap logo; vials can swap, prices I'll look at after"). Plan:
+`CHOOSE-TREATMENT-RIP-PLAN.md` (repo root, untracked). Asana 1218566380294259.
+
+**As is** means the opposite of every earlier rip: this page is **not** on `chime-theme.css` / the Chime
+tokens. It carries the reference's own palette (ink `#41362a`, green `#26af59`, gold `#c19f68`, slate-blue
+buttons `#7b95a9`), its font (Outfit, from Google Fonts; "Forbes" in Bodoni Moda standing in for the
+reference's self-hosted Bodoni), its copy, layout and motion. Only two things are Chime's: the logo
+(`images/logo-chime.svg`) and the vials (`images/*.webp`, the client's amber set from `uploads/vials/amber/`).
+
+## Preview
+
+    cd ~/Sites/chime && python3 -m http.server 8791
+
+then http://localhost:8791/choose-treatment/ — check 1440 and 390 (the urgency strip and the "STEP 1"
+treatment selector are phone-only, `md:hidden`; the "Choose Your Treatment" title is desktop-only).
+
+## Files
+
+| File | What |
+|---|---|
+| `index.html` | Static shell: header (Chime logo + "Secure Checkout"), Quiz ✓ → Shipping ✓ → Payment steps, urgency strip, title, selector and grid mount points. Head comment carries the stand-in list. |
+| `css/checkout.css` | The reference's Tailwind 3.4 output reduced to the rules this page's DOM uses (extracted from its 59 KB `app.css`), class names kept so the DOM can be diffed 1:1 against the reference. Hand additions at the bottom: the selected-treatment state (`border-brand-gold`, the 0.9 rem radio dot), `.site-logo` width cap, and the grouped selectors the extractor dropped. |
+| `js/plans-data.js` | **One place for every price, label and bullet** — `window.CHIME_CHOOSE_TREATMENT`. The client's ladder goes here when it arrives. Also the urgency defaults (5 discounts, 6:57), press names, rating, "what happens next" steps. |
+| `js/checkout.js` | Vanilla port of the reference's React page: renders both medication cards and the mobile selector from the data with the reference's exact class strings; countdown (1 s) + "discounts left" decrement (8–15 s, first after 10–15 s, floor 1); "chose this today" counters (+1 with p = .8 per tick, same cadence, one random bump if none moved); selector click → `aria-pressed`, accent border + radio dot, smooth scroll to `#treatment-<id>` (`scroll-mt-20`). Timers stop on `pagehide`. |
+| `js/checkout-tests.js` | `node choose-treatment/js/checkout-tests.js` — 50 checks: money/copy lines, the reference's price literals, countdown and counter maths, renderer shape (4 buttons, 14 ticks, 4.5 stars, no hrefs, press strip, selected/unselected selector states). |
+| `images/` | `logo-chime.svg` (= `assets/logo-main.svg`), `tirzepatide.webp`, `semaglutide.webp`. |
+
+## Luis's picks (2026-09-16)
+
+- **Page one only.** The reference's buttons go to `/checkout` (a Stripe payment step with an order
+  summary). That page is **not built** — "next step open". Captured for later in the session scratchpad
+  (`checkout-body.html`, `checkout-desktop-full.png`).
+- **Plan buttons are blank.** Real `<button>`s like the reference's; `onPlanSelect()` writes
+  `sessionStorage.chime.chooseTreatment = {med, term, plan}` and nothing else. No `href`.
+- **Counters and countdown tick** exactly like the reference ("counter component, keep it as the reference").
+- **"Forbes · USA TODAY" stays.**
+
+## Verified (2026-09-16, agent-browser)
+
+- 1440: page height **2458 px = the reference's**, buttons 52 px, DOM outline (tag + classes + text, counters
+  normalised) diff against the reference's rendered DOM = **0 lines**; no console errors.
+- 390: no horizontal overflow; every section's height equals the reference's (header 53, steps 53, urgency 39,
+  selector 446, Tirzepatide card 2429, Semaglutide card 2401); selector tap sets `aria-pressed`, green/gold
+  border + radio dot, scrolls the card to 80 px from the top; counters and the discount count tick; a plan
+  button click stays on the page and records the selection.
+- `node choose-treatment/js/checkout-tests.js` → 50/50.
+
+## Stand-ins (flagged, need the client's yes/no)
+
+Every price, "billed today" and "save" figure (the reference's — Chime's checkout ladder is $359 / $897 /
+$1,794 per 1 / 3 / 6 months; note the reference's savings numbers are literals that do not reconcile with
+its own monthly price); "Forbes · USA TODAY"; the 4.7 rating; "17,482 / 11,251 chose this today"; "Only 5
+discounts left" + countdown; "Recommended for most patients"; "Lowest industry pricing"; "Highest success
+rate"; "$140 / $70 monthly savings locked in for life"; "Clinician review within 24 hours"; "Free delivery".
+`noindex` until signed off.
