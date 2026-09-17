@@ -69,5 +69,27 @@ ok(u.indexOf('data-discounts') === -1 && count(u, '<span') === 2, 'urgency node 
 ok(count(sc, '<span') === count(C.renderSelectorCard(sm, false, 11251), '<span') && sc.indexOf('11,251 chose this today</span>') > -1, 'counter span shape = reference');
 ok(C.PLAN_TERM.twelveMonth === 12 && C.PLAN_TERM.monthly === 1, 'plan terms');
 
+// ---- V2 (client price points, 2026-09-17): 1M / 3M / 6M, no 12-month, per-month = total ÷ months ----
+var D2 = require(path.join(__dirname, 'plans-data-v2.js'));
+var client = { tirz: { monthly: 359, threeMonth: 948, sixMonth: 1794 }, sema: { monthly: 299, threeMonth: 627, sixMonth: 1194 } };
+ok(D2.heroPlan === 'sixMonth' && JSON.stringify(D2.rowPlans) === '["threeMonth","monthly"]', 'V2 hero = 6-month, rows = 3-month + monthly');
+D2.treatments.forEach(function (t) {
+  ok(!t.plans.twelveMonth, 'V2 ' + t.key + ' has no 12-month plan');
+  ok(t.plans.monthly.price === client[t.key].monthly, 'V2 ' + t.key + ' monthly = client');
+  ['threeMonth', 'sixMonth'].forEach(function (k) {
+    var p = t.plans[k], total = client[t.key][k];
+    ok(p.totalPrice === total, 'V2 ' + t.key + ' ' + k + ' total = client');
+    ok(p.price * p.months === total, 'V2 ' + t.key + ' ' + k + ' per-month × months = total (' + p.price + ' × ' + p.months + ')');
+    ok(p.savingsToday === p.months * t.plans.monthly.price - total, 'V2 ' + t.key + ' ' + k + ' savings = months × monthly − total');
+  });
+  var c2 = C.renderTreatmentCard(t, D2);
+  ok(c2.indexOf('12') === -1 || !/12[- ]MONTH|12 month/.test(c2), 'V2 ' + t.key + ' card mentions no 12-month');
+  ok(count(c2, 'btn-lilac') === 3 && c2.indexOf('data-plan="sixMonth"') > -1 && c2.indexOf('data-plan="twelveMonth"') === -1, 'V2 ' + t.key + ' 3 buttons, hero = sixMonth');
+  ok(c2.indexOf('GET 6 MONTHS + SAVE ' + C.fmtMoney(t.plans.sixMonth.savingsToday)) > -1, 'V2 ' + t.key + ' big button label');
+  ok(c2.indexOf('billed today for a full 6 month supply') > -1, 'V2 ' + t.key + ' billed line says 6 month');
+  ok(c2.indexOf('monthly savings locked in for life') === -1, 'V2 ' + t.key + ' reference-only savings bullet dropped');
+});
+ok(C.bigButtonLabel(DATA.treatments[0].plans.twelveMonth) === 'GET 12 MONTHS + SAVE $1,082', 'V1 label unchanged after generalisation');
+
 console.log((fails ? 'FAIL ' : 'OK ') + (n - fails) + '/' + n + ' checks');
 process.exit(fails ? 1 : 0);

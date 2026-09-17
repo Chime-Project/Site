@@ -1,13 +1,13 @@
-/* Chime Health — Choose Your Treatment: page data.
-   Rip of intake.wellmedr.com/approval-confirmation (client, 2026-09-16, "as is"). Every number and line
-   below is the reference's, copied from its page bundle (app/approval-confirmation/page-*.js) — they are
-   STAND-INS until the client sends Chime's prices ("prices I'll look at after"). Edit this file only;
-   the cards, the mobile selector, the urgency strip and the counters all render from it.
-   NOTE: the reference's `savingsToday` figures are literals that do not reconcile with its own monthly
-   price (e.g. Tirzepatide 12-month: 129 × 12 − 1,068 = 480, shown as 1,082). Kept verbatim on purpose. */
+/* Chime Health — Choose Your Treatment V2: the CLIENT'S price points (2026-09-17).
+   Source: the client's offer table — Semaglutide 1M $299 / 3M $627 / 6M $1,194; Tirzepatide 1M $359 /
+   3M $948 / 6M $1,794. No 12-month plan. Per-month price = total ÷ months (all whole dollars); "save" =
+   months × monthly price − total. Copy and everything else = V1 (js/plans-data.js) minus the 12-month
+   plan; the monthly plan's "$140 / $70 monthly savings locked in for life" bullet is dropped (the number
+   was the reference's and is false at these prices). Loaded by v2.html. */
 (function (root) {
   var DATA = {
-    // Mobile-only strip: "ONLY 5 DISCOUNTS LEFT. YOURS IS RESERVED FOR: 06:57" (reference defaults)
+    heroPlan: 'sixMonth',
+    rowPlans: ['threeMonth', 'monthly'],
     urgency: { discountsLeft: 5, minutes: 6, seconds: 57 },
     press: ['Forbes', 'USA TODAY'],
     rating: { value: '4.7', full: 4, half: 1 },
@@ -30,22 +30,18 @@
         patientsToday: 17482,
         image: 'images/tirzepatide.webp',
         plans: {
-          twelveMonth: {
-            months: 12, label: '12-MONTH PLAN', price: 89, totalPrice: 1068, savingsToday: 1082,
+          sixMonth: {
+            months: 6, label: '6-MONTH PLAN', price: 299, totalPrice: 1794, savingsToday: 360,
             features: ['Maximum savings', 'Best long-term weight loss results', 'Price stays the same regardless of dosage'],
             footerNote: 'Lowest monthly cost · Highest success rate', bestValue: true, popularBadge: true
           },
-          sixMonth: {
-            months: 6, label: '6-MONTH PLAN', price: 123, totalPrice: 738, savingsToday: 306,
-            features: ['Highest long-term success', 'Preferred by patients who want to lose 10%+ of body weight', 'Price stays the same regardless of dosage']
-          },
           threeMonth: {
-            months: 3, label: '3-MONTH PLAN', price: 126, totalPrice: 378, savingsToday: 113,
+            months: 3, label: '3-MONTH PLAN', price: 316, totalPrice: 948, savingsToday: 129,
             features: ['Same medications, same care', 'Fewer shipments', 'Better consistency', 'Same price regardless of dosage']
           },
           monthly: {
-            months: 1, label: 'MONTHLY PLAN', sublabel: 'Lowest industry pricing', price: 129,
-            features: ['$140 monthly savings locked in for life — reflected automatically at checkout', 'Same price every month — no increases ever', 'Same price regardless of dose', 'Physician-guided dosing, adjusted as needed'],
+            months: 1, label: 'MONTHLY PLAN', sublabel: 'Lowest industry pricing', price: 359,
+            features: ['Same price every month — no increases ever', 'Same price regardless of dose', 'Physician-guided dosing, adjusted as needed'],
             footerNote: 'No surprises. No step-ups. No dosage-based pricing.'
           }
         }
@@ -63,22 +59,18 @@
         patientsToday: 11251,
         image: 'images/semaglutide.webp',
         plans: {
-          twelveMonth: {
-            months: 12, label: '12-MONTH PLAN', price: 49, totalPrice: 588, savingsToday: 1062,
+          sixMonth: {
+            months: 6, label: '6-MONTH PLAN', price: 199, totalPrice: 1194, savingsToday: 600,
             features: ['Maximum savings', 'Best long-term weight loss results', 'No monthly billing during your plan, ever'],
             footerNote: 'Lowest monthly cost · Highest success rate', bestValue: true, popularBadge: true
           },
-          sixMonth: {
-            months: 6, label: '6-MONTH PLAN', price: 73, totalPrice: 438, savingsToday: 363,
-            features: ['Highest long-term success', 'Preferred by patients focused on sustainable weight loss', 'No monthly billing during your plan, ever']
-          },
           threeMonth: {
-            months: 3, label: '3-MONTH PLAN', price: 89, totalPrice: 267, savingsToday: 110,
+            months: 3, label: '3-MONTH PLAN', price: 209, totalPrice: 627, savingsToday: 270,
             features: ['Same medication, same care', 'Fewer shipments', 'Better consistency', 'Same price regardless of dosage']
           },
           monthly: {
-            months: 1, label: 'MONTHLY PLAN', sublabel: 'Lowest industry pricing', price: 99,
-            features: ['$70 monthly savings locked in for life — reflected automatically at checkout', 'Same price every month — no increases ever', 'Same price regardless of dose', 'Physician-guided dosing, adjusted as needed'],
+            months: 1, label: 'MONTHLY PLAN', sublabel: 'Lowest industry pricing', price: 299,
+            features: ['Same price every month — no increases ever', 'Same price regardless of dose', 'Physician-guided dosing, adjusted as needed'],
             footerNote: 'No surprises. No step-ups. No dosage-based pricing.'
           }
         }

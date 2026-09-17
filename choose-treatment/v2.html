@@ -3,9 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Checkout | Chime Health</title>
+    <title>Checkout V2 | Chime Health</title>
     <meta name="description" content="Choose your treatment: select your medication and billing plan." />
     <meta name="robots" content="noindex" />
+    <!-- V2 (client, 2026-09-17): the same page on the CLIENT'S price points — 1M / 3M / 6M only, no
+         12-month plan, per-month price shown alongside the total. Semaglutide $299 / $627 / $1,194,
+         Tirzepatide $359 / $948 / $1,794 (screenshot of the client's offer table). The 6-month plan takes
+         the highlighted "best value" card, 3-month and monthly are the rows. Per-month = total ÷ months;
+         "save" = months × monthly price − total. Data: js/plans-data-v2.js; everything else is shared with
+         index.html (V1, the reference's prices). The monthly plan's "$140 monthly savings locked in for
+         life" bullet is dropped here — its number was the reference's and is false at these prices.
+    -->
     <!-- Chime Health — Choose Your Treatment (plan-selection checkout step).
          Rip of https://intake.wellmedr.com/approval-confirmation (client request 2026-09-16 via Luis:
          "rip this as is, don't change colors or anything, just swap logo; vials can swap, prices I'll
@@ -88,7 +96,7 @@
       </main>
     </div>
 
-    <script src="js/plans-data.js?v=20260941"></script>
+    <script src="js/plans-data-v2.js?v=20260941"></script>
     <script src="js/checkout.js?v=20260941"></script>
   </body>
 </html>

@@ -29,10 +29,10 @@
   function pad2(n) { return String(n).padStart(2, '0'); }
   function clock(ms) { var s = Math.floor(Math.max(0, ms) / 1000); return pad2(Math.floor(s / 60)) + ':' + pad2(s % 60); }
   function savingsLine(plan) { return fmtMoney(plan.totalPrice) + ' due today - save'; }
-  function billedLine(plan) { return fmtMoney(plan.totalPrice) + ' billed today for a full 12 month supply — no monthly billing'; }
+  function billedLine(plan) { return fmtMoney(plan.totalPrice) + ' billed today for a full ' + (plan.months || 12) + ' month supply — no monthly billing'; }
   function youSaveLine(plan) { return 'You save ' + fmtMoney(plan.savingsToday) + ' over month to month pricing.'; }
   function monthlyLine(plan) { return fmtMoney(plan.price) + ' due today and forever, your price never goes up, no surprises or changes.'; }
-  function bigButtonLabel(plan) { return 'GET 12 MONTHS + SAVE ' + fmtMoney(plan.savingsToday); }
+  function bigButtonLabel(plan) { return 'GET ' + (plan.months || 12) + ' MONTHS + SAVE ' + fmtMoney(plan.savingsToday); }
 
   // Reference: discount count s → s<=1 ? s : s-1
   function decrementDiscount(n) { return n <= 1 ? n : n - 1; }
@@ -64,7 +64,9 @@
     for (var j = 0; j < rating.half; j++) s += SVG_STAR('text-yellow-200');
     return '<div class="flex items-center gap-1 mb-3">' + s + '<span class="text-sm text-gray-600 ml-1">' + esc(rating.value) + '</span></div>';
   }
-  function renderBestValue(t, plan) {
+  // heroKey = the highlighted plan (V1: twelveMonth, V2: sixMonth); rowKeys = the plans listed under it
+  function renderBestValue(t, plan, heroKey, rowKeys) {
+    heroKey = heroKey || 'twelveMonth'; rowKeys = rowKeys || PLAN_ORDER;
     var h = '<div class="mb-4"><div class="relative rounded-2xl border-2 border-brand-green bg-gradient-to-b from-brand-green/[0.06] via-white to-white px-5 pt-6 pb-5 shadow-md">';
     if (plan.bestValue) h += '<div class="absolute -top-3 left-5"><span class="rounded-full bg-brand-green px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-sm">⭐ Best value</span></div>';
     h += '<div class="flex items-start justify-between gap-3"><div class="min-w-0"><p class="text-sm font-black uppercase tracking-wide text-secondary-500">' + esc(plan.label) + '</p></div>';
@@ -75,11 +77,11 @@
     h += '<div class="mt-4 space-y-1.5 border-t border-brand-green/15 pt-4">' + plan.features.map(function (f) { return tick(f, 'flex items-start gap-2 text-sm font-semibold text-brand-green'); }).join('') + '</div>';
     if (plan.footerNote) h += '<p class="mt-2 text-xs italic text-gray-500">' + esc(plan.footerNote) + '</p>';
     if (plan.popularBadge) h += '<div class="mt-3 inline-block rounded-full bg-amber-100 px-2.5 py-1.5"><span class="whitespace-nowrap text-[10px] font-bold text-amber-600 md:text-sm">⭐ Most patients choose this plan</span></div>';
-    h += '<button type="button" class="btn-lilac mt-4 w-full " data-plan="twelveMonth" data-treatment="' + esc(t.key) + '">' + esc(bigButtonLabel(plan)) + SVG_ARROW('h-4 w-4') + '</button>';
+    h += '<button type="button" class="btn-lilac mt-4 w-full " data-plan="' + heroKey + '" data-treatment="' + esc(t.key) + '">' + esc(bigButtonLabel(plan)) + SVG_ARROW('h-4 w-4') + '</button>';
     h += '</div>';
-    // the 6 / 3 / monthly rows
+    // the rows under the hero card (V1: 6 / 3 / monthly; V2: 3 / monthly)
     h += '<div class="bg-gray-50 rounded-xl p-4 mt-4"><div class="space-y-0">';
-    PLAN_ORDER.forEach(function (key, i) {
+    rowKeys.forEach(function (key, i) {
       var p = t.plans[key]; if (!p) return;
       h += '<div class="py-4 px-3 rounded-lg transition-all ' + (i ? 'border-t border-gray-200' : '') + '">';
       h += '<div class="mb-1"><span class="font-black text-lg text-gray-900">' + esc(p.label) + '</span></div>';
@@ -111,7 +113,8 @@
     h += '<div class="bg-brand-green/10 border border-brand-green/20 rounded-lg px-4 py-3 mb-3"><p class="text-sm text-brand-green font-medium">' + esc(t.tagline) + '</p></div>';
     h += '<div class="bg-brand-green/10 border-2 border-brand-green rounded-lg px-4 py-2 mb-3 inline-flex items-center gap-2"><span class="text-yellow-500">⭐</span><span class="text-sm font-semibold text-secondary-500">Recommended for most patients</span></div>';
     h += '<div class="space-y-1 mb-3">' + t.highlights.map(function (x) { return '<div class="flex items-center gap-2"><span class="text-secondary-500 font-bold">•</span><span class="text-sm text-secondary-500">' + esc(x) + '</span></div>'; }).join('') + '</div>';
-    h += renderBestValue(t, t.plans.twelveMonth) + renderNextSteps(data.nextSteps);
+    var heroKey = data.heroPlan || 'twelveMonth';
+    h += renderBestValue(t, t.plans[heroKey], heroKey, data.rowPlans || PLAN_ORDER) + renderNextSteps(data.nextSteps);
     return h + '</div></div>';
   }
   function renderSelectorCard(t, selected, count) {
