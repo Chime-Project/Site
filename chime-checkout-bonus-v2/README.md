@@ -78,6 +78,22 @@ in the redesign log below.
     "from $299 / $249" is the 3-month rate of the carried 1 + 3 ladder (stand-in, like the rest).
   - Hero: 888px at 1440, 1,409px at 390.
 
+- **2026-09-21 — round 6, the 3 Month Plan row as an offer card** (client, reference
+  `devinrequest01.jpeg`, untracked: "making the 3 month button like this in our style but where the
+  banner at the top and the pricing is").
+  - `.mp-row--offer` on both combos: a **banner band on top** (gift tile + "Commit to 3 Months & /
+    Get EVERY 4TH MONTH FREE"), under it the radio, the combo's **vial tile** and the **price set
+    large** ("3 MONTH PLAN", $299 /mo, "with every 4th month free, forever"), then the due-today
+    line and "No mid-plan price increases." — the reference's layout in Chime blues.
+  - It replaces the row's green "Every 4th month free, forever." tag and the +1 corner seal (the
+    banner says both). Prices, copy of the due line and the Monthly row are unchanged.
+  - Still a `.mp-row` with its `.sv-radio`, `.mp-shine` and `data-term="3"`, so `plan-select.js`
+    (selection, pulse, shine, checkout hand-off) runs on it untouched — checked: pick → button
+    "Start Losing Weight Now / 4th Month FREE FOR LIFE" → `checkout.html?med=tirz&term=3`.
+  - The combo cards are ~290px wide at every breakpoint, so the banner's bold line is one fixed
+    size (14px, nowrap). Row height 145 → 256px; the selector landing still shows the button
+    above the sticky bar at 390 × 844. Styles: section 3 of `css/redesign.css`.
+
 ## Preview
 
     cd ~/Sites/chime && python3 -m http.server 8791
@@ -92,7 +108,7 @@ then http://localhost:8791/chime-checkout-bonus-v2/product.html → `checkout.ht
 | `css/1p1s7yzodipl6.css`, `2_6-q88y6yuc5.css`, `36xz9kx5hwvks.css`, `extracted-inline.css` | the reference's compiled sheets — restyle by overriding, not by editing them |
 | `css/chime-theme.css` | the Chime theme over those sheets |
 | `css/plan-stage.css` | the plan rows inside each medication card (product page only) |
-| `css/redesign.css` | the redesign's own styles, loaded last (hero-merge, treatment selector, plan-row anchors) |
+| `css/redesign.css` | the redesign's own styles, loaded last (hero-merge, treatment selector, 3-month offer row, plan-row anchors) |
 | `css/bonus.css` | everything the combo offer adds (ribbon, combo tile, why-both strip, callouts) — both pages |
 | `js/treatment-select.js` | the hero's treatment selector: marks the card, glides to the combo's plan rows (redesign) |
 | `js/plan-select.js` | plan rows → the pick, saved to `sessionStorage` (`chime:checkout-selection`) |
@@ -114,4 +130,4 @@ so a small vial thumb needs its `padding` overridden or it renders as a blank ti
 - **Copy.** The "why both" claims are marketing copy in Chime voice, not clinical statements.
 - What is still RemedyMeds and flagged is documented in `chime-checkout/README.md`.
 
-`?v=20260948`.
+`?v=20260949`.

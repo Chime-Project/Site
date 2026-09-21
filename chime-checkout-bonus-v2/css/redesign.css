@@ -123,3 +123,57 @@
   .hm-side { justify-content: center; gap: 20px; }
   .hm-note { text-align: center; max-width: 760px; margin: 0 auto; }
 }
+
+/* 3. the 3 Month Plan row as an offer card (client, 2026-09-21, reference devinrequest01: "making the
+      3 month button like this in our style … the banner at the top and the pricing"). A banner band
+      on top (gift tile + "Commit to 3 Months & / Get EVERY 4TH MONTH FREE"), under it the radio, the
+      combo's vial and the price set large. It replaces the row's green tag and the +1 corner seal —
+      the banner says both. Still a .mp-row with its .sv-radio, .mp-shine and data-term, so
+      plan-select.js (selection, pulse, shine) works on it unchanged. */
+.mp-row.mp-row--offer { display: block; padding: 0; }
+.mp3-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: #dbe3fb; color: #0f1a4a;
+  border-radius: 10px 10px 0 0;
+}
+.mp3-gift {
+  flex: 0 0 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(#fff, #eef2fd); color: #2b45c5;
+  box-shadow: 0 1px 2px rgba(15, 26, 74, .18), inset 0 0 0 1px rgba(255, 255, 255, .9);
+}
+.mp3-banner-t { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.mp3-banner-t span { font-size: 13px; font-weight: 500; }
+/* the combo cards are ~290px wide at every breakpoint, so one size: the bold line stays on one row */
+.mp3-banner-t b { font-size: 14px; font-weight: 800; letter-spacing: 0; white-space: nowrap; }
+.mp3-body {
+  display: grid; grid-template-columns: 18px 76px minmax(0, 1fr);
+  grid-template-areas: "r vial info" "foot foot foot";
+  column-gap: 12px; row-gap: 10px; align-items: center;
+  padding: 14px;
+}
+.mp3-body .sv-radio { grid-area: r; }
+.mp3-vial {
+  grid-area: vial; height: 92px; border-radius: 12px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(#b9c8f5, #d3ddf9 60%, #e6ecfb);
+}
+/* the compiled sheets pad every vial image by 6% — reset it for the tile */
+.mp3-vial img { width: 100%; height: 100%; padding: 0 !important; object-fit: contain; transform: scale(1.12); }
+.mp3-info { grid-area: info; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.mp3-info .mp-name { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1d293d; }
+.mp-row.mp-row--offer .mp-price { margin-right: 0; font-size: 34px; letter-spacing: -0.01em; }
+.mp-row.mp-row--offer .mp-price sup { font-size: 16px; top: -12px; }
+.mp-row.mp-row--offer .mp-price small { margin-left: 4px; font-size: 16px; }
+.mp3-with { font-size: 13px; line-height: 1.35; color: #45556c; }
+.mp3-foot {
+  grid-area: foot; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px;
+  padding-top: 10px; border-top: 1px solid #dbe3fb;
+}
+.mp3-foot .mp-due { margin: 0; }
+@media (max-width: 767px) {
+  .mp-row.mp-row--offer .mp-price { font-size: 30px; }
+  .mp3-body { grid-template-columns: 18px 68px minmax(0, 1fr); column-gap: 10px; }
+  .mp3-vial { height: 84px; }
+}
