@@ -4,53 +4,56 @@
  *
  * 1. hero-merge (2026-09-21): the hero and the "Why is everyone switching to Chime?" results section
  *    as one block — headline, bonus ribbon, the three results, the recommendation, the button and
- *    the footnote next to the members photo.
- *    Phone:   head / results + photo side by side / offer.
- *    Desktop: copy on the left, the photo runs the full height on the right.
+ *    the footnote.
+ *    Round 3 (client, same day: no members photo, the results looked odd beside it, one way down):
+ *    one centred column; the results are one white strip — three even columns on desktop, three
+ *    rows (number left, line right) on phones; the button lands on the recommended plan rows.
  */
-.hero-merge { padding: 40px 0 0; }
+.hero-merge { padding: 40px 0; }
 .hm-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .82fr);
-  grid-template-areas: "head head" "stats art" "offer offer";
-  column-gap: 8px;
-  row-gap: 24px;
-  max-width: 1040px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 0 16px;
 }
-.hm-head { grid-area: head; display: flex; flex-direction: column; gap: 16px; }
+.hm-head { display: flex; flex-direction: column; gap: 16px; }
 .hm-head .bonus-ribbon { margin: 0; max-width: none; justify-content: flex-start; }
 
-.hm-stats { grid-area: stats; display: flex; flex-direction: column; gap: 22px; margin: 0; padding: 0; list-style: none; align-self: center; }
-.hm-num { margin: 0; font-size: 46px; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
-.hm-unit { margin-left: 4px; font-size: 26px; }
-.hm-cap { margin: 6px 0 0; font-size: 14px; line-height: 1.4; max-width: 230px; }
+.hm-stats {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 4px 20px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+}
+.hm-stat { display: flex; align-items: center; gap: 16px; padding: 14px 0; }
+.hm-stat + .hm-stat { border-top: 1px solid #e5e7eb; }
+.hm-num { flex: 0 0 116px; margin: 0; font-size: 36px; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+.hm-unit { margin-left: 3px; font-size: 20px; }
+.hm-cap { margin: 0; font-size: 14px; line-height: 1.4; }
 
-/* the photo fills its cell and is cut by the section edge, like the source's results block */
-.hm-art { grid-area: art; position: relative; min-height: 300px; margin-right: -32px; }
-.hm-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
-/* phone: the photo stops mid-block, so it fades out instead of ending in a hard line */
-.hm-art { -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
-
-.hm-offer { grid-area: offer; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; }
+.hm-offer { display: flex; flex-direction: column; gap: 16px; }
 .hm-note { margin: 0; }
 
-@media (min-width: 900px) {
-  .hero-merge { padding-top: 64px; }
-  .hm-wrap {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
-    grid-template-areas: "head art" "stats art" "offer art";
-    column-gap: 56px;
-    row-gap: 28px;
-    padding: 0 32px;
-  }
-  .hm-stats { flex-direction: row; gap: 28px; align-self: start; }
-  .hm-stat { flex: 1 1 0; min-width: 0; }
-  .hm-num { font-size: 52px; }
-  .hm-unit { font-size: 28px; }
-  .hm-cap { max-width: none; }
-  .hm-art { margin-right: 0; min-height: 0; -webkit-mask-image: none; mask-image: none; }
-  .hm-art img { object-fit: contain; object-position: center bottom; }
-  .hm-offer { padding-bottom: 64px; }
+/* the hero button lands here: the plan rows of a combo card, with the card's name, rating and
+   member count still in view above them (the name starts 168px over the rows) */
+#plans-sema, #plans-tirz { scroll-margin-top: 188px; }
+
+@media (min-width: 768px) {
+  .hero-merge { padding: 64px 0; }
+  .hm-wrap { gap: 24px; padding: 0 32px; }
+  .hm-head, .hm-head h2 { text-align: center; }
+  .hm-head { align-items: center; }
+  .hm-head .bonus-ribbon { justify-content: center; }
+  .hm-stats { flex-direction: row; padding: 0; }
+  .hm-stat { flex: 1 1 0; min-width: 0; flex-direction: column; align-items: center; gap: 8px; padding: 24px 20px; text-align: center; }
+  .hm-stat + .hm-stat { border-top: 0; border-left: 1px solid #e5e7eb; }
+  .hm-num { flex: none; font-size: 44px; }
+  .hm-unit { font-size: 24px; }
+  .hm-note { text-align: center; }
 }

@@ -28,6 +28,20 @@ in the redesign log below.
   unchanged. Order: header → hero + results → next steps → **plans** → meds + support → members →
   delivery → FAQ. `#products` / `#med-sema` / `#med-tirz` and the plan scripts work as before.
 
+- **2026-09-21 — round 3, client feedback on the hero** ("we still have those women and then the
+  double click to get down. the stats the way they have them beside the women look odd too").
+  - The members photo is out of the hero (`images/before-after-main.png` is no longer referenced by
+    this page; the members carousel further down is untouched).
+  - The three results are one white strip under the ribbon: three even columns from 768px, three
+    rows (number left, line right) on phones. The hero is one centred column, 760px wide.
+  - One way down instead of two: the recommendation is a plain card (it was a link to `#med-tirz`,
+    next to a button to `#products`), and the single button "Start Losing Weight Now" lands on the
+    recommended combo's **plan rows** — new anchors `#plans-tirz` / `#plans-sema` on the `.mp`
+    blocks, `scroll-margin-top: 188px` so the combo's name and rating stay in view. One tap shows
+    the name, the bonus, both plans and the button on a 390 × 844 phone. `#med-tirz`, `#med-sema`
+    and `#products` still work for outside links.
+  - Hero height: 1,119 → 1,055px at 390, 809 → 782px at 1440. Nothing else on the page changed.
+
 ## Preview
 
     cd ~/Sites/chime && python3 -m http.server 8791
@@ -42,7 +56,7 @@ then http://localhost:8791/chime-checkout-bonus-v2/product.html → `checkout.ht
 | `css/1p1s7yzodipl6.css`, `2_6-q88y6yuc5.css`, `36xz9kx5hwvks.css`, `extracted-inline.css` | the reference's compiled sheets — restyle by overriding, not by editing them |
 | `css/chime-theme.css` | the Chime theme over those sheets |
 | `css/plan-stage.css` | the plan rows inside each medication card (product page only) |
-| `css/redesign.css` | the redesign's own styles, loaded last (hero-merge) |
+| `css/redesign.css` | the redesign's own styles, loaded last (hero-merge, plan-row anchors) |
 | `css/bonus.css` | everything the combo offer adds (ribbon, combo tile, why-both strip, callouts) — both pages |
 | `js/plan-select.js` | plan rows → the pick, saved to `sessionStorage` (`chime:checkout-selection`) |
 | `js/checkout-selection.js`, `js/checkout.js` | the order summary filled from that pick |
@@ -63,4 +77,4 @@ so a small vial thumb needs its `padding` overridden or it renders as a blank ti
 - **Copy.** The "why both" claims are marketing copy in Chime voice, not clinical statements.
 - What is still RemedyMeds and flagged is documented in `chime-checkout/README.md`.
 
-`?v=20260944`.
+`?v=20260946`.
