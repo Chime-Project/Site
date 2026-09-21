@@ -1,0 +1,56 @@
+/*
+ * redesign.css — chime-checkout-bonus-v2/ only. Everything the redesign adds sits here, loaded last,
+ * so the reference's compiled sheets and the carried css files stay untouched.
+ *
+ * 1. hero-merge (2026-09-21): the hero and the "Why is everyone switching to Chime?" results section
+ *    as one block — headline, bonus ribbon, the three results, the recommendation, the button and
+ *    the footnote next to the members photo.
+ *    Phone:   head / results + photo side by side / offer.
+ *    Desktop: copy on the left, the photo runs the full height on the right.
+ */
+.hero-merge { padding: 40px 0 0; }
+.hm-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .82fr);
+  grid-template-areas: "head head" "stats art" "offer offer";
+  column-gap: 8px;
+  row-gap: 24px;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.hm-head { grid-area: head; display: flex; flex-direction: column; gap: 16px; }
+.hm-head .bonus-ribbon { margin: 0; max-width: none; justify-content: flex-start; }
+
+.hm-stats { grid-area: stats; display: flex; flex-direction: column; gap: 22px; margin: 0; padding: 0; list-style: none; align-self: center; }
+.hm-num { margin: 0; font-size: 46px; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+.hm-unit { margin-left: 4px; font-size: 26px; }
+.hm-cap { margin: 6px 0 0; font-size: 14px; line-height: 1.4; max-width: 230px; }
+
+/* the photo fills its cell and is cut by the section edge, like the source's results block */
+.hm-art { grid-area: art; position: relative; min-height: 300px; margin-right: -32px; }
+.hm-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+/* phone: the photo stops mid-block, so it fades out instead of ending in a hard line */
+.hm-art { -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+
+.hm-offer { grid-area: offer; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; }
+.hm-note { margin: 0; }
+
+@media (min-width: 900px) {
+  .hero-merge { padding-top: 64px; }
+  .hm-wrap {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+    grid-template-areas: "head art" "stats art" "offer art";
+    column-gap: 56px;
+    row-gap: 28px;
+    padding: 0 32px;
+  }
+  .hm-stats { flex-direction: row; gap: 28px; align-self: start; }
+  .hm-stat { flex: 1 1 0; min-width: 0; }
+  .hm-num { font-size: 52px; }
+  .hm-unit { font-size: 28px; }
+  .hm-cap { max-width: none; }
+  .hm-art { margin-right: 0; min-height: 0; -webkit-mask-image: none; mask-image: none; }
+  .hm-art img { object-fit: contain; object-position: center bottom; }
+  .hm-offer { padding-bottom: 64px; }
+}

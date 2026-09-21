@@ -1,0 +1,41 @@
+/* MODE bonus (2026-09-08): the combo offer — both vials on the tile, the bonus everywhere the price is */
+.bonus-ribbon { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 4px auto 0; max-width: 560px; padding: 10px 16px; border-radius: 12px; background: #dcfce7; color: #14532d; box-shadow: inset 0 0 0 1px #bbf7d0; font-size: 14px; line-height: 1.35; text-align: left; }
+.bonus-ribbon b { color: #15803d; font-weight: 700; }
+.bonus-ribbon s { color: #4b5563; font-weight: 400; }
+.bonus-ribbon-gift { font-size: 22px; line-height: 1; flex: none; }
+.combo-tile { position: relative; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 10% 6% 8%; background: linear-gradient(160deg, hsl(var(--brand-50)) 0%, hsl(var(--brand-25)) 100%); }
+.combo-tile figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1 1 0; min-width: 0; }
+.combo-tile img[src*="images/vial-"] { height: 200px; max-height: 58vw; width: auto; padding: 0; background: none; object-fit: contain; }
+.combo-tile figcaption { font-size: 12px; font-weight: 700; color: #1f2937; white-space: nowrap; }
+.combo-tile figcaption em { font-style: normal; color: #15803d; }
+.combo-plus { flex: none; width: 34px; height: 34px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: #fff; color: #2b45c5; font-weight: 700; font-size: 22px; line-height: 1; box-shadow: 0 4px 10px rgba(2, 6, 23, 0.14); margin-bottom: 22px; }
+.combo-bar { padding: 8px 12px; text-align: center; font-size: 13px; line-height: 1.35; font-weight: 500; background: #15803d; color: #fff; }
+.combo-bar b { font-weight: 700; }
+.combo-bar s { opacity: .85; }
+.bonus-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px auto 0; max-width: 860px; }
+.bonus-strip-item { display: grid; grid-template-columns: 28px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 10px; row-gap: 2px; padding: 14px; border-radius: 12px; background: #fff; border: 1px solid #e5e7eb; text-align: left; font-size: 13px; line-height: 1.4; color: #4b5563; }
+.bonus-strip-item b { color: #020617; font-size: 14px; }
+.bonus-strip-item > span:last-child { grid-column: 2; }
+.bonus-strip-n { grid-row: 1 / span 2; width: 28px; height: 28px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: #e6ecfb; color: #2b45c5; font-weight: 700; font-size: 14px; }
+.bonus-strip-item--price { background: #f0fdf4; border-color: #bbf7d0; }
+.bonus-strip-item--price .bonus-strip-n { background: #15803d; color: #fff; }
+.bonus-strip-item--price em { font-style: normal; font-weight: 700; color: #15803d; }
+.mp-bonus { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; }
+.mp-bonus img[src*="images/vial-"] { flex: none; width: 34px; height: 64px; padding: 0; background: none; object-fit: contain; }
+.mp-bonus > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mp-bonus-k { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #15803d; }
+.mp-bonus b { font-size: 16px; line-height: 1.2; color: #14532d; }
+.mp-bonus b s { font-size: 13px; font-weight: 500; color: #4b5563; margin-left: 4px; }
+.mp-bonus-t { font-size: 12px; line-height: 1.4; color: #374151; }
+.sv-list--value li.sv-bonus { padding: 6px 8px 6px 30px; margin: 0 -8px; border-radius: 8px; background: #f0fdf4; font-weight: 700; color: #14532d; }
+.sv-list--value li.sv-bonus::before { left: 8px; top: 8px; background-color: #bbf7d0; }
+.sv-list--value li.sv-bonus .sv-val { font-size: 14px; }
+.ck-bonus-badge { margin-left: 6px; }
+.ck-bonus-row { padding: 6px 8px; margin: 0 -8px; border-radius: 8px; background: #f0fdf4; }
+.ck-bonus-vrow img[src*="images/vial-"] { padding: 3px !important; background: #f5f7fe; }   /* the summary sheet pads vial imgs 6% */
+.ck-bonus-vrow { background: #f0fdf4; margin: 0 -8px; padding-left: 8px !important; padding-right: 8px !important; border-radius: 8px; }
+@media (max-width: 767px) {
+  .bonus-strip { grid-template-columns: 1fr; gap: 8px; }
+  .combo-tile img[src*="images/vial-"] { height: 150px; }
+  .combo-plus { width: 28px; height: 28px; font-size: 18px; }
+}
