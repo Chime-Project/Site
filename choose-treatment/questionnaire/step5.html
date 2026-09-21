@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How the program works | Chime Health</title>
+    <link rel="icon" type="image/png" href="images/favicon-chime.png" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- favicons -->
+
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- styles -->
+    <link href="css/questionaire-style.css?v=20260942" rel="stylesheet" />
+    <link href="css/chime-theme.css?v=20260942" rel="stylesheet" />
+  </head>
+  <body class="min-h-full px-4 md:px-8 font-sans">
+    <!-- Header: Back button, Logo, Rating -->
+    <header
+      class="relative max-w-lg mx-auto flex items-center justify-between mt-8 mb-8"
+    >
+      <a
+        href="step4.html"
+        aria-label="Go back"
+        class="text-neutral-900 w-8 flex justify-center items-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-5 h-5"
+          aria-hidden="true"
+        >
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+      </a>
+      <img
+        src="images/logo-chime.svg"
+        alt="Chime Health"
+        class="h-8.5 w-fit absolute left-1/2 -translate-x-1/2"
+      />
+
+      <div
+        class="text-right leading-tight flex justify-center items-center flex-col gap-2"
+      >
+        <div class="flex items-center gap-1 font-medium text-xs text-[10px]">
+          <span class="font-light">Excellent</span>
+          <span class="font-bold">4.7</span>
+        </div>
+        <div class="flex items-center gap-0.5" aria-label="TrustPilot rating">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf0" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf3" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path></svg
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf4" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="70.00000000000001%" stop-color="#00B67A"></stop>
+                <stop offset="70.00000000000001%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="url(#pf4)"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div
+      class="max-w-lg mx-auto mb-6"
+      role="progressbar"
+      aria-valuenow="58"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-label="Form progress"
+    >
+      <div class="h-2 w-full bg-[#e6e8f3] rounded-full overflow-hidden">
+        <div class="h-full w-[58%] bg-[#262626] rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Intro Section -->
+    <section class="max-w-lg mx-auto mb-5">
+      <div class="flex flex-row justify-between gap-2">
+        <h1 class="text-[28px] text-[#3F3F3F] font-medium tracking-tight">
+          <span class="font-semibold">58% better results</span> than standard
+          GLP-1 alone — clinically backed.
+        </h1>
+      </div>
+    </section>
+
+    <!-- Outcomes Comparison Card -->
+    <section class="max-w-lg mx-auto mb-8">
+      <div
+        class="rounded-3xl bg-gradient-to-b from-[#7C8CF0] to-[#A9B5F5] p-6 pb-0 overflow-hidden"
+      >
+        <div class="grid grid-cols-[124px_100px] gap-6 justify-center">
+          <!-- Chime Health Column -->
+          <div class="flex flex-col gap-4">
+            <!-- Forbes Laurel Badge -->
+            <img
+              alt="Forbes #1 Weight Loss Program 2025 | 2026"
+              class="h-16 object-contain"
+              src="images/forbes-laurel.png"
+            />
+
+            <!-- Chime Health Result Card -->
+            <div
+              class="rounded-2xl bg-gradient-to-b from-[#3548D4] to-[#4C5FDE] pt-1.5 pb-4 -mb-1.5"
+            >
+              <div class="relative h-fit flex items-center justify-center">
+                <!-- Placeholder collage: medication + people + food -->
+                <img
+                  alt="Chime Health treatment plan: medication, clinician, and healthy meal"
+                  class="w-full h-full object-cover"
+                  src="images/chime-vials.webp"
+                />
+              </div>
+              <div class="px-4">
+                <p class="text-sm text-white">up to</p>
+                <div class="flex items-baseline gap-0.5 text-white">
+                  <span
+                    class="text-[42px] font-bold tracking-tight leading-none"
+                    >40</span
+                  >
+                  <span class="text-sm font-semibold">lbs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GLP-1 Meds Column -->
+          <div class="flex flex-col gap-2 justify-end">
+            <p class="text-sm text-gray-700 text-center leading-tight">
+              GLP-1 Meds<span class="block">(only)</span>
+            </p>
+            <div class="rounded-2xl bg-slate-200 pt-0.5 pb-4 w-full -mb-1.5">
+              <div class="relative h-fit flex items-center justify-center">
+                <!-- Placeholder: vial + syringe -->
+                <img
+                  alt="GLP-1 medication vial and syringe"
+                  class="w-full h-full object-cover"
+                  src="images/glp1-syringe.png"
+                />
+              </div>
+              <div class="px-4">
+                <p class="text-sm text-gray-700">up to</p>
+                <div class="flex items-baseline gap-0.5 text-gray-700">
+                  <span
+                    class="text-[42px] font-bold tracking-tight leading-none"
+                    >24</span
+                  >
+                  <span class="text-sm font-semibold">lbs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <p class="text-[10px] text-gray-500 leading-relaxed mt-4">
+          Results are based on self-reported data from ~300,000 Chime Health
+          members on personalized treatment plans, including compounded GLP-1
+          medications and clinician consultations. Members reported their weight
+          on their initial medical intake questionnaire and every 3-4 weeks
+          thereafter. Individual results may vary. Stats compared to outcomes
+          reported for GLP-1 medications alone in Rodriguez P., et al. (2024).
+          "Semaglutide vs Tirzepatide for Weight Loss in Adults with Overweight
+          or Obesity," JAMA Internal Medicine.
+        </p>
+      </div>
+    </section>
+    <!-- Form -->
+    <form class="max-w-lg mx-auto space-y-4 md:pb-0 pb-48">
+      <div
+        class="max-w-lg mx-auto fixed bottom-0 left-0 right-0 md:static bg-gradient-to-t from-white to-white/0 py-4 md:py-0 max-[528px]:px-4"
+      >
+        <!-- Submit Button -->
+        <button
+          id="continueBtn"
+          type="button"
+          class="w-full disabled:bg-neutral-200 disabled:text-neutral-400 bg-slate-900 text-slate-50 shadow-sm font-medium rounded-full px-4 py-3 flex items-center justify-center gap-2 mt-3 disabled:cursor-not-allowed cursor-pointer md:mt-8"
+        >
+          See my plan
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </form>
+  </body>
+  <script>
+    const continueBtn = document.getElementById("continueBtn");
+
+    continueBtn?.addEventListener("click", () => {
+      window.location.assign("step6.html");
+    });
+  </script>
+</html>

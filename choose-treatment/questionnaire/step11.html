@@ -1,0 +1,655 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical history | Chime Health</title>
+    <link rel="icon" type="image/png" href="images/favicon-chime.png" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- favicons -->
+
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- styles -->
+    <link href="css/questionaire-style.css?v=20260942" rel="stylesheet" />
+    <link href="css/chime-theme.css?v=20260942" rel="stylesheet" />
+  </head>
+  <body class="min-h-full px-4 md:px-8 font-sans">
+    <!-- Header: Back button, Logo, Rating -->
+    <header
+      class="relative max-w-lg mx-auto flex items-center justify-between mt-8 mb-8"
+    >
+      <a
+        href="step10.html"
+        aria-label="Go back"
+        class="text-neutral-900 w-8 flex justify-center items-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-5 h-5"
+          aria-hidden="true"
+        >
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+      </a>
+      <img
+        src="images/logo-chime.svg"
+        alt="Chime Health"
+        class="h-8.5 w-fit absolute left-1/2 -translate-x-1/2"
+      />
+
+      <div
+        class="text-right leading-tight flex justify-center items-center flex-col gap-2"
+      >
+        <div class="flex items-center gap-1 font-medium text-xs text-[10px]">
+          <span class="font-light">Excellent</span>
+          <span class="font-bold">4.7</span>
+        </div>
+        <div class="flex items-center gap-0.5" aria-label="TrustPilot rating">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf0" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf3" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path></svg
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf4" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="70.00000000000001%" stop-color="#00B67A"></stop>
+                <stop offset="70.00000000000001%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="url(#pf4)"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div
+      class="max-w-lg mx-auto mb-10 flex items-center gap-1"
+      role="progressbar"
+      aria-valuenow="14"
+      aria-valuemin="0"
+      aria-valuemax="10"
+      aria-label="Form progress"
+    >
+      <div class="h-2 w-4 rounded-full bg-[#262626] shrink-0"></div>
+      <div class="h-2 w-full bg-[#e6e8f3] rounded-full overflow-hidden">
+        <div class="h-2 w-[14%] rounded-full bg-[#262626] shrink-0"></div>
+      </div>
+      <!-- <div class="h-2 flex-1 rounded-full bg-[#e6e8f3]"></div> -->
+    </div>
+
+    <!-- Demographics Form -->
+    <form class="max-w-lg mx-auto space-y-4 md:pb-0 pb-56">
+      <!-- Step badge -->
+      <span
+        class="text-sm leading-5 font-medium text-white inline-flex items-center rounded px-2 py-0.5 bg-teal-500 mb-2"
+        >Final health check</span
+      >
+
+      <!-- Heading -->
+      <h1 class="text-gray-800 text-2xl md:text-3xl leading-tight font-medium">
+        Have you experienced or been diagnosed with any of the following?
+      </h1>
+
+      <!-- Helper text -->
+      <p class="self-stretch text-gray-700 text-xs leading-4 mb-6">
+        *Select all that apply &amp; click "Continue" below
+      </p>
+
+      <!-- Options -->
+      <div class="space-y-3 pt-1 pb-30">
+        <div class="mb-4">
+          <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            None of the below
+          </span>
+            <input data-none="true"
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="None of the below"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+        </div>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Current symptomatic gallstones
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Current symptomatic gallstones"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Diabetic Retinopathy (diabetic eye disease), damage to the optic nerve from trauma or reduced blood flow, or blindness
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Diabetic Retinopathy (diabetic eye disease), damage to the optic nerve from trauma or reduced blood flow, or blindness"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            History of glucose-6-phosphate dehydrogenase (G6PD) deficiency
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="History of glucose-6-phosphate dehydrogenase (G6PD) deficiency"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Hypoglycemia (low blood sugar)
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Hypoglycemia (low blood sugar)"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Pancreatitis or Pancreatic Cancer
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Pancreatitis or Pancreatic Cancer"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Personal or family history of thyroid cyst/nodule, thyroid cancer, medullary thyroid carcinoma, or multiple endocrine neoplasia syndrome type 2
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Personal or family history of thyroid cyst/nodule, thyroid cancer, medullary thyroid carcinoma, or multiple endocrine neoplasia syndrome type 2"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            QT prolongation or other heart rhythm disorder (including Heart Arrhythmia)
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="QT prolongation or other heart rhythm disorder (including Heart Arrhythmia)"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Type 1 diabetes
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Type 1 diabetes"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Type 2 diabetes (not on insulin)
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Type 2 diabetes (not on insulin)"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+
+        <label
+            class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+          >
+            <span class="text-base font-medium text-gray-800 leading-5">
+            Type 2 diabetes (on insulin)
+          </span>
+            <input
+              type="checkbox"
+              name="healthConditionsAdditional"
+              value="Type 2 diabetes (on insulin)"
+              class="peer sr-only"
+            />
+            <span
+              class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+              >
+                <title>Checkmark</title>
+                <path
+                  d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                ></path>
+              </svg>
+            </span>
+          </label>
+      </div>
+
+      <div
+        class="max-w-lg mx-auto fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white to-white/0 pb-6 pt-2 max-[528px]:px-4"
+      >
+        <!-- Submit Button -->
+        <button
+          id="continueBtn"
+          type="button"
+          class="w-full disabled:bg-neutral-200 disabled:text-neutral-400 bg-slate-900 text-slate-50 shadow-sm font-medium rounded-full px-4 py-3 flex items-center justify-center gap-2 mt-3 disabled:cursor-not-allowed cursor-pointer md:mt-2"
+        >
+          Continue health check
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
+        <div class="flex justify-center items-center gap-2 mt-4">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg
+          ><span class="text-center text-gray-600 text-xs font-normal leading-4"
+            >HIPAA-protected. Only visible to your clinician.</span
+          >
+        </div>
+      </div>
+    </form>
+  </body>
+  <script src="js/funnel-state.js?v=20260942"></script>
+  <script src="js/quiz-dq.js?v=20260942"></script>
+  <script>
+    const continueBtn = document.getElementById("continueBtn");
+    const boxes = Array.prototype.slice.call(
+      document.querySelectorAll('input[name="healthConditionsAdditional"]')
+    );
+    const noneBox = boxes.filter((b) => b.hasAttribute("data-none"))[0] || null;
+    const others = boxes.filter((b) => b !== noneBox);
+
+    // "None" is exclusive in both directions.
+    noneBox && noneBox.addEventListener("change", function () {
+      if (noneBox.checked) others.forEach((b) => (b.checked = false));
+      sync();
+    });
+    others.forEach((b) =>
+      b.addEventListener("change", function () {
+        if (b.checked && noneBox) noneBox.checked = false;
+        sync();
+      })
+    );
+
+    function selected() {
+      return boxes.filter((b) => b.checked).map((b) => b.value);
+    }
+    function sync() {
+      if (continueBtn) continueBtn.disabled = selected().length === 0;
+    }
+
+    (function restore() {
+      const prior = FunnelState.get("healthConditionsAdditional", null);
+      if (Array.isArray(prior)) {
+        boxes.forEach((b) => {
+          if (prior.indexOf(b.value) !== -1) b.checked = true;
+        });
+      }
+      sync();
+    })();
+
+    continueBtn?.addEventListener("click", () => {
+      if (continueBtn.disabled) return;
+      FunnelState.save({ healthConditionsAdditional: selected() });
+      // Before validation and before navigation, exactly as the reference does.
+      if (QuizDQ.check("step11.html")) return;
+      window.location.assign("step12.html");
+    });
+  </script>
+</html>

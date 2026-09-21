@@ -1,0 +1,129 @@
+/*
+ * chime-theme.css — the Chime skin for the questionnaire.
+ *
+ * Loads AFTER questionaire-style.css (the source's compiled Tailwind 4 sheet) and only overrides.
+ * That sheet keeps its rules inside @layer, so everything here — unlayered — wins without
+ * !important. The compiled sheet is never edited: its escaped arbitrary-value selectors
+ * (.bg-\[\#262626\]) must keep matching the markup, so those classes are re-coloured here by
+ * selector instead of by rewriting hex.
+ *
+ * Palette = tokens/colors.css primitives. Blue / slate only, no warm or green tones.
+ * Source of truth: uploads/remedy-questionnaire/chime-theme.css (copied by the build script).
+ */
+
+:root {
+  --font-sans: "Quicksand", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* copy: ink on the blue ramp, secondary copy on slate */
+  --color-black: #1B263A;
+  --color-gray-900: #1B263A;
+  --color-gray-800: #26354D;
+  --color-gray-700: #314158;
+  --color-gray-600: #45556C;
+  --color-gray-500: #62748E;
+  --color-gray-400: #90A1B9;
+  --color-gray-300: #CAD5E2;
+  --color-gray-200: #E2E8F0;
+  --color-neutral-950: #1B263A;
+  --color-neutral-900: #26354D;
+  --color-neutral-800: #26354D;
+  --color-neutral-700: #314158;
+  --color-neutral-600: #45556C;
+  --color-neutral-500: #62748E;
+  --color-neutral-400: #90A1B9;
+  --color-neutral-300: #CAD5E2;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-50: #F8FAFC;
+  --color-slate-950: #485E89;
+  --color-slate-900: #26354D;
+  --color-slate-800: #324563;
+  --color-slate-700: #485E89;
+  --color-slate-200: #E2E8F0;
+  --color-slate-50: #F8FAFC;
+
+  /* accents: every source hue lands on Chime blue */
+  --color-blue-600: #5871A5;
+  --color-blue-50: #EFF3FC;
+  --color-indigo-600: #5871A5;
+  --color-teal-500: #6580BC;
+  --color-teal-50: #EFF3FC;
+  --color-emerald-500: #6580BC;
+
+  /* notices: the source's orange / amber callouts become quiet blue panels */
+  --color-orange-50: #EFF3FC;
+  --color-orange-600: #485E89;
+  --color-amber-100: #EFF3FC;
+  --color-amber-200: #BDD2F6;
+  --color-amber-600: #485E89;
+}
+
+body {
+  color: #26354D;
+  font-feature-settings: "lnum";
+}
+
+/* ---- logo: Chime's wordmark is 7.9:1, the source's was 4:1 ---- */
+header img[src*="logo-chime"] {
+  height: 22px;
+  width: auto;
+}
+
+/* ---- primary action = DS primary: blue-500 on white, blue-800 on hover ---- */
+.bg-slate-900 {
+  background-color: #6580BC;
+  transition: background-color 160ms ease;
+}
+.bg-slate-900:hover:not(:disabled) {
+  background-color: #324563;
+}
+.text-slate-50 {
+  color: #FFFFFF;
+}
+.disabled\:bg-neutral-200:disabled {
+  background-color: #E2E8F0;
+}
+.disabled\:text-neutral-400:disabled {
+  color: #90A1B9;
+}
+
+/* ---- selected answer: blue-500 edge + indicator ---- */
+.peer:checked ~ .peer-checked\:border-neutral-900 {
+  border-color: #6580BC;
+}
+.peer:checked ~ .peer-checked\:bg-neutral-900 {
+  background-color: #6580BC;
+}
+
+/* ---- progress bar ---- */
+.bg-\[\#262626\] {
+  background-color: #6580BC;
+}
+.bg-\[\#e6e8f3\] {
+  background-color: #DAE5FA;
+}
+
+/* ---- arbitrary-value classes that carry the source's indigo ---- */
+.bg-\[\#1F32A9\] {
+  background-color: #26354D;
+}
+.bg-\[\#4361db\] {
+  background-color: #5871A5;
+}
+.text-\[\#3F3F3F\] {
+  color: #314158;
+}
+.from-\[\#415FDB\] { --tw-gradient-from: #5871A5; }
+.from-\[\#3548D4\] { --tw-gradient-from: #485E89; }
+.from-\[\#7C8CF0\] { --tw-gradient-from: #7FA0D9; }
+.to-\[\#4C5FDE\] { --tw-gradient-to: #6580BC; }
+.to-\[\#647EEB\] { --tw-gradient-to: #7FA0D9; }
+.to-\[\#A9B5F5\] { --tw-gradient-to: #BDD2F6; }
+
+/* ---- focus: visible, on brand ---- */
+.focus\:ring-neutral-400:focus {
+  --tw-ring-color: #94BAF2;
+}
+.focus\:border-gray-400:focus,
+.focus\:border-slate-950:focus {
+  border-color: #6580BC;
+}

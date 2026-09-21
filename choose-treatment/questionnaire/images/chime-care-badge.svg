@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" role="img" aria-label="Chime Care+ weight loss warranty">
+  <defs>
+    <path id="top" d="M 60 192 A 132 132 0 0 1 324 192"/>
+    <path id="bottom" d="M 40 192 A 152 152 0 0 0 344 192"/>
+  </defs>
+  <circle cx="192" cy="192" r="190" fill="#DAE5FA"/>
+  <circle cx="192" cy="192" r="176" fill="none" stroke="#6580BC" stroke-width="2"/>
+  <g font-family="Quicksand, 'Avenir Next', 'Segoe UI', Helvetica, Arial, sans-serif" fill="#26354D" text-anchor="middle">
+    <text font-size="40" font-weight="700" letter-spacing="7"><textPath href="#top" startOffset="50%">WEIGHT LOSS</textPath></text>
+    <text font-size="40" font-weight="700" letter-spacing="9"><textPath href="#bottom" startOffset="50%">WARRANTY</textPath></text>
+    <text x="192" y="186" font-size="50" font-weight="700" fill="#324563">Chime</text>
+    <text x="192" y="236" font-size="46" font-weight="600" fill="#5871A5">Care+</text>
+  </g>
+  <path d="M 58 150 Q 44 192 58 234" fill="none" stroke="#26354D" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 326 150 Q 340 192 326 234" fill="none" stroke="#26354D" stroke-width="5" stroke-linecap="round"/>
+</svg>

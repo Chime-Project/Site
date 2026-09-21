@@ -67,3 +67,11 @@ its own monthly price); "Forbes · USA TODAY"; the 4.7 rating; "17,482 / 11,251 
 discounts left" + countdown; "Recommended for most patients"; "Lowest industry pricing"; "Highest success
 rate"; "$140 / $70 monthly savings locked in for life"; "Clinician review within 24 hours"; "Free delivery".
 `noindex` until signed off.
+
+## Questionnaire tie-in (client, 2026-09-21)
+
+`questionnaire/` (generated — see its README) ends on `v2.html`. `js/quiz-handoff.js` is loaded by
+`v2.html` only, before `checkout.js`: no quiz record → it does nothing (V2 cold DOM diff vs the
+pre-quiz build = 0 lines); `dq_enforced` → `questionnaire/disqualified.html`; `glp1_history` →
+`window.CHIME_CT_PRESELECT`, which `checkout.js` reads at mount to mark the phone selector (state
+only, no scroll; unknown ids ignored, so V1 is unchanged). `node choose-treatment/js/quiz-handoff-tests.js` — 8 checks.

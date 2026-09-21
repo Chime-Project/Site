@@ -1,0 +1,438 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health screening | Chime Health</title>
+    <link rel="icon" type="image/png" href="images/favicon-chime.png" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- favicons -->
+
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- styles -->
+    <link href="css/questionaire-style.css?v=20260942" rel="stylesheet" />
+    <link href="css/chime-theme.css?v=20260942" rel="stylesheet" />
+  </head>
+  <body class="min-h-full px-4 md:px-8 font-sans">
+    <!-- Header: Back button, Logo, Rating -->
+    <header
+      class="relative max-w-lg mx-auto flex items-center justify-between mt-8 mb-8"
+    >
+      <a
+        href="step9.html"
+        aria-label="Go back"
+        class="text-neutral-900 w-8 flex justify-center items-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-5 h-5"
+          aria-hidden="true"
+        >
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+      </a>
+      <img
+        src="images/logo-chime.svg"
+        alt="Chime Health"
+        class="h-8.5 w-fit absolute left-1/2 -translate-x-1/2"
+      />
+
+      <div
+        class="text-right leading-tight flex justify-center items-center flex-col gap-2"
+      >
+        <div class="flex items-center gap-1 font-medium text-xs text-[10px]">
+          <span class="font-light">Excellent</span>
+          <span class="font-bold">4.7</span>
+        </div>
+        <div class="flex items-center gap-0.5" aria-label="TrustPilot rating">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf0" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf3" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path></svg
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf4" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="70.00000000000001%" stop-color="#00B67A"></stop>
+                <stop offset="70.00000000000001%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="url(#pf4)"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div
+      class="max-w-lg mx-auto mb-10 flex items-center gap-1"
+      role="progressbar"
+      aria-valuenow="2"
+      aria-valuemin="0"
+      aria-valuemax="10"
+      aria-label="Form progress"
+    >
+      <div class="h-2 w-4 rounded-full bg-[#262626] shrink-0"></div>
+      <div class="h-2 w-full bg-[#e6e8f3] rounded-full overflow-hidden">
+        <div class="h-2 w-[4%] rounded-full bg-[#262626] shrink-0"></div>
+      </div>
+      <!-- <div class="h-2 flex-1 rounded-full bg-[#e6e8f3]"></div> -->
+    </div>
+
+    <!-- Demographics Form -->
+    <form class="max-w-lg mx-auto space-y-4 md:pb-0 pb-56">
+      <!-- Step badge -->
+      <span
+        class="text-sm leading-5 font-medium text-white inline-flex items-center rounded px-2 py-0.5 bg-teal-500 mb-2"
+        >A few questions for you</span
+      >
+
+      <!-- Heading -->
+      <h1 class="text-gray-800 text-2xl md:text-3xl leading-tight font-medium">
+        Do any of these apply to you?
+      </h1>
+
+      <!-- Helper text -->
+      <p class="self-stretch text-gray-700 text-xs leading-4 mb-6">
+        *Select all that apply &amp; click "Continue" below
+      </p>
+
+      <!-- Options -->
+      <div class="space-y-3 pt-1 pb-30">
+        <div class="mb-4">
+  <label
+              class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+            >
+              <span class="text-base font-medium text-gray-800 leading-5">None of the above</span>
+              <input
+                type="checkbox"
+                name="female_health_none"
+                value="none"
+                class="peer sr-only"
+              />
+              <span
+                class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+                >
+                  <title>Checkmark</title>
+                  <path
+                    d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+                  ></path>
+                </svg>
+              </span>
+            </label>
+        </div>
+<!-- Currently or possibly pregnant, or actively trying to become pregnant -->
+        <label
+          class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+        >
+          <span class="text-base font-medium text-gray-800 leading-5">
+            Currently or possibly pregnant, or actively trying to become
+            pregnant
+          </span>
+          <input
+            type="checkbox"
+            name="pregnant"
+            value="pregnant"
+            class="peer sr-only"
+          />
+          <span
+            class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+            >
+              <title>Checkmark</title>
+              <path
+                d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+              ></path>
+            </svg>
+          </span>
+        </label>
+<!-- Breastfeeding or bottle feeding with breastmilk -->
+        <label
+          class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+        >
+          <span class="text-base font-medium text-gray-800 leading-5">
+            Breastfeeding or bottle feeding with breastmilk
+          </span>
+          <input
+            type="checkbox"
+            name="Breastfeeding"
+            value="Breastfeeding"
+            class="peer sr-only"
+          />
+          <span
+            class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+            >
+              <title>Checkmark</title>
+              <path
+                d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+              ></path>
+            </svg>
+          </span>
+        </label>
+<!-- have given birth to a child within the last 6 months -->
+        <label
+          class="group relative flex items-center min-h-14 justify-between gap-3 rounded-xl border border-gray-400 px-4 py-3 cursor-pointer transition-colors has-checked:border-slate-950 has-checked:border-1"
+        >
+          <span class="text-base font-medium text-gray-800 leading-5">
+            Have given birth to a child within the last 6 months
+          </span>
+          <input
+            type="checkbox"
+            name="child_birth"
+            value="child_birth"
+            class="peer sr-only"
+          />
+          <span
+            class="shrink-0 w-5 h-5 rounded-md border border-neutral-300 flex items-center justify-center peer-checked:bg-neutral-900 peer-checked:border-neutral-900"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="hidden group-has-checked:block h-6 w-6 shrink-0 text-white"
+            >
+              <title>Checkmark</title>
+              <path
+                d="M14.293 9.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293z"
+              ></path>
+            </svg>
+          </span>
+        </label>
+      </div>
+
+      <div
+        class="max-w-lg mx-auto fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white to-white/0 pb-10 pt-4 max-[528px]:px-4"
+      >
+        <!-- Submit Button -->
+        <button
+          id="continueBtn"
+          type="button"
+          class="w-full disabled:bg-neutral-200 disabled:text-neutral-400 bg-slate-900 text-slate-50 shadow-sm font-medium rounded-full px-4 py-3 flex items-center justify-center gap-2 mt-3 disabled:cursor-not-allowed cursor-pointer md:mt-2"
+        >
+          Continue
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </body>
+  <script src="js/funnel-state.js?v=20260942"></script>
+  <script src="js/quiz-dq.js?v=20260942"></script>
+  <script>
+    // Female-only screen (GLPQuizFR step4). Reached from S9 only when Female was
+    // selected on S7; anyone else goes straight to S10.
+    const continueBtn = document.getElementById("continueBtn");
+    const noneEl = document.querySelector('input[name="female_health_none"]');
+    const conditionEls = Array.prototype.slice.call(
+      document.querySelectorAll('input[type="checkbox"]:not([name="female_health_none"])')
+    );
+
+    // Anyone who did not select Female should never see this screen, so a direct
+    // hit bounces forward rather than asking them.
+    (function guard() {
+      var sex = "";
+      try { sex = (FunnelState.get("sex", "") || "").toLowerCase(); } catch (e) {}
+      if (sex && sex !== "female") window.location.replace("step10.html");
+    })();
+
+    // "None of the above" is exclusive both ways.
+    noneEl?.addEventListener("change", () => {
+      if (noneEl.checked) conditionEls.forEach((el) => (el.checked = false));
+      syncButton();
+    });
+    conditionEls.forEach((el) =>
+      el.addEventListener("change", () => {
+        if (el.checked && noneEl) noneEl.checked = false;
+        syncButton();
+      })
+    );
+
+    function selected() {
+      return conditionEls.filter((el) => el.checked).map((el) => el.name);
+    }
+    function answered() {
+      return (noneEl && noneEl.checked) || selected().length > 0;
+    }
+    function syncButton() {
+      if (continueBtn) continueBtn.disabled = !answered();
+    }
+
+    (function restore() {
+      const saved = FunnelState.all();
+      const prior = saved.femaleHealthStatus;
+      if (Array.isArray(prior)) {
+        if (prior.length === 0 && saved.femaleHealthAnswered && noneEl) noneEl.checked = true;
+        conditionEls.forEach((el) => {
+          if (prior.indexOf(el.name) !== -1) el.checked = true;
+        });
+      }
+      syncButton();
+    })();
+
+    continueBtn?.addEventListener("click", () => {
+      if (continueBtn.disabled || !answered()) return;
+      FunnelState.save({
+        femaleHealthStatus: selected(),
+        femaleHealthAnswered: true,
+        // GLPQuizFR disqualifies anything here that is not "None of the above".
+        // Recorded, not enforced: this build still has no DQ engine.
+        femaleHealthDq: selected().length > 0,
+      });
+      if (QuizDQ.check("step9b.html")) return;
+      window.location.assign("step10.html");
+    });
+  </script>
+</html>

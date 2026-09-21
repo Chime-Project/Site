@@ -1,0 +1,619 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Where you live | Chime Health</title>
+    <link rel="icon" type="image/png" href="images/favicon-chime.png" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- favicons -->
+
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- styles -->
+    <link href="css/questionaire-style.css?v=20260942" rel="stylesheet" />
+    <link href="css/chime-theme.css?v=20260942" rel="stylesheet" />
+  </head>
+  <body class="min-h-full px-4 md:px-8 font-sans">
+    <!-- Header: Back button, Logo, Rating -->
+    <header
+      class="relative max-w-lg mx-auto flex items-center justify-between mt-8 mb-8"
+    >
+      <a
+        href="step6.html"
+        aria-label="Go back"
+        class="text-neutral-900 w-8 flex justify-center items-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-5 h-5"
+          aria-hidden="true"
+        >
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+      </a>
+      <img
+        src="images/logo-chime.svg"
+        alt="Chime Health"
+        class="h-8.5 w-fit absolute left-1/2 -translate-x-1/2"
+      />
+
+      <div
+        class="text-right leading-tight flex justify-center items-center flex-col gap-2"
+      >
+        <div class="flex items-center gap-1 font-medium text-xs text-[10px]">
+          <span class="font-light">Excellent</span>
+          <span class="font-bold">4.7</span>
+        </div>
+        <div class="flex items-center gap-0.5" aria-label="TrustPilot rating">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf0" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf3" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="100%" stop-color="#00B67A"></stop>
+                <stop offset="100%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="#00B67A"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path></svg
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="pf4" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="70.00000000000001%" stop-color="#00B67A"></stop>
+                <stop offset="70.00000000000001%" stop-color="#DDDDE7"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M19.9893 0H0V19.9893H19.9893V0Z" fill="url(#pf4)"></path>
+            <path
+              d="M13.0364 12.3281L9.99634 13.0985L14.3066 16.2426L13.0364 12.3281Z"
+              fill="white"
+            ></path>
+            <path
+              d="M11.6412 8.03898H16.9925L12.6823 11.1623L10.0171 13.078L5.68607 16.2013L7.33102 11.1623L3 8.03898H8.35131L9.99627 3L11.6412 8.03898Z"
+              fill="white"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div
+      class="max-w-lg mx-auto mb-10"
+      role="progressbar"
+      aria-valuenow="76"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-label="Form progress"
+    >
+      <div class="h-2 w-full bg-[#e6e8f3] rounded-full overflow-hidden">
+        <div class="h-full w-[76%] bg-[#262626] rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Intro Section -->
+    <section class="max-w-lg mx-auto mb-8">
+      <div class="flex flex-row justify-between gap-2">
+        <h1
+          class="text-gray-800 text-2xl md:text-3xl leading-tight font-medium"
+        >
+          Almost there — your clinician just needs a few quick details.
+        </h1>
+        <img
+          src="images/doctor-2@3x.png"
+          alt="Clinician who will review your intake"
+          class="w-15 h-15 rounded-full object-cover border-2 border-white shadow-lg bg-gray-200"
+        />
+      </div>
+    </section>
+
+    <!-- Demographics Form -->
+    <form class="max-w-lg mx-auto space-y-4 md:pb-0 pb-48">
+      <!-- Sex Assigned at Birth -->
+      <fieldset class="mb-2">
+        <legend class="text-sm text-black mb-2">Sex assigned at birth:</legend>
+
+        <div
+          class="grid grid-cols-2"
+          role="radiogroup"
+          aria-label="Sex assigned at birth"
+        >
+          <div>
+            <input
+              type="radio"
+              id="sex-female"
+              name="sex"
+              value="female"
+              class="peer sr-only"
+              checked=""
+            />
+            <label
+              for="sex-female"
+              class="flex items-center justify-center h-14 min-h-14 rounded-l-lg md:rounded-l-xl border border-neutral-300 border-r-0 text-base text-neutral-800 font-medium cursor-pointer peer-checked:border-2 peer-checked:border-neutral-900 peer-checked:border-r-2 peer-checked:relative peer-checked:z-10 peer-focus-visible:ring-2 peer-focus-visible:ring-neutral-400"
+            >
+              Female
+            </label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="sex-male"
+              name="sex"
+              value="male"
+              class="peer sr-only"
+            />
+            <label
+              for="sex-male"
+              class="flex items-center justify-center h-14 min-h-14 rounded-r-lg md:rounded-r-xl border border-neutral-300 text-base text-neutral-600 font-medium cursor-pointer peer-checked:border-2 peer-checked:border-neutral-900 peer-checked:relative peer-checked:z-10 peer-focus-visible:ring-2 peer-focus-visible:ring-neutral-400"
+            >
+              Male
+            </label>
+          </div>
+        </div>
+
+        <p class="flex items-center gap-1 text-xs text-neutral-500 mt-2">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillrule="evenodd"
+              cliprule="evenodd"
+              d="M5.5 0.5C5.77614 0.5 6 0.723858 6 1V2C6 2.27614 5.77614 2.5 5.5 2.5C5.22386 2.5 5 2.27614 5 2V1C5 0.723858 5.22386 0.5 5.5 0.5Z"
+              fill="#45556C"
+            ></path>
+            <path
+              fillrule="evenodd"
+              cliprule="evenodd"
+              d="M2.5 0.5C2.77614 0.5 3 0.723858 3 1V2C3 2.27614 2.77614 2.5 2.5 2.5C2.22386 2.5 2 2.27614 2 2V1C2 0.723858 2.22386 0.5 2.5 0.5Z"
+              fill="#45556C"
+            ></path>
+            <path
+              fillrule="evenodd"
+              cliprule="evenodd"
+              d="M0.93934 1.43934C1.22064 1.15804 1.60218 1 2 1H2.5C2.77614 1 3 1.22386 3 1.5C3 1.77614 2.77614 2 2.5 2H2C1.86739 2 1.74021 2.05268 1.64645 2.14645C1.55268 2.24021 1.5 2.36739 1.5 2.5V4.5C1.5 5.16304 1.76339 5.79893 2.23223 6.26777C2.70107 6.73661 3.33696 7 4 7C4.66304 7 5.29893 6.73661 5.76777 6.26777C6.23661 5.79893 6.5 5.16304 6.5 4.5V2.5C6.5 2.36739 6.44732 2.24021 6.35355 2.14645C6.25979 2.05268 6.13261 2 6 2H5.5C5.22386 2 5 1.77614 5 1.5C5 1.22386 5.22386 1 5.5 1H6C6.39782 1 6.77936 1.15804 7.06066 1.43934C7.34196 1.72064 7.5 2.10218 7.5 2.5V4.5C7.5 5.42826 7.13125 6.3185 6.47487 6.97487C5.8185 7.63125 4.92826 8 4 8C3.07174 8 2.1815 7.63125 1.52513 6.97487C0.868749 6.3185 0.5 5.42826 0.5 4.5V2.5C0.5 2.10218 0.658035 1.72064 0.93934 1.43934Z"
+              fill="#45556C"
+            ></path>
+            <path
+              fillrule="evenodd"
+              cliprule="evenodd"
+              d="M10 5.5C10.2761 5.5 10.5 5.72386 10.5 6V7.5C10.5 8.42826 10.1313 9.3185 9.47487 9.97487C8.8185 10.6313 7.92826 11 7 11C6.07174 11 5.1815 10.6313 4.52513 9.97487C3.86875 9.3185 3.5 8.42826 3.5 7.5C3.5 7.22386 3.72386 7 4 7C4.27614 7 4.5 7.22386 4.5 7.5C4.5 8.16304 4.76339 8.79893 5.23223 9.26777C5.70107 9.73661 6.33696 10 7 10C7.66304 10 8.29893 9.73661 8.76777 9.26777C9.23661 8.79893 9.5 8.16304 9.5 7.5V6C9.5 5.72386 9.72386 5.5 10 5.5Z"
+              fill="#45556C"
+            ></path>
+            <path
+              fillrule="evenodd"
+              cliprule="evenodd"
+              d="M10 4.5C9.72386 4.5 9.5 4.72386 9.5 5C9.5 5.27614 9.72386 5.5 10 5.5C10.2761 5.5 10.5 5.27614 10.5 5C10.5 4.72386 10.2761 4.5 10 4.5ZM8.5 5C8.5 4.17157 9.17157 3.5 10 3.5C10.8284 3.5 11.5 4.17157 11.5 5C11.5 5.82843 10.8284 6.5 10 6.5C9.17157 6.5 8.5 5.82843 8.5 5Z"
+              fill="#45556C"
+            ></path>
+          </svg>
+          Helps your clinician personalize your dosing
+        </p>
+      </fieldset>
+
+      <!-- Date of Birth -->
+      <div class="mb-2">
+        <label for="dob" class="block text-sm text-black mb-2"
+          >Date of Birth:</label
+        >
+        <input
+          type="text"
+          id="dob"
+          name="dob"
+          inputmode="numeric"
+          placeholder="MM/DD/YYYY"
+          class="w-full appearance-none border border-neutral-300 rounded-lg md:rounded-xl px-4 py-3.5 h-14 min-h-14 text-neutral-800 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 text-base"
+        />
+        <p class="flex items-center gap-1 text-xs text-neutral-500 mt-2">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          Ages 18-75 are eligible for treatment
+        </p>
+      </div>
+
+      <!-- State -->
+      <div class="mb-2">
+        <label for="state" class="sr-only">State</label>
+        <div class="relative">
+          <select
+            id="state"
+            name="state"
+            class="w-full appearance-none border border-neutral-300 rounded-lg md:rounded-xl px-4 py-3.5 h-14 min-h-14 text-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-400 text-base"
+          >
+            <option value="" selected="">Select your state</option>
+            <option value="AL">Alabama</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+          </select>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
+            width="12"
+            height="7"
+            viewBox="0 0 12 7"
+            fill="none"
+          >
+            <title>Dropdown arrow</title>
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0.244078 0.244078C0.569515 -0.0813592 1.09715 -0.0813592 1.42259 0.244078L5.83333 4.65482L10.2441 0.244078C10.5695 -0.0813592 11.0972 -0.0813592 11.4226 0.244078C11.748 0.569515 11.748 1.09715 11.4226 1.42259L6.42259 6.42259C6.09715 6.74803 5.56951 6.74803 5.24408 6.42259L0.244078 1.42259C-0.0813592 1.09715 -0.0813592 0.569515 0.244078 0.244078Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </div>
+        <p class="flex items-center gap-1 text-xs text-neutral-500 mt-2">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          Ensures your clinician is licensed in your state
+        </p>
+      </div>
+
+      <!-- Age + BMI consents, ported from GLPQuizFR step3. Shown only when the
+           band is hit; at most one is ever visible. Text is verbatim. -->
+      <div id="consent-block" class="flex w-full flex-col gap-4 pt-2" hidden>
+        <p class="font-medium text-neutral-800 text-base">
+          Please read and acknowledge before continuing
+        </p>
+
+        <div id="elderly-consent" class="flex flex-col gap-3" hidden>
+          <p class="text-sm text-neutral-800 font-normal">
+            We would like to make sure you are fully aware of some important
+            considerations regarding GLP-1 medications, especially for older adults.
+            These medications, while effective for weight loss and metabolic health,
+            can sometimes cause gastrointestinal side effects like nausea, vomiting,
+            and diarrhea. In older patients, these symptoms can lead to dehydration
+            and may have an impact on kidney function, particularly if you have known
+            kidney issues. Additionally, GLP-1 medications can occasionally cause
+            dizziness or balance problems, which could raise the risk of falls.
+            Appetite suppression and rapid weight loss may increase the risk of
+            frailty, weakness, or malnutrition. Muscle wasting and bone
+            demineralization is also a concern with rapid or aggressive weight loss.
+            This is compounded in the elderly. It's important that your doctor is
+            aware you are starting this medication so they can help monitor your
+            health during treatment. If you haven't spoken with your primary care
+            provider yet, I recommend sharing your plan with them before starting
+            therapy.
+          </p>
+          <label class="relative flex cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              id="form_elderly_consent"
+              name="elderly_consent"
+              value="on"
+              class="mt-1 size-4 shrink-0"
+            />
+            <span class="block w-full text-neutral-950 font-normal text-sm">
+              I have read and understand the considerations above.
+            </span>
+          </label>
+        </div>
+
+        <div id="metabolic-consent" class="flex flex-col gap-3" hidden>
+          <label class="relative flex cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              id="form_metabolic_consent"
+              name="metabolic_consent"
+              value="on"
+              class="mt-1 size-4 shrink-0"
+            />
+            <span class="block w-full text-neutral-950 font-normal text-sm">
+              I acknowledge that with this BMI I am using these medications for
+              metabolic health, anti-inflammatory, and better eating habits, but not
+              for weight loss primarily.
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div
+        class="max-w-lg mx-auto fixed bottom-0 left-0 right-0 md:static bg-gradient-to-t from-white to-white/0 py-4 md:py-0 max-[528px]:px-4"
+      >
+        <!-- Submit Button -->
+        <button
+          id="continueBtn"
+          type="button"
+          class="w-full disabled:bg-neutral-200 disabled:text-neutral-400 bg-slate-900 text-slate-50 shadow-sm font-medium rounded-full px-4 py-3 flex items-center justify-center gap-2 mt-3 disabled:cursor-not-allowed cursor-pointer md:mt-10"
+        >
+          Continue
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </body>
+  <script src="js/funnel-state.js?v=20260942"></script>
+  <script src="js/input-format.js?v=20260942"></script>
+  <script src="js/screening-bands.js?v=20260942"></script>
+  <script src="js/quiz-dq.js?v=20260942"></script>
+  <script>
+    const continueBtn = document.getElementById("continueBtn");
+    const stateEl = document.querySelector('select[name="state"]');
+    const dobEl = document.querySelector('input[name="dob"]');
+    InputFormat.attachDOB(dobEl);
+
+    // --- Age + BMI consents (GLPQuizFR step3 bands, Devin msg 2193) ---------
+    // BMI comes from S1, which is why this can live here: by S7 the height and
+    // weight are already in the shared record and the date of birth is on screen.
+    const consentBlock = document.getElementById("consent-block");
+    const elderlyBox = document.getElementById("elderly-consent");
+    const metabolicBox = document.getElementById("metabolic-consent");
+    const elderlyInput = document.getElementById("form_elderly_consent");
+    const metabolicInput = document.getElementById("form_metabolic_consent");
+
+    function currentBand() {
+      const saved = FunnelState.all();
+      const bmi =
+        saved.bmi || FunnelCalc.bmi(saved.heightFeet, saved.heightInches, saved.weightLbs);
+      return ScreeningBands.band(InputFormat.ageFromDOB(dobEl ? dobEl.value : ""), bmi);
+    }
+
+    // Which consent is required right now, or "" for none. A hidden box never
+    // counts, so a visitor who ticks one and then edits their date of birth out
+    // of that band is not silently held to it.
+    function requiredConsent() {
+      const r = currentBand();
+      return r.band === "consent" ? r.consent : "";
+    }
+
+    function syncConsents() {
+      const need = requiredConsent();
+      elderlyBox.hidden = need !== "elderly";
+      metabolicBox.hidden = need !== "metabolic";
+      consentBlock.hidden = !need;
+      if (need !== "elderly") elderlyInput.checked = false;
+      if (need !== "metabolic") metabolicInput.checked = false;
+      syncButton();
+    }
+
+    function consentSatisfied() {
+      const need = requiredConsent();
+      if (need === "elderly") return elderlyInput.checked;
+      if (need === "metabolic") return metabolicInput.checked;
+      return true;
+    }
+
+    function syncButton() {
+      if (continueBtn) continueBtn.disabled = !consentSatisfied();
+    }
+
+    dobEl?.addEventListener("input", syncConsents);
+    dobEl?.addEventListener("blur", syncConsents);
+    elderlyInput?.addEventListener("change", syncButton);
+    metabolicInput?.addEventListener("change", syncButton);
+    const sexInputs = document.querySelectorAll('input[name="sex"]');
+
+    function selectedSex() {
+      for (const el of sexInputs) if (el.checked) return el.value;
+      return "";
+    }
+
+    (function restore() {
+      const saved = FunnelState.all();
+      if (stateEl && saved.state) stateEl.value = saved.state;
+      if (dobEl && saved.dob) dobEl.value = saved.dob;
+      if (saved.sex)
+        sexInputs.forEach((el) => {
+          if (el.value === saved.sex) el.checked = true;
+        });
+      syncConsents();
+      // A consent already given on a previous visit is restored, but only if the
+      // same band still applies, which syncConsents has just established.
+      if (saved.elderly_consent && !elderlyBox.hidden) elderlyInput.checked = true;
+      if (saved.metabolic_consent && !metabolicBox.hidden) metabolicInput.checked = true;
+      syncButton();
+    })();
+
+    continueBtn?.addEventListener("click", () => {
+      if (continueBtn.disabled || !consentSatisfied()) return;
+      const result = currentBand();
+      // S8 needs the state name to zoom its map and set the pill.
+      FunnelState.save({
+        state: stateEl ? stateEl.value : "",
+        dob: dobEl ? dobEl.value : "",
+        sex: selectedSex(),
+        // Recorded for whoever wires the clinical review. The reference stores
+        // the consent that was actually shown, not both checkboxes.
+        elderly_consent: !elderlyBox.hidden && elderlyInput.checked,
+        metabolic_consent: !metabolicBox.hidden && metabolicInput.checked,
+        // The band this visitor landed in. "disqualify" is recorded and NOT
+        // acted on: this build has no disqualification engine and no
+        // disqualified page, so the value is here for when one is wired.
+        screening_band: result.band,
+        screening_reason: result.reason || "",
+      });
+      // The age/BMI floor is FR's first disqualifier.
+      if (QuizDQ.check("step7.html")) return;
+      window.location.assign("step8.html");
+    });
+  </script>
+</html>

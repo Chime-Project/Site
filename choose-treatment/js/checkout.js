@@ -146,6 +146,8 @@
     var urg = doc.getElementById('ct-urgency');
     data.treatments.forEach(function (t) { state.counts[t.id] = t.patientsToday; });
     state.discounts = data.urgency.discountsLeft;
+    // quiz-handoff.js (v2 only) may name the treatment the visitor has already taken; unknown ids are ignored
+    if (root.CHIME_CT_PRESELECT && data.treatments.some(function (t) { return t.id === root.CHIME_CT_PRESELECT; })) state.selected = root.CHIME_CT_PRESELECT;
     grid.innerHTML = data.treatments.map(function (t) { return renderTreatmentCard(t, data); }).join('');
     function paintSelector() {
       sel.innerHTML = data.treatments.map(function (t) { return renderSelectorCard(t, state.selected === t.id, state.counts[t.id]); }).join('');
