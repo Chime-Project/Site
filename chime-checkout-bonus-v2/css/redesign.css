@@ -126,8 +126,8 @@
 
 /* 3. the 3 Month Plan row as an offer card (client, 2026-09-21, reference devinrequest01: "making the
       3 month button like this in our style … the banner at the top and the pricing"). A banner band
-      on top (gift tile + "Commit to 3 Months & / Get EVERY 4TH MONTH FREE"), under it the radio, the
-      combo's vial and the price set large. It replaces the row's green tag and the +1 corner seal —
+      on top (gift tile + "Commit to 3 Months & / Get EVERY 4TH MONTH FREE"), under it the radio and
+      the price set large (the vial tile was taken out the same day, on request). It replaces the row's green tag and the +1 corner seal —
       the banner says both. Still a .mp-row with its .sv-radio, .mp-shine and data-term, so
       plan-select.js (selection, pulse, shine) works on it unchanged. */
 .mp-row.mp-row--offer { display: block; padding: 0; }
@@ -148,19 +148,12 @@
 /* the combo cards are ~290px wide at every breakpoint, so one size: the bold line stays on one row */
 .mp3-banner-t b { font-size: 14px; font-weight: 800; letter-spacing: 0; white-space: nowrap; }
 .mp3-body {
-  display: grid; grid-template-columns: 18px 76px minmax(0, 1fr);
-  grid-template-areas: "r vial info" "foot foot foot";
+  display: grid; grid-template-columns: 18px minmax(0, 1fr);
+  grid-template-areas: "r info" "foot foot";
   column-gap: 12px; row-gap: 10px; align-items: center;
   padding: 14px;
 }
 .mp3-body .sv-radio { grid-area: r; }
-.mp3-vial {
-  grid-area: vial; height: 92px; border-radius: 12px; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(#b9c8f5, #d3ddf9 60%, #e6ecfb);
-}
-/* the compiled sheets pad every vial image by 6% — reset it for the tile */
-.mp3-vial img { width: 100%; height: 100%; padding: 0 !important; object-fit: contain; transform: scale(1.12); }
 .mp3-info { grid-area: info; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .mp3-info .mp-name { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1d293d; }
 .mp-row.mp-row--offer .mp-price { margin-right: 0; font-size: 34px; letter-spacing: -0.01em; }
@@ -174,6 +167,4 @@
 .mp3-foot .mp-due { margin: 0; }
 @media (max-width: 767px) {
   .mp-row.mp-row--offer .mp-price { font-size: 30px; }
-  .mp3-body { grid-template-columns: 18px 68px minmax(0, 1fr); column-gap: 10px; }
-  .mp3-vial { height: 84px; }
 }

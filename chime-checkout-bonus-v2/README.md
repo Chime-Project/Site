@@ -94,6 +94,10 @@ in the redesign log below.
     size (14px, nowrap). Row height 145 → 256px; the selector landing still shows the button
     above the sticky bar at 390 × 844. Styles: section 3 of `css/redesign.css`.
 
+- **2026-09-21 — round 6b: no image in the 3-month offer row** (Luis: "delete the image in the 3
+  month promotion"). The vial tile is out; the row is banner → radio + "3 MONTH PLAN" / price /
+  "with every 4th month free, forever" → due-today line. Row height 256 → ~235px.
+
 ## Preview
 
     cd ~/Sites/chime && python3 -m http.server 8791
@@ -130,4 +134,4 @@ so a small vial thumb needs its `padding` overridden or it renders as a blank ti
 - **Copy.** The "why both" claims are marketing copy in Chime voice, not clinical statements.
 - What is still RemedyMeds and flagged is documented in `chime-checkout/README.md`.
 
-`?v=20260949`.
+`?v=20260950`.
