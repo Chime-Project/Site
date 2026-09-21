@@ -30,6 +30,12 @@ http://localhost:8791/choose-treatment/questionnaire/step1.html — check 1440 a
 - **Step 16 → `../v2.html`.** The source ended on an old checkout copy.
 - **Step 6 now saves** `glp1_history` (`semaglutide` / `tirzepatide` / `none`), dose, last taken and
   continue-plan. The source stored nothing here.
+- **Step 6's follow-ups are option cards, not dropdowns** (client feedback, 2026-09-21: "break out
+  these options … instead of a dropdown"). Dose, last taken and continue-plan, for both medications,
+  show every answer as a card in the medication question's own style (doses two across); one answer
+  per question, so they are radios. Names and values are the selects', so the saved record is the
+  same. Done by `select_to_cards` in the build script; layout in `chime-theme.css` (`.q-opts`).
+  Steps 1, 7 and 15 keep their dropdowns (not part of the feedback).
 - Storage key is `chime_funnel` (one `localStorage` record, read by the checkout).
 - Step 9's Terms link opens the site's terms page. The disqualified exit goes to the homepage.
 
