@@ -5,17 +5,17 @@
   style="color-scheme: light"
 >
   <head>
-    <link rel="stylesheet" href="css/extracted-inline.css?v=20260946" />
+    <link rel="stylesheet" href="css/extracted-inline.css?v=20260948" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="css/2_6-q88y6yuc5.css?v=20260946"
+      href="css/2_6-q88y6yuc5.css?v=20260948"
       data-precedence="next"
     />
     <link
       rel="stylesheet"
-      href="css/1p1s7yzodipl6.css?v=20260946"
+      href="css/1p1s7yzodipl6.css?v=20260948"
       data-precedence="next"
     />
 
@@ -111,10 +111,10 @@
         transform: var(--transform);
       }
     </style>
-      <link rel="stylesheet" href="css/chime-theme.css?v=20260946" />
-      <link rel="stylesheet" href="css/bonus.css?v=20260946" />
-      <link rel="stylesheet" href="css/plan-stage.css?v=20260946" />
-      <link rel="stylesheet" href="css/redesign.css?v=20260946" />
+      <link rel="stylesheet" href="css/chime-theme.css?v=20260948" />
+      <link rel="stylesheet" href="css/bonus.css?v=20260948" />
+      <link rel="stylesheet" href="css/plan-stage.css?v=20260948" />
+      <link rel="stylesheet" href="css/redesign.css?v=20260948" />
   </head>
   <body
     class="min-h-full text-foreground font-sans antialiased figtree_74ec1124-module__ctH5Nq__variable inter_4bbc6051-module__Iy-xBq__variable playfair_display_173acd2b-module__UZ-sZG__variable"
@@ -202,14 +202,15 @@
             </div>
           </div>
         </header>
-        <!-- redesign (2026-09-21): the hero and the "Why is everyone switching to Chime?" results section are ONE block.
-             Dropped from the hero: the Today / With Chime silhouettes, the weight / BMI / cravings table, the
-             "Our recommendation" heading and the 94.6% strip (the 94.8% stat says it).
-             Round 3 (client: "we still have those women … the double click to get down … the stats beside the
-             women look odd"): no members photo, the three results are one even strip, and the hero has ONE
-             way down — the button lands on the recommended combo's plan rows (#plans-tirz); the
-             recommendation is a plain card, no longer a second link. Styles: css/redesign.css -->
-        <section class="hero-merge dark:bg-muted bg-gradient-to-b from-slate-50 to-slate-200 overflow-hidden" data-redesign="hero-results">
+        <!-- redesign (2026-09-21): the hero, the visitor's report and the "Why is everyone switching to Chime?" results
+             are ONE block, and the product selection follows it directly.
+             Round 4 (client: "we lost the report and didn't get rid of the double click with the initial on top,
+             so take out the 1 button and move the product selection below the first section, merge the report
+             with the 1 section"): the Today / With Chime report is back (the original's markup, unchanged), the
+             hero has no jump button — the plans are the next thing on the page — and the three results + the
+             treatment selector (round 5) sit beside the report on desktop, under it on phones. Still out: the members photo,
+             the "Our recommendation" heading, the 94.6% strip. Styles: css/redesign.css -->
+        <section class="hero-merge dark:bg-muted bg-gradient-to-b from-slate-50 to-slate-200 overflow-hidden" data-redesign="hero-report-results">
           <div class="hm-wrap">
             <div class="hm-head">
               <h2
@@ -227,320 +228,224 @@
                 is ready for you. Our members hit their goals faster.
               </p><div class="bonus-ribbon" role="note"><span class="bonus-ribbon-gift" aria-hidden="true">&#127873;</span><span><b>BONUS &middot; FREE NAD+</b> <s>$299 value</s> with every plan &mdash; both products, one low price.</span></div>
             </div>
+            <div class="hm-report">
+            <div class="text-center font-alt">
+              <div class="grid grid-cols-2 relative px-5">
+                <div class="col-span-1 relative">
+                  <img
+                    alt="start image"
+                    loading="lazy"
+                    width="514"
+                    height="418"
+                    decoding="async"
+                    data-nimg="1"
+                    class="w-full h-52 object-contain object-center"
+                    style="color: transparent"
+                    src="images/female-start.webp"
+                  />
+                  <p
+                    class="text-sm rounded-lg inline-flex items-center justify-center h-7 text-white px-4 py-1 absolute left-1/2 transform -translate-x-1/2 -bottom-4 whitespace-nowrap bg-gray-500"
+                  >
+                    Today
+                  </p>
+                </div>
+                <div class="col-span-1 relative">
+                  <img
+                    alt="end image"
+                    loading="lazy"
+                    width="514"
+                    height="418"
+                    decoding="async"
+                    data-nimg="1"
+                    class="w-full h-52 object-contain object-center"
+                    style="color: transparent"
+                    src="images/female-end.png"
+                  />
+                  <p
+                    class="text-sm rounded-lg inline-flex items-center justify-center h-7 text-white px-4 py-1 absolute left-1/2 transform -translate-x-1/2 -bottom-4 whitespace-nowrap bg-brand"
+                  >
+                    With Chime
+                  </p>
+                </div>
+                <div
+                  class="flex -space-x-6 flex-shrink-0 absolute w-full justify-center items-center h-full"
+                >
+                  <div style="transform: translateX(-20px)">
+                    <svg
+                      width="67"
+                      height="112"
+                      viewBox="0 0 67 112"
+                      class="w-auto h-[96px] md:h-[112px]"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.28906 6.84375L53.2891 55.8412L7.28906 104.844"
+                        stroke="url(#paint0_radial_11941_28382)"
+                        stroke-width="20"
+                      />
+                      <defs>
+                        <radialgradient
+                          id="paint0_radial_11941_28382"
+                          cx="0"
+                          cy="0"
+                          r="1"
+                          gradientUnits="userSpaceOnUse"
+                          gradientTransform="translate(65.7891 55.8437) rotate(180) scale(68 81.136)"
+                        >
+                          <stop stop-color="#D6DCFA" />
+                          <stop
+                            offset="1"
+                            stop-color="#E7EDFB"
+                            stop-opacity="0"
+                          />
+                        </radialgradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div style="transform: translateX(-20px)">
+                    <svg
+                      width="67"
+                      height="112"
+                      viewBox="0 0 67 112"
+                      class="w-auto h-[96px] md:h-[112px]"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.28906 6.84375L53.2891 55.8412L7.28906 104.844"
+                        stroke="url(#paint0_radial_11941_28382)"
+                        stroke-width="20"
+                      />
+                      <defs>
+                        <radialgradient
+                          id="paint0_radial_11941_28382"
+                          cx="0"
+                          cy="0"
+                          r="1"
+                          gradientUnits="userSpaceOnUse"
+                          gradientTransform="translate(65.7891 55.8437) rotate(180) scale(68 81.136)"
+                        >
+                          <stop stop-color="#D6DCFA" />
+                          <stop
+                            offset="1"
+                            stop-color="#E7EDFB"
+                            stop-opacity="0"
+                          />
+                        </radialgradient>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="overflow-hidden border border-border dark:bg-card rounded-3xl p-5 bg-gradient-to-r from-white to-gray-100 divide-y divide-gray-200"
+              >
+                <div class="grid grid-cols-2 items-center py-3 text-left">
+                  <div class="col-span-1">
+                    <div class="text-left md:text-center">
+                      <p class="text-inherit text-xs">Weight</p>
+                      <p class="text-inherit text-xl font-semibold font-title">
+                        <span class="text-red-500 text-3xl"
+                          >234<!-- -->
+                          Lbs</span
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-span-1">
+                    <div class="text-left md:text-center">
+                      <p class="text-inherit text-xs">Weight</p>
+                      <p class="text-inherit text-xl font-semibold font-title">
+                        <span class="text-brand-600 text-3xl"
+                          >220<!-- -->
+                          Lbs</span
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 items-center py-3 text-left">
+                  <div class="col-span-1">
+                    <div class="text-left md:text-center">
+                      <p class="text-inherit text-xs">BMI</p>
+                      <p class="text-inherit text-xl font-semibold font-title">
+                        <span class="text-amber-500 text-3xl">20.8</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-span-1">
+                    <div class="text-left md:text-center">
+                      <p class="text-inherit text-xs">BMI</p>
+                      <p class="text-inherit text-xl font-semibold font-title">
+                        <span class="text-brand-600 text-3xl">19.5</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 items-center py-3 text-left">
+                  <div class="col-span-1">
+                    <div class="text-left md:text-center">
+                      <p class="text-inherit text-xs">Cravings</p>
+                      <p class="text-inherit text-xl font-semibold font-title">
+                        <span class="text-red-500">Uncontrolled</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-span-1">
+                    <div class="text-left md:text-center">
+                      <p class="text-inherit text-xs">Cravings</p>
+                      <p class="text-inherit text-xl font-semibold font-title">
+                        <span class="text-brand-600">Reduced</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            <div class="hm-side">
             <ul class="hm-stats" aria-label="Member results">
               <li class="hm-stat"><p class="hm-num"><span class="text-brand font-medium font-alt">2x</span></p><p class="hm-cap text-gray-700">Faster weight loss than competing industry averages.</p></li>
               <li class="hm-stat"><p class="hm-num"><span class="text-brand font-medium font-alt">-14</span><span class="hm-unit text-brand font-alt">lbs</span></p><p class="hm-cap text-gray-700">Average weight loss in your first 90 days.</p></li>
               <li class="hm-stat"><p class="hm-num"><span class="text-brand font-medium font-alt">94.8</span><span class="hm-unit text-brand font-alt">%</span></p><p class="hm-cap text-gray-700">Chime members lose weight.</p></li>
             </ul>
-            <div class="hm-offer">
-              <div class="flex flex-row rec-card rec-card--primary">
-                <div
-                  class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
-                >
-                  <img
-                    alt="Tirzepatide + NAD+ Combo"
-                    loading="lazy"
-                    width="208"
-                    height="208"
-                    decoding="async"
-                    data-nimg="1"
-                    class="absolute inset-0 w-full h-full object-cover"
-                    style="color: transparent"
-                    src="images/vial-tirzepatide.webp"
-                  />
-                </div>
-                <div
-                  class="flex flex-col w-full justify-center px-6 py-4 border-y border-r border-gray-200 rounded-r-2xl bg-white"
-                >
-                  <div
-                    class="rec-title text-inherit text-lg font-semibold mb-2 inline-flex items-start justify-between gap-1"
-                  >
-                    <span class="text-balance">Tirzepatide + NAD+ Combo</span>
-                    <div
-                      class="[&_svg]:size-4 px-2 py-1 inline-flex justify-center gap-1 border rounded-full bg-green-50 border-green-100 items-center font-medium text-sm text-green-700 border-none shrink-0"
-                    >
-                      <div>Recommended</div>
-                    </div>
-                  </div>
-                  <p class="text-inherit text-sm">
-                    Based on your intake &amp; body composition, we recommend
-                    our<!-- -->
-                    <span class="text-inherit font-semibold"
-                      >GLP-1 + NAD+ Combo.</span
-                    > Your NAD+ ($299 value) is included free.
-                  </p>
-                </div>
+              <!-- round 5 (Luis, 2026-09-21): the treatment selector of choose-treatment/v2.html (phone version) in the
+                   hero — a radio card per combo; a tap marks it and scrolls down to that combo's plan rows
+                   (js/treatment-select.js). It replaces the recommendation card: "Recommended" is the badge now. -->
+              <div class="ts" data-ts-root>
+                <h3 class="ts-title font-alt text-gray-800">Select your treatment</h3>
+                <button type="button" class="ts-card" data-ts="tirz" aria-pressed="false">
+                  <span class="ts-thumb"><img alt="" width="208" height="208" loading="lazy" decoding="async" src="images/vial-tirzepatide.webp" /></span>
+                  <span class="ts-body">
+                    <span class="ts-name">Tirzepatide + NAD+</span>
+                    <span class="ts-line">Stronger appetite control. Preferred for faster weight loss.</span>
+                    <span class="ts-meta"><span class="ts-badge">Recommended for you</span><span class="ts-price">from <b>$299</b>/mo</span></span>
+                  </span>
+                  <span class="ts-radio" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="ts-card" data-ts="sema" aria-pressed="false">
+                  <span class="ts-thumb"><img alt="" width="208" height="208" loading="lazy" decoding="async" src="images/vial-semaglutide.webp" /></span>
+                  <span class="ts-body">
+                    <span class="ts-name">Semaglutide + NAD+</span>
+                    <span class="ts-line">Effective appetite control with slower, consistent results.</span>
+                    <span class="ts-meta"><span class="ts-badge">Most Affordable</span><span class="ts-price">from <b>$249</b>/mo</span></span>
+                  </span>
+                  <span class="ts-radio" aria-hidden="true"></span>
+                </button>
               </div>
-              <a
-                class="whitespace-nowrap [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 data-[disabled=true]:pointer-events-none inline-flex items-center justify-center gap-2 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled=true]:opacity-50 bg-slate-950 hover:bg-slate-900 h-14 px-10 rounded-full w-full text-sm font-medium text-white"
-                href="#plans-tirz"
-                ><span
-                  class="relative inline-flex whitespace-pre-wrap items-center text-center"
-                  >Start Losing Weight Now</span
-                ></a
-              >
-                <p class="hm-note text-[10px] text-gray-400 text-left isolate">
+            </div>
+            <p class="hm-note text-[10px] text-gray-400 text-left isolate">
                   Based on self-reported data from approximately 300,000 Chime
                   Meds members on a personalized treatment plan, including
                   compounded GLP-1 medications and consultations with medical
                   professionals. Members reported their weight on their initial
                   medical intake questionnaire and every 3-4 weeks thereafter.
                 </p>
-            </div>
           </div>
         </section>
-        <section class="py-14 dark:bg-muted bg-slate-100">
-          <div
-            class="container mx-auto px-4 max-w-screen-sm space-y-6 md:space-y-10"
-          >
-            <h2
-              class="tracking-[-0.01em] font-medium text-balance font-alt text-3xl md:text-4xl text-left md:text-center"
-            >
-              Your <span class="text-brand">next steps</span> to life-changing
-              weight loss meds
-            </h2>
-            <div class="space-y-4">
-              <div class="relative">
-                <div
-                  class="flex items-center font-semibold justify-center text-center text-white bg-brand rounded-full absolute size-6 -left-3 -top-3 z-10"
-                >
-                  1
-                </div>
-                <div class="flex flex-row">
-                  <div
-                    class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
-                  >
-                    <img
-                      alt="Pick your medication"
-                      loading="lazy"
-                      width="208"
-                      height="208"
-                      decoding="async"
-                      data-nimg="1"
-                      class="absolute inset-0 w-full h-full object-cover"
-                      style="color: transparent"
-                      src="images/pick-medication.jpg"
-                    />
-                  </div>
-                  <div
-                    class="flex flex-col w-full justify-center px-4 md:px-6 py-2 border-y border-r border-gray-200 rounded-r-2xl bg-white"
-                  >
-                    <p
-                      class="text-inherit text-lg md:text-2xl font-medium mb-2"
-                    >
-                      Pick your medication
-                    </p>
-                    <ul class="space-y-1">
-                      <li
-                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
-                      >
-                        <div class="flex gap-1 items-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" /></svg
-                          ><span>We recommend microdosing</span>
-                        </div>
-                      </li>
-                      <li
-                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
-                      >
-                        <div class="flex gap-1 items-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" /></svg
-                          ><span>Clinician-verified for fast results</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="relative">
-                <div
-                  class="flex items-center font-semibold justify-center text-center text-white bg-brand rounded-full absolute size-6 -left-3 -top-3 z-10"
-                >
-                  2
-                </div>
-                <div class="flex flex-row">
-                  <div
-                    class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
-                  >
-                    <img
-                      alt="Get it delivered"
-                      loading="lazy"
-                      width="208"
-                      height="208"
-                      decoding="async"
-                      data-nimg="1"
-                      class="absolute inset-0 w-full h-full object-cover"
-                      style="color: transparent"
-                      src="images/get-it-delivered.jpg"
-                    />
-                  </div>
-                  <div
-                    class="flex flex-col w-full justify-center px-4 md:px-6 py-2 border-y border-r border-gray-200 rounded-r-2xl bg-white"
-                  >
-                    <p
-                      class="text-inherit text-lg md:text-2xl font-medium mb-2"
-                    >
-                      Get it delivered
-                    </p>
-                    <ul class="space-y-1">
-                      <li
-                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
-                      >
-                        <div class="flex gap-1 items-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" /></svg
-                          ><span>Fast delivery—arrives in 48 hours</span>
-                        </div>
-                      </li>
-                      <li
-                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
-                      >
-                        <div class="flex gap-1 items-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" /></svg
-                          ><span>Arrives discreetly at your door</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="relative">
-                <div
-                  class="flex items-center font-semibold justify-center text-center text-white bg-brand rounded-full absolute size-6 -left-3 -top-3 z-10"
-                >
-                  3
-                </div>
-                <div class="flex flex-row">
-                  <div
-                    class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
-                  >
-                    <img
-                      alt="Lose Weight"
-                      loading="lazy"
-                      width="208"
-                      height="208"
-                      decoding="async"
-                      data-nimg="1"
-                      class="absolute inset-0 w-full h-full object-cover"
-                      style="color: transparent"
-                      src="images/lose-weight.jpg"
-                    />
-                  </div>
-                  <div
-                    class="flex flex-col w-full justify-center px-4 md:px-6 py-2 border-y border-r border-gray-200 rounded-r-2xl bg-white"
-                  >
-                    <p
-                      class="text-inherit text-lg md:text-2xl font-medium mb-2"
-                    >
-                      Lose Weight
-                    </p>
-                    <ul class="space-y-1">
-                      <li
-                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
-                      >
-                        <div class="flex gap-1 items-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" /></svg
-                          ><span>Results in as little as 30 days</span>
-                        </div>
-                      </li>
-                      <li
-                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
-                      >
-                        <div class="flex gap-1 items-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" /></svg
-                          ><span>Lose 14 lb in 3 months</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- redesign (2026-09-21): the plans section moved up to 4th place, right after the next steps (was 7th, after delivery) -->
+        <!-- redesign (2026-09-21): the plans section sits directly under the hero — 3rd place (round 4; it was 4th after
+             round 2, and 7th, after delivery, in the original) -->
         <section class="py-8 text-gray-700 bg-none bg-slate-50" id="products">
           <div class="md:py-12 py-8">
             <div
@@ -870,6 +775,257 @@
                     <div class="mp" id="plans-tirz" data-mp="tirz"><div class="mp-bonus"><img src="images/vial-nad-plus.webp" alt="NAD+ vial" width="422" height="800"><div><span class="mp-bonus-k">Bonus &middot; included with every plan</span><b>FREE NAD+ <s>$299 value</s></b><span class="mp-bonus-t">Your GLP-1 and your NAD+ ship together. Both products, one low price &mdash; nothing to add on.</span></div></div><div class="mp-head"><span class="mp-kicker">Choose your plan length</span></div><div class="mp-rows" role="radiogroup" aria-label="Plan length – Tirzepatide + NAD+"><label class="mp-row" data-term="1"><button type="button" role="radio" aria-checked="false" data-state="unchecked" class="sv-radio" tabindex="-1"></button><span class="mp-name">Monthly Plan</span><span class="mp-price"><sup>$</sup>359<small>/mo</small></span><span class="mp-sub">No free month. Pause or cancel anytime.</span></label><label class="mp-row" data-term="3"><span class="mp-shine-clip" aria-hidden="true"><span class="mp-shine"></span></span><span class="mp-corner" aria-hidden="true"><svg class="mp-seal" viewBox="0 0 120 120" role="img" aria-label="4th month free, for life"><defs><path id="svSealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><circle cx="60" cy="60" r="57" fill="#f7f3e4" stroke="#324563" stroke-width="3" stroke-dasharray="4 3"/><circle cx="60" cy="60" r="51" fill="none" stroke="#324563" stroke-width="1.2"/><circle cx="60" cy="60" r="31" fill="none" stroke="#324563" stroke-width="1.2"/><text font-family="Quicksand, sans-serif" font-size="9.6" font-weight="700" fill="#324563" letter-spacing="1.4"><textPath href="#svSealPath">4TH MONTH FREE · FOR LIFE · 4TH MONTH FREE · FOR LIFE ·</textPath></text><text x="60" y="69" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="27" font-weight="700" fill="#324563">+1</text></svg></span><button type="button" role="radio" aria-checked="false" data-state="unchecked" class="sv-radio" tabindex="-1"></button><span class="mp-name">3 Month Plan</span><span class="mp-price"><sup>$</sup>299<small>/mo</small></span><span class="mp-free">Every 4th month free, forever.</span><span class="mp-sub">No mid-plan price increases.</span><span class="mp-due">$897 due today &middot; includes 4 months</span></label></div><button type="button" class="mp-cta" data-mp-cta disabled>Choose a plan length</button><p class="mp-plus">Your plan, all in. One simple price — included:</p><ul class="sv-list sv-list--value"><li class="sv-bonus"><span>BONUS: NAD+ — both products, one price</span><span class="sv-val"><s>$299</s> FREE</span></li><li><span>Unlimited video visits with clinicians</span><span class="sv-val"><s>$129</s> FREE</span></li><li><span>Always-on medical support by phone</span><span class="sv-val"><s>$89</s> FREE</span></li><li><span>100% U.S.-based Chime care team</span><span class="sv-val"><s>$69</s> FREE</span></li><li><span>On-time refills, guaranteed</span><span class="sv-val"><s>$49</s> FREE</span></li><li><span>Chime member community</span><span class="sv-val"><s>$29</s> FREE</span></li><li><span>Chime Weight Loss Warranty</span><span class="sv-val"><s>$179</s> FREE</span></li></ul></div>
                   </div>
                   </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-14 dark:bg-muted bg-slate-100">
+          <div
+            class="container mx-auto px-4 max-w-screen-sm space-y-6 md:space-y-10"
+          >
+            <h2
+              class="tracking-[-0.01em] font-medium text-balance font-alt text-3xl md:text-4xl text-left md:text-center"
+            >
+              Your <span class="text-brand">next steps</span> to life-changing
+              weight loss meds
+            </h2>
+            <div class="space-y-4">
+              <div class="relative">
+                <div
+                  class="flex items-center font-semibold justify-center text-center text-white bg-brand rounded-full absolute size-6 -left-3 -top-3 z-10"
+                >
+                  1
+                </div>
+                <div class="flex flex-row">
+                  <div
+                    class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
+                  >
+                    <img
+                      alt="Pick your medication"
+                      loading="lazy"
+                      width="208"
+                      height="208"
+                      decoding="async"
+                      data-nimg="1"
+                      class="absolute inset-0 w-full h-full object-cover"
+                      style="color: transparent"
+                      src="images/pick-medication.jpg"
+                    />
+                  </div>
+                  <div
+                    class="flex flex-col w-full justify-center px-4 md:px-6 py-2 border-y border-r border-gray-200 rounded-r-2xl bg-white"
+                  >
+                    <p
+                      class="text-inherit text-lg md:text-2xl font-medium mb-2"
+                    >
+                      Pick your medication
+                    </p>
+                    <ul class="space-y-1">
+                      <li
+                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
+                      >
+                        <div class="flex gap-1 items-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" /></svg
+                          ><span>We recommend microdosing</span>
+                        </div>
+                      </li>
+                      <li
+                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
+                      >
+                        <div class="flex gap-1 items-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" /></svg
+                          ><span>Clinician-verified for fast results</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="relative">
+                <div
+                  class="flex items-center font-semibold justify-center text-center text-white bg-brand rounded-full absolute size-6 -left-3 -top-3 z-10"
+                >
+                  2
+                </div>
+                <div class="flex flex-row">
+                  <div
+                    class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
+                  >
+                    <img
+                      alt="Get it delivered"
+                      loading="lazy"
+                      width="208"
+                      height="208"
+                      decoding="async"
+                      data-nimg="1"
+                      class="absolute inset-0 w-full h-full object-cover"
+                      style="color: transparent"
+                      src="images/get-it-delivered.jpg"
+                    />
+                  </div>
+                  <div
+                    class="flex flex-col w-full justify-center px-4 md:px-6 py-2 border-y border-r border-gray-200 rounded-r-2xl bg-white"
+                  >
+                    <p
+                      class="text-inherit text-lg md:text-2xl font-medium mb-2"
+                    >
+                      Get it delivered
+                    </p>
+                    <ul class="space-y-1">
+                      <li
+                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
+                      >
+                        <div class="flex gap-1 items-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" /></svg
+                          ><span>Fast delivery—arrives in 48 hours</span>
+                        </div>
+                      </li>
+                      <li
+                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
+                      >
+                        <div class="flex gap-1 items-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" /></svg
+                          ><span>Arrives discreetly at your door</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="relative">
+                <div
+                  class="flex items-center font-semibold justify-center text-center text-white bg-brand rounded-full absolute size-6 -left-3 -top-3 z-10"
+                >
+                  3
+                </div>
+                <div class="flex flex-row">
+                  <div
+                    class="relative w-full max-w-28 shrink-0 rounded-l-2xl overflow-hidden"
+                  >
+                    <img
+                      alt="Lose Weight"
+                      loading="lazy"
+                      width="208"
+                      height="208"
+                      decoding="async"
+                      data-nimg="1"
+                      class="absolute inset-0 w-full h-full object-cover"
+                      style="color: transparent"
+                      src="images/lose-weight.jpg"
+                    />
+                  </div>
+                  <div
+                    class="flex flex-col w-full justify-center px-4 md:px-6 py-2 border-y border-r border-gray-200 rounded-r-2xl bg-white"
+                  >
+                    <p
+                      class="text-inherit text-lg md:text-2xl font-medium mb-2"
+                    >
+                      Lose Weight
+                    </p>
+                    <ul class="space-y-1">
+                      <li
+                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
+                      >
+                        <div class="flex gap-1 items-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" /></svg
+                          ><span>Results in as little as 30 days</span>
+                        </div>
+                      </li>
+                      <li
+                        class="grid grid-cols-[auto_1fr] items-start gap-1 text-sm"
+                      >
+                        <div class="flex gap-1 items-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-circle-check text-brand size-4 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" /></svg
+                          ><span>Lose 14 lb in 3 months</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -4544,6 +4700,7 @@
     >
       </div>
   <script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
-<script src="js/plan-select.js?v=20260946" defer></script>
+<script src="js/plan-select.js?v=20260948" defer></script>
+<script src="js/treatment-select.js?v=20260948" defer></script>
 </body>
 </html>

@@ -42,6 +42,42 @@ in the redesign log below.
     and `#products` still work for outside links.
   - Hero height: 1,119 → 1,055px at 390, 809 → 782px at 1440. Nothing else on the page changed.
 
+- **2026-09-21 — round 4, client feedback** ("we lost the report and didn't get rid of the double
+  click with the initial on top, so take out the 1 button and move the product selection below the
+  first section, merge the report with the 1 section").
+  - **The report is back, inside the first section**: the Today / With Chime silhouettes and the
+    weight / BMI / cravings table, the original's markup unchanged (`.hm-report`; numbers are the
+    original's stand-ins). Desktop: report on the left, the three results + the recommendation on
+    the right. Phones: report, results, recommendation, in that order, tightened so the block
+    stays short (1,213px at 390).
+  - **No button in the hero** — "Start Losing Weight Now" is gone and the recommendation stays a
+    plain card, so the hero has no link at all.
+  - **The product selection is directly under the hero** (`#products`, 3rd place; block unchanged).
+    Order: header → hero + report + results → **plans** → next steps → meds + support → members →
+    delivery → FAQ. The plans start at 958px at 1440 and 1,287px at 390.
+  - Kept from round 3: no members photo, the results strip (now rows at every width), the
+    `#plans-tirz` / `#plans-sema` anchors (nothing on the page links to them now). The sticky
+    "Buy Now" bar is unchanged.
+
+- **2026-09-21 — round 5, treatment selector in the hero** (Luis: "add to the top section the
+  product selection ui type as choose-treatment/v2.html in mobile version, the ui component with the
+  radio button selection and do the animation to below to the selected product").
+  - `.ts` in the hero: "Select your treatment" + one radio card per combo (vial, name, one line,
+    badge, "from $/mo", radio) — the shape of V2's phone selector, in this page's own colours.
+    It **replaces the recommendation card**: "Recommended for you" is the Tirzepatide badge now.
+    Desktop: under the results, beside the report. Phones: last thing in the hero, right over the plans.
+  - `js/treatment-select.js` (new): a tap marks the card (`aria-pressed`, blue edge, filled radio),
+    names the combo in the sticky bar and **glides** down to that combo's plan rows
+    (`#plans-tirz` / `#plans-sema`, landing with the name, bonus, both plans and the button in
+    view); the combo card flashes once on arrival. The glide is a timed eased scroll (0.7–1.2s by
+    distance) because the browser's own smooth scroll covers it in under 0.4s; wheel / touch / key
+    input cancels it; `prefers-reduced-motion` jumps without motion. Picking a plan row further
+    down marks the matching card up here. It only points at a combo — `plan-select.js` still owns
+    the selection and the checkout hand-off, unchanged.
+  - Copy: the two lines are V2's taglines; the badges are the ones on the combo cards;
+    "from $299 / $249" is the 3-month rate of the carried 1 + 3 ladder (stand-in, like the rest).
+  - Hero: 888px at 1440, 1,409px at 390.
+
 ## Preview
 
     cd ~/Sites/chime && python3 -m http.server 8791
@@ -56,8 +92,9 @@ then http://localhost:8791/chime-checkout-bonus-v2/product.html → `checkout.ht
 | `css/1p1s7yzodipl6.css`, `2_6-q88y6yuc5.css`, `36xz9kx5hwvks.css`, `extracted-inline.css` | the reference's compiled sheets — restyle by overriding, not by editing them |
 | `css/chime-theme.css` | the Chime theme over those sheets |
 | `css/plan-stage.css` | the plan rows inside each medication card (product page only) |
-| `css/redesign.css` | the redesign's own styles, loaded last (hero-merge, plan-row anchors) |
+| `css/redesign.css` | the redesign's own styles, loaded last (hero-merge, treatment selector, plan-row anchors) |
 | `css/bonus.css` | everything the combo offer adds (ribbon, combo tile, why-both strip, callouts) — both pages |
+| `js/treatment-select.js` | the hero's treatment selector: marks the card, glides to the combo's plan rows (redesign) |
 | `js/plan-select.js` | plan rows → the pick, saved to `sessionStorage` (`chime:checkout-selection`) |
 | `js/checkout-selection.js`, `js/checkout.js` | the order summary filled from that pick |
 
@@ -77,4 +114,4 @@ so a small vial thumb needs its `padding` overridden or it renders as a blank ti
 - **Copy.** The "why both" claims are marketing copy in Chime voice, not clinical statements.
 - What is still RemedyMeds and flagged is documented in `chime-checkout/README.md`.
 
-`?v=20260946`.
+`?v=20260948`.
