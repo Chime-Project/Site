@@ -127,3 +127,12 @@ header img[src*="logo-chime"] {
 .focus\:border-slate-950:focus {
   border-color: #6580BC;
 }
+
+/* ---- room under the last field (Luis, 2026-09-21: "the page height is limited") ----
+   The source drops the bottom padding at md+ (md:pb-0) while the Continue bar stays fixed, so on
+   desktop the last question sat behind the button and could not be scrolled clear of it. */
+@media (min-width: 768px) {
+  body:has(.fixed.bottom-0:not(.md\:static)) .md\:pb-0 {
+    padding-bottom: 10rem;
+  }
+}
