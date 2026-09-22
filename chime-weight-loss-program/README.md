@@ -8,6 +8,14 @@ the saved reference as the design base.
 Chime's products and copy. Not a re-skin of their markup, and not a theme of an existing kit: the
 folder is self-contained, one stylesheet and one script, no framework and no CDN.
 
+**The ground is clean white** (Luis, 2026-09-22: "clean white with apple feel not the pale blue
+background"). Pure `#fff` for the page and `#f5f5f7` for the alternating bands, the way Apple builds
+a page; every panel that used to be a pale blue or warm sand wash is now white or grey with a
+hairline, and colour is carried by the ink, the accent and the two dark bands rather than by a
+background tint. Chime's blue-800 stays as the ink and the button colour, which is what keeps this
+from being a generic Apple clone. Section padding was lifted to match (88 to 96px on desktop) and
+the display type tracks tighter.
+
 Plan and capture notes: `../SESAME-WEIGHT-LOSS-RIP-PLAN.md`.
 
 ## Preview
@@ -122,10 +130,10 @@ Luis, same day: the first mosaic "is not look well at all". What was wrong and w
   names in the body, headline before any label, every local link resolving, every stand in visible,
   and that the script never branches on a click event's `detail`.
 - `bash ui_kits/shared/check-theme-agnostic.sh` — 0 warnings.
-- Chromium 1440 / 768 / 390: no horizontal overflow, 0 broken images; 7,126px, 8,191px and 9,586px tall.
+- Chromium 1440 / 768 / 390: no horizontal overflow, 0 broken images, body is `rgb(255,255,255)`; 7,607px, 8,535px and 9,953px tall.
 - **WebKit with real touch (Playwright, iPhone 13)**: filter chips, the `+` panels, the carousel
   arrows, a swipe on the reviews rail, the FAQ rows and the price select all respond to taps. This
   pass exists because of the 2026-09-21 Safari bug, where a tap arrived as a click with `detail` 0
   and the quiz never advanced.
 
-`?v=20260955`.
+`?v=20260956`.
