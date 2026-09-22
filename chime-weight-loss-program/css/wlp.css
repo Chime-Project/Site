@@ -240,19 +240,33 @@ svg .fill { fill: currentColor; stroke: none; }
 .arw[data-prev] .ico { transform: rotate(180deg); }
 
 /* ---------- Journey ---------- */
+/* Matched to the reference: 24px step headings, a 24px ringed dot on the rule,
+   and a photo under the lede in the left column. */
 .journey { padding: 52px 0; }
-.journey__in { display: grid; gap: 28px; }
-.journey__head p { margin-top: 14px; font-size: .9375rem; color: var(--ink-2); max-width: 420px; }
-.steps { display: grid; gap: 26px; position: relative; padding-left: 26px; }
-.steps::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
-.steps li { position: relative; }
-.steps li::before {
-  content: ""; position: absolute; left: -26px; top: 6px;
-  width: 11px; height: 11px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 0 3px var(--blue-100);
+.journey__in { display: grid; gap: 32px; }
+.journey__head p { margin-top: 16px; font-size: 1rem; line-height: 1.6; color: var(--ink-2); }
+.journey__media { margin-top: 24px; }
+.journey__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; border-radius: var(--r); box-shadow: var(--shadow); }
+
+.steps { display: grid; gap: 38px; position: relative; padding-left: 44px; }
+.steps::before {
+  content: ""; position: absolute; left: 11px; top: 12px; bottom: 12px;
+  width: 1px; background: var(--line);
 }
-.steps h3 { font-size: 1.125rem; }
-.steps p { margin-top: 7px; font-size: .9375rem; color: var(--ink-2); }
+.steps li { position: relative; }
+/* The dot: a pale ring with a solid centre, sitting on the rule. */
+.steps li::before {
+  content: ""; position: absolute; left: -44px; top: 5px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--blue-100);
+}
+.steps li::after {
+  content: ""; position: absolute; left: -36px; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+}
+.steps h3 { font-size: 1.375rem; line-height: 1.3; letter-spacing: -0.015em; }
+.steps p { margin-top: 12px; font-size: .9375rem; line-height: 1.6; color: var(--ink-2); }
 
 /* ---------- What is included (mosaic) ---------- */
 .incl { padding: 50px 0 56px; background: var(--sand-100); }
@@ -406,7 +420,7 @@ svg .fill { fill: currentColor; stroke: none; }
   .habits li { padding: 14px 8px; }
   .tile--a { grid-area: a; } .tile--b { grid-area: b; } .tile--c { grid-area: c; }
   .tile--d { grid-area: d; } .tile--e { grid-area: e; } .habits { grid-area: f; height: auto; }
-  .journey__in { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 48px; }
+  .journey__in { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 72px; align-items: start; }
   .team__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 40px; }
   .band__in { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
   .foot__in { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
@@ -425,6 +439,8 @@ svg .fill { fill: currentColor; stroke: none; }
   .quotes { grid-auto-columns: calc((100% - 28px) / 3); }
   .meds, .incl, .revs, .compare, .journey, .team, .faq { padding-top: 66px; padding-bottom: 72px; }
   .cmp { min-width: 0; }
+  .steps h3 { font-size: 1.5rem; }
+  .steps { gap: 42px; }
 }
 
 /* ---------- Motion ---------- */

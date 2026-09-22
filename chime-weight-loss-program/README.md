@@ -23,7 +23,7 @@ then http://localhost:8791/chime-weight-loss-program/
 | `index.html` | the page. Every section carries a `data-screen-label` |
 | `css/wlp.css` | the whole design: tokens in `:root` copied from `tokens/colors.css`, then section by section in page order |
 | `js/wlp.js` | five behaviours: the rail (one carousel used twice), the filter chips, the price select, the card expand panels, the FAQ accordion. The pure helpers are exported for node |
-| `js/wlp-tests.js` | `node chime-weight-loss-program/js/wlp-tests.js` — 139 checks |
+| `js/wlp-tests.js` | `node chime-weight-loss-program/js/wlp-tests.js` — 140 checks |
 | `fonts/quicksand-latin.woff2` | the 28 KB variable file the quiz landings ship. No Google Fonts request stands between the HTML and first paint |
 | `images/` | see **Photography** below. Vials from `uploads/vials/amber/` |
 
@@ -35,7 +35,7 @@ then http://localhost:8791/chime-weight-loss-program/
 | 2 | Hero | Headline, three tick bullets carrying the pricing, one button, the LegitScript chip where the reference puts Trustpilot |
 | 3 | Results | Three dark gradient cards, 5 / 10 / 15% at 3 / 6 / 12 months, citation under them |
 | 4 | Treatment explorer | Filter chips, price select, a 6 card carousel, and a `+` on each card that opens Highlights plus two Q&A blocks |
-| 5 | Journey | Five step timeline with dot markers |
+| 5 | Journey | Lede and a photo on the left, a five step timeline on the right. Matched to the reference: 24px step headings, a 24px ringed dot sitting on the rule |
 | 6 | What is included | Six tile mosaic: two photos, two colour tiles, a vial tile and a habits trio. See **The includes mosaic, second pass** |
 | 7 | The clinician | Replaces the reference's roster of ~100 named providers. Certificate style block |
 | 8 | Comparison | Nine rows, the Chime column framed |
@@ -89,6 +89,7 @@ pages. This page now uses its own cast, all sourced from assets already in the r
 | Mosaic, support tile | `incl-clinician-800.webp` | `assets/photo-start.jpg` |
 | Mosaic, stay on track | `incl-track-800.webp` | `uploads/executive-goal-recovery.webp` |
 | Mosaic, treatment tile | the three vial renders | `uploads/vials/amber/` |
+| Journey | `journey-800/1200.webp` | `uploads/executive-goal-vitality.webp`, cropped 4:3. The reference puts a photo here with a "down 26 lbs" overlay chip; the chip is a before/after style results claim and was not carried |
 
 The two portraits share the same warm sand ground, which is also the page canvas, so the hero and
 the clinician block read as one set. Watermarked stock in `assets/` (`photo-weight.jpg`,
@@ -109,11 +110,11 @@ Luis, same day: the first mosaic "is not look well at all". What was wrong and w
 
 ## Verification
 
-- `node chime-weight-loss-program/js/wlp-tests.js` — 139 checks, including zero em dashes, no brand
+- `node chime-weight-loss-program/js/wlp-tests.js` — 140 checks, including zero em dashes, no brand
   names in the body, headline before any label, every local link resolving, every stand in visible,
   and that the script never branches on a click event's `detail`.
 - `bash ui_kits/shared/check-theme-agnostic.sh` — 0 warnings.
-- Chromium 1440 / 768 / 390: no horizontal overflow, 0 broken images; 6,967px, 7,567px and 9,014px tall.
+- Chromium 1440 / 768 / 390: no horizontal overflow, 0 broken images; 7,107px, 8,172px and 9,586px tall.
 - **WebKit with real touch (Playwright, iPhone 13)**: filter chips, the `+` panels, the carousel
   arrows, a swipe on the reviews rail, the FAQ rows and the price select all respond to taps. This
   pass exists because of the 2026-09-21 Safari bug, where a tap arrived as a click with `detail` 0
