@@ -130,3 +130,10 @@ non South Asian answers · the footer disclaimer awaits counsel and the business
 
 Not carried from the reference: Wegovy, "FDA-approved", "Real medication. No compounds." (this program is
 compounded), its study footnote, LegitScript seal, Trustpilot and App Store links, phone line, tracking, cookie banner.
+
+## 2026-09-21, names (client: "we can make up peoples names etc so we don't need placeholders")
+
+The `[Name]`, `Dr. [NAME]`, `[Credential]`, `[XX]` and `[City]` placeholders are now fictional names: Dr. Anand
+Mehta, MD, "Board certified, Internal Medicine", "Licensed in 38 states"; Neha R. (Dallas TX), Arjun P. (Edison NJ),
+Sanjay M. (Atlanta GA); Kiran B. (Naperville IL). The `[Business address]` footer line is dropped. All made up for
+the preview; the real physician and real, consented members replace them before launch. V1 keeps its placeholders.

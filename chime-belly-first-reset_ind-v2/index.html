@@ -3,88 +3,84 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>The Chime Metabolic Reset | Chime Health</title>
-    <meta name="description" content="A complete, physician-guided weight loss program built around South Asian metabolic research. Check your metabolic risk in 5 quick questions." />
+    <title>The Belly-First Reset | Chime Health</title>
+    <meta name="description" content="GLP-1 plus tesamorelin, built for South Asian metabolism: one program for the scale and the waistline. Check your metabolic risk in 5 quick questions." />
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#1b1f5e" />
-    <!-- V2 (Luis, 2026-09-21: "create a second version with this information, i need to pop up the ui
-         taking in consideration the indian people like"): the same page, copy, quiz and images as
-         chime-metabolic-reset_ind/, with a vivid layer on top, css/pop.css, loaded last: royal
-         indigo + marigold + rani pink in place of the quiet slate / sand, marigold buttons,
-         colour-coded trust chips, a three-number facts strip under the trust bar (every number is
-         already on the page: BMI 23, 7 points, 283,000+), a framed clinician block and a louder
-         price block. Shaped by the research summarised in this folder's README. Everything below
-         is the original's header and still applies.
-         Names (client, 2026-09-21: "we can make up peoples names etc so we don't need
-         placeholders"): Dr. Anand Mehta, the credential, the state count, the three
-         testimonial names and the micro-testimonial name are FICTIONAL, for the preview
-         only; the real physician and real, consented members replace them before launch.
-         The [Business address] line was dropped from the footer for the same reason.
+    <!-- V2 (Luis, 2026-09-21: "do a v2 version of this colorful as the last landing page",
+         client: "Can you do the colorful V2 and emphasize the headline; also we can make
+         up peoples names etc so we don't need placeholders"): the same page, copy, quiz and
+         images as chime-belly-first-reset_ind/, with the vivid layer of
+         chime-metabolic-reset_ind-v2 on top (css/pop.css, loaded last: royal indigo +
+         marigold + rani pink, marigold buttons, colour-coded chips, a facts strip under
+         the trust bar with numbers already on the page, framed clinician block, louder
+         price) plus: the hero headline set larger with "the belly first" highlighted, and
+         FICTIONAL NAMES in place of the [Name] / Dr. [NAME] placeholders (client's call).
+         The provider, the credential, the state count and every testimonial name are
+         made up for the preview and must be replaced by the real physician and real,
+         consented members before launch. The price stays $[TBD]: it is a number the client
+         has to give, not a name. Everything below is the V1 header and still applies.
 
-         Chime Health: The Chime Metabolic Reset, cold-traffic quiz landing.
-         Client request 2026-09-21: build the page written up in "Indian LP.pdf"
-         (copy + section order + image map; untracked, never commit it) on the
-         format of landing.fh.co/medication-wegovy-discount (phone-first single
-         column, image-card hero, stepper + pill answers, result panel).
-         Luis, same day: the page is for CHIME (the PDF says AmeriLean
-         throughout, every mention is swapped), the clinician is a man, and the
-         questions live in a CAROUSEL: answering slides to the next question,
-         all inside this page. Plan: METABOLIC-RESET-LP-PLAN.md.
+         Chime Health: The Belly-First Reset (GLP-1 + tesamorelin), cold-traffic
+         quiz landing. Client request 2026-09-21: a clone of chime-metabolic-reset_ind
+         with the copy of "Indian LP - Tesa.pdf" (untracked, never commit it), in
+         its own folder. Same format, same question carousel, same clinician;
+         everything the PDF does not change is reused from the sister page.
+         Plan: METABOLIC-RESET-LP-PLAN.md (the sister page's plan; deltas in this
+         folder's README).
 
-         Own folder (one folder per landing page): index.html + css/reset-lp.css
-         + js/reset-quiz.js (carousel, result panel, sticky bar; the pure rules
-         are exported for node) + js/reset-quiz-tests.js + images/. No React, no
-         CDN scripts. Tests: node chime-metabolic-reset_ind-v2/js/reset-quiz-tests.js
+         Own folder: index.html + css/reset-lp.css + js/reset-quiz.js +
+         js/reset-quiz-tests.js + images/. No React, no CDN scripts.
+         Tests: node chime-belly-first-reset_ind-v2/js/reset-quiz-tests.js
+
+         WHAT DIFFERS from the sister page: program name (The Belly-First Reset,
+         locked descriptor "Built for South Asian metabolism"), the second vial
+         is tesamorelin (The Target Vial), every copy block, the result slide
+         (waist thresholds 35 in / 31 in vs 40 / 35, the 15-18% visceral-fat
+         figure, the torso cross-section, chip order belly-first first), the
+         bridge and benefits photos (mirror / waistband, kurta at a gathering),
+         the two-vial shot (GLP-1 + Tesamorelin art) with the two-jobs diagram,
+         the third step icon (tape measure + calendar), the sticky bar line.
 
          HOUSE RULES from the PDF, enforced by the tests: zero em dashes
-         anywhere in this file, no before/after imagery, no body imagery, no
-         food villain language, headline first and any label below it.
+         anywhere in this file, no before/after imagery, no body-focused
+         imagery, no bare skin, no pinching, no food villain language, headline
+         first and any label below it.
 
-         NOT TAKEN from the reference: Wegovy / "FDA-approved" / "Real
-         medication. No compounds." (this program IS compounded), its study
-         footnote, LegitScript seal, Trustpilot and App Store links, phone
-         line, tracking and cookie banner.
-
-         FLAGGED, built as written, not silently fixed. The copy was written
-         and "validated" for AmeriLean; none of this is confirmed for Chime:
-         · "Excellent 4.7" rating: source unverified. No Trustpilot mark.
-         · "NABP-accredited pharmacy": accreditation type and badge display
-           rights unconfirmed, so it is a text badge, never the official mark.
-         · "Tested 4 separate times": the four tests (potency, purity,
-           sterility, endotoxin) unconfirmed.
-         · Dr. [NAME], [Credential], "Licensed in [XX] states": visible
-           placeholders. The provider photo is AI-generated (Higgsfield) and is
-           a LAYOUT STAND-IN beside a real doctor's quote: replace it with the
-           real physician's photo before any traffic. The hero clinician is a
-           representative image.
-         · Testimonials: the PDF's placeholders, text cards with no faces.
-           Real, consented members or FTC disclaimers before launch.
-         · $249/month is the PDF's price and is not on Chime's price ladder;
-           "Cancel anytime" and the "$1,000+ per month" anchor await ops/legal.
-         · Statistics (5.9x, 8.0x, 283,000+ patients / PORTAL Network, 16.7% of
-           over 29,000 users / University of Pennsylvania, "7 points behind")
-           are verbatim from the PDF; full citations are needed from the client.
-         · Vial art reads GLP-1 and NAD+. No "Reset Vial" / "Restore Vial"
-           label art exists, and the Restore Vial copy says NAD+ AND
-           glutathione while the art says NAD+ only. Names live in the callouts.
-         · Question 1: the result copy is written for a South Asian answer and
-           the PDF has no variant for the other three answers, so everyone sees
-           the same result.
-         · "The Chime Metabolic Reset" TM mark is carried from the PDF.
-         · Footer disclaimer awaits counsel; [Business address] is missing.
-         · LegitScript badge in the footer (Luis, 2026-09-21), as on the other
-           Chime landings: the certification must be held before launch.
-         · All photos are AI-generated (Higgsfield, 2026-09-21); sources and the
-           export script are in uploads/metabolic-reset/ (untracked).
+         FLAGGED, built as written, not silently fixed (the PDF's own launch
+         blockers; counsel review is the critical path on this page):
+         · OFF-LABEL TESAMORELIN MARKETING LANGUAGE ("FDA-approved for a
+           specific condition and prescribed off-label here", the 15-18% trial
+           figure, "selectively reduced deep visceral fat") is verbatim from
+           the PDF and needs healthcare counsel, including the regulatory
+           status of compounded tesamorelin.
+         · PRICE IS $[TBD] throughout (offer block and FAQ), a visible
+           placeholder; "Cancel anytime" awaits policy confirmation.
+         · Dosing protocol (Target Vial daily, Reset Vial weekly) and the
+           lab / glucose monitoring protocol are the PDF's assumptions.
+         · The MASALA visceral-fat statement is unquantified on purpose (the
+           PDF says verify before quantifying); the waist thresholds 35 / 31
+           vs 40 / 35 and "measurable at 12-16 weeks" need citations.
+         · Carried from the sister page: "Excellent 4.7", NABP wording (text
+           badge only), "tested 4 times", Dr. [NAME] placeholders (the
+           provider photo is AI-generated, a stand-in for the real
+           physician), placeholder testimonials, the LegitScript badge (the
+           certification must be held before traffic), [Business address].
+         · Vial art reads GLP-1 and Tesamorelin; no "Reset Vial" / "Target
+           Vial" label art exists, the names live in the callouts.
+         · Question 1: the result copy is written for a South Asian answer;
+           the PDF has no variant for the other three answers.
+         · All photos are AI-generated (Higgsfield, 2026-09-21); sources and
+           the export script are in uploads/metabolic-reset/ (untracked).
          · "Continue My Assessment" goes to ../chimeAssessment.html; the answers
-           are in sessionStorage (chime:metabolic-reset) for a later hand-off,
+           are in sessionStorage (chime:belly-first-reset) for a later hand-off,
            the assessment does not read them today. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="preload" as="image" href="images/hero-clinician-800.webp" imagesrcset="images/hero-clinician-800.webp 800w, images/hero-clinician-1600.webp 1600w" imagesizes="(min-width: 1024px) 460px, 100vw" />
-    <link rel="stylesheet" href="css/reset-lp.css?v=20260951" />
-    <link rel="stylesheet" href="css/pop.css?v=20260951" />
+    <link rel="stylesheet" href="css/reset-lp.css?v=20260947" />
+    <link rel="stylesheet" href="css/pop.css?v=20260952" />
   </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
@@ -108,7 +104,7 @@
       <!-- steps -->
       <symbol id="s-phone" viewBox="0 0 64 64"><rect x="18" y="5" width="28" height="54" rx="6" /><path d="M28 10h8" /><rect x="23" y="18" width="18" height="6" rx="3" /><rect x="23" y="28" width="18" height="6" rx="3" class="fill" /><rect x="23" y="38" width="18" height="6" rx="3" /></symbol>
       <symbol id="s-door" viewBox="0 0 64 64"><path d="M10 58V10a3 3 0 013-3h22a3 3 0 013 3v48M6 58h52" /><circle cx="31" cy="34" r="1.8" class="fill" /><path d="M40 40l9-4 9 4v13l-9 4-9-4zM40 40l9 4 9-4M49 44v13" /></symbol>
-      <symbol id="s-cal" viewBox="0 0 64 64"><rect x="8" y="12" width="48" height="44" rx="6" /><path d="M8 24h48M20 6v11M44 6v11" /><path d="M16 46l9-7 8 4 14-12M40 31h7v7" /></symbol>
+      <symbol id="s-cal" viewBox="0 0 64 64"><rect x="26" y="12" width="32" height="40" rx="6" /><path d="M26 23h32M36 7v10M48 7v10M36 38l5 5 9-9" /><circle cx="15" cy="44" r="10" /><circle cx="15" cy="44" r="3.5" /><path d="M15 34V26a4 4 0 014-4h4" /></symbol>
       <!-- benefits -->
       <symbol id="b-layers" viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5zM3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5" /></symbol>
       <symbol id="b-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.2" class="fill" /></symbol>
@@ -134,16 +130,18 @@
               srcset="images/hero-clinician-800.webp 800w, images/hero-clinician-1600.webp 1600w"
               sizes="(min-width: 1024px) 460px, 100vw"
               width="800" height="993" alt="A South Asian physician in a white coat, looking at the camera" fetchpriority="high" />
+            <!-- the precision signal the PDF asks for: an abstract torso cross-section in line art -->
+            <svg class="hero__rings" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="100" rx="92" ry="74" /><ellipse cx="100" cy="102" rx="70" ry="54" /><ellipse cx="100" cy="104" rx="44" ry="32" /><ellipse cx="100" cy="150" rx="10" ry="8" /></svg>
           </div>
           <div class="hero__head">
-            <h1>The first complete weight loss program built around South Asian metabolic research.</h1>
-            <p class="label">Physician-guided weight care</p>
+            <h1 class="h1--big">South Asian weight goes <em class="hl">to the belly first.</em> Your program should too.</h1>
+            <p class="label">The Belly-First Reset &bull; Built for South Asian metabolism</p>
           </div>
           <div class="hero__body">
-            <p class="hero__sub">Standard programs use standard charts. Answer 5 quick questions and see where metabolic risk actually begins for people with your biology, backed by research on 283,000+ patients.</p>
-            <!-- A/B queue (PDF): A2 "Your BMI chart was built for someone else's body."
-                 A3 "Finally, a program that understands rice, roti, and family history."
-                 A4 "Diabetes does not wait for a BMI of 30. Neither should your care." -->
+            <p class="hero__sub">The Belly-First Reset pairs GLP-1 weight loss medication with tesamorelin, a medication shown in clinical trials to selectively reduce deep visceral belly fat. Answer 5 quick questions and see if your biology qualifies.</p>
+            <!-- A/B queue (PDF): B2 "The fat you can pinch is not the fat that is hurting you."
+                 B3 "It all goes to my belly." There is a reason, and now there is a program for it.
+                 B4 "Losing weight is not the same as losing belly fat. This program does both." -->
             <a class="btn btn--lg" id="hero-cta" href="#quiz" data-quiz-link>Check My Metabolic Risk</a>
             <p class="micro">5 questions. About 30 seconds. Reviewed by licensed US clinicians.</p>
           </div>
@@ -168,9 +166,9 @@
       <!-- V2 · FACTS STRIP: three numbers, all of them already stated elsewhere on this page -->
       <section class="facts" aria-label="The research in three numbers" data-screen-label="Facts">
         <ul class="facts__grid">
-          <li class="fact fact--a"><b>23</b><span>The BMI where metabolic risk can begin for South Asian adults, not 30</span></li>
-          <li class="fact fact--b"><b>7 points</b><span>How far the standard charts run behind your actual risk</span></li>
-          <li class="fact fact--c"><b>283,000+</b><span>Patients in the research this program is built around</span></li>
+          <li class="fact fact--a"><b>35 / 31 in</b><span>The waistlines where abdominal risk begins for South Asian men and women, not 40 and 35</span></li>
+          <li class="fact fact--b"><b>15-18%</b><span>Average reduction in deep visceral fat with tesamorelin over 26 weeks in clinical trials</span></li>
+          <li class="fact fact--c"><b>12-16 weeks</b><span>When deep fat changes become measurable in clinical studies</span></li>
         </ul>
       </section>
 
@@ -299,33 +297,48 @@
               <!-- Result -->
               <article class="slide slide--result" data-slide="result" aria-roledescription="slide">
                 <div class="slide__in">
-                  <h3 tabindex="-1">The standard BMI chart was never built for you.</h3>
+                  <h3 tabindex="-1">Doctors have a name for it: the thin-fat body.</h3>
                   <p class="label">Built for your biology</p>
+
+                  <p class="result__body">At the same BMI, South Asian adults carry significantly more fat deep inside the abdomen, wrapped around the organs, where no scale and no mirror can see it. That deep fat, not the fat you can pinch, is what drives insulin resistance and the diabetes running through our families.</p>
 
                   <div class="stats">
                     <div class="stat">
-                      <p class="stat__n"><span data-count="5.9">5.9</span>x</p>
-                      <p class="stat__t">the diabetes prevalence for South Asian men vs white adults at the same healthy BMI</p>
+                      <p class="stat__n stat__n--pair"><span data-count="35" data-dec="0">35</span><i>in</i> / <span data-count="31" data-dec="0">31</span><i>in</i></p>
+                      <p class="stat__t">the waistlines where abdominal risk begins for South Asian men and women. Standard charts say 40 and 35.</p>
                     </div>
                     <div class="stat">
-                      <p class="stat__n"><span data-count="8.0">8.0</span>x</p>
-                      <p class="stat__t">the diabetes prevalence for South Asian women vs white adults at the same healthy BMI</p>
+                      <p class="stat__n">15-<span data-count="18" data-dec="0">18</span>%</p>
+                      <p class="stat__t">average reduction in deep visceral fat with tesamorelin over 26 weeks in clinical trials.*</p>
                     </div>
                   </div>
 
-                  <div class="bmi" data-bmi role="img" aria-label="BMI scale: the point where metabolic risk begins moves from 30 down to near 23 for South Asian adults">
-                    <div class="bmi__track"><span class="bmi__risk"></span><span class="bmi__ghost"></span><span class="bmi__mark"><b data-bmi-n>23</b></span></div>
-                    <div class="bmi__axis"><span>BMI 18</span><span>23</span><span>30</span><span>35</span></div>
+                  <!-- the belt line: where risk begins for South Asian adults vs the standard chart. Scale 24 to 44 in -->
+                  <div class="waist" data-waist role="img" aria-label="Waist thresholds: abdominal risk begins at 35 inches for South Asian men and 31 for women, against 40 and 35 on standard charts">
+                    <div class="waist__row" data-from="40" data-to="35">
+                      <span class="waist__who">Men</span>
+                      <div class="waist__track"><span class="waist__ghost" style="left: 80%"><i>40</i></span><span class="waist__mark" style="left: 80%"><b data-waist-n>35</b></span></div>
+                    </div>
+                    <div class="waist__row" data-from="35" data-to="31">
+                      <span class="waist__who">Women</span>
+                      <div class="waist__track"><span class="waist__ghost" style="left: 55%"><i>35</i></span><span class="waist__mark" style="left: 55%"><b data-waist-n>31</b></span></div>
+                    </div>
+                    <p class="waist__key"><span><i class="k k--ours"></i>Where risk begins for South Asian adults</span><span><i class="k k--std"></i>What standard charts assume</span></p>
                   </div>
 
-                  <p class="result__body">For South Asian adults, metabolic risk can begin near a BMI of 23, not 30. Most programs tell people like you that you "don't qualify yet." This one uses thresholds built for your biology, and none of it is your fault. It is how your metabolism was built, and it is treatable.</p>
+                  <figure class="section-fig">
+                    <img loading="lazy" src="images/cross-section-800.webp" srcset="images/cross-section-800.webp 800w, images/cross-section-1600.webp 1600w" sizes="(min-width: 768px) 460px, 100vw" width="800" height="993" alt="Illustrated cross-section of a torso: a thin outer layer of fat and a deeper layer around the organs" />
+                    <figcaption class="section-fig__keys"><span class="fk fk--outer">The fat you can pinch</span><span class="fk fk--inner">The fat that drives risk</span></figcaption>
+                  </figure>
+
+                  <p class="result__body">It is not about how you look. It is about where the fat sits. And where it sits is treatable.</p>
 
                   <div class="chip" data-quiz-chip hidden>
                     <p class="chip__t">Noted for your clinical review</p>
                     <ul class="chip__l" data-quiz-chip-list></ul>
                   </div>
 
-                  <p class="source">Source: Based on a study of 283,000+ patients (PORTAL Network).</p>
+                  <p class="source">*Studied in adults with abdominal fat accumulation. Individual results vary.</p>
 
                   <a class="btn btn--lg btn--pulse" href="../chimeAssessment.html" data-quiz-finish>Continue My Assessment</a>
                   <p class="micro">Educational information, not a diagnosis. A licensed clinician determines eligibility and treatment.</p>
@@ -341,11 +354,11 @@
       <section class="band bridge" data-screen-label="Problem bridge">
         <div class="wrap split">
           <figure class="split__media">
-            <img loading="lazy" src="images/bridge-arjun-800.webp" srcset="images/bridge-arjun-800.webp 800w, images/bridge-arjun-1600.webp 1600w" sizes="(min-width: 900px) 520px, 100vw" width="800" height="537" alt="A man at his desk in the evening, reading a printed lab report" />
+            <img loading="lazy" src="images/bridge-mirror-800.webp" srcset="images/bridge-mirror-800.webp 800w, images/bridge-mirror-1600.webp 1600w" sizes="(min-width: 900px) 520px, 100vw" width="800" height="537" alt="A man in a business shirt at a mirror, adjusting his waistband" />
           </figure>
           <div class="split__copy">
-            <p class="lede">You eat what your family eats. You walk. You have tried the fasting apps and the gym streaks. And every year the checkup says the same thing: numbers drifting, "keep an eye on it," no plan.</p>
-            <p>Here is what nobody told you: for South Asian adults, the standard charts run 7 points behind your actual risk. You have been playing a different game with someone else's scoreboard.</p>
+            <p class="lede">Your weight is "fine." Maybe your BMI has never once been flagged. But the belly stays no matter what you cut, the waistband tells a different story than the scale, and the labs keep drifting the same direction your father's did.</p>
+            <p>Here is what nobody explained: South Asian bodies store fat deep in the abdomen first. You cannot pinch it, crunches do not touch it, and standard weight loss programs do not target it. That is not a discipline problem. It is a placement problem.</p>
           </div>
         </div>
       </section>
@@ -354,32 +367,49 @@
       <section class="band band--sand mechanism" data-screen-label="Mechanism">
         <div class="wrap">
           <figure class="vials">
-            <img loading="lazy" src="images/mechanism-vials-800.webp" srcset="images/mechanism-vials-800.webp 800w, images/mechanism-vials-1600.webp 1600w" sizes="(min-width: 900px) 760px, 100vw" width="800" height="537" alt="Two Chime vials side by side: a GLP-1 vial and an NAD+ vial" />
+            <img loading="lazy" src="images/mechanism-vials-800.webp" srcset="images/mechanism-vials-800.webp 800w, images/mechanism-vials-1600.webp 1600w" sizes="(min-width: 900px) 760px, 100vw" width="800" height="537" alt="Two Chime vials side by side: a GLP-1 vial and a Tesamorelin vial" />
             <figcaption class="callouts">
-              <p class="callout"><b>The Reset Vial</b><span>The engine of your weight loss</span></p>
-              <p class="callout"><b>The Restore Vial</b><span>Keeps you feeling like yourself</span></p>
+              <p class="callout"><b>The Reset Vial</b><span>The scale</span></p>
+              <p class="callout"><b>The Target Vial</b><span>The waistline</span></p>
             </figcaption>
           </figure>
 
           <div class="mechanism__copy">
-            <h2>One program. Two vials. Two solutions.</h2>
-            <p class="label">The Chime Metabolic Reset&trade;</p>
-            <p>Most GLP-1 programs hand you one medication and call it a plan. Fatigue is the #2 reported side effect of GLP-1 medication, reported by 16.7% of over 29,000 users in a University of Pennsylvania analysis. Appetite goes quiet, and so do you.</p>
-            <p>The Chime Metabolic Reset was built as a complete system:</p>
+            <h2>Why it is called the Belly-First Reset: one program, two vials, the scale and the waistline.</h2>
+            <p class="label">The Belly-First Reset&trade; &bull; Built for South Asian metabolism</p>
+            <p>Losing weight and losing deep belly fat are two different jobs. Most programs only do the first one.</p>
           </div>
 
           <div class="pair">
             <article class="pair__card">
               <h3>The Reset Vial</h3>
-              <p>Physician-prescribed GLP-1 medication for appetite and metabolic control. This is the engine of your weight loss.</p>
+              <p>Physician-prescribed GLP-1 medication for appetite and overall weight. This moves the scale.</p>
             </article>
             <article class="pair__card pair__card--dark">
-              <h3>The Restore Vial</h3>
-              <p>NAD+ and glutathione for cellular energy and antioxidant support. This is what keeps you feeling like yourself while the first vial works.</p>
+              <h3>The Target Vial</h3>
+              <p>Physician-prescribed tesamorelin, a medication studied in placebo-controlled clinical trials where it selectively reduced deep visceral fat by 15-18% over 26 weeks, with no significant change to the fat under the skin.* It works on the fat that sits around your organs, the fat driving the risk your family knows too well.</p>
             </article>
           </div>
 
-          <p class="mechanism__close">One purchase. Two vials. Both compounded in the USA and tested 4 times at an NABP-accredited pharmacy before they ship. Dosed together by a clinician who knows South Asian metabolic risk runs deeper than the chart shows.</p>
+                    <!-- two vials, two jobs: the wide effect and the focused one, on one outline -->
+          <figure class="jobs" aria-label="GLP-1 acts on the whole body; tesamorelin acts on the abdominal core">
+            <svg class="jobs__fig" viewBox="0 0 320 300" aria-hidden="true">
+              <defs>
+                <radialGradient id="g-wide" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#6580bc" stop-opacity="0.32" /><stop offset="1" stop-color="#6580bc" stop-opacity="0" /></radialGradient>
+                <radialGradient id="g-core" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d98a6f" stop-opacity="0.85" /><stop offset="1" stop-color="#d98a6f" stop-opacity="0" /></radialGradient>
+              </defs>
+              <ellipse cx="160" cy="150" rx="120" ry="140" fill="url(#g-wide)" />
+              <path class="jobs__body" d="M160 22c-14 0-24 11-24 25 0 9 4 16 10 21-24 6-40 20-46 44l-12 62c-2 8 4 14 11 14h3l10-50v40l-4 96c0 5 4 9 9 9h18c5 0 9-4 9-9V182h32v92c0 5 4 9 9 9h18c5 0 9-4 9-9l-4-96v-40l10 50h3c7 0 13-6 11-14l-12-62c-6-24-22-38-46-44 6-5 10-12 10-21 0-14-10-25-24-25z" />
+              <circle cx="160" cy="160" r="30" fill="url(#g-core)" />
+              <circle class="jobs__dot" cx="160" cy="160" r="4" />
+              <path class="jobs__line" d="M22 250c40-40 70-80 120-90M298 250c-40-20-70-60-138-90" />
+            </svg>
+            <figcaption class="jobs__keys"><span class="fk fk--outer">GLP-1: the whole body</span><span class="fk fk--inner">Tesamorelin: the abdominal core</span></figcaption>
+          </figure>
+
+          <p class="mechanism__close">One purchase. Two vials. Both compounded in the USA and tested 4 times at an NABP-accredited pharmacy before they ship.</p>
+          <p class="mechanism__close">GLP-1 changes your weight. Tesamorelin changes where your risk lives.</p>
+          <p class="fine mechanism__foot">*Trials conducted in adults with abdominal fat accumulation. Tesamorelin is FDA-approved for a specific condition and is prescribed off-label here following an individual clinical evaluation.</p>
         </div>
       </section>
 
@@ -396,7 +426,7 @@
               <li><svg class="ico"><use href="#i-check" /></svg><span><b>Compounded in the USA</b> at a named, licensed pharmacy</span></li>
               <li><svg class="ico"><use href="#i-check" /></svg><span><b>Tested 4 separate times</b> before it ships</span></li>
               <li><svg class="ico"><use href="#i-check" /></svg><span><b>Prepared by an NABP-accredited pharmacy</b></span></li>
-              <li><svg class="ico"><use href="#i-check" /></svg><span><b>Prescribed individually</b> by a licensed clinician after your evaluation</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>Prescribed individually</b> by a licensed clinician, with ongoing monitoring built into your plan</span></li>
             </ul>
             <p>You will always know who prescribed your medication and exactly where it was made. If a program will not tell you those two things, walk away.</p>
             <ul class="badges" aria-label="Quality marks">
@@ -417,19 +447,19 @@
               <svg class="step__ico" aria-hidden="true"><use href="#s-phone" /></svg>
               <span class="step__n">1</span>
               <h3>Check your risk</h3>
-              <p>Finish the 2-minute assessment. A licensed clinician reviews your answers against South Asian-specific thresholds.</p>
+              <p>Finish the 2-minute assessment. A licensed clinician reviews your answers against South Asian-specific thresholds, including where you carry weight.</p>
             </li>
             <li class="step">
               <svg class="step__ico" aria-hidden="true"><use href="#s-door" /></svg>
               <span class="step__n">2</span>
               <h3>Get your complete program</h3>
-              <p>If you qualify, your clinician prescribes your personalized plan. Both vials ship together, discreetly, from a licensed US pharmacy.</p>
+              <p>If you qualify, both vials ship together, discreetly, from a licensed US pharmacy.</p>
             </li>
             <li class="step">
               <svg class="step__ico" aria-hidden="true"><use href="#s-cal" /></svg>
               <span class="step__n">3</span>
-              <h3>Reset your metabolism</h3>
-              <p>Weekly dosing, ongoing clinician reviews, and nutrition guidance that works with the food your family actually eats.</p>
+              <h3>Reset deep</h3>
+              <p>The Reset Vial is a once-weekly injection. The Target Vial is a quick daily one with an insulin-size needle, seconds each morning. Your clinician monitors progress and adjusts as your body responds.</p>
             </li>
           </ol>
         </div>
@@ -439,13 +469,14 @@
       <section class="band band--sand benefits" data-screen-label="Benefits">
         <div class="wrap split">
           <figure class="split__media split__media--tall">
-            <img loading="lazy" src="images/benefits-cricket-800.webp" srcset="images/benefits-cricket-800.webp 800w, images/benefits-cricket-1600.webp 1600w" sizes="(min-width: 900px) 460px, 100vw" width="800" height="993" alt="A father laughing as he plays driveway cricket with his son in the morning light" />
+            <img loading="lazy" src="images/benefits-kurta-800.webp" srcset="images/benefits-kurta-800.webp 800w, images/benefits-kurta-1600.webp 1600w" sizes="(min-width: 900px) 460px, 100vw" width="800" height="993" alt="A man in a kurta laughing at a family gathering, holding a plate" />
           </figure>
           <ul class="benefit-list">
-            <li><svg class="ico"><use href="#b-layers" /></svg><div><h3>A complete program, not a prescription and a pat on the back</h3><p>Medication, energy support, clinical oversight, and nutrition in one plan.</p></div></li>
-            <li><svg class="ico"><use href="#b-target" /></svg><div><h3>Treatment that starts where your risk starts</h3><p>Thresholds calibrated to South Asian biology, so "you don't qualify yet" stops being the answer.</p></div></li>
-            <li><svg class="ico"><use href="#b-bolt" /></svg><div><h3>Appetite quiet, energy intact</h3><p>The Restore Vial exists because of the fatigue problem, not despite it.</p></div></li>
-            <li><svg class="ico"><use href="#b-bowl" /></svg><div><h3>Eat with your family</h3><p>Guidance built around rice, roti, and vegetarian protein. No villain foods, no separate meals.</p></div></li>
+            <li><svg class="ico"><use href="#b-target" /></svg><div><h3>Goes after the fat that matters</h3><p>Deep visceral fat drives the metabolic risk. This program targets it by design instead of hoping overall weight loss gets there eventually.</p></div></li>
+            <li><svg class="ico"><use href="#b-layers" /></svg><div><h3>The scale AND the waistline</h3><p>Two medications with two different jobs, prescribed as one plan.</p></div></li>
+            <li><svg class="ico"><use href="#b-bolt" /></svg><div><h3>Built for the thin-fat body</h3><p>If your BMI is "fine" but your belly and labs disagree, this is the program built for exactly that profile.</p></div></li>
+            <li><svg class="ico"><use href="#b-bowl" /></svg><div><h3>Eat with your family</h3><p>Guidance built around rice, roti, and vegetarian protein. No villain foods.</p></div></li>
+            <li><svg class="ico"><use href="#q-calendar" /></svg><div><h3>Honest timelines</h3><p>Deep fat changes are measurable at 12-16 weeks in clinical studies. We tell you that upfront because a program you trust is a program you finish.</p></div></li>
             <li><svg class="ico"><use href="#b-lock" /></svg><div><h3>Discreet from door to door</h3><p>Unmarked packaging, private portal, nobody notified.</p></div></li>
           </ul>
         </div>
@@ -461,7 +492,7 @@
             </figure>
             <div class="provider__copy">
               <svg class="provider__q" aria-hidden="true"><use href="#i-quote" /></svg>
-              <blockquote>I built this program because I kept watching patients from my own community get told to come back when things got worse. South Asian metabolic risk shows up earlier and hits harder. Care should too.</blockquote>
+              <blockquote>I built this program because I kept watching patients from my own community get told to come back when things got worse. South Asian metabolic risk shows up earlier and hits harder. Care should too. Belly-first weight is not a cosmetic complaint. It is the earliest visible sign of South Asian metabolic risk, and it is the one we can now treat directly.</blockquote>
               <p class="provider__name">Dr. Anand Mehta, MD</p>
               <ul class="pills">
                 <li>Board certified, Internal Medicine</li>
@@ -474,18 +505,18 @@
           <ul class="quotes">
             <li class="quote">
               <span class="stars" aria-label="5 out of 5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
-              <blockquote>My dad was diagnosed at 52. My A1C was creeping at 36. Eight months in, my labs are the best they have been in a decade, and I am not tired all the time.</blockquote>
-              <p class="quote__by">Neha R., 38, Dallas TX</p>
+              <blockquote>Every diet moved the scale a little. Nothing ever moved my waist. This was the first time the inches went before the pounds.</blockquote>
+              <p class="quote__by">Priya S., 42, Fremont CA</p>
             </li>
             <li class="quote">
               <span class="stars" aria-label="5 out of 5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
-              <blockquote>Every program made me give up the food my family eats. This one just made a plan around it.</blockquote>
-              <p class="quote__by">Arjun P., 34, Edison NJ</p>
+              <blockquote>My BMI was 24. Every program said I did not need help. My waistline and my A1C said otherwise.</blockquote>
+              <p class="quote__by">Rohan K., 37, Jersey City NJ</p>
             </li>
             <li class="quote">
               <span class="stars" aria-label="5 out of 5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
-              <blockquote>I was the person who had tried everything. The energy difference is what surprised me.</blockquote>
-              <p class="quote__by">Sanjay M., 41, Atlanta GA</p>
+              <blockquote>The daily injection scared me for about three days. Now it takes less time than my coffee.</blockquote>
+              <p class="quote__by">Vikram D., 45, Houston TX</p>
             </li>
           </ul>
           <p class="fine center">Individual experiences. Results vary and are not guaranteed.</p>
@@ -499,19 +530,18 @@
             <img loading="lazy" src="images/offer-flatlay-800.webp" srcset="images/offer-flatlay-800.webp 800w, images/offer-flatlay-1600.webp 1600w" sizes="(min-width: 900px) 500px, 100vw" width="800" height="800" alt="The complete kit laid out: two vials, syringes, prep pads, a welcome card and the shipping box" />
           </figure>
           <div class="split__copy">
-            <h2>The complete Metabolic Reset. One flat price.</h2>
-            <p class="label">Your Chime Metabolic Reset includes</p>
+            <h2>The complete Belly-First Reset. One flat price.</h2>
+            <p class="label">Your Belly-First Reset includes</p>
             <ul class="checks">
-              <li><svg class="ico"><use href="#i-check" /></svg><span>Full clinical evaluation against South Asian-specific risk thresholds</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span>Full clinical evaluation against South Asian-specific risk thresholds, including waist-pattern screening</span></li>
               <li><svg class="ico"><use href="#i-check" /></svg><span><b>The Reset Vial:</b> physician-prescribed GLP-1, shipped monthly</span></li>
-              <li><svg class="ico"><use href="#i-check" /></svg><span><b>The Restore Vial:</b> NAD+ and glutathione energy support, shipped alongside</span></li>
-              <li><svg class="ico"><use href="#i-check" /></svg><span>Ongoing clinician access with dose reviews and adjustments</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>The Target Vial:</b> physician-prescribed tesamorelin, shipped alongside</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span>Ongoing clinician access, dose reviews, and progress monitoring</span></li>
               <li><svg class="ico"><use href="#i-check" /></svg><span>Nutrition guidance built for South Asian and vegetarian households</span></li>
               <li><svg class="ico"><use href="#i-check" /></svg><span>Discreet packaging and a private member portal</span></li>
             </ul>
             <div class="price">
-              <p class="price__anchor">Branded GLP-1 medication alone runs $1,000+ per month cash, and it is only one vial of this program.</p>
-              <p class="price__n"><span>Your complete program:</span> <b>$249</b><i>/month</i></p>
+              <p class="price__n"><span>Your complete program:</span> <b>$<span class="ph">[TBD]</span></b><i>/month</i></p>
               <p class="price__t">No insurance needed. No hidden fees. Cancel anytime.</p>
             </div>
             <p class="qualifier">If your clinician determines treatment is not right for you, you pay nothing.</p>
@@ -524,7 +554,7 @@
       <section class="band reversal" data-screen-label="Risk reversal">
         <div class="wrap wrap--narrow">
           <svg class="reversal__ico" aria-hidden="true"><use href="#i-shield" /></svg>
-          <p>You are not committing to anything by checking. The assessment is free, the clinical review is honest, and if you are not a candidate, we will tell you that plainly instead of selling you something that will not work. We would rather lose a sale than treat the wrong person.</p>
+          <p>Checking costs you nothing. The assessment is free, the clinical review is honest, and if deep belly fat is not actually your problem, we will tell you that and point you to the program that fits instead. We would rather route you right than sell you wrong.</p>
         </div>
       </section>
 
@@ -532,13 +562,14 @@
       <section class="band band--clean faq" data-screen-label="FAQ">
         <div class="wrap wrap--narrow">
           <h2 class="center">Frequently asked questions</h2>
-          <details><summary>Is compounded medication legitimate?</summary><p>Yes, when it is done properly. Your medication is prescribed by a licensed clinician after an individual evaluation, compounded in the USA, and tested 4 times at an NABP-accredited pharmacy before it ships. You will see exactly who prescribed it and where it was made. If a program will not tell you those two things, walk away.</p></details>
-          <details><summary>Why two vials instead of one medication?</summary><p>Because weight loss medication alone is half a program. The Reset Vial handles appetite and metabolic control. The Restore Vial supports cellular energy while your body adjusts. Fatigue is the #2 reported GLP-1 side effect, and we built the program around solving it instead of ignoring it.</p></details>
-          <details><summary>Do I even qualify at my weight?</summary><p>That is exactly what the assessment checks. South Asian adults develop metabolic disease at lower body weights, so this program evaluates you against thresholds built for your biology. Many members were told "not yet" elsewhere.</p></details>
-          <details><summary>Will I gain it back when I stop?</summary><p>Weight returns when medication stops and nothing else changes. Your clinician builds a maintenance and taper plan with you, and the nutrition work is designed to outlast the prescription. We will not pretend otherwise.</p></details>
-          <details><summary>Will anyone know I am on this?</summary><p>No. Unmarked packaging, private portal, and nothing sent to your employer, insurer, or family. Your information is protected under HIPAA.</p></details>
-          <details><summary>I am vegetarian. Will this actually work for me?</summary><p>Yes. Protein matters on GLP-1 therapy, and your guidance includes vegetarian protein plans built around dal, paneer, yogurt, and the foods already in your kitchen.</p></details>
-          <details><summary>What does the $249/month cover?</summary><p>The complete program: evaluation, both vials, shipping, clinician access, and adjustments. No visit fees, no surprise charges.</p></details>
+          <details><summary>What is tesamorelin? I have never heard of it.</summary><p>Tesamorelin is not new. It is an FDA-approved medication, studied in placebo-controlled trials where it selectively reduced deep visceral fat by 15-18% over 26 weeks. It works by signaling your body's own growth hormone system to break down deep abdominal fat specifically. In this program it is compounded in the USA and prescribed off-label for you by a licensed clinician after your evaluation.</p></details>
+          <details><summary>Is this a cosmetic treatment?</summary><p>No. Visceral fat is the fat wrapped around your organs, and it is one of the strongest drivers of insulin resistance. Treating it is a metabolic health decision. Looking better in your clothes is the side effect, not the point.</p></details>
+          <details><summary>Why do I need this if GLP-1 already causes weight loss?</summary><p>GLP-1 reduces overall weight, and some visceral fat comes with it. Tesamorelin is selective: in trials it reduced deep fat without significantly changing the fat under the skin. If your pattern is belly-first, treating the pattern directly is the difference between losing weight and losing risk.</p></details>
+          <details><summary>Is the daily injection a big deal?</summary><p>Honestly, less than you think. The Target Vial uses an insulin-size needle and takes seconds. Most members say the anticipation was worse than the routine. The Reset Vial stays once weekly.</p></details>
+          <details><summary>When will I actually see my belly change?</summary><p>In clinical studies, deep fat reduction became measurable at 12 to 16 weeks, with full trial results at 26 weeks. We tell you that upfront. This is a program, not a stunt.</p></details>
+          <details><summary>What happens if I stop?</summary><p>In studies, visceral fat gradually returned after stopping treatment. That is true of every medication-based approach, and it is why your clinician builds the nutrition and maintenance work alongside the prescriptions rather than after them.</p></details>
+          <details><summary>Will anyone know I am on this?</summary><p>No. Unmarked packaging, private portal, HIPAA-protected. Nothing is sent to your employer, insurer, or family.</p></details>
+          <details><summary>I am vegetarian. Will this work for me?</summary><p>Yes. Protein matters on both medications, and your guidance includes vegetarian plans built around dal, paneer, yogurt, and the foods already in your kitchen.</p></details>
         </div>
       </section>
 
@@ -546,7 +577,7 @@
       <section class="closing" data-screen-label="Final CTA">
         <img class="closing__bg" loading="lazy" src="images/close-dinner-900.webp" srcset="images/close-dinner-900.webp 900w, images/close-dinner-1800.webp 1800w" sizes="100vw" width="900" height="502" alt="Three generations of a family laughing together over dinner, rice and roti on the table" />
         <div class="closing__in">
-          <h2>Your grandparents did not have this option. You do.</h2>
+          <h2>The belly is not a flaw. It is a signal. Answer it.</h2>
           <p class="closing__sub">Check your metabolic risk in 2 minutes. A licensed clinician takes it from there.</p>
           <a class="btn btn--lg btn--light" id="closing-cta" href="#quiz" data-quiz-link>Check My Metabolic Risk</a>
           <p class="micro">Free assessment &bull; No obligation &bull; HIPAA-secure</p>
@@ -558,12 +589,12 @@
           <h2 class="center">What happens next</h2>
           <ol class="next__list">
             <li><span>1</span><p>Answer the questions: about 2 minutes, no payment info</p></li>
-            <li><span>2</span><p>A licensed clinician reviews your profile against South Asian-specific thresholds</p></li>
-            <li><span>3</span><p>If you qualify, your complete program and pricing are ready the same day</p></li>
+            <li><span>2</span><p>A licensed clinician reviews your profile, including where you carry weight</p></li>
+            <li><span>3</span><p>If you qualify, your complete Belly-First Reset program is ready the same day</p></li>
           </ol>
           <figure class="micro-quote">
-            <blockquote>I almost did not take the quiz. It was the first time a health form ever asked about my family.</blockquote>
-            <figcaption>Kiran B., Naperville IL</figcaption>
+            <blockquote>The quiz asked where I carry my weight. Nobody had ever asked me that before.</blockquote>
+            <figcaption>Meera T., Sunnyvale CA</figcaption>
           </figure>
         </div>
       </section>
@@ -579,7 +610,7 @@
                takes traffic. -->
           <img class="footer__badge" src="images/legitscript.png" alt="LegitScript Certified" width="70" height="76" loading="lazy" />
         </div>
-        <p class="footer__fine">Compounded medications are prepared for individual patients by a licensed pharmacy following an individualized prescription and are not FDA-approved products. A licensed clinician determines eligibility, medication, and dosing. Results vary and are not guaranteed. This page is educational and is not medical advice. Not for use during pregnancy or breastfeeding.</p>
+        <p class="footer__fine">Compounded medications are prepared for individual patients by a licensed pharmacy following an individualized prescription and are not FDA-approved products. Tesamorelin is FDA-approved for a specific indication and is prescribed off-label in this program following individual clinical evaluation. A licensed clinician determines eligibility, medication, and dosing, and ongoing monitoring may be required. Results vary and are not guaranteed. Educational content, not medical advice. Not for use during pregnancy or breastfeeding.</p>
         <ul class="footer__links">
           <li><a href="../privacy-policy.html">Privacy Policy</a></li>
           <li><a href="../terms-conditions.html">Terms</a></li>
@@ -591,10 +622,10 @@
 
     <!-- 14 · STICKY MOBILE BAR -->
     <div class="sticky" data-sticky hidden>
-      <p>Built for your biology</p>
+      <p>Target the deep fat</p>
       <a class="btn btn--sm btn--light" href="#quiz" data-quiz-link>Check My Risk <svg class="ico"><use href="#i-arrow" /></svg></a>
     </div>
 
-    <script src="js/reset-quiz.js?v=20260951"></script>
+    <script src="js/reset-quiz.js?v=20260947"></script>
   </body>
 </html>

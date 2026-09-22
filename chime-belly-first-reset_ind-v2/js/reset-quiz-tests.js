@@ -1,4 +1,4 @@
-/* node chime-metabolic-reset_ind/js/reset-quiz-tests.js
+/* node chime-belly-first-reset_ind-v2/js/reset-quiz-tests.js
    Rules of the question carousel + the page's house rules (no em dash, every
    referenced file exists, the markup and the rules name the same questions). */
 "use strict";
@@ -49,7 +49,7 @@ ok("a gap stops progress", q.furthest({ started: true, ancestry: "x", family: ""
 function ans(family, pattern, tried) {
   var b = q.blank(); b.family = family; b.pattern = pattern; b.tried = tried; return b;
 }
-eq("chip: all three", q.chipItems(ans("parent", "middle", ["gym"])), ["family history of type 2 diabetes", "belly-first weight pattern", "prior weight loss attempts"]);
+eq("chip: all three, belly-first leads", q.chipItems(ans("parent", "middle", ["gym"])), ["belly-first weight pattern", "family history of type 2 diabetes", "prior weight loss attempts"]);
 eq("chip: none", q.chipItems(ans("none-known", "all-over", [X])), []);
 eq("chip: family only", q.chipItems(ans("multiple", "hips-thighs", [X])), ["family history of type 2 diabetes"]);
 eq("chip: grandparents count as family history", q.chipItems(ans("grandparents-aunts-uncles", "all-over", [X])).length, 1);
@@ -60,7 +60,8 @@ eq("chip: unanswered = nothing", q.chipItems(q.blank()), []);
 
 /* --- the saved record --- */
 var rec = q.record(a, 6, true);
-ok("record: version + page", rec.v === 1 && rec.page === "chime-metabolic-reset");
+ok("record: version + page", rec.v === 1 && rec.page === "chime-belly-first-reset");
+ok("storage key is this page's own", q.STORE_KEY === "chime:belly-first-reset");
 ok("record: completed", rec.completed === true);
 eq("record: answers", rec.answers, { ancestry: "south-asian", family: "parent", pattern: "middle", tried: ["gym"], trigger: "energy" });
 eq("record: noted", rec.noted.length, 3);
@@ -90,11 +91,17 @@ eq("15 screen labels or more", (html.match(/data-screen-label=/g) || []).length 
   ok("no em dash in " + f[0], f[1].indexOf("—") === -1);
 });
 ok("no en dash in the page copy", html.indexOf("–") === -1);
-ok("brand: no AmeriLean in visible copy", html.replace(/<!--[\s\S]*?-->/g, "").indexOf("AmeriLean") === -1);
+var visible = html.replace(/<!--[\s\S]*?-->/g, "");
+ok("brand: no AmeriLean in visible copy", visible.indexOf("AmeriLean") === -1);
+ok("no sister-page copy left: NAD+ / Metabolic Reset / Restore Vial", !/NAD\+|Metabolic Reset|Restore Vial/.test(visible));
+ok("tesamorelin copy present", /Target Vial/.test(visible) && /tesamorelin/i.test(visible));
+ok("price is a visible placeholder", visible.indexOf('<span class="ph">[TBD]</span>') !== -1);
+ok("waist rows carry from/to", (html.match(/data-from="\d+" data-to="\d+"/g) || []).length === 2);
 ok("noindex", html.indexOf('name="robots" content="noindex"') !== -1);
 ok("assessment link keeps its camelCase", html.indexOf('href="../chimeAssessment.html"') !== -1);
-var visible2 = html.replace(/<!--[\s\S]*?-->/g, "");
-ok("no [Name] / Dr. [NAME] placeholders left (client: made-up names)", !/\[NAME\]|\[Name\]|\[Credential\]|\[XX\]|\[City\]|\[Business address\]/.test(visible2));
+ok("no [Name] / Dr. [NAME] placeholders left (client: made-up names)", !/\[NAME\]|\[Name\]|\[Credential\]|\[XX\]|\[City\]|\[Business address\]/.test(visible));
+ok("headline emphasis in place", visible.indexOf('<em class="hl">') !== -1);
+ok("facts strip present", visible.indexOf('data-screen-label="Facts"') !== -1);
 ok("no label above a headline", !/<p class="label">[^<]*<\/p>\s*<h[123]/.test(html));
 
 /* --- every local file the page points at exists --- */
