@@ -218,13 +218,20 @@
   });
 
   /* single choice: a tap or click answers and moves on. Arrow keys only move the
-     selection (they fire click with detail 0); Enter confirms for keyboard users. */
+     selection; Enter confirms for keyboard users. A tap is told apart from a key by the
+     pointer / touch event that precedes it, not by click.detail: on iOS and macOS Safari a
+     tap on a label reaches the input as a click with detail 0 and the quiz stood still. */
+  var pointerAt = 0;
+  function notePointer() { pointerAt = Date.now(); }
+  quiz.addEventListener("pointerdown", notePointer, true);
+  quiz.addEventListener("touchstart", notePointer, { capture: true, passive: true });
+  quiz.addEventListener("mousedown", notePointer, true);
   quiz.addEventListener("click", function (e) {
     var el = e.target;
     if (!el.matches || !el.matches('.opt input[type="radio"]')) return;
     answers[el.name] = el.value;
     save(false);
-    if (e.detail > 0) advanceSoon();
+    if (Date.now() - pointerAt < 1500) advanceSoon();
   });
   quiz.addEventListener("keydown", function (e) {
     var el = e.target;

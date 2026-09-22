@@ -60,3 +60,5 @@ wording (text badge only), "tested 4 times", Dr. [NAME] placeholders and the AI-
 placeholder testimonials, the LegitScript badge (certification must be held before traffic), [Business address]
 · the vial art reads GLP-1 and Tesamorelin, the Reset / Target names live in the callouts · question 1 has no
 result variant for the three non South Asian answers.
+
+**Fix 2026-09-21 (client: "It's not advancing the questions"):** on iPhone / Safari a tap on an answer reached the radio as a click with `detail` 0, which the script read as a keyboard selection, so the carousel stood still. The script now tells a tap from a key by the pointer / touch event that precedes the click (arrow keys still only move the selection, Enter confirms). Reproduced and verified in WebKit with touch (Playwright): a tap now advances, a full run reaches the result.

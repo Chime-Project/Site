@@ -28,3 +28,5 @@ Tests: `node chime-belly-first-reset_ind-v2/js/reset-quiz-tests.js` (110 checks;
 headline emphasis present, facts strip present). V1's flagged items (off-label tesamorelin language = counsel
 critical path, price, dosing and monitoring protocols, citations, NABP wording, 4.7 rating, LegitScript) all still
 apply; `noindex`.
+
+**Fix 2026-09-21 (client: "It's not advancing the questions"):** on iPhone / Safari a tap on an answer reached the radio as a click with `detail` 0, which the script read as a keyboard selection, so the carousel stood still. The script now tells a tap from a key by the pointer / touch event that precedes the click (arrow keys still only move the selection, Enter confirms). Reproduced and verified in WebKit with touch (Playwright): a tap now advances, a full run reaches the result.
