@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>The Belly-First Reset | Chime Health</title>
+    <meta name="description" content="GLP-1 plus tesamorelin, built for South Asian metabolism: one program for the scale and the waistline. Check your metabolic risk in 5 quick questions." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#fffefb" />
+    <!-- Chime Health: The Belly-First Reset (GLP-1 + tesamorelin), cold-traffic
+         quiz landing. Client request 2026-09-21: a clone of chime-metabolic-reset_ind
+         with the copy of "Indian LP - Tesa.pdf" (untracked, never commit it), in
+         its own folder. Same format, same question carousel, same clinician;
+         everything the PDF does not change is reused from the sister page.
+         Plan: METABOLIC-RESET-LP-PLAN.md (the sister page's plan; deltas in this
+         folder's README).
+
+         Own folder: index.html + css/reset-lp.css + js/reset-quiz.js +
+         js/reset-quiz-tests.js + images/. No React, no CDN scripts.
+         Tests: node chime-belly-first-reset_ind/js/reset-quiz-tests.js
+
+         WHAT DIFFERS from the sister page: program name (The Belly-First Reset,
+         locked descriptor "Built for South Asian metabolism"), the second vial
+         is tesamorelin (The Target Vial), every copy block, the result slide
+         (waist thresholds 35 in / 31 in vs 40 / 35, the 15-18% visceral-fat
+         figure, the torso cross-section, chip order belly-first first), the
+         bridge and benefits photos (mirror / waistband, kurta at a gathering),
+         the two-vial shot (GLP-1 + Tesamorelin art) with the two-jobs diagram,
+         the third step icon (tape measure + calendar), the sticky bar line.
+
+         HOUSE RULES from the PDF, enforced by the tests: zero em dashes
+         anywhere in this file, no before/after imagery, no body-focused
+         imagery, no bare skin, no pinching, no food villain language, headline
+         first and any label below it.
+
+         FLAGGED, built as written, not silently fixed (the PDF's own launch
+         blockers; counsel review is the critical path on this page):
+         · OFF-LABEL TESAMORELIN MARKETING LANGUAGE ("FDA-approved for a
+           specific condition and prescribed off-label here", the 15-18% trial
+           figure, "selectively reduced deep visceral fat") is verbatim from
+           the PDF and needs healthcare counsel, including the regulatory
+           status of compounded tesamorelin.
+         · PRICE IS $[TBD] throughout (offer block and FAQ), a visible
+           placeholder; "Cancel anytime" awaits policy confirmation.
+         · Dosing protocol (Target Vial daily, Reset Vial weekly) and the
+           lab / glucose monitoring protocol are the PDF's assumptions.
+         · The MASALA visceral-fat statement is unquantified on purpose (the
+           PDF says verify before quantifying); the waist thresholds 35 / 31
+           vs 40 / 35 and "measurable at 12-16 weeks" need citations.
+         · Carried from the sister page: "Excellent 4.7", NABP wording (text
+           badge only), "tested 4 times", Dr. [NAME] placeholders (the
+           provider photo is AI-generated, a stand-in for the real
+           physician), placeholder testimonials, the LegitScript badge (the
+           certification must be held before traffic), [Business address].
+         · Vial art reads GLP-1 and Tesamorelin; no "Reset Vial" / "Target
+           Vial" label art exists, the names live in the callouts.
+         · Question 1: the result copy is written for a South Asian answer;
+           the PDF has no variant for the other three answers.
+         · All photos are AI-generated (Higgsfield, 2026-09-21); sources and
+           the export script are in uploads/metabolic-reset/ (untracked).
+         · "Continue My Assessment" goes to ../chimeAssessment.html; the answers
+           are in sessionStorage (chime:belly-first-reset) for a later hand-off,
+           the assessment does not read them today. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="images/hero-clinician-800.webp" imagesrcset="images/hero-clinician-800.webp 800w, images/hero-clinician-1600.webp 1600w" imagesizes="(min-width: 1024px) 460px, 100vw" />
+    <link rel="stylesheet" href="css/reset-lp.css?v=20260947" />
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M14.5 5.5L8 12l6.5 6.5" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path class="fill" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z" /></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 5h13l-2.5 4L18 13H5" /><path d="M8 8h1M11 8h1M8 10.5h1" /></symbol>
+      <symbol id="i-seal" viewBox="0 0 24 24"><path d="M12 2.5l2.1 1.7 2.7-.2.9 2.5 2.3 1.4-.7 2.6.7 2.6-2.3 1.4-.9 2.5-2.7-.2L12 18.5l-2.1-1.7-2.7.2-.9-2.5L4 13.1l.7-2.6L4 7.9l2.3-1.4.9-2.5 2.7.2z" /><path d="M9 10.6l2.2 2.2L15 9" /><path d="M8.5 18.5L7.5 22l4.5-2 4.5 2-1-3.5" /></symbol>
+      <symbol id="i-rx" viewBox="0 0 24 24"><path d="M6 20V4h5.5a3.5 3.5 0 010 7H6M10.5 11L19 20M19 13l-6 7" /></symbol>
+      <symbol id="i-clinician" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5" /><path d="M5 21v-1.5A5.5 5.5 0 0110.5 14h3a5.5 5.5 0 015.5 5.5V21M12 14v3M10.5 17h3" /></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24"><path d="M3.5 8L12 3.5 20.5 8v8.5L12 21l-8.5-4.5zM3.5 8L12 12.5 20.5 8M12 12.5V21" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 2.8v5.7c0 4.6-3.1 8-7.5 9.5-4.4-1.5-7.5-4.9-7.5-9.5V5.8z" /><path d="M9 12l2.2 2.2L15.2 10" /></symbol>
+      <symbol id="i-quote" viewBox="0 0 24 24"><path class="fill" d="M4 17v-4.5C4 8.9 6 6.6 9.5 6v2.4C7.8 8.9 7 10 7 11.5h2.5V17zm10 0v-4.5c0-3.6 2-5.9 5.5-6.5v2.4c-1.7.5-2.5 1.6-2.5 3.1h2.5V17z" /></symbol>
+      <!-- question motifs -->
+      <symbol id="q-globe" viewBox="0 0 48 48"><circle cx="24" cy="24" r="17" /><path d="M7 24h34M24 7c-6 5-9 10.5-9 17s3 12 9 17c6-5 9-10.5 9-17s-3-12-9-17z" /></symbol>
+      <symbol id="q-tree" viewBox="0 0 48 48"><circle cx="24" cy="10" r="4.5" /><circle cx="11" cy="38" r="4.5" /><circle cx="37" cy="38" r="4.5" /><circle cx="24" cy="38" r="4.5" /><path d="M24 14.5V24M11 33.5V28a4 4 0 014-4h18a4 4 0 014 4v5.5M24 24v9.5" /></symbol>
+      <symbol id="q-tape" viewBox="0 0 48 48"><circle cx="19" cy="21" r="12" /><circle cx="19" cy="21" r="4" /><path d="M19 33h24v8H11v-3M17 37v4M23 38.5V41M29 37v4M35 38.5V41" /></symbol>
+      <symbol id="q-plate" viewBox="0 0 48 48"><circle cx="26" cy="25" r="14" /><circle cx="26" cy="25" r="7.5" /><path d="M6 9v9a3 3 0 006 0V9M9 9v32" /></symbol>
+      <symbol id="q-calendar" viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="31" rx="5" /><path d="M7 19h34M16 6v8M32 6v8" /><path d="M18 29.5l4.5 4.5 8-8.5" /></symbol>
+      <!-- steps -->
+      <symbol id="s-phone" viewBox="0 0 64 64"><rect x="18" y="5" width="28" height="54" rx="6" /><path d="M28 10h8" /><rect x="23" y="18" width="18" height="6" rx="3" /><rect x="23" y="28" width="18" height="6" rx="3" class="fill" /><rect x="23" y="38" width="18" height="6" rx="3" /></symbol>
+      <symbol id="s-door" viewBox="0 0 64 64"><path d="M10 58V10a3 3 0 013-3h22a3 3 0 013 3v48M6 58h52" /><circle cx="31" cy="34" r="1.8" class="fill" /><path d="M40 40l9-4 9 4v13l-9 4-9-4zM40 40l9 4 9-4M49 44v13" /></symbol>
+      <symbol id="s-cal" viewBox="0 0 64 64"><rect x="26" y="12" width="32" height="40" rx="6" /><path d="M26 23h32M36 7v10M48 7v10M36 38l5 5 9-9" /><circle cx="15" cy="44" r="10" /><circle cx="15" cy="44" r="3.5" /><path d="M15 34V26a4 4 0 014-4h4" /></symbol>
+      <!-- benefits -->
+      <symbol id="b-layers" viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5zM3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5" /></symbol>
+      <symbol id="b-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.2" class="fill" /></symbol>
+      <symbol id="b-bolt" viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5H11l-1 8L19 10h-6.5z" /></symbol>
+      <symbol id="b-bowl" viewBox="0 0 24 24"><path d="M3 11h18a9 9 0 01-18 0zM8 20.5h8M9 7.5c0-1.5 1.5-1.5 1.5-3M13.5 7.5c0-1.5 1.5-1.5 1.5-3" /></symbol>
+      <symbol id="b-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" /><path d="M8 10.5V7.5a4 4 0 018 0v3M12 14.5v2.5" /></symbol>
+    </svg>
+
+    <header class="masthead" data-screen-label="Masthead">
+      <a class="masthead__logo" href="../index.html" aria-label="Chime Health home">
+        <img src="images/logo-slate.png" alt="Chime Health" width="92" height="42" />
+      </a>
+      <a class="btn btn--sm" href="#quiz" data-quiz-link>Check My Risk</a>
+    </header>
+
+    <main>
+      <!-- 1 · HERO -->
+      <section class="hero" data-screen-label="Hero">
+        <div class="hero__grid">
+          <div class="hero__media">
+            <img
+              src="images/hero-clinician-800.webp"
+              srcset="images/hero-clinician-800.webp 800w, images/hero-clinician-1600.webp 1600w"
+              sizes="(min-width: 1024px) 460px, 100vw"
+              width="800" height="993" alt="A South Asian physician in a white coat, looking at the camera" fetchpriority="high" />
+            <!-- the precision signal the PDF asks for: an abstract torso cross-section in line art -->
+            <svg class="hero__rings" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="100" rx="92" ry="74" /><ellipse cx="100" cy="102" rx="70" ry="54" /><ellipse cx="100" cy="104" rx="44" ry="32" /><ellipse cx="100" cy="150" rx="10" ry="8" /></svg>
+          </div>
+          <div class="hero__head">
+            <h1>South Asian weight goes to the belly first. Your program should too.</h1>
+            <p class="label">The Belly-First Reset &bull; Built for South Asian metabolism</p>
+          </div>
+          <div class="hero__body">
+            <p class="hero__sub">The Belly-First Reset pairs GLP-1 weight loss medication with tesamorelin, a medication shown in clinical trials to selectively reduce deep visceral belly fat. Answer 5 quick questions and see if your biology qualifies.</p>
+            <!-- A/B queue (PDF): B2 "The fat you can pinch is not the fat that is hurting you."
+                 B3 "It all goes to my belly." There is a reason, and now there is a program for it.
+                 B4 "Losing weight is not the same as losing belly fat. This program does both." -->
+            <a class="btn btn--lg" id="hero-cta" href="#quiz" data-quiz-link>Check My Metabolic Risk</a>
+            <p class="micro">5 questions. About 30 seconds. Reviewed by licensed US clinicians.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 · TRUST BAR -->
+      <section class="trust" aria-label="Why people trust Chime" data-screen-label="Trust bar">
+        <ul class="trust__strip">
+          <li class="trust__item trust__item--rating">
+            <span class="stars" aria-hidden="true"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
+            <span>Excellent 4.7</span>
+          </li>
+          <li class="trust__item"><svg class="ico"><use href="#i-flag" /></svg><span>Made in the USA</span></li>
+          <li class="trust__item"><svg class="ico"><use href="#i-seal" /></svg><span>4x quality tested</span></li>
+          <li class="trust__item"><svg class="ico"><use href="#i-rx" /></svg><span>NABP-accredited pharmacy</span></li>
+          <li class="trust__item"><svg class="ico"><use href="#i-clinician" /></svg><span>Licensed US clinicians</span></li>
+          <li class="trust__item"><svg class="ico"><use href="#i-box" /></svg><span>Discreet shipping</span></li>
+        </ul>
+      </section>
+
+      <!-- 3 · THE QUESTIONS (carousel) -->
+      <section class="quiz-band" id="quiz" data-screen-label="Quiz">
+        <div class="quiz-band__head">
+          <h2>Five questions no other program asks.</h2>
+          <p>Swipe through. Your answers go straight to your clinical review.</p>
+        </div>
+
+        <div class="quiz" id="quiz-card" data-quiz aria-roledescription="carousel" aria-label="Metabolic risk questions">
+          <div class="quiz__bar">
+            <button class="quiz__back" type="button" data-quiz-back hidden>
+              <svg class="ico"><use href="#i-back" /></svg><span class="quiz__back-t">Back</span>
+            </button>
+            <ol class="stepper" data-quiz-stepper aria-hidden="true">
+              <li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+            </ol>
+          </div>
+
+          <div class="quiz__viewport" data-quiz-viewport>
+            <div class="quiz__track" data-quiz-track>
+              <!-- Card 0 -->
+              <article class="slide" data-slide="start" aria-roledescription="slide">
+                <div class="slide__in slide__in--start">
+                  <h3 tabindex="-1">Most weight loss programs start by asking your weight. This one starts by asking who you are.</h3>
+                  <button class="btn btn--lg" type="button" data-quiz-start>Start</button>
+                </div>
+              </article>
+
+              <!-- Card 1 -->
+              <article class="slide slide--tint" data-slide="ancestry" data-type="single" data-step="1" aria-roledescription="slide">
+                <fieldset class="slide__in">
+                  <legend>
+                    <svg class="motif" aria-hidden="true"><use href="#q-globe" /></svg>
+                    <span class="step-label">Question 1 of 5</span>
+                    <span class="q" tabindex="-1">First, a question no other weight loss program asks.</span>
+                  </legend>
+                  <p class="q-sub">Metabolic risk is not one-size-fits-all. Your ancestry changes what "healthy" numbers actually mean.</p>
+                  <div class="opts">
+                    <label class="opt"><input type="radio" name="ancestry" value="south-asian" /><span>South Asian <small>(Indian, Pakistani, Bangladeshi, Sri Lankan, Nepali)</small></span></label>
+                    <label class="opt"><input type="radio" name="ancestry" value="east-southeast-asian" /><span>East or Southeast Asian</span></label>
+                    <label class="opt"><input type="radio" name="ancestry" value="middle-eastern" /><span>Middle Eastern</span></label>
+                    <label class="opt"><input type="radio" name="ancestry" value="another" /><span>Another background</span></label>
+                  </div>
+                </fieldset>
+              </article>
+
+              <!-- Card 2 -->
+              <article class="slide" data-slide="family" data-type="single" data-step="2" aria-roledescription="slide">
+                <fieldset class="slide__in">
+                  <legend>
+                    <svg class="motif" aria-hidden="true"><use href="#q-tree" /></svg>
+                    <span class="step-label">Question 2 of 5</span>
+                    <span class="q" tabindex="-1">Does type 2 diabetes run in your family?</span>
+                  </legend>
+                  <p class="q-sub">In our community, it usually does. Your clinician factors this into everything.</p>
+                  <div class="opts">
+                    <label class="opt"><input type="radio" name="family" value="parent" /><span>Yes, a parent</span></label>
+                    <label class="opt"><input type="radio" name="family" value="grandparents-aunts-uncles" /><span>Yes, grandparents or aunts and uncles</span></label>
+                    <label class="opt"><input type="radio" name="family" value="multiple" /><span>Yes, multiple family members</span></label>
+                    <label class="opt"><input type="radio" name="family" value="none-known" /><span>Not that I know of</span></label>
+                  </div>
+                </fieldset>
+              </article>
+
+              <!-- Card 3 -->
+              <article class="slide slide--tint" data-slide="pattern" data-type="single" data-step="3" aria-roledescription="slide">
+                <fieldset class="slide__in">
+                  <legend>
+                    <svg class="motif" aria-hidden="true"><use href="#q-tape" /></svg>
+                    <span class="step-label">Question 3 of 5</span>
+                    <span class="q" tabindex="-1">Where does your weight tend to settle?</span>
+                  </legend>
+                  <p class="q-sub">Belly-first weight is the signature of South Asian metabolism, and it carries risk the scale never shows.</p>
+                  <div class="opts">
+                    <label class="opt"><input type="radio" name="pattern" value="middle" /><span>Mostly around my middle</span></label>
+                    <label class="opt"><input type="radio" name="pattern" value="all-over" /><span>All over</span></label>
+                    <label class="opt"><input type="radio" name="pattern" value="hips-thighs" /><span>Hips and thighs</span></label>
+                    <label class="opt"><input type="radio" name="pattern" value="labs-disagree" /><span>I look "fine" but my labs disagree</span></label>
+                  </div>
+                </fieldset>
+              </article>
+
+              <!-- Card 4 -->
+              <article class="slide" data-slide="tried" data-type="multi" data-step="4" aria-roledescription="slide">
+                <fieldset class="slide__in">
+                  <legend>
+                    <svg class="motif" aria-hidden="true"><use href="#q-plate" /></svg>
+                    <span class="step-label">Question 4 of 5</span>
+                    <span class="q" tabindex="-1">What have you already tried? Be honest.</span>
+                  </legend>
+                  <p class="q-sub">Most members arrive here having done everything right. Select all that apply.</p>
+                  <div class="opts opts--multi">
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="cutting-carbs" /><span>Cutting rice, roti, or carbs</span></label>
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="fasting" /><span>Intermittent fasting</span></label>
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="gym" /><span>Gym or workout programs</span></label>
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="home-remedies" /><span>Home remedies or Ayurvedic approaches</span></label>
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="apps" /><span>Diet or tracking apps</span></label>
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="glp1" /><span>GLP-1 medication</span></label>
+                    <label class="opt opt--check"><input type="checkbox" name="tried" value="first-attempt" data-exclusive /><span>This is my first serious attempt</span></label>
+                  </div>
+                  <button class="btn btn--lg" type="button" data-quiz-continue disabled>Continue</button>
+                </fieldset>
+              </article>
+
+              <!-- Card 5 -->
+              <article class="slide slide--tint" data-slide="trigger" data-type="single" data-step="5" aria-roledescription="slide">
+                <fieldset class="slide__in">
+                  <legend>
+                    <svg class="motif" aria-hidden="true"><use href="#q-calendar" /></svg>
+                    <span class="step-label">Question 5 of 5</span>
+                    <span class="q" tabindex="-1">What made today the day?</span>
+                  </legend>
+                  <p class="q-sub">Your answer shapes the plan your clinician builds.</p>
+                  <div class="opts">
+                    <label class="opt"><input type="radio" name="trigger" value="lab-result" /><span>A lab result I can't ignore</span></label>
+                    <label class="opt"><input type="radio" name="trigger" value="family-diabetes" /><span>Watching what diabetes did to my family</span></label>
+                    <label class="opt"><input type="radio" name="trigger" value="event" /><span>A wedding, reunion, or event coming up</span></label>
+                    <label class="opt"><input type="radio" name="trigger" value="energy" /><span>My energy is gone</span></label>
+                    <label class="opt"><input type="radio" name="trigger" value="done-waiting" /><span>I'm just done waiting</span></label>
+                  </div>
+                </fieldset>
+              </article>
+
+              <!-- Result -->
+              <article class="slide slide--result" data-slide="result" aria-roledescription="slide">
+                <div class="slide__in">
+                  <h3 tabindex="-1">Doctors have a name for it: the thin-fat body.</h3>
+                  <p class="label">Built for your biology</p>
+
+                  <p class="result__body">At the same BMI, South Asian adults carry significantly more fat deep inside the abdomen, wrapped around the organs, where no scale and no mirror can see it. That deep fat, not the fat you can pinch, is what drives insulin resistance and the diabetes running through our families.</p>
+
+                  <div class="stats">
+                    <div class="stat">
+                      <p class="stat__n stat__n--pair"><span data-count="35" data-dec="0">35</span><i>in</i> / <span data-count="31" data-dec="0">31</span><i>in</i></p>
+                      <p class="stat__t">the waistlines where abdominal risk begins for South Asian men and women. Standard charts say 40 and 35.</p>
+                    </div>
+                    <div class="stat">
+                      <p class="stat__n">15-<span data-count="18" data-dec="0">18</span>%</p>
+                      <p class="stat__t">average reduction in deep visceral fat with tesamorelin over 26 weeks in clinical trials.*</p>
+                    </div>
+                  </div>
+
+                  <!-- the belt line: where risk begins for South Asian adults vs the standard chart. Scale 24 to 44 in -->
+                  <div class="waist" data-waist role="img" aria-label="Waist thresholds: abdominal risk begins at 35 inches for South Asian men and 31 for women, against 40 and 35 on standard charts">
+                    <div class="waist__row" data-from="40" data-to="35">
+                      <span class="waist__who">Men</span>
+                      <div class="waist__track"><span class="waist__ghost" style="left: 80%"><i>40</i></span><span class="waist__mark" style="left: 80%"><b data-waist-n>35</b></span></div>
+                    </div>
+                    <div class="waist__row" data-from="35" data-to="31">
+                      <span class="waist__who">Women</span>
+                      <div class="waist__track"><span class="waist__ghost" style="left: 55%"><i>35</i></span><span class="waist__mark" style="left: 55%"><b data-waist-n>31</b></span></div>
+                    </div>
+                    <p class="waist__key"><span><i class="k k--ours"></i>Where risk begins for South Asian adults</span><span><i class="k k--std"></i>What standard charts assume</span></p>
+                  </div>
+
+                  <figure class="section-fig">
+                    <img loading="lazy" src="images/cross-section-800.webp" srcset="images/cross-section-800.webp 800w, images/cross-section-1600.webp 1600w" sizes="(min-width: 768px) 460px, 100vw" width="800" height="993" alt="Illustrated cross-section of a torso: a thin outer layer of fat and a deeper layer around the organs" />
+                    <figcaption class="section-fig__keys"><span class="fk fk--outer">The fat you can pinch</span><span class="fk fk--inner">The fat that drives risk</span></figcaption>
+                  </figure>
+
+                  <p class="result__body">It is not about how you look. It is about where the fat sits. And where it sits is treatable.</p>
+
+                  <div class="chip" data-quiz-chip hidden>
+                    <p class="chip__t">Noted for your clinical review</p>
+                    <ul class="chip__l" data-quiz-chip-list></ul>
+                  </div>
+
+                  <p class="source">*Studied in adults with abdominal fat accumulation. Individual results vary.</p>
+
+                  <a class="btn btn--lg btn--pulse" href="../chimeAssessment.html" data-quiz-finish>Continue My Assessment</a>
+                  <p class="micro">Educational information, not a diagnosis. A licensed clinician determines eligibility and treatment.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+          <p class="sr-only" aria-live="polite" data-quiz-live></p>
+        </div>
+      </section>
+
+      <!-- 4 · PROBLEM BRIDGE -->
+      <section class="band bridge" data-screen-label="Problem bridge">
+        <div class="wrap split">
+          <figure class="split__media">
+            <img loading="lazy" src="images/bridge-mirror-800.webp" srcset="images/bridge-mirror-800.webp 800w, images/bridge-mirror-1600.webp 1600w" sizes="(min-width: 900px) 520px, 100vw" width="800" height="537" alt="A man in a business shirt at a mirror, adjusting his waistband" />
+          </figure>
+          <div class="split__copy">
+            <p class="lede">Your weight is "fine." Maybe your BMI has never once been flagged. But the belly stays no matter what you cut, the waistband tells a different story than the scale, and the labs keep drifting the same direction your father's did.</p>
+            <p>Here is what nobody explained: South Asian bodies store fat deep in the abdomen first. You cannot pinch it, crunches do not touch it, and standard weight loss programs do not target it. That is not a discipline problem. It is a placement problem.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 · MECHANISM -->
+      <section class="band band--sand mechanism" data-screen-label="Mechanism">
+        <div class="wrap">
+          <figure class="vials">
+            <img loading="lazy" src="images/mechanism-vials-800.webp" srcset="images/mechanism-vials-800.webp 800w, images/mechanism-vials-1600.webp 1600w" sizes="(min-width: 900px) 760px, 100vw" width="800" height="537" alt="Two Chime vials side by side: a GLP-1 vial and a Tesamorelin vial" />
+            <figcaption class="callouts">
+              <p class="callout"><b>The Reset Vial</b><span>The scale</span></p>
+              <p class="callout"><b>The Target Vial</b><span>The waistline</span></p>
+            </figcaption>
+          </figure>
+
+          <div class="mechanism__copy">
+            <h2>Why it is called the Belly-First Reset: one program, two vials, the scale and the waistline.</h2>
+            <p class="label">The Belly-First Reset&trade; &bull; Built for South Asian metabolism</p>
+            <p>Losing weight and losing deep belly fat are two different jobs. Most programs only do the first one.</p>
+          </div>
+
+          <div class="pair">
+            <article class="pair__card">
+              <h3>The Reset Vial</h3>
+              <p>Physician-prescribed GLP-1 medication for appetite and overall weight. This moves the scale.</p>
+            </article>
+            <article class="pair__card pair__card--dark">
+              <h3>The Target Vial</h3>
+              <p>Physician-prescribed tesamorelin, a medication studied in placebo-controlled clinical trials where it selectively reduced deep visceral fat by 15-18% over 26 weeks, with no significant change to the fat under the skin.* It works on the fat that sits around your organs, the fat driving the risk your family knows too well.</p>
+            </article>
+          </div>
+
+                    <!-- two vials, two jobs: the wide effect and the focused one, on one outline -->
+          <figure class="jobs" aria-label="GLP-1 acts on the whole body; tesamorelin acts on the abdominal core">
+            <svg class="jobs__fig" viewBox="0 0 320 300" aria-hidden="true">
+              <defs>
+                <radialGradient id="g-wide" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#6580bc" stop-opacity="0.32" /><stop offset="1" stop-color="#6580bc" stop-opacity="0" /></radialGradient>
+                <radialGradient id="g-core" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d98a6f" stop-opacity="0.85" /><stop offset="1" stop-color="#d98a6f" stop-opacity="0" /></radialGradient>
+              </defs>
+              <ellipse cx="160" cy="150" rx="120" ry="140" fill="url(#g-wide)" />
+              <path class="jobs__body" d="M160 22c-14 0-24 11-24 25 0 9 4 16 10 21-24 6-40 20-46 44l-12 62c-2 8 4 14 11 14h3l10-50v40l-4 96c0 5 4 9 9 9h18c5 0 9-4 9-9V182h32v92c0 5 4 9 9 9h18c5 0 9-4 9-9l-4-96v-40l10 50h3c7 0 13-6 11-14l-12-62c-6-24-22-38-46-44 6-5 10-12 10-21 0-14-10-25-24-25z" />
+              <circle cx="160" cy="160" r="30" fill="url(#g-core)" />
+              <circle class="jobs__dot" cx="160" cy="160" r="4" />
+              <path class="jobs__line" d="M22 250c40-40 70-80 120-90M298 250c-40-20-70-60-138-90" />
+            </svg>
+            <figcaption class="jobs__keys"><span class="fk fk--outer">GLP-1: the whole body</span><span class="fk fk--inner">Tesamorelin: the abdominal core</span></figcaption>
+          </figure>
+
+          <p class="mechanism__close">One purchase. Two vials. Both compounded in the USA and tested 4 times at an NABP-accredited pharmacy before they ship.</p>
+          <p class="mechanism__close">GLP-1 changes your weight. Tesamorelin changes where your risk lives.</p>
+          <p class="fine mechanism__foot">*Trials conducted in adults with abdominal fat accumulation. Tesamorelin is FDA-approved for a specific condition and is prescribed off-label here following an individual clinical evaluation.</p>
+        </div>
+      </section>
+
+      <!-- 6 · QUALITY BLOCK -->
+      <section class="band band--clean quality" data-screen-label="Quality">
+        <div class="wrap split split--flip">
+          <figure class="split__media">
+            <img loading="lazy" src="images/quality-hood-800.webp" srcset="images/quality-hood-800.webp 800w, images/quality-hood-1600.webp 1600w" sizes="(min-width: 900px) 520px, 100vw" width="800" height="537" alt="Gloved hands inspecting a vial under a light in a sterile compounding hood" />
+          </figure>
+          <div class="split__copy">
+            <h2>Pharmaceutical standards. No shortcuts.</h2>
+            <p>Every batch of your medication is:</p>
+            <ul class="checks">
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>Compounded in the USA</b> at a named, licensed pharmacy</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>Tested 4 separate times</b> before it ships</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>Prepared by an NABP-accredited pharmacy</b></span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>Prescribed individually</b> by a licensed clinician, with ongoing monitoring built into your plan</span></li>
+            </ul>
+            <p>You will always know who prescribed your medication and exactly where it was made. If a program will not tell you those two things, walk away.</p>
+            <ul class="badges" aria-label="Quality marks">
+              <li><svg class="ico"><use href="#i-flag" /></svg><span>Made in the USA</span></li>
+              <li><svg class="ico"><use href="#i-seal" /></svg><span>4x tested</span></li>
+              <li><svg class="ico"><use href="#i-rx" /></svg><span>NABP-accredited pharmacy</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 · HOW IT WORKS -->
+      <section class="band how" data-screen-label="How it works">
+        <div class="wrap">
+          <h2 class="center">How it works</h2>
+          <ol class="steps">
+            <li class="step">
+              <svg class="step__ico" aria-hidden="true"><use href="#s-phone" /></svg>
+              <span class="step__n">1</span>
+              <h3>Check your risk</h3>
+              <p>Finish the 2-minute assessment. A licensed clinician reviews your answers against South Asian-specific thresholds, including where you carry weight.</p>
+            </li>
+            <li class="step">
+              <svg class="step__ico" aria-hidden="true"><use href="#s-door" /></svg>
+              <span class="step__n">2</span>
+              <h3>Get your complete program</h3>
+              <p>If you qualify, both vials ship together, discreetly, from a licensed US pharmacy.</p>
+            </li>
+            <li class="step">
+              <svg class="step__ico" aria-hidden="true"><use href="#s-cal" /></svg>
+              <span class="step__n">3</span>
+              <h3>Reset deep</h3>
+              <p>The Reset Vial is a once-weekly injection. The Target Vial is a quick daily one with an insulin-size needle, seconds each morning. Your clinician monitors progress and adjusts as your body responds.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 8 · BENEFITS STACK -->
+      <section class="band band--sand benefits" data-screen-label="Benefits">
+        <div class="wrap split">
+          <figure class="split__media split__media--tall">
+            <img loading="lazy" src="images/benefits-kurta-800.webp" srcset="images/benefits-kurta-800.webp 800w, images/benefits-kurta-1600.webp 1600w" sizes="(min-width: 900px) 460px, 100vw" width="800" height="993" alt="A man in a kurta laughing at a family gathering, holding a plate" />
+          </figure>
+          <ul class="benefit-list">
+            <li><svg class="ico"><use href="#b-target" /></svg><div><h3>Goes after the fat that matters</h3><p>Deep visceral fat drives the metabolic risk. This program targets it by design instead of hoping overall weight loss gets there eventually.</p></div></li>
+            <li><svg class="ico"><use href="#b-layers" /></svg><div><h3>The scale AND the waistline</h3><p>Two medications with two different jobs, prescribed as one plan.</p></div></li>
+            <li><svg class="ico"><use href="#b-bolt" /></svg><div><h3>Built for the thin-fat body</h3><p>If your BMI is "fine" but your belly and labs disagree, this is the program built for exactly that profile.</p></div></li>
+            <li><svg class="ico"><use href="#b-bowl" /></svg><div><h3>Eat with your family</h3><p>Guidance built around rice, roti, and vegetarian protein. No villain foods.</p></div></li>
+            <li><svg class="ico"><use href="#q-calendar" /></svg><div><h3>Honest timelines</h3><p>Deep fat changes are measurable at 12-16 weeks in clinical studies. We tell you that upfront because a program you trust is a program you finish.</p></div></li>
+            <li><svg class="ico"><use href="#b-lock" /></svg><div><h3>Discreet from door to door</h3><p>Unmarked packaging, private portal, nobody notified.</p></div></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 9 · PROOF STACK -->
+      <section class="band proof" data-screen-label="Proof">
+        <div class="wrap">
+          <article class="provider">
+            <figure class="provider__photo">
+              <!-- STAND-IN: AI-generated. Replace with the real physician's photo before launch. -->
+              <img loading="lazy" src="images/provider-consult-800.webp" srcset="images/provider-consult-800.webp 800w, images/provider-consult-1600.webp 1600w" sizes="(min-width: 900px) 380px, 100vw" width="800" height="993" alt="A physician seated in a consultation room" />
+            </figure>
+            <div class="provider__copy">
+              <svg class="provider__q" aria-hidden="true"><use href="#i-quote" /></svg>
+              <blockquote>I built this program because I kept watching patients from my own community get told to come back when things got worse. South Asian metabolic risk shows up earlier and hits harder. Care should too. Belly-first weight is not a cosmetic complaint. It is the earliest visible sign of South Asian metabolic risk, and it is the one we can now treat directly.</blockquote>
+              <p class="provider__name">Dr. <span class="ph">[NAME]</span>, <span class="ph">[Credential]</span></p>
+              <ul class="pills">
+                <li>Board certified</li>
+                <li>Licensed in <span class="ph">[XX]</span> states</li>
+                <li>NABP-accredited pharmacy partner</li>
+              </ul>
+            </div>
+          </article>
+
+          <ul class="quotes">
+            <li class="quote">
+              <span class="stars" aria-label="5 out of 5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
+              <blockquote>Every diet moved the scale a little. Nothing ever moved my waist. This was the first time the inches went before the pounds.</blockquote>
+              <p class="quote__by"><span class="ph">[Name]</span>, 42, Fremont CA</p>
+            </li>
+            <li class="quote">
+              <span class="stars" aria-label="5 out of 5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
+              <blockquote>My BMI was 24. Every program said I did not need help. My waistline and my A1C said otherwise.</blockquote>
+              <p class="quote__by"><span class="ph">[Name]</span>, 37, Jersey City NJ</p>
+            </li>
+            <li class="quote">
+              <span class="stars" aria-label="5 out of 5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>
+              <blockquote>The daily injection scared me for about three days. Now it takes less time than my coffee.</blockquote>
+              <p class="quote__by"><span class="ph">[Name]</span>, 45, Houston TX</p>
+            </li>
+          </ul>
+          <p class="fine center">Individual experiences. Results vary and are not guaranteed.</p>
+        </div>
+      </section>
+
+      <!-- 10 · OFFER STACK -->
+      <section class="band band--sand offer" data-screen-label="Offer">
+        <div class="wrap split split--flip">
+          <figure class="split__media split__media--square">
+            <img loading="lazy" src="images/offer-flatlay-800.webp" srcset="images/offer-flatlay-800.webp 800w, images/offer-flatlay-1600.webp 1600w" sizes="(min-width: 900px) 500px, 100vw" width="800" height="800" alt="The complete kit laid out: two vials, syringes, prep pads, a welcome card and the shipping box" />
+          </figure>
+          <div class="split__copy">
+            <h2>The complete Belly-First Reset. One flat price.</h2>
+            <p class="label">Your Belly-First Reset includes</p>
+            <ul class="checks">
+              <li><svg class="ico"><use href="#i-check" /></svg><span>Full clinical evaluation against South Asian-specific risk thresholds, including waist-pattern screening</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>The Reset Vial:</b> physician-prescribed GLP-1, shipped monthly</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span><b>The Target Vial:</b> physician-prescribed tesamorelin, shipped alongside</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span>Ongoing clinician access, dose reviews, and progress monitoring</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span>Nutrition guidance built for South Asian and vegetarian households</span></li>
+              <li><svg class="ico"><use href="#i-check" /></svg><span>Discreet packaging and a private member portal</span></li>
+            </ul>
+            <div class="price">
+              <p class="price__n"><span>Your complete program:</span> <b>$<span class="ph">[TBD]</span></b><i>/month</i></p>
+              <p class="price__t">No insurance needed. No hidden fees. Cancel anytime.</p>
+            </div>
+            <p class="qualifier">If your clinician determines treatment is not right for you, you pay nothing.</p>
+            <a class="btn btn--lg" href="#quiz" data-quiz-link>Check My Metabolic Risk</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 · RISK REVERSAL -->
+      <section class="band reversal" data-screen-label="Risk reversal">
+        <div class="wrap wrap--narrow">
+          <svg class="reversal__ico" aria-hidden="true"><use href="#i-shield" /></svg>
+          <p>Checking costs you nothing. The assessment is free, the clinical review is honest, and if deep belly fat is not actually your problem, we will tell you that and point you to the program that fits instead. We would rather route you right than sell you wrong.</p>
+        </div>
+      </section>
+
+      <!-- 12 · FAQ -->
+      <section class="band band--clean faq" data-screen-label="FAQ">
+        <div class="wrap wrap--narrow">
+          <h2 class="center">Frequently asked questions</h2>
+          <details><summary>What is tesamorelin? I have never heard of it.</summary><p>Tesamorelin is not new. It is an FDA-approved medication, studied in placebo-controlled trials where it selectively reduced deep visceral fat by 15-18% over 26 weeks. It works by signaling your body's own growth hormone system to break down deep abdominal fat specifically. In this program it is compounded in the USA and prescribed off-label for you by a licensed clinician after your evaluation.</p></details>
+          <details><summary>Is this a cosmetic treatment?</summary><p>No. Visceral fat is the fat wrapped around your organs, and it is one of the strongest drivers of insulin resistance. Treating it is a metabolic health decision. Looking better in your clothes is the side effect, not the point.</p></details>
+          <details><summary>Why do I need this if GLP-1 already causes weight loss?</summary><p>GLP-1 reduces overall weight, and some visceral fat comes with it. Tesamorelin is selective: in trials it reduced deep fat without significantly changing the fat under the skin. If your pattern is belly-first, treating the pattern directly is the difference between losing weight and losing risk.</p></details>
+          <details><summary>Is the daily injection a big deal?</summary><p>Honestly, less than you think. The Target Vial uses an insulin-size needle and takes seconds. Most members say the anticipation was worse than the routine. The Reset Vial stays once weekly.</p></details>
+          <details><summary>When will I actually see my belly change?</summary><p>In clinical studies, deep fat reduction became measurable at 12 to 16 weeks, with full trial results at 26 weeks. We tell you that upfront. This is a program, not a stunt.</p></details>
+          <details><summary>What happens if I stop?</summary><p>In studies, visceral fat gradually returned after stopping treatment. That is true of every medication-based approach, and it is why your clinician builds the nutrition and maintenance work alongside the prescriptions rather than after them.</p></details>
+          <details><summary>Will anyone know I am on this?</summary><p>No. Unmarked packaging, private portal, HIPAA-protected. Nothing is sent to your employer, insurer, or family.</p></details>
+          <details><summary>I am vegetarian. Will this work for me?</summary><p>Yes. Protein matters on both medications, and your guidance includes vegetarian plans built around dal, paneer, yogurt, and the foods already in your kitchen.</p></details>
+        </div>
+      </section>
+
+      <!-- 13 · FINAL CTA -->
+      <section class="closing" data-screen-label="Final CTA">
+        <img class="closing__bg" loading="lazy" src="images/close-dinner-900.webp" srcset="images/close-dinner-900.webp 900w, images/close-dinner-1800.webp 1800w" sizes="100vw" width="900" height="502" alt="Three generations of a family laughing together over dinner, rice and roti on the table" />
+        <div class="closing__in">
+          <h2>The belly is not a flaw. It is a signal. Answer it.</h2>
+          <p class="closing__sub">Check your metabolic risk in 2 minutes. A licensed clinician takes it from there.</p>
+          <a class="btn btn--lg btn--light" id="closing-cta" href="#quiz" data-quiz-link>Check My Metabolic Risk</a>
+          <p class="micro">Free assessment &bull; No obligation &bull; HIPAA-secure</p>
+        </div>
+      </section>
+
+      <section class="band next" data-screen-label="What happens next">
+        <div class="wrap wrap--narrow">
+          <h2 class="center">What happens next</h2>
+          <ol class="next__list">
+            <li><span>1</span><p>Answer the questions: about 2 minutes, no payment info</p></li>
+            <li><span>2</span><p>A licensed clinician reviews your profile, including where you carry weight</p></li>
+            <li><span>3</span><p>If you qualify, your complete Belly-First Reset program is ready the same day</p></li>
+          </ol>
+          <figure class="micro-quote">
+            <blockquote>The quiz asked where I carry my weight. Nobody had ever asked me that before.</blockquote>
+            <figcaption><span class="ph">[Name]</span>, <span class="ph">[City]</span></figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <!-- 15 · FOOTER -->
+    <footer class="footer" data-screen-label="Footer">
+      <div class="wrap">
+        <div class="footer__top">
+          <img class="footer__logo" src="images/logo-white.png" alt="Chime Health" width="120" height="55" loading="lazy" />
+          <!-- LegitScript badge (Luis, 2026-09-21), the same mark the other Chime landings carry in
+               their footers. The certification must actually be held by Chime before this page
+               takes traffic. -->
+          <img class="footer__badge" src="images/legitscript.png" alt="LegitScript Certified" width="70" height="76" loading="lazy" />
+        </div>
+        <p class="footer__fine">Compounded medications are prepared for individual patients by a licensed pharmacy following an individualized prescription and are not FDA-approved products. Tesamorelin is FDA-approved for a specific indication and is prescribed off-label in this program following individual clinical evaluation. A licensed clinician determines eligibility, medication, and dosing, and ongoing monitoring may be required. Results vary and are not guaranteed. Educational content, not medical advice. Not for use during pregnancy or breastfeeding.</p>
+        <ul class="footer__links">
+          <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="../terms-conditions.html">Terms</a></li>
+          <li><a href="../telehealth-consent.html">Telehealth Consent</a></li>
+          <li><span class="ph ph--dark">[Business address]</span></li>
+        </ul>
+        <p class="footer__copy">&copy; 2026 Chime Health</p>
+      </div>
+    </footer>
+
+    <!-- 14 · STICKY MOBILE BAR -->
+    <div class="sticky" data-sticky hidden>
+      <p>Target the deep fat</p>
+      <a class="btn btn--sm btn--light" href="#quiz" data-quiz-link>Check My Risk <svg class="ico"><use href="#i-arrow" /></svg></a>
+    </div>
+
+    <script src="js/reset-quiz.js?v=20260947"></script>
+  </body>
+</html>
