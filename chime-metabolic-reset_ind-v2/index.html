@@ -79,11 +79,11 @@
          · "Continue My Assessment" goes to ../chimeAssessment.html; the answers
            are in sessionStorage (chime:metabolic-reset) for a later hand-off,
            the assessment does not read them today. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Quicksand is self-hosted (one 28 KB variable woff2, latin) so the page makes no third-party
+         request before it can paint; @font-face lives at the top of css/reset-lp.css -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/quicksand-latin.woff2" crossorigin />
     <link rel="preload" as="image" href="images/hero-clinician-800.webp" imagesrcset="images/hero-clinician-800.webp 800w, images/hero-clinician-1600.webp 1600w" imagesizes="(min-width: 1024px) 460px, 100vw" />
-    <link rel="stylesheet" href="css/reset-lp.css?v=20260951" />
+    <link rel="stylesheet" href="css/reset-lp.css?v=20260954" />
     <link rel="stylesheet" href="css/pop.css?v=20260951" />
   </head>
   <body>

@@ -30,3 +30,5 @@ critical path, price, dosing and monitoring protocols, citations, NABP wording, 
 apply; `noindex`.
 
 **Fix 2026-09-21 (client: "It's not advancing the questions"):** on iPhone / Safari a tap on an answer reached the radio as a click with `detail` 0, which the script read as a keyboard selection, so the carousel stood still. The script now tells a tap from a key by the pointer / touch event that precedes the click (arrow keys still only move the selection, Enter confirms). Reproduced and verified in WebKit with touch (Playwright): a tap now advances, a full run reaches the result.
+
+**Speed, 2026-09-21 (client: "Are they speed optimized for mobile?"):** Quicksand is self-hosted (`fonts/quicksand-latin.woff2`, one 28 KB variable file, preloaded, `font-display: swap`), so the page makes no request to Google Fonts before it can paint. The rest was already in place: phone-size images (800 px) with 1600 px only for wider screens, the hero image preloaded and every other photo lazy, no framework, one 13 KB script, inline SVG icons.
