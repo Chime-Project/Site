@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Online Weight Loss Program | Chime Health</title>
+    <meta name="description" content="Physician-guided weight loss with GLP-1 medication, ongoing video visits, labs and messaging. Explore your treatment options and see what you qualify for." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#fffefb" />
+    <!-- Chime Health: online weight loss program landing.
+         Client request 2026-09-22 (via Luis): "rip this:
+         sesamecare.com/service/online-weight-loss-program", then "rip it with
+         chime information and look and feel", using the screenshots captured
+         from the saved page as the design base.
+         Plan: SESAME-WEIGHT-LOSS-RIP-PLAN.md.
+
+         The reference fights scraping (Cloudflare). Luis saved the page from
+         his own browser to uploads/"Online weight loss medication with or
+         without insurance.htm" + _files/. NEVER COMMIT THAT COPY: uploads/
+         deploys publicly, so it would republish the source page, its
+         stylesheets and 227 of its assets on Chime's domain.
+
+         What this is: the reference's LAYOUT, section for section, in Chime's
+         own look (Quicksand, blue-800 ink, warm sand grounds, blue-500 accent)
+         with Chime's products and copy. Own folder, self-contained: index.html
+         + css/wlp.css + js/wlp.js + js/wlp-tests.js + fonts + images. No
+         React, no CDN, one script, one stylesheet.
+         Tests: node chime-weight-loss-program/js/wlp-tests.js
+
+         HOUSE RULES enforced by the tests: zero em dashes, no before/after
+         imagery, headline first and any label below it, no brand-drug names.
+
+         NOT TAKEN from the reference, on purpose:
+         · Every brand drug name and its product photography (Wegovy,
+           Zepbound, Ozempic, Mounjaro, Rybelsus, Foundayo are Novo Nordisk /
+           Lilly marks) and the per-card "FDA approved" seals. Chime's page
+           names molecules and shows Chime vials.
+         · The whole insurance frame: the "Insurance accepted" hero bullet, the
+           with/without-insurance price toggle and the "as low as $25/mo with
+           insurance" row. Chime does not bill insurance.
+         · The roster of ~100 named providers with star ratings (patients do
+           not pick a clinician here) and the "better in the app" band
+           (there is no Chime app).
+         · Trustpilot 4.5/5, the referral link, the BBB badge, the mailing list
+           field (there is no endpoint, and a dead form is worse than none).
+
+         FLAGGED, built as written, not silently fixed:
+         · PRICES are the client ladder already live on chime-checkout:
+           Semaglutide $249/mo and Tirzepatide $299/mo on the 3 month plan,
+           every 4th month free. The reference sells care as a separate
+           subscription; Chime never has, so the care-only figure is a visible
+           $[TBD] and the "from" prices are the medication ladder.
+         · THE RESULTS BAND (5% / 10% / 15% at 3 / 6 / 12 months) carries the
+           published semaglutide 2.4 mg trial figures the reference cites, with
+           the citation visible. The client must confirm the citation, and
+           confirm it may be shown beside a compounded product, before launch.
+         · Per-product "expected loss" ranges are from the same drug
+           literature, not from Chime outcomes. Same confirmation needed.
+         · TESTIMONIALS are FICTIONAL (first names, 2026-09-21 precedent).
+           Real, consented members or FTC disclaimers before launch.
+         · The clinician block names Dr. Anand Mehta, a FICTIONAL physician
+           carried from the _ind landings, and the photo is AI-generated
+           (Higgsfield). Replace both with the real physician before traffic.
+         · "Licensed in 38 states", "NABP-accredited pharmacy" and the labs
+           line are carried from the _ind landings and are still unconfirmed.
+         · The FAQ answers on billing, refunds, HSA/FSA and labs by state are
+           the reference's COMMERCIAL TERMS. They are visible [TBD] here: only
+           the client can set them, and the merchant-account work already
+           established that cart legal copy waits for counsel.
+         · Photos are the _ind landings' AI-generated set, used as layout
+           stand-ins. -->
+    <link rel="preload" href="fonts/quicksand-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" as="image" href="images/hero-800.webp" imagesrcset="images/hero-800.webp 800w, images/hero-1600.webp 1600w" imagesizes="(min-width: 1024px) 480px, 100vw" />
+    <link rel="stylesheet" href="css/wlp.css?v=20260955" />
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 7" /></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7" /></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="6" width="13" height="12" rx="2" /><path d="M15 11l6-3v8l-6-3z" /></symbol>
+      <symbol id="i-lab" viewBox="0 0 24 24"><path d="M9 3v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L15 9V3" /><path d="M8 3h8M7.5 14h9" /></symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3" /><path d="M8 10a4 4 0 0 1 8 0" /><path d="M12 10V8" /></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></symbol>
+      <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 11V4h7l11 11-7 7L3 11z" /><circle cx="7.5" cy="7.5" r="1.4" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" /><path d="M9 12l2 2 4-4" /></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5V8z" /><path d="M3 8l9 5 9-5M12 13v8" /></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z" /></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path class="fill" d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9L12 2.5z" /></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" /></symbol>
+      <symbol id="i-run" viewBox="0 0 24 24"><circle cx="15" cy="4.5" r="2" /><path d="M12 21l2-5-3-3 1-5 3 3 3 1M9 12l-2 3" /></symbol>
+      <symbol id="i-plate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="3.5" /></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="masthead" data-screen-label="WLP Header">
+      <div class="wrap masthead__in">
+        <a class="masthead__logo" href="../index.html">
+          <img src="images/logo-slate.png" alt="Chime Health" width="132" height="60" />
+        </a>
+        <nav class="masthead__nav" aria-label="Main">
+          <a href="../weight-loss.html">Weight loss</a>
+          <a href="../wellness.html">Wellness</a>
+          <a href="../labs.html">Labs</a>
+          <a href="../faq.html">FAQ</a>
+        </nav>
+        <a class="btn btn--sm masthead__cta" href="../chimeAssessment.html">Get started</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 1. HERO -->
+      <section class="hero" data-screen-label="WLP Hero">
+        <div class="wrap hero__in">
+          <div class="hero__copy">
+            <h1>Access top rated care and weight loss medication online</h1>
+            <ul class="ticks">
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>Ongoing video visits, dedicated clinician care, labs and messaging for as low as <b>$[TBD]/mo</b></span></li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>GLP-1 treatment plans from <b>$249/mo</b>, with every 4th month free</span></li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>No insurance needed, and no surprise bills</span></li>
+            </ul>
+            <div class="hero__act">
+              <a class="btn" href="../chimeAssessment.html">Get started today</a>
+              <p class="trust">
+                <img src="images/legitscript.png" alt="" width="34" height="37" />
+                <span><b>LegitScript certified</b><br />Licensed clinicians in 38 states</span>
+              </p>
+            </div>
+            <p class="fine">Pricing shown is the 3 month plan rate. The care subscription figure is not set yet.</p>
+          </div>
+          <figure class="hero__media">
+            <img src="images/hero-800.webp" srcset="images/hero-800.webp 800w, images/hero-1600.webp 1600w" sizes="(min-width: 1024px) 480px, 100vw" alt="A Chime member" width="800" height="600" fetchpriority="high" />
+          </figure>
+        </div>
+      </section>
+
+      <!-- 2. RESULTS -->
+      <section class="results" data-screen-label="WLP Results">
+        <div class="wrap">
+          <h2>Results from our telehealth weight loss program.</h2>
+          <ul class="res">
+            <li class="res__card"><span class="res__when">In 3 months</span><svg class="ico res__ar" aria-hidden="true"><use href="#i-arrow" /></svg><span class="res__amt"><b>Lose 5%</b>of your body weight</span></li>
+            <li class="res__card"><span class="res__when">In 6 months</span><svg class="ico res__ar" aria-hidden="true"><use href="#i-arrow" /></svg><span class="res__amt"><b>Lose 10%</b>of your body weight</span></li>
+            <li class="res__card"><span class="res__when">In 12 months</span><svg class="ico res__ar" aria-hidden="true"><use href="#i-arrow" /></svg><span class="res__amt"><b>Lose 15%</b>of your body weight</span></li>
+          </ul>
+          <p class="cite">Results may vary. Milestones are based on a study of injectable semaglutide 2.4 mg in non-diabetic adults with obesity (BMI 30 or above) or overweight (BMI 27 or above with at least one weight related condition), when paired with healthy lifestyle changes. [CITATION TO CONFIRM]</p>
+          <p class="mid-cta"><a class="btn" href="../chimeAssessment.html">See how much weight you can lose</a></p>
+        </div>
+      </section>
+
+      <!-- 3. MEDICATION EXPLORER -->
+      <section class="meds" data-screen-label="WLP Meds">
+        <div class="wrap">
+          <h2>Explore your weight loss treatment options, tailored to fit your goals and budget.</h2>
+          <p class="meds__sub">Every plan includes your clinician, your labs and unlimited messaging. Medication ships to your door.</p>
+
+          <div class="meds__bar">
+            <div class="chips" role="tablist" aria-label="Filter treatments">
+              <button class="chip is-on" type="button" role="tab" aria-selected="true" data-filter="featured">Featured</button>
+              <button class="chip" type="button" role="tab" aria-selected="false" data-filter="glp1">GLP-1 treatments</button>
+              <button class="chip" type="button" role="tab" aria-selected="false" data-filter="combo">Combination plans</button>
+            </div>
+            <label class="sel">
+              <span class="sr-only">Pricing shown</span>
+              <select id="price-mode" data-price-mode>
+                <option value="3">3 month plan, 4th month free</option>
+                <option value="1">Month to month</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="rail" data-rail>
+            <ul class="cards" data-track>
+              <li class="card" data-cat="featured glp1" data-p3="249" data-p1="299">
+                <div class="card__top">
+                  <h3>Semaglutide</h3>
+                  <p class="card__mol">GLP-1 receptor agonist</p>
+                </div>
+                <img class="card__img" src="images/vial-semaglutide.webp" alt="Chime semaglutide vial" width="614" height="1200" loading="lazy" />
+                <div class="card__foot">
+                  <p class="card__price"><span>Starts at</span><b data-price>$249</b><i data-per>/mo</i></p>
+                  <button class="more" type="button" aria-expanded="false" aria-controls="d-sema"><span class="sr-only">Show details for Semaglutide</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+                </div>
+                <div class="detail" id="d-sema" hidden>
+                  <p class="detail__h">Highlights</p>
+                  <ul class="detail__list">
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Lose 10 to 15% of your body weight with proper nutrition and exercise [TO CONFIRM]</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$249/mo on the 3 month plan, $299/mo month to month. Every 4th month free, forever.</span></li>
+                  </ul>
+                  <p class="detail__q">What is semaglutide?</p>
+                  <p class="detail__a">A GLP-1 receptor agonist that slows how fast your stomach empties and quiets appetite signalling, so you feel full on less. Chime prescribes it as a compounded injection, dosed weekly and titrated by your clinician.</p>
+                  <p class="detail__q">What results can I expect?</p>
+                  <p class="detail__a">Published trials of injectable semaglutide report an average loss of around 15% of body weight over 68 weeks when paired with a reduced calorie diet and more activity. Results vary, it is not suitable for everyone, and your clinician decides whether it is appropriate for you. [CITATION TO CONFIRM]</p>
+                </div>
+              </li>
+
+              <li class="card" data-cat="featured glp1" data-p3="299" data-p1="359">
+                <div class="card__top">
+                  <h3>Tirzepatide</h3>
+                  <p class="card__mol">Dual GIP and GLP-1 agonist</p>
+                </div>
+                <img class="card__img" src="images/vial-tirzepatide.webp" alt="Chime tirzepatide vial" width="622" height="1200" loading="lazy" />
+                <div class="card__foot">
+                  <p class="card__price"><span>Starts at</span><b data-price>$299</b><i data-per>/mo</i></p>
+                  <button class="more" type="button" aria-expanded="false" aria-controls="d-tirz"><span class="sr-only">Show details for Tirzepatide</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+                </div>
+                <div class="detail" id="d-tirz" hidden>
+                  <p class="detail__h">Highlights</p>
+                  <ul class="detail__list">
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Lose 15 to 20% of your body weight with proper nutrition and exercise [TO CONFIRM]</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$299/mo on the 3 month plan, $359/mo month to month. Every 4th month free, forever.</span></li>
+                  </ul>
+                  <p class="detail__q">What is tirzepatide?</p>
+                  <p class="detail__a">A single weekly injection that acts on two gut hormone receptors, GIP and GLP-1, rather than one. For many people that means a stronger effect on appetite and on how the body handles sugar and fat.</p>
+                  <p class="detail__q">What results can I expect?</p>
+                  <p class="detail__a">Published trials of injectable tirzepatide report an average loss of around 20% of body weight at the highest dose over 72 weeks, alongside lifestyle changes. Results vary and your clinician decides whether it is appropriate for you. [CITATION TO CONFIRM]</p>
+                </div>
+              </li>
+
+              <li class="card" data-cat="featured combo" data-p3="349" data-p1="399">
+                <div class="card__top">
+                  <h3>GLP-1 with NAD+</h3>
+                  <p class="card__mol">Weight loss and energy support</p>
+                </div>
+                <img class="card__img" src="images/vial-nad.webp" alt="Chime NAD+ vial" width="617" height="1200" loading="lazy" />
+                <div class="card__foot">
+                  <p class="card__price"><span>Starts at</span><b data-price>$349</b><i data-per>/mo</i></p>
+                  <button class="more" type="button" aria-expanded="false" aria-controls="d-nad"><span class="sr-only">Show details for GLP-1 with NAD+</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+                </div>
+                <div class="detail" id="d-nad" hidden>
+                  <p class="detail__h">Highlights</p>
+                  <ul class="detail__list">
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Your GLP-1 plan, with NAD+ added for energy and recovery [TO CONFIRM]</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection plus your NAD+ schedule</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$349/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                  </ul>
+                  <p class="detail__q">What is this plan?</p>
+                  <p class="detail__a">Your GLP-1 treatment with NAD+ alongside it. Members often add it when the weight is coming off but energy has not caught up yet.</p>
+                  <p class="detail__q">What results can I expect?</p>
+                  <p class="detail__a">The weight loss expectation is the one for your GLP-1. The NAD+ claims on this page are marketing copy in Chime voice, not clinical statements. [TO CONFIRM]</p>
+                </div>
+              </li>
+
+              <li class="card" data-cat="combo" data-p3="399" data-p1="459">
+                <div class="card__top">
+                  <h3>GLP-1<sup>2</sup></h3>
+                  <p class="card__mol">Semaglutide and tirzepatide protocol</p>
+                </div>
+                <img class="card__img" src="images/vial-glp-squared.webp" alt="Chime GLP-1 squared vial" width="665" height="1200" loading="lazy" />
+                <div class="card__foot">
+                  <p class="card__price"><span>Starts at</span><b data-price>$399</b><i data-per>/mo</i></p>
+                  <button class="more" type="button" aria-expanded="false" aria-controls="d-sq"><span class="sr-only">Show details for GLP-1 squared</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+                </div>
+                <div class="detail" id="d-sq" hidden>
+                  <p class="detail__h">Highlights</p>
+                  <ul class="detail__list">
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>For members who have plateaued on a single GLP-1 [TO CONFIRM]</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection, clinician led titration</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$399/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                  </ul>
+                  <p class="detail__q">What is GLP-1<sup>2</sup>?</p>
+                  <p class="detail__a">Chime's combined protocol for members whose progress has stalled. It is prescribed only after a clinician reviews your history and your response so far.</p>
+                  <p class="detail__q">What results can I expect?</p>
+                  <p class="detail__a">No published figure covers this protocol. Your clinician sets the expectation with you. [TO CONFIRM]</p>
+                </div>
+              </li>
+
+              <li class="card" data-cat="combo" data-p3="329" data-p1="379">
+                <div class="card__top">
+                  <h3>GLP-1 with tesamorelin</h3>
+                  <p class="card__mol">Targets deep abdominal fat</p>
+                </div>
+                <img class="card__img" src="images/vial-sermorelin.webp" alt="Chime tesamorelin vial" width="645" height="1200" loading="lazy" />
+                <div class="card__foot">
+                  <p class="card__price"><span>Starts at</span><b data-price>$329</b><i data-per>/mo</i></p>
+                  <button class="more" type="button" aria-expanded="false" aria-controls="d-tesa"><span class="sr-only">Show details for GLP-1 with tesamorelin</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+                </div>
+                <div class="detail" id="d-tesa" hidden>
+                  <p class="detail__h">Highlights</p>
+                  <ul class="detail__list">
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Two jobs at once: overall loss, and the fat around the organs [TO CONFIRM]</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly GLP-1 injection plus a daily tesamorelin dose</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$329/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                  </ul>
+                  <p class="detail__q">What is tesamorelin?</p>
+                  <p class="detail__a">A growth hormone releasing factor used alongside a GLP-1 when the concern is visceral fat, the deep fat around the organs, rather than weight alone.</p>
+                  <p class="detail__a detail__warn">Tesamorelin is prescribed off label for this use. That language is on the critical path for counsel and is flagged wherever it appears on the site. [TO CONFIRM]</p>
+                </div>
+              </li>
+
+              <li class="card" data-cat="glp1" data-p3="279" data-p1="329">
+                <div class="card__top">
+                  <h3>Maintenance plan</h3>
+                  <p class="card__mol">After you reach your goal</p>
+                </div>
+                <img class="card__img" src="images/vial-glow-stack.webp" alt="Chime maintenance vial" width="636" height="1200" loading="lazy" />
+                <div class="card__foot">
+                  <p class="card__price"><span>Starts at</span><b data-price>$279</b><i data-per>/mo</i></p>
+                  <button class="more" type="button" aria-expanded="false" aria-controls="d-maint"><span class="sr-only">Show details for the maintenance plan</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+                </div>
+                <div class="detail" id="d-maint" hidden>
+                  <p class="detail__h">Highlights</p>
+                  <ul class="detail__list">
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>A lower dose to hold the loss you worked for [TO CONFIRM]</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection, reviewed every quarter</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$279/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                  </ul>
+                  <p class="detail__q">What is the maintenance plan?</p>
+                  <p class="detail__a">The step most programs leave out. Once you hit your goal your clinician steps the dose down and keeps the visits, the labs and the messaging going, because stopping outright is where the weight tends to come back.</p>
+                  <p class="detail__q">What results can I expect?</p>
+                  <p class="detail__a">Holding your loss, not adding to it. Your clinician sets the target with you. [TO CONFIRM]</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="rail__ctl">
+            <ul class="dots" data-dots aria-label="Treatment pages"></ul>
+            <div class="arrows">
+              <button class="arw" type="button" data-prev aria-label="Previous treatments"><svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+              <button class="arw arw--on" type="button" data-next aria-label="More treatments"><svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
+          </div>
+          <p class="cite">Medication pricing is separate from the cost of clinical care and applies only if a clinician prescribes it. Availability, eligibility and pricing vary by treatment, dose and clinician determination.</p>
+        </div>
+      </section>
+
+      <!-- 4. JOURNEY -->
+      <section class="journey" data-screen-label="WLP Journey">
+        <div class="wrap journey__in">
+          <div class="journey__head">
+            <h2>Your weight loss journey</h2>
+            <p>Long term weight loss starts with consistent support. With Chime you work one to one with a dedicated clinician who stays with you for every milestone, from your first dose to maintenance.</p>
+          </div>
+          <ol class="steps">
+            <li><h3>Get started by sharing your goals</h3><p>Answer a short questionnaire about your health, your history and what you want to change. It takes about three minutes.</p></li>
+            <li><h3>Meet your dedicated clinician</h3><p>Talk through your medical history and your goals on a video consult. Your clinician tailors a plan and orders labs if metabolic data is needed.</p></li>
+            <li><h3>Get your prescription, your way</h3><p>If medication is prescribed it ships to your door in discreet packaging, with everything you need to take your first dose.</p></li>
+            <li><h3>Begin treatment</h3><p>Start your weekly dose with a clinician a message away. Side effects, timing, questions at 9pm on a Sunday: that is what the messaging is for.</p></li>
+            <li><h3>Receive ongoing support</h3><p>Video check ins, dose adjustments, repeat labs and habit support for sleep, movement and food, for as long as you are with us.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 5. WHAT IS INCLUDED -->
+      <section class="incl" data-screen-label="WLP Includes">
+        <div class="wrap">
+          <h2>Here is what your Chime weight loss program includes.</h2>
+          <div class="mosaic">
+            <figure class="tile tile--photo tile--a">
+              <img src="images/incl-clinician-800.webp" alt="A Chime clinician" width="800" height="532" loading="lazy" />
+              <figcaption><b>Support from a clinician who knows your case</b><span>Clinical care and ongoing guidance from the same person, visit after visit.</span></figcaption>
+            </figure>
+            <div class="tile tile--fill tile--b">
+              <svg class="ico" aria-hidden="true"><use href="#i-video" /></svg>
+              <b>Video visits and messaging</b><span>with your clinician, for ongoing guidance.</span>
+            </div>
+            <div class="tile tile--fill tile--c">
+              <svg class="ico" aria-hidden="true"><use href="#i-lab" /></svg>
+              <b>Labs included</b><span>to track your progress over time. [TO CONFIRM]</span>
+            </div>
+            <figure class="tile tile--photo tile--d">
+              <img src="images/incl-track-800.webp" alt="A Chime member at the gym" width="800" height="1071" loading="lazy" />
+              <figcaption><b>Stay on track with your goals</b><span>Build the habits that hold the loss, with your clinician checking in.</span></figcaption>
+            </figure>
+            <div class="tile tile--vials tile--e">
+              <div class="tile__txt">
+                <b>Find the treatment that fits</b>
+                <span>Semaglutide, tirzepatide and combination plans, shipped to your door with refills handled.</span>
+              </div>
+              <ul class="tile__vials" aria-hidden="true">
+                <li><img src="images/vial-semaglutide.webp" alt="" width="614" height="1200" loading="lazy" /></li>
+                <li><img src="images/vial-tirzepatide.webp" alt="" width="622" height="1200" loading="lazy" /></li>
+                <li><img src="images/vial-nad.webp" alt="" width="617" height="1200" loading="lazy" /></li>
+              </ul>
+            </div>
+            <ul class="habits tile--f">
+              <li><svg class="ico" aria-hidden="true"><use href="#i-plate" /></svg>Food</li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-run" /></svg>Movement</li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-moon" /></svg>Sleep</li>
+            </ul>
+        </div>
+      </section>
+
+      <!-- 6. CARE TEAM (replaces the reference's roster of named providers) -->
+      <section class="team" data-screen-label="WLP Team">
+        <div class="wrap team__in">
+          <figure class="team__photo">
+            <img src="images/care-800.webp" srcset="images/care-800.webp 800w, images/care-1600.webp 1600w" sizes="(min-width: 768px) 560px, 100vw" alt="Dr. Ryan Calder" width="800" height="600" loading="lazy" />
+          </figure>
+          <div class="team__copy">
+            <h2>The clinician behind your plan.</h2>
+            <p>You are not routed to whoever is free. One licensed clinician reviews your intake, writes your prescription, reads your labs and answers your messages, so nobody asks you to start your story over.</p>
+            <div class="cert">
+              <p class="cert__name">Dr. Ryan Calder, MD</p>
+              <ul class="cert__pills">
+                <li>Board certified, Internal Medicine</li>
+                <li>Licensed in 38 states</li>
+                <li>Obesity medicine</li>
+              </ul>
+              <p class="cert__note">Fictional physician and AI generated photography, used as a layout stand in. The real clinician and credentials go here before launch.</p>
+            </div>
+            <p><a class="btn" href="../chimeAssessment.html">Get started with a Chime clinician</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. COMPARISON -->
+      <section class="compare" data-screen-label="WLP Compare">
+        <div class="wrap">
+          <h2>See why Chime is a different kind of weight loss care.</h2>
+          <div class="cmp__scroll">
+            <table class="cmp">
+              <caption class="sr-only">Chime compared with other weight loss services</caption>
+              <thead>
+                <tr><td></td><th scope="col" class="cmp__us"><img src="images/logo-slate.png" alt="Chime Health" width="108" height="49" /></th><th scope="col">Other weight loss services</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Your clinician</th><td class="y">The same clinician every visit</td><td class="n">Whoever is on shift that day</td></tr>
+                <tr><th scope="row">Availability</th><td class="y">Start within days, not months</td><td class="n">Wait days, weeks or months for a visit</td></tr>
+                <tr><th scope="row">Scheduling</th><td class="y">Any time that works for you</td><td class="n">Inconvenient appointment hours</td></tr>
+                <tr><th scope="row">Pricing</th><td class="y">One transparent monthly price</td><td class="n">Co-pays, hidden fees and surprise bills</td></tr>
+                <tr><th scope="row">Cost of medication</th><td class="y">Medication included, every 4th month free</td><td class="n">Medication billed on top, at a markup</td></tr>
+                <tr><th scope="row">Communication</th><td class="y">Video visits and unlimited messaging</td><td class="n">Limited time with your provider</td></tr>
+                <tr><th scope="row">Convenience</th><td class="y">Virtual visits any time, anywhere</td><td class="n">Hours of your day spent at an office</td></tr>
+                <tr><th scope="row">Insurance</th><td class="y">No insurance required</td><td class="n">Insurance required</td></tr>
+                <tr><th scope="row">After your goal</th><td class="y">A maintenance plan that keeps going</td><td class="n">Care stops when the prescription does</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mid-cta"><a class="btn" href="../chimeAssessment.html">Get the best care with Chime</a></p>
+        </div>
+      </section>
+
+      <!-- 8. REVIEWS -->
+      <section class="revs" data-screen-label="WLP Reviews">
+        <div class="wrap">
+          <h2>What Chime members say about the program.</h2>
+          <div class="rail" data-rail>
+            <ul class="quotes" data-track>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>The best thing I have ever done for my health. Seeing the weight actually move gave me the confidence to get back into the gym, and my clinician adjusted the dose the week I asked.</blockquote><p class="quote__by">Marcus T., Chime member</p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>My clinician did not judge me. I had a regular doctor who waved off my weight for years. What this one did in a single visit made a real difference to me.</blockquote><p class="quote__by">Denise R., Chime member</p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>Down 41 pounds and still going. What sold me was the messaging. I could ask about a side effect on a Sunday night and get a real answer.</blockquote><p class="quote__by">Hannah B., Chime member</p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>She knew the medications cold and walked me through every option instead of pushing one. Efficient, thorough, and she remembered my labs at the next visit.</blockquote><p class="quote__by">Alan K., Chime member</p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>The easiest weight loss program I have stayed on, and the first one I did not quit after two months. The maintenance plan is why I am still here.</blockquote><p class="quote__by">Rosa M., Chime member</p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>Straightforward pricing and no surprise bills, which after a year of insurance fights was the whole reason I signed up.</blockquote><p class="quote__by">Grace L., Chime member</p></li>
+            </ul>
+          </div>
+          <div class="rail__ctl">
+            <ul class="dots" data-dots aria-label="Review pages"></ul>
+            <div class="arrows">
+              <button class="arw" type="button" data-prev aria-label="Previous reviews"><svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+              <button class="arw arw--on" type="button" data-next aria-label="More reviews"><svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
+          </div>
+          <p class="cite">Member stories on this page are illustrative and were written for layout. Real, consented member reviews replace them before launch.</p>
+        </div>
+      </section>
+
+      <!-- 9. CLOSING BAND -->
+      <section class="band" data-screen-label="WLP Band">
+        <div class="wrap band__in">
+          <div>
+            <h2>Find out what you qualify for.</h2>
+            <p>Three minutes of questions, no card needed. You will see which treatments fit your history and what your plan would cost before you commit to anything.</p>
+          </div>
+          <p class="band__act"><a class="btn btn--light" href="../chimeAssessment.html">Take the assessment</a></p>
+        </div>
+      </section>
+
+      <!-- 10. FAQ -->
+      <section class="faq" data-screen-label="WLP FAQ">
+        <div class="wrap faq__in">
+          <h2>Questions about the Chime weight loss program</h2>
+          <p class="faq__lede">Medically reviewed by Dr. Ryan Calder, MD (fictional stand in)</p>
+          <ul class="acc" data-acc>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>Am I a good candidate for weight loss medication?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Generally, candidates have a body mass index of 30 or higher, or 27 or higher with a weight related condition such as type 2 diabetes, high blood pressure or high cholesterol.</p><p>GLP-1 medication is not suitable for everyone. It should be avoided if you have a history of pancreatitis, a personal or family history of medullary thyroid cancer, multiple endocrine neoplasia syndrome type 2, or type 1 diabetes. Your Chime clinician decides whether a GLP-1 or an alternative is appropriate for you.</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>What treatments does Chime offer for weight loss?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Compounded semaglutide and tirzepatide as weekly injections, plus combination plans that pair a GLP-1 with NAD+ or tesamorelin, and a lower dose maintenance plan once you reach your goal.</p><p>Chime prescribes compounded medication, which is not the same as an FDA approved brand product. Your clinician will explain the difference and what it means for you.</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>What does the program cost?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Treatment plans start at $249 a month for semaglutide and $299 a month for tirzepatide on the 3 month plan, and every 4th month is free, for as long as you stay on the plan.</p><p>The separate care subscription price is <b>$[TBD]</b> and is not set yet. [CLIENT TO CONFIRM]</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>Do I need insurance?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>No. Chime does not bill health insurance, which is how the pricing stays flat and predictable. There are no co-pays, no referrals and no surprise bills.</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>When will I be billed?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p><b>[TBD]</b> Billing cadence for each plan length is a commercial term the client sets. [CLIENT TO CONFIRM]</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>What is the refund policy?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p><b>[TBD]</b> The refund and cancellation terms await the client and counsel, alongside the return and shipping policy pages already on the site. [CLIENT TO CONFIRM]</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>Are the services HSA or FSA eligible?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p><b>[TBD]</b> Eligibility and whether Chime issues an itemised bill are commercial terms the client sets. [CLIENT TO CONFIRM]</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>Where do I get my lab tests done?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p><b>[TBD]</b> Which lab network is included, and in which states, is a commercial term the client sets. [CLIENT TO CONFIRM]</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>What are the benefits of losing weight?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Reaching a healthier weight can lower your risk of several conditions and improve ones you already have. Reported benefits include better heart health and cholesterol, healthier blood sugar and insulin sensitivity, lower blood pressure, better sleep, easier movement with less joint pain, and improvements in mood and confidence.</p><p>Even a moderate loss can matter. Your clinician can tell you which of these apply to your own history.</p></div></li>
+            <li><button type="button" class="acc__q" aria-expanded="false"><span>Important safety information</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>GLP-1 therapies including semaglutide and tirzepatide may increase the likelihood of thyroid C-cell tumours, including medullary thyroid carcinoma. Do not use if you or a family member has a history of medullary thyroid carcinoma or multiple endocrine neoplasia syndrome type 2.</p><p>Tell your clinician about every medication and condition before you start, and report severe abdominal pain, persistent vomiting or signs of an allergic reaction straight away. This page is not medical advice. [FULL SAFETY COPY TO BE REVIEWED BY COUNSEL]</p></div></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot" data-screen-label="WLP Footer">
+      <div class="wrap foot__in">
+        <div class="foot__brand">
+          <img src="images/logo-white.png" alt="Chime Health" width="128" height="58" />
+          <p>Physician guided weight loss and wellness, delivered.</p>
+          <img class="foot__seal" src="images/legitscript.png" alt="LegitScript certified" width="44" height="48" />
+        </div>
+        <nav class="foot__links" aria-label="Legal">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+          <a href="../terms-conditions.html">Terms and Conditions</a>
+          <a href="../return-refund-policy.html">Return and Refund Policy</a>
+          <a href="../shipping-policy.html">Shipping Policy</a>
+          <a href="../faq.html">FAQ</a>
+        </nav>
+      </div>
+      <p class="foot__fine">Chime Health does not bill health insurance. Compounded medication is not FDA approved and is prescribed only where a licensed clinician finds it appropriate. Prices on this page are the current plan rates and may change. &copy; 2026 Chime Health.</p>
+    </footer>
+
+    <script src="js/wlp.js?v=20260955" defer></script>
+  </body>
+</html>
