@@ -64,6 +64,10 @@ var body = html.slice(html.indexOf("<body"));
   ok("no brand name in the page body: " + brand, body.indexOf(brand) === -1);
 });
 
+// Client, 2026-09-22: "we don't need any of the 4th month free on there".
+// The head comment still quotes the request, so this is a body-only check.
+ok("no 4th month free offer anywhere in the body", !/4th month|fourth month|month free/i.test(body));
+
 ok("no Trustpilot in the body", body.indexOf("Trustpilot") === -1);
 ok("no Sesame in the body", body.indexOf("Sesame") === -1);
 ok("no before/after wording in the body", !/before\s*(and|&|\/)\s*after/i.test(body));
@@ -101,6 +105,20 @@ cards.forEach(function (c, i) {
   ok("card " + (i + 1) + " declares both prices", /data-p3="\d+"/.test(c) && /data-p1="\d+"/.test(c));
 });
 ok("every card has a price slot", (html.match(/ data-price>/g) || []).length === 6);
+
+// The client edits costs by hand, so the two numbers on each card (the data
+// attributes the select reads, and the "Price:" line inside the panel) must
+// not drift apart.
+var cardBlocks = html.split('<li class="card"').slice(1);
+cardBlocks.forEach(function (block, i) {
+  var p3 = (block.match(/data-p3="(\d+)"/) || [])[1];
+  var p1 = (block.match(/data-p1="(\d+)"/) || [])[1];
+  var line = (block.match(/<span>Price: ([^<]+)<\/span>/) || [])[1] || "";
+  ok("card " + (i + 1) + " Price line repeats its 3 month figure ($" + p3 + ")", line.indexOf("$" + p3) !== -1);
+  ok("card " + (i + 1) + " Price line repeats its month to month figure ($" + p1 + ")", line.indexOf("$" + p1) !== -1);
+  var shown = (block.match(/<b data-price>\$([\d,]+)<\/b>/) || [])[1];
+  ok("card " + (i + 1) + " shows the 3 month figure by default", shown === p3);
+});
 ok("every card has an expand button", (html.match(/class="more"/g) || []).length === 6);
 ok("every expand button is wired to a panel", (html.match(/aria-controls="d-/g) || []).length === 6);
 ok("every panel exists", (html.match(/class="detail" id="d-/g) || []).length === 6);

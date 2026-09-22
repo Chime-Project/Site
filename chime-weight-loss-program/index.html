@@ -45,11 +45,20 @@
            field (there is no endpoint, and a dead form is worse than none).
 
          FLAGGED, built as written, not silently fixed:
-         · PRICES are the client ladder already live on chime-checkout:
-           Semaglutide $249/mo and Tirzepatide $299/mo on the 3 month plan,
-           every 4th month free. The reference sells care as a separate
-           subscription; Chime never has, so the care-only figure is a visible
-           $[TBD] and the "from" prices are the medication ladder.
+         · PRICES ARE ALL PLACEHOLDERS. Client, 2026-09-22: "we don't need
+           any of the 4th month free on there, I want to stay consistent with
+           their page structure, I'll manually edit costs etc for you to change
+           after". So: every mention of the 4th-month-free offer is gone (it is
+           a Chime checkout promotion, not part of the reference's structure),
+           and the numbers left standing are the chime-checkout ladder used as
+           layout stand-ins until the client sends the real ones. The care-only
+           figure stays a visible $[TBD]: the reference sells care as a separate
+           subscription and Chime never has.
+           TO SWAP PRICES: each treatment card carries data-p3 (3 month) and
+           data-p1 (month to month) on its list item, which js/wlp.js reads for
+           the select; the same two numbers are repeated in that card's
+           "Price:" highlight line. Change both, and the tests will tell you if
+           the two ever drift apart.
          · THE RESULTS BAND (5% / 10% / 15% at 3 / 6 / 12 months) carries the
            published semaglutide 2.4 mg trial figures the reference cites, with
            the citation visible. The client must confirm the citation, and
@@ -118,7 +127,7 @@
             <h1>Access top rated care and weight loss medication online</h1>
             <ul class="ticks">
               <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>Ongoing video visits, dedicated clinician care, labs and messaging for as low as <b>$[TBD]/mo</b></span></li>
-              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>GLP-1 treatment plans from <b>$249/mo</b>, with every 4th month free</span></li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>GLP-1 treatment plans from <b>$249/mo</b>, shipped to your door</span></li>
               <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>No insurance needed, and no surprise bills</span></li>
             </ul>
             <div class="hero__act">
@@ -128,7 +137,7 @@
                 <span><b>LegitScript certified</b><br />Licensed clinicians in 38 states</span>
               </p>
             </div>
-            <p class="fine">Pricing shown is the 3 month plan rate. The care subscription figure is not set yet.</p>
+            <p class="fine">Pricing shown is the 3 month plan rate. All figures on this page are placeholders pending the client's final costs.</p>
           </div>
           <figure class="hero__media">
             <img src="images/hero-800.webp" srcset="images/hero-800.webp 800w, images/hero-1600.webp 1600w" sizes="(min-width: 1024px) 480px, 100vw" alt="A Chime member" width="800" height="600" fetchpriority="high" />
@@ -165,7 +174,7 @@
             <label class="sel">
               <span class="sr-only">Pricing shown</span>
               <select id="price-mode" data-price-mode>
-                <option value="3">3 month plan, 4th month free</option>
+                <option value="3">3 month plan</option>
                 <option value="1">Month to month</option>
               </select>
             </label>
@@ -188,7 +197,7 @@
                   <ul class="detail__list">
                     <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Lose 10 to 15% of your body weight with proper nutrition and exercise [TO CONFIRM]</span></li>
                     <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection</span></li>
-                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$249/mo on the 3 month plan, $299/mo month to month. Every 4th month free, forever.</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>Price: $249/mo on the 3 month plan, $299/mo month to month.</span></li>
                   </ul>
                   <p class="detail__q">What is semaglutide?</p>
                   <p class="detail__a">A GLP-1 receptor agonist that slows how fast your stomach empties and quiets appetite signalling, so you feel full on less. Chime prescribes it as a compounded injection, dosed weekly and titrated by your clinician.</p>
@@ -212,7 +221,7 @@
                   <ul class="detail__list">
                     <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Lose 15 to 20% of your body weight with proper nutrition and exercise [TO CONFIRM]</span></li>
                     <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection</span></li>
-                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$299/mo on the 3 month plan, $359/mo month to month. Every 4th month free, forever.</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>Price: $299/mo on the 3 month plan, $359/mo month to month.</span></li>
                   </ul>
                   <p class="detail__q">What is tirzepatide?</p>
                   <p class="detail__a">A single weekly injection that acts on two gut hormone receptors, GIP and GLP-1, rather than one. For many people that means a stronger effect on appetite and on how the body handles sugar and fat.</p>
@@ -236,7 +245,7 @@
                   <ul class="detail__list">
                     <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Your GLP-1 plan, with NAD+ added for energy and recovery [TO CONFIRM]</span></li>
                     <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection plus your NAD+ schedule</span></li>
-                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$349/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>Price: $349/mo on the 3 month plan, $399/mo month to month.</span></li>
                   </ul>
                   <p class="detail__q">What is this plan?</p>
                   <p class="detail__a">Your GLP-1 treatment with NAD+ alongside it. Members often add it when the weight is coming off but energy has not caught up yet.</p>
@@ -260,7 +269,7 @@
                   <ul class="detail__list">
                     <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>For members who have plateaued on a single GLP-1 [TO CONFIRM]</span></li>
                     <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection, clinician led titration</span></li>
-                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$399/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>Price: $399/mo on the 3 month plan, $459/mo month to month.</span></li>
                   </ul>
                   <p class="detail__q">What is GLP-1<sup>2</sup>?</p>
                   <p class="detail__a">Chime's combined protocol for members whose progress has stalled. It is prescribed only after a clinician reviews your history and your response so far.</p>
@@ -284,7 +293,7 @@
                   <ul class="detail__list">
                     <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>Two jobs at once: overall loss, and the fat around the organs [TO CONFIRM]</span></li>
                     <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly GLP-1 injection plus a daily tesamorelin dose</span></li>
-                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$329/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>Price: $329/mo on the 3 month plan, $379/mo month to month.</span></li>
                   </ul>
                   <p class="detail__q">What is tesamorelin?</p>
                   <p class="detail__a">A growth hormone releasing factor used alongside a GLP-1 when the concern is visceral fat, the deep fat around the organs, rather than weight alone.</p>
@@ -307,7 +316,7 @@
                   <ul class="detail__list">
                     <li><svg class="ico" aria-hidden="true"><use href="#i-scale" /></svg><span>A lower dose to hold the loss you worked for [TO CONFIRM]</span></li>
                     <li><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg><span>Weekly injection, reviewed every quarter</span></li>
-                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>$279/mo on the 3 month plan. Every 4th month free, forever.</span></li>
+                    <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg><span>Price: $279/mo on the 3 month plan, $329/mo month to month.</span></li>
                   </ul>
                   <p class="detail__q">What is the maintenance plan?</p>
                   <p class="detail__a">The step most programs leave out. Once you hit your goal your clinician steps the dose down and keeps the visits, the labs and the messaging going, because stopping outright is where the weight tends to come back.</p>
@@ -427,7 +436,7 @@
                 <tr><th scope="row">Availability</th><td class="y">Start within days, not months</td><td class="n">Wait days, weeks or months for a visit</td></tr>
                 <tr><th scope="row">Scheduling</th><td class="y">Any time that works for you</td><td class="n">Inconvenient appointment hours</td></tr>
                 <tr><th scope="row">Pricing</th><td class="y">One transparent monthly price</td><td class="n">Co-pays, hidden fees and surprise bills</td></tr>
-                <tr><th scope="row">Cost of medication</th><td class="y">Medication included, every 4th month free</td><td class="n">Medication billed on top, at a markup</td></tr>
+                <tr><th scope="row">Cost of medication</th><td class="y">Medication included in your plan price</td><td class="n">Medication billed on top, at a markup</td></tr>
                 <tr><th scope="row">Communication</th><td class="y">Video visits and unlimited messaging</td><td class="n">Limited time with your provider</td></tr>
                 <tr><th scope="row">Convenience</th><td class="y">Virtual visits any time, anywhere</td><td class="n">Hours of your day spent at an office</td></tr>
                 <tr><th scope="row">Insurance</th><td class="y">No insurance required</td><td class="n">Insurance required</td></tr>
@@ -486,7 +495,7 @@
             <li><button type="button" class="acc__q" aria-expanded="false"><span>What treatments does Chime offer for weight loss?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
               <div class="acc__a" hidden><p>Compounded semaglutide and tirzepatide as weekly injections, plus combination plans that pair a GLP-1 with NAD+ or tesamorelin, and a lower dose maintenance plan once you reach your goal.</p><p>Chime prescribes compounded medication, which is not the same as an FDA approved brand product. Your clinician will explain the difference and what it means for you.</p></div></li>
             <li><button type="button" class="acc__q" aria-expanded="false"><span>What does the program cost?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
-              <div class="acc__a" hidden><p>Treatment plans start at $249 a month for semaglutide and $299 a month for tirzepatide on the 3 month plan, and every 4th month is free, for as long as you stay on the plan.</p><p>The separate care subscription price is <b>$[TBD]</b> and is not set yet. [CLIENT TO CONFIRM]</p></div></li>
+              <div class="acc__a" hidden><p>Treatment plans start at $249 a month for semaglutide and $299 a month for tirzepatide on the 3 month plan. Month to month pricing is higher; every plan is shown on the treatment cards above.</p><p>The separate care subscription price is <b>$[TBD]</b> and is not set yet. [CLIENT TO CONFIRM]</p></div></li>
             <li><button type="button" class="acc__q" aria-expanded="false"><span>Do I need insurance?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
               <div class="acc__a" hidden><p>No. Chime does not bill health insurance, which is how the pricing stays flat and predictable. There are no co-pays, no referrals and no surprise bills.</p></div></li>
             <li><button type="button" class="acc__q" aria-expanded="false"><span>When will I be billed?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>

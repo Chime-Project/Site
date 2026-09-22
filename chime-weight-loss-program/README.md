@@ -23,7 +23,7 @@ then http://localhost:8791/chime-weight-loss-program/
 | `index.html` | the page. Every section carries a `data-screen-label` |
 | `css/wlp.css` | the whole design: tokens in `:root` copied from `tokens/colors.css`, then section by section in page order |
 | `js/wlp.js` | five behaviours: the rail (one carousel used twice), the filter chips, the price select, the card expand panels, the FAQ accordion. The pure helpers are exported for node |
-| `js/wlp-tests.js` | `node chime-weight-loss-program/js/wlp-tests.js` — 140 checks |
+| `js/wlp-tests.js` | `node chime-weight-loss-program/js/wlp-tests.js` — 159 checks |
 | `fonts/quicksand-latin.woff2` | the 28 KB variable file the quiz landings ship. No Google Fonts request stands between the HTML and first paint |
 | `images/` | see **Photography** below. Vials from `uploads/vials/amber/` |
 
@@ -34,7 +34,7 @@ then http://localhost:8791/chime-weight-loss-program/
 | 1 | Header | Chime logo, four nav links, one CTA. Nav appears from 1024px |
 | 2 | Hero | Headline, three tick bullets carrying the pricing, one button, the LegitScript chip where the reference puts Trustpilot |
 | 3 | Results | Three dark gradient cards, 5 / 10 / 15% at 3 / 6 / 12 months, citation under them |
-| 4 | Treatment explorer | Filter chips, price select, a 6 card carousel, and a `+` on each card that opens Highlights plus two Q&A blocks |
+| 4 | Treatment explorer | Filter chips, a plan length select (the slot the reference gives its insurance toggle), a 6 card carousel, and a `+` on each card that opens Highlights plus two Q&A blocks |
 | 5 | Journey | Lede and a photo on the left, a five step timeline on the right. Matched to the reference: 24px step headings, a 24px ringed dot sitting on the rule |
 | 6 | What is included | Six tile mosaic: two photos, two colour tiles, a vial tile and a habits trio. See **The includes mosaic, second pass** |
 | 7 | The clinician | Replaces the reference's roster of ~100 named providers. Certificate style block |
@@ -56,13 +56,21 @@ then http://localhost:8791/chime-weight-loss-program/
   app" band** (there is no Chime app).
 - **Trustpilot 4.5/5**, the referral link, the BBB badge and the mailing list field. A form with no
   endpoint is worse than no form.
+- **The "every 4th month free" offer.** It was on the page in the first build, carried from the
+  Chime checkout, and the client removed it on 2026-09-22 to stay consistent with the reference's
+  structure. It is not part of that structure, so it is gone from the hero, the price select, all
+  six treatment cards, the comparison table and the FAQ. A test keeps it out.
 
 ## ⚠️ Flagged, built as written
 
-- **Prices** are the client ladder already live on `chime-checkout`: $249/mo semaglutide and
-  $299/mo tirzepatide on the 3 month plan, every 4th month free. Combination and maintenance plan
-  prices are extrapolations from that ladder, not client figures. The reference sells care as a
-  separate subscription and Chime never has, so that figure is a visible **`$[TBD]`**.
+- **Every price on this page is a placeholder.** Client, 2026-09-22: "we don't need any of the 4th
+  month free on there, I want to stay consistent with their page structure, I'll manually edit costs
+  etc for you to change after". The numbers standing are the `chime-checkout` ladder used as layout
+  stand ins until the client sends the real ones. The care subscription figure stays a visible
+  **`$[TBD]`**: the reference sells care separately and Chime never has.
+  **To change a price**, edit the two places it appears on that treatment card: `data-p3` (3 month)
+  and `data-p1` (month to month) on the list item, which `js/wlp.js` reads for the select, and the
+  `Price:` line inside the panel. A test fails if the two drift apart.
 - **The results band** carries the published semaglutide 2.4 mg trial figures the reference cites,
   with `[CITATION TO CONFIRM]` on the page. The client must confirm the citation, and confirm it
   may be shown beside a compounded product.
@@ -110,11 +118,11 @@ Luis, same day: the first mosaic "is not look well at all". What was wrong and w
 
 ## Verification
 
-- `node chime-weight-loss-program/js/wlp-tests.js` — 140 checks, including zero em dashes, no brand
+- `node chime-weight-loss-program/js/wlp-tests.js` — 159 checks, including zero em dashes, no brand
   names in the body, headline before any label, every local link resolving, every stand in visible,
   and that the script never branches on a click event's `detail`.
 - `bash ui_kits/shared/check-theme-agnostic.sh` — 0 warnings.
-- Chromium 1440 / 768 / 390: no horizontal overflow, 0 broken images; 7,107px, 8,172px and 9,586px tall.
+- Chromium 1440 / 768 / 390: no horizontal overflow, 0 broken images; 7,126px, 8,191px and 9,586px tall.
 - **WebKit with real touch (Playwright, iPhone 13)**: filter chips, the `+` panels, the carousel
   arrows, a swipe on the reviews rail, the FAQ rows and the price select all respond to taps. This
   pass exists because of the 2026-09-21 Safari bug, where a tap arrived as a click with `detail` 0
