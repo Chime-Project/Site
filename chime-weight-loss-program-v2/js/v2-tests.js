@@ -37,7 +37,9 @@ ok("no link to the source site", !/sesamecare/i.test(html));
 ["Wegovy", "Zepbound", "Ozempic", "Mounjaro", "Rybelsus", "Foundayo", "Saxenda", "Victoza", "Trulicity"].forEach(function (b) {
   ok("brand drug name absent from the body: " + b, body.indexOf(b) === -1);
 });
-ok("no FDA approved seal claim on the cards", !/FDA[- ]approved/i.test(body.slice(body.indexOf("V2 Meds"), body.indexOf("V2 Journey"))));
+// weight.html's own h2 is "Get access to FDA-approved GLP-1s online", which is
+// kept; what is not reproduced is the per-card FDA seal badge.
+ok("no per-card FDA seal", !/fda-seal|fda_approved|FDA approved</i.test(body));
 ok("no Trustpilot", !/trustpilot/i.test(body));
 ok("LegitScript stands in for the rating", /LegitScript certified/.test(body));
 
@@ -53,25 +55,29 @@ ok("footer flags the page as a design reference", /design reference built from a
 ok("head comment flags the commercial terms", /NONE OF IT IS APPROVED/.test(html));
 ok("page is noindex", /name="robots" content="noindex"/.test(html));
 
-/* 4. structure the script needs */
+/* 4. structure, as weight.html has it: hero, product carousel, journey,
+      includes, providers, comparison, reviews, FAQ, footer. That capture has
+      no results band, no filter/price-mode explorer and no app band, so none
+      of those are here either. */
 ok("two rails", (html.match(/data-rail/g) || []).length === 2);
 ok("two tracks", (html.match(/data-track/g) || []).length === 2);
-ok("three chips", (html.match(/class="chip[^"]*" type="button"/g) || []).length === 3);
-ok("price mode select", html.indexOf("data-price-mode") !== -1);
 var cards = html.match(/<li class="card"[^>]*>/g) || [];
 ok("six medication cards", cards.length === 6);
-cards.forEach(function (c, i) {
-  ok("card " + (i + 1) + " declares both prices", /data-cash="\d+"/.test(c) && /data-ins="\d+"/.test(c));
-});
-ok("every card has a price slot", (html.match(/ data-price>/g) || []).length === 6);
-ok("every card has an expand button", (html.match(/class="more"/g) || []).length === 6);
-ok("every panel exists", (html.match(/class="detail" id="d/g) || []).length === 6);
+ok("each card shows a from price", (html.match(/class="card__price"/g) || []).length === 6);
+ok("each card has both actions", (html.match(/class="card__act"/g) || []).length === 6);
+ok("New badges are present", (html.match(/pill--new/g) || []).length === 4);
+ok("the high-dose badge is present", (html.match(/pill--alt/g) || []).length === 1);
+ok("no results band, weight.html has none", html.indexOf("V2 Results") === -1);
+ok("no app band, weight.html has none", html.indexOf("V2 App") === -1);
+ok("no filter chips or price toggle, weight.html has none", html.indexOf("data-price-mode") === -1 && html.indexOf('class="chip') === -1);
+ok("hero carries the price block", /class="hero__price"/.test(html) && /class="hero__pill"/.test(html));
+ok("hero has the filled and outlined pair", (html.match(/class="btn"/g) || []).length >= 1 && /btn--ghost/.test(html));
+ok("hero has three bullets", (html.match(/<li><svg class="ico" aria-hidden="true"><use href="#i-(bolt|shield|bag)"/g) || []).length === 3);
 ok("fifteen FAQ rows, as the reference has", (html.match(/class="acc__q"/g) || []).length === 15);
 ok("FAQ rows start closed", (html.match(/class="acc__q" aria-expanded="false"/g) || []).length === 15);
 ok("nine comparison rows", (html.match(/<tr><th scope="row"/g) || []).length === 9);
 ok("seven reviews, as the reference has", (html.match(/class="quote"/g) || []).length === 7);
 ok("five journey steps", (html.match(/<li><h4>/g) || []).length === 5);
-ok("three result cards", (html.match(/class="res__card"/g) || []).length === 3);
 
 /* 5. the reference's measured design is what the sheet declares */
 ok("primary purple", css.indexOf("#5921cf") !== -1);
@@ -106,7 +112,7 @@ var vs = (html.match(/\?v=(\d+)/g) || []).map(function (v) { return v.slice(3); 
 ok("both assets cache busted at the same version", vs.length === 2 && vs[0] === vs[1]);
 ok("version is 20260956 or later", Number(vs[0]) >= 20260956);
 ok("script does not branch on a click's detail", !/\.detail\b/.test(js));
-ok("every section carries a screen label", (html.match(/data-screen-label/g) || []).length >= 11);
+ok("every section carries a screen label", (html.match(/data-screen-label/g) || []).length === 10);
 
 console.log((fail ? "FAILED " : "OK ") + pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);
