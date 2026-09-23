@@ -1,0 +1,1823 @@
+<!doctype html>
+<html class="js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Start GLP-1 Weight Loss | Online Consultation | Chime Health</title>
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health: GLP-1 "get started" landing, a clone of wellmedr.com/pages/get-started-weight-loss.
+         Client request 2026-09-23 (the second of "need clones of these just logo and branding switched").
+         Luis, same day: change ONLY what the client asked for, keep everything else the same, and ask
+         before any other change ("keep the gold"). Own folder. Plan: GET-STARTED-WL-CLONE-PLAN.md.
+
+         Built from the reference itself: its rendered #MainContent markup (Shopify lander + PageFly
+         sections, classes untouched), every stylesheet it loaded in document order pruned with PurgeCSS
+         into css/lander.css, and its two inline scripts verbatim in js/lander.js (steps timeline, FAQ).
+         Shopify, the cart drawer, slick and every tracker are gone. Colours, copy, prices, layout, the
+         before/after gallery and the Ozempic / Zepbound cards are the reference's, unchanged.
+
+         CHANGED (logo + branding only):
+         · wellmedoc / wellmedr logos (header, footer) → Chime Health logo in the same canvas size
+         · the brand name in the copy, alt text and © / legal block → "Chime Health"
+         · brand marks inside their art, repainted with the Chime wordmark: the gold "Weight Loss
+           Warranty" seal (3 places, one baked into the hero image), the delivery van, the doctor's coat
+         · LegitScript seal → Chime's mark (theirs certified wellmedr.com); the checker link removed
+         · their phone line → 1-XXX-XXX-XXXX placeholder, not dialable (no Chime number on the site yet)
+         · every "Check Eligibility" / "Take the quiz" → ../chimeAssessment.html; footer + legal links →
+           Chime's pages; "GLP-1 Safety Information" → # (no Chime page yet)
+         FLAGGED, kept as the reference has it: all prices and offers ($49 / $89, $150 off for life,
+         money-back guarantee), the Trustpilot award, the 18 before/after photos with names, the
+         Ozempic / Zepbound brand pens and prices, the journal logos. None of it is confirmed for Chime. -->
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="preload" href="fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/lander.css?v=20260959" />
+  </head>
+  <body class="gradient">
+<main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      <div id="shopify-section-template--22506908156056__lander_footer_GVn3ie" class="shopify-section">
+<div class="lander-announcement">
+    
+     Fall sale discount: 🎉 Applied at Checkout <strong>$49/mo</strong> Semaglutide and <strong>$89/mo</strong> Tirzepatide.
+</div>
+
+<div class="lander-header">
+    <div class="page-width">
+        <div class="lander-header-contents">
+            <div class="lander-header-logo">
+                <a href="../index.html">
+                    <img width="448" height="112" src="images/logo-header.webp">
+                </a>
+            </div>
+
+            <div class="lander-header-buttons">
+             
+                <a href="../chimeAssessment.html" class="takequiz" id="takeQuizBtn">
+                        Take the quiz <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.3335 8H12.6668" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M8 3.33331L12.6667 7.99998L8 12.6666" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+                </a>
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="lander-banner">
+    <div class="page-width">
+        <div class="lander-banner-contents">
+            <div class="lander-banner-left-col">
+                <div class="hero_subtitle subtext_visibleOn_mobile">Glp-1 medications used by 1,000,000 + patients</div>
+                
+                <div class="hero_subtitle">GLP-1 medications used by over 2,000,000 + patients across the U.S.</div>
+                <div class="starts">
+                    <span class="hero_subtitle"><i>TrustPilot Excellence Award</i></span>
+                    
+                    <img class="trustpilot" src="images/trustpilot.webp">
+                </div>
+                
+                <h1>See if you qualify for GLP-1 weight-loss medication</h1>
+                <p>Takes 3 minutes • No commitment • Clinician review required</p>
+                    <img width="" height="" class="mobileView_image" src="images/hero-offer.webp">
+                <div class="lander-action-box">
+                    <div class="lander-banner-box-content">
+                        <div class="full">
+                            <div>Your Most Affordable Entry Into GLP-1 Treatment Starts Today</div>
+                            <div><img class="members-img" width="200" height="100" src="images/member-images.webp"></div>
+                            <div class="flex-box">
+                                <div><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.9251 4.30999C1.85212 3.98125 1.86332 3.63941 1.95767 3.31616C2.05203 2.99291 2.22647 2.69871 2.46483 2.46085C2.70319 2.22299 2.99775 2.04916 3.3212 1.95548C3.64465 1.86181 3.98651 1.85132 4.3151 1.92499C4.49595 1.64214 4.7451 1.40937 5.03957 1.24813C5.33405 1.08689 5.66437 1.00238 6.0001 1.00238C6.33582 1.00238 6.66615 1.08689 6.96062 1.24813C7.25509 1.40937 7.50424 1.64214 7.6851 1.92499C8.01418 1.851 8.35663 1.86144 8.6806 1.95534C9.00456 2.04925 9.29951 2.22356 9.53802 2.46206C9.77653 2.70057 9.95084 2.99552 10.0447 3.31949C10.1386 3.64345 10.1491 3.9859 10.0751 4.31499C10.3579 4.49584 10.5907 4.74499 10.752 5.03946C10.9132 5.33394 10.9977 5.66426 10.9977 5.99999C10.9977 6.33571 10.9132 6.66604 10.752 6.96051C10.5907 7.25499 10.3579 7.50413 10.0751 7.68499C10.1488 8.01357 10.1383 8.35544 10.0446 8.67888C9.95092 9.00233 9.7771 9.29689 9.53924 9.53525C9.30137 9.77361 9.00718 9.94806 8.68393 10.0424C8.36067 10.1368 8.01883 10.148 7.6901 10.075C7.50948 10.3589 7.26014 10.5927 6.96516 10.7546C6.67018 10.9166 6.33911 11.0015 6.0026 11.0015C5.66608 11.0015 5.33501 10.9166 5.04003 10.7546C4.74506 10.5927 4.49572 10.3589 4.3151 10.075C3.98651 10.1487 3.64465 10.1382 3.3212 10.0445C2.99775 9.95082 2.70319 9.77699 2.46483 9.53913C2.22647 9.30127 2.05203 9.00707 1.95767 8.68382C1.86332 8.36057 1.85212 8.01872 1.9251 7.68999C1.64007 7.50961 1.4053 7.26007 1.24262 6.96459C1.07994 6.66912 0.994629 6.33729 0.994629 5.99999C0.994629 5.66268 1.07994 5.33086 1.24262 5.03538C1.4053 4.7399 1.64007 4.49037 1.9251 4.30999Z" fill="#2B45C5"></path>
+                                <path d="M4.5 6L5.5 7L7.5 5" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg> <span>Delivered through a nationwide clinical network trusted by tens of thousands of patients.</span> </div>
+                                <div><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.9251 4.30999C1.85212 3.98125 1.86332 3.63941 1.95767 3.31616C2.05203 2.99291 2.22647 2.69871 2.46483 2.46085C2.70319 2.22299 2.99775 2.04916 3.3212 1.95548C3.64465 1.86181 3.98651 1.85132 4.3151 1.92499C4.49595 1.64214 4.7451 1.40937 5.03957 1.24813C5.33405 1.08689 5.66437 1.00238 6.0001 1.00238C6.33582 1.00238 6.66615 1.08689 6.96062 1.24813C7.25509 1.40937 7.50424 1.64214 7.6851 1.92499C8.01418 1.851 8.35663 1.86144 8.6806 1.95534C9.00456 2.04925 9.29951 2.22356 9.53802 2.46206C9.77653 2.70057 9.95084 2.99552 10.0447 3.31949C10.1386 3.64345 10.1491 3.9859 10.0751 4.31499C10.3579 4.49584 10.5907 4.74499 10.752 5.03946C10.9132 5.33394 10.9977 5.66426 10.9977 5.99999C10.9977 6.33571 10.9132 6.66604 10.752 6.96051C10.5907 7.25499 10.3579 7.50413 10.0751 7.68499C10.1488 8.01357 10.1383 8.35544 10.0446 8.67888C9.95092 9.00233 9.7771 9.29689 9.53924 9.53525C9.30137 9.77361 9.00718 9.94806 8.68393 10.0424C8.36067 10.1368 8.01883 10.148 7.6901 10.075C7.50948 10.3589 7.26014 10.5927 6.96516 10.7546C6.67018 10.9166 6.33911 11.0015 6.0026 11.0015C5.66608 11.0015 5.33501 10.9166 5.04003 10.7546C4.74506 10.5927 4.49572 10.3589 4.3151 10.075C3.98651 10.1487 3.64465 10.1382 3.3212 10.0445C2.99775 9.95082 2.70319 9.77699 2.46483 9.53913C2.22647 9.30127 2.05203 9.00707 1.95767 8.68382C1.86332 8.36057 1.85212 8.01872 1.9251 7.68999C1.64007 7.50961 1.4053 7.26007 1.24262 6.96459C1.07994 6.66912 0.994629 6.33729 0.994629 5.99999C0.994629 5.66268 1.07994 5.33086 1.24262 5.03538C1.4053 4.7399 1.64007 4.49037 1.9251 4.30999Z" fill="#2B45C5"></path>
+                                <path d="M4.5 6L5.5 7L7.5 5" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg> <span>Supported by pharmacy partners trusted with tens of thousands of prescriptions</span> </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+
+                    <a class="btn btn_primary" href="../chimeAssessment.html">Check Eligibility</a>
+                    
+                </div>
+            </div>
+            <div class="lander-banner-right-col">
+                <img width="600" height="500" class="desktopView_image" src="images/hero-offer.webp">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="lander-trusted-logos-container">
+    <div class="page-width">
+        <h2>Clinically Proven GLP-1 Treatments — Trusted Nationwide</h2>
+
+        <div class="lander-trusted-logos">
+            <div class="trustedLogoItem" style="text-align: center;">
+                <a>
+  <img src="images/legitscript.webp" alt="LegitScript Certified" width="70">
+</a>
+                
+                <div>LegitScript <br> Certified</div>
+            </div>
+            <div class="trustedLogoItem" style="text-align: center;">
+                <img style="height: auto; max-width: 70px" width="70" height="70" src="images/board-certified-u-s-clinicians.webp">
+                <div>GLP-1 medications used by millions of patients across the U.S.</div>
+            </div>
+            <div class="trustedLogoItem" style="text-align: center;">
+                <img style="height: auto; max-width: 70px" width="70" height="70" src="images/u-s-licensed-pharmacies.webp">
+                <div>Delivered through a nationwide network of U.S. licensed clinicians</div>
+            </div>
+            <div class="trustedLogoItem" style="text-align: center;">
+                <img style="height: auto; max-width: 70px" width="70" height="70" src="images/hipaa-compliant-secure.webp">
+                <div>Supported by pharmacy partners trusted with tens of thousands of prescriptions</div>
+            </div>
+            <div class="trustedLogoItem" style="text-align: center;">
+                <img style="height: auto; max-width: 70px" width="70" height="70" src="images/rectangle-255.webp">
+                <div>Modern, AI-enhanced care model designed for long-term success</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+      
+
+
+
+    
+      
+
+
+
+    
+    
+
+
+    
+     
+          
+            
+
+
+
+ 
+<div class="lander-lander-glp newCutomerOffer moneyBackGuarantee">
+	<div class="page-width">
+        <div class="offerBox">
+            
+            <img src="images/warranty-badge.webp" width="original" height="original">
+            <h2>
+                MONEY BACK GUARANTEE
+            </h2>
+            <p> IF YOU DON’T LOSE WEIGHT IN 90 DAYS WE WILL REFUND 100% OF YOUR MONEY ! </p>
+        </div>
+	</div>
+</div>
+
+<div class="lander-why-choose-wellmedoc">
+    <div class="page-width">
+        <div class="lander-why-choose-contents">
+            <h2>Why People <span>Choose Chime Health</span></h2>
+            <p>The&nbsp;most comprehensive and care driven GLP-1 care program&nbsp;online.</p>
+            <p>You’re getting continuous medical support, AI-powered guidance, and a modern telehealth experience built for results.</p>
+
+
+            <div class="lander-why-choose-boxes">
+                <div class="lander-why-choose-box-item">
+                    <div>
+                        Included
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 6.49998C10 8.99998 8.25 10.25 6.17 10.975C6.06108 11.0119 5.94277 11.0101 5.835 10.97C3.75 10.25 2 8.99998 2 6.49998V2.99998C2 2.86737 2.05268 2.7402 2.14645 2.64643C2.24021 2.55266 2.36739 2.49998 2.5 2.49998C3.5 2.49998 4.75 1.89998 5.62 1.13998C5.72593 1.04948 5.86068 0.999756 6 0.999756C6.13932 0.999756 6.27407 1.04948 6.38 1.13998C7.255 1.90498 8.5 2.49998 9.5 2.49998C9.63261 2.49998 9.75979 2.55266 9.85355 2.64643C9.94732 2.7402 10 2.86737 10 2.99998V6.49998Z" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M4.5 6H7.5" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M6 4.5V7.5" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+
+                    <div class="lander-why-choose-box-content">
+                        <div>
+                            <h3>Unlimited Messaging With Licensed Clinicians</h3>
+                            <ul>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Same-day appointment availability</span>
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>US Based licensed clinicians</span>
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Clinical guidance for dosing, tolerance, &amp; progress</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <img style="width: auto; height: auto; max-width: 200px;" width="190" height="224" src="images/clinician-phone.webp">
+                    </div>
+                </div>
+
+                <div class="lander-why-choose-box-item">
+                    <div>
+                        Included
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 6.49998C10 8.99998 8.25 10.25 6.17 10.975C6.06108 11.0119 5.94277 11.0101 5.835 10.97C3.75 10.25 2 8.99998 2 6.49998V2.99998C2 2.86737 2.05268 2.7402 2.14645 2.64643C2.24021 2.55266 2.36739 2.49998 2.5 2.49998C3.5 2.49998 4.75 1.89998 5.62 1.13998C5.72593 1.04948 5.86068 0.999756 6 0.999756C6.13932 0.999756 6.27407 1.04948 6.38 1.13998C7.255 1.90498 8.5 2.49998 9.5 2.49998C9.63261 2.49998 9.75979 2.55266 9.85355 2.64643C9.94732 2.7402 10 2.86737 10 2.99998V6.49998Z" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M4.5 6H7.5" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M6 4.5V7.5" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+
+                    <div class="lander-why-choose-box-content">
+                        <div>
+                            <h3>Real-Time Access to Your Care Platform</h3>
+                            <ul>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Progress tracking</span>
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>AI-enhanced weight-loss support</span>
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Tips, guidance, and personalized insights as you go</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <img style="width: auto; height: auto; max-width: 200px;" width="190" height="224" src="images/real-time-access-to-member-community-platform.webp">
+                    </div>
+                </div>
+
+                <div class="lander-why-choose-box-item">
+                    <div>
+                        Included
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 6.49998C10 8.99998 8.25 10.25 6.17 10.975C6.06108 11.0119 5.94277 11.0101 5.835 10.97C3.75 10.25 2 8.99998 2 6.49998V2.99998C2 2.86737 2.05268 2.7402 2.14645 2.64643C2.24021 2.55266 2.36739 2.49998 2.5 2.49998C3.5 2.49998 4.75 1.89998 5.62 1.13998C5.72593 1.04948 5.86068 0.999756 6 0.999756C6.13932 0.999756 6.27407 1.04948 6.38 1.13998C7.255 1.90498 8.5 2.49998 9.5 2.49998C9.63261 2.49998 9.75979 2.55266 9.85355 2.64643C9.94732 2.7402 10 2.86737 10 2.99998V6.49998Z" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M4.5 6H7.5" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M6 4.5V7.5" stroke="white" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+
+                    <div class="lander-why-choose-box-content">
+                        <div>
+                            <h3>On-Time Refills, Always</h3>
+                            <ul>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Medications delivered discreetly</span>
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Refills shipped before you run out</span>
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#C29B5D" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    <span>Zero pharmacy lines or appointment hassles</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <img style="width: auto; height: auto; max-width: 200px;" width="190" height="224" src="images/refills-van.webp">
+                    </div>
+                </div>
+
+            </div>
+            <button onclick="window.location.href='../chimeAssessment.html'" class="btn btn_primary">Check Eligibility</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="lander-lander-glp transformSec">
+	<div class="full_width">
+		<div class="lander-why-choose-contents gpl1">
+            <h2>Start Your <span> <strong>Weight Loss Journey</strong> </span></h2>
+            <p class="subText">Join Clinically Proven GLP-1 Treatments Trusted Nationwide used by millions of patients across the U.S. Backed by U.S. pharmacy partners trusted with 100,000+ prescriptions nationwide</p>
+        </div>
+        <section class="">
+             
+             
+             <div class="scroll-wrapper">
+                <div class="scroll-track">
+                    <div class="gridContainer">
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/1.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/2.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">29</span> lbs
+                                </div>
+                                <div class="name">Meghan S.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/3.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/4.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">29</span> lbs
+                                </div>
+                                <div class="name">Noelle D.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/5.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">36</span> lbs
+                                </div>
+                                <div class="name">Susan S.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/6.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/7.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gridContainer">
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/8.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/9.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">29</span> lbs
+                                </div>
+                                <div class="name">Meghan S.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/10.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/11.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">29</span> lbs
+                                </div>
+                                <div class="name">Noelle D.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/12.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">36</span> lbs
+                                </div>
+                                <div class="name">Susan S.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/1.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/2.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/3.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scroll-wrapper">
+                <div class="scroll-track scroll-trackLefttoRight">
+                    <div class="gridContainer">
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/11.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">16</span> lbs
+                                </div>
+                                <div class="name">Julie L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/4.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">36</span> lbs
+                                </div>
+                                <div class="name">Morgan M.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/5.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">32</span> lbs
+                                </div>
+                                <div class="name">Scott H.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/6.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Michelle C.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/7.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Tim B.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/8.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/9.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gridContainer">
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/12.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">16</span> lbs
+                                </div>
+                                <div class="name">Julie L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/1.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">36</span> lbs
+                                </div>
+                                <div class="name">Morgan M.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/13.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">32</span> lbs
+                                </div>
+                                <div class="name">Scott H.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/14.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Michelle C.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/15.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/16.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/17.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             
+            <div class="scroll-wrapper">
+                <div class="scroll-track">
+                    <div class="gridContainer">
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/18.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">31</span> lbs
+                                </div>
+                                <div class="name">Jaime M.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/1.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">24</span> lbs
+                                </div>
+                                <div class="name">Jerri D.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/2.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Scott H.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/3.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">28</span> lbs
+                                </div>
+                                <div class="name">James O.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/4.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">42</span> lbs
+                                </div>
+                                <div class="name">Christopher G.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/5.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/6.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gridContainer">
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/7.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/2.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/3.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/4.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/5.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">42</span> lbs
+                                </div>
+                                <div class="name">Christopher G.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/6.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transform-card">
+                            <div class="image-wrapper">
+                                <img src="images/7.webp" class="before-img" width="original" height="original">
+                            </div>
+                            <div class="info-overlay">
+                                <div class="weight-change">
+                                    <span class="arrow">↓</span>
+                                    <span class="weight">40</span> lbs
+                                </div>
+                                <div class="name">Kala L.</div>
+                                <div class="verified">
+                                    Inspired by real patient success stories in similar Telehealth programs
+                                </div>
+                                <p class="infoText">
+                                    Average weight loss in clinical programs: <span>25–40 lbs.</span> Individual results vary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-width">
+                <button onclick="window.location.href='../chimeAssessment.html'" class="btn btn_primary">Check Eligibility</button>
+                    <p class="notice-small shortW"><b>Inspired by real patient success stories in similar Telehealth programs. Average weight loss in clinical programs: 25–40 lbs. Individual results vary. Chime Health does not imply that stock images listed are actual patients of Chime Health, patients above are listed for illustration purposes only based on similar weight loss programs, for comparison and illustration purposes only.</b></p><b>
+            </b></div><b>
+        </b></section><b>
+    </b></div><b>
+</b></div><b>
+
+
+<div class="lander-brand-testimonials">
+    <div class="page-width">
+        <div class="lander-brand-testimonials-content">
+            <div>
+                <h2>People don’t just want medication. <br><b>They want results.</b></h2>
+                <p>And the GLP-1 clinical evidence is clear. <br> Chime Health was designed to turn that science into safe, real-world success with continuous medical support.</p>
+                <div class="logosList">
+                    <img src="images/logo1.webp" class="before-img" width="original" height="original">
+                    <img src="images/logo2.webp" class="before-img" width="original" height="original">
+                    <img src="images/logo3.webp" class="before-img" width="original" height="original">
+                    <img src="images/logo4.webp" class="before-img" width="original" height="original">
+                </div>
+            </div>
+
+            <div class="lander-brand-testimonials-items">
+                <h2>Trusted Telehealth Infrastructure</h2>
+                <div class="lander-brand-testimonials-item">
+
+                        <img src="images/trustbadge1.webp" width="70" height="70">
+
+                    <div>Board-Certified U.S. Clinicians</div>
+                </div>
+
+                <div class="lander-brand-testimonials-item">
+
+                        <img src="images/trustbadge2.webp" width="70" height="70">
+
+                    <div>Licensed U.S. Pharmacies</div>
+                </div>
+                <div class="lander-brand-testimonials-item">
+
+                        <img src="images/trustbadge3.svg" width="70" height="70">
+
+                    <div>HIPAA-Compliant Platform</div>
+                </div>
+                <div class="lander-brand-testimonials-item">
+
+                        <img src="images/trustbadge4.webp" width="70" height="70">
+
+                    <div>Secure Medical Review Process</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="lander-lander-glp stepsSec">
+	<div class="page-width">
+		
+    <section class="steps_section">
+        <div class="steps-container">
+    
+            
+            <div class="steps-header lander-why-choose-contents gpl1">
+                <h2>What happens <span>next</span> ?</h2>
+                <p class="subText">✅ 4 Simple Steps.</p>
+            </div>
+            
+            <div class="steps-list">
+
+             
+            <div class="steps-lineBox">
+                <div class="steps-line"></div>
+                <div class="steps-line-top" style="height: 0%;"></div>
+            </div>
+            
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <h3>Activate Your Weight Loss Plan Instantly</h3>
+                <ul class="step-features">
+                    <li>
+                        <img src="images/checkicon.svg" width="16" height="16">
+                        Same-day slots available</li>
+                    <li>
+                        <img src="images/checkicon.svg" width="16" height="16">
+                        Takes just 15 minutes</li>
+                </ul>
+                <img src="images/step1.webp" width="original" height="original">
+            </div>
+
+            
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <h3>Clinician Builds Your Program</h3>
+                <ul class="step-features">
+                <li>
+                    <img src="images/checkicon.svg" width="16" height="16">
+                    Intake reviewed by a licensed clinician</li>
+                <li>
+                    <img src="images/checkicon.svg" width="16" height="16">
+                    Personalized treatment plan created</li>
+                </ul>
+                <img src="images/step2.webp" width="original" height="original">
+            </div>
+
+            
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <h3>Medication Delivered Right to Your Doorstep</h3>
+                <ul class="step-features">
+                <li>
+                    <img src="images/checkicon.svg" width="16" height="16">
+                    Discreet, guaranteed delivery</li>
+                <li>
+                    <img src="images/checkicon.svg" width="16" height="16">
+                    No pharmacy visits or waiting rooms</li>
+                </ul>
+                <img src="images/step3.webp" width="original" height="original">
+            </div>
+
+            
+            <div class="step-item">
+                <div class="step-number active">4</div>
+                <h3>On-Time Refills Guaranteed</h3>
+                <ul class="step-features">
+                <li>
+                    <img src="images/checkicon.svg" width="16" height="16">
+                    Fast, reliable refill delivery</li>
+                <li>
+                    <img src="images/checkicon.svg" width="16" height="16">
+                    Never miss a dose, arrive before running out</li>
+                </ul>
+                <img src="images/step4.webp" width="original" height="original">
+            </div>
+
+            </div>
+        </div>
+    </section>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+ 
+<div class="lander-lander-glp">
+	<div class="page-width">
+		 <div class="lander-why-choose-contents gpl1">
+            <h2>Modern <span>GLP-1 Care</span>, Built for Real Life</h2>
+            <p class="subText">Chime Health delivers a comprehensive weight-loss program — not just prescriptions.</p>
+            <p class="subText">Where most programs stop at medication, we deliver ongoing care, real support, and AI-powered check-ins to help you stay consistent and reach your goals.</p>
+
+<h3>Choose Your GLP-1 Plan</h3>
+
+    <section class="plans-container plans-container_withTwo">
+         
+        <div class="plan-card">
+          <img src="images/semaglutide-plan.webp" alt="Tirzepatide Injection" class="plan-img">
+          <div class="plan-card-body">
+            <h2 class="plan-title">Tirzepatide</h2>
+            <p class="plan-subtitle">Most Powerful Option</p>
+            <p class="plan-description">Strong appetite control for faster and more effective weight loss.</p>
+            <span class="badge green">⭐ Recommended for most patients</span>
+            <div class="plan-cardTypes">
+            <label class="monthly_plan"> 
+                <p class="plan-description">
+                    </p><h2 class="plan-title">Monthly Plan</h2>
+                    
+                    <p class="plan-price">
+                        <span class="price-note">Starting At</span>
+                        $89 a <span class="price-note">month</span> </p>    
+                    <p class="plan-subtitle">Shipped every 4 weeks</p>
+                    
+                <ul class="plan-description">
+                <li>✔ Tirzepatide shipped every 4 weeks</li>
+                <li>✔ Dosing adjusted as your body responds</li>
+                <li>✔ Same price regardless of dosage</li>
+                <li>✔ Cancel or change anytime</li>
+                </ul>
+                
+            </label>    
+            
+
+            
+
+            
+            </div>
+            <button onclick="window.location.href='../chimeAssessment.html'" class="btn btn_primary">Check Eligibility</button>
+          </div>
+        </div>
+
+        
+        <div class="plan-card">
+          <img src="images/compounded-glp-1.webp" alt="Semaglutide Injection" class="plan-img">
+          <div class="plan-card-body">
+            <h2 class="plan-title">Semaglutide</h2>
+            <p class="plan-subtitle">Proven &amp; Steady</p>
+            <p class="plan-description">Effective appetite control with steady and consistent weight-loss results.</p>
+            <span class="badge gray">⭐ Recommended for most patients</span>
+
+            <section class="plans-container_inner plan-cardTypes">
+
+                    
+                    <div class="plan-card_duration">
+                    <label class="monthly_plan">
+                        <h2 class="plan-title">Monthly Plan</h2>
+                        
+                        <p class="plan-price">
+                            <span class="price-note">Starting At</span>
+                            $49 a <span class="price-note">month</span></p>
+                        <p class="plan-subtitle">Best for flexibility</p>
+                        <ul class="plan-description">
+                        <li>✔ Provider reviews your intake</li>
+                        <li>✔ Semaglutide shipped every 4 weeks</li>
+                        <li>✔ Dosing adjusted as your body responds</li>
+                        <li>✔ Cancel or change anytime</li>
+                        </ul>
+                        
+                        
+                    </label>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+
+                </section>
+
+            <button onclick="window.location.href='../chimeAssessment.html'" class="btn btn_primary">Check Eligibility</button>
+          </div>
+        </div> 
+    </section></div>
+    <section class="plans-container">
+
+    
+
+        
+        
+
+        
+        <div class="plan-card">
+            <img src="images/ozempicstarting.webp" alt="Tirzepatide Bottle" class="plan-img">
+
+            <div class="plan-card-body">
+                <div class="plan-card-content">
+                    <h2 class="plan-title">Ozempic Starting at $1,399</h2>
+                    <p class="discount">Contains Semaglutide</p>
+                    <p class="plan-description">Month-to-month plan Includes:</p>
+                    <div class="plan-description">
+                        <ul>
+                            <li>Licensed provider review and ongoing medical oversight&nbsp;</li>
+                            <li>Medical Weight-Care Coach for personalized guidance and accountability</li>
+                            <li>Tailored dosage adjustments based on your progress and response&nbsp;</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <button onclick="window.location.href='../chimeAssessment.html'" class="btn btn_primary">Check Eligibility</button>
+            </div>
+        </div> 
+
+        
+        <div class="plan-card">
+            <img src="images/zepboundstarting.webp" alt="Tirzepatide Bottle" class="plan-img">
+
+            <div class="plan-card-body">
+                <div class="plan-card-content">
+                    <h2 class="plan-title">Zepbound starting  at $1,599</h2>
+                    <p class="discount">Contains Tirzepatide</p>
+                    <p class="plan-description">Month-to-month plan Includes:</p>
+                    <div class="plan-description">
+                        <ul>
+                            <li>Licensed provider review and ongoing medical oversight</li>
+                            <li>Medical Weight-Care Coach for personalized guidance and accountability</li>
+                            <li>Tailored dosage adjustments based on your progress and response</li>
+                        </ul>
+                    </div>
+                </div>
+                <button onclick="window.location.href='../chimeAssessment.html'" class="btn btn_primary">Check Eligibility</button>
+            </div>
+        </div>
+
+    </section></div>
+
+
+<p class="notice-small shortW"><b>Required Safety Notice.</b> Chime Health offers compounded GLP-1 medications exclusively from licensed U.S. pharmacies. Compounded medications are regulated by state Boards of Pharmacy, but are not evaluated by the FDA for safety or efficacy.
+GLP-1 medications may carry risks including thyroid C-cell tumors (including thyroid cancer) and medullary thyroid carcinoma (MTC).
+Seek immediate care for symptoms such as neck swelling, hoarseness, trouble swallowing, or shortness of breath.</p>
+
+
+</div>
+
+	</b></div><b>
+
+
+
+
+ 
+<div class="lander-lander-glp lander-why-is-everyone">
+	<div class="page-width">
+
+		 <div class="lander-why-choose-contents gpl1">
+            <h2><span>Chime Health? </span> We Deliver Real Results.</h2>
+            <p>GLP-1 medications are among the most effective, clinically proven treatments for sustainable weight loss — and Chime Health was built to help patients get the most out of them through continuous support, medical guidance, and modern telehealth.</p>
+
+<section class="stats-section">
+    <div class="stat-card half">
+        
+        <h4>Faster Progress With Evidence-Based GLP-1 Care</h4>
+        <p>GLP-1 therapies have been shown in clinical studies to produce significant early weight loss when paired with consistent medical oversight.</p>
+    </div>
+
+    <div class="stat-card half">
+        
+        <h4>Meaningful Results Within the First 90 Days</h4>
+        <p>Patients using GLP-1 medications in clinical trials often achieve double-digit weight loss within their first few months.</p>
+    </div>
+
+    <div class="stat-card full">
+        
+        <h4>Designed for High Success Rates</h4>
+        <p>Chime Health’s care model is built around factors proven to improve adherence:</p>
+        <div class="list_items">
+            <span class="list_item">Dose guidance</span>
+            <span class="list_item">Ongoing clinician messaging</span>
+            <span class="list_item">Easy refills</span>
+            <span class="list_item">AI-enhanced coaching</span>
+            <span class="list_item">Side-effect support</span>
+        </div>
+        <p>These elements help patients stay on track and achieve meaningful results safely.</p>
+    </div>
+</section>
+
+<p class="notice-small shortW">
+    Information above reflects published clinical research on GLP-1 medications (including semaglutide and tirzepatide), not outcomes specific to Chime Health. Individual results vary. All treatment plans require medical evaluation and clinician approval.
+</p>
+
+</div>
+
+	</div>
+
+</div>
+
+
+
+<div class="lander-lander-glp newCutomerOffer">
+	<div class="page-width">
+        <div class="offerBox">
+            <h2>
+                New Customer Offer: $150 off for Life
+            </h2>
+            <p>Welcome to Chime Health.</p>
+            <p>Join today and lock in $150 off for life - no long term commitments.</p>
+            <img src="images/warranty-badge.webp" width="original" height="original">
+        </div>
+	</div>
+</div>
+
+
+
+
+<div class="lander-lander-glp faqSection">
+	<div class="page-width">
+		<div class="lander-why-choose-contents gpl1">
+            <h2>Questions <span> <b>About Safety or Side Effects?</b> </span></h2>
+            <p class="subText first">GLP-1 therapy can feel overwhelming. You’re not doing this alone.</p>
+            <p class="subText">We answer every message. <br> Our care team is available 7 days a week.</p>
+        </div>
+            <div class="faq-list">
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                    What if I don’t see results?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button> 
+                    <div class="faq-answer">
+                    <p>Our providers will review your progress and adjust treatment as needed to ensure results.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                    What’s included?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button>
+                    <div class="faq-answer">
+                    <p>Your plan includes medication, provider support, ongoing check-ins &amp; progress tracking.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                    How does dosing work?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button>
+                    <div class="faq-answer">
+                    <p>Dosing is personalized by your provider based on progress and tolerance.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                    Do I qualify?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button>
+                    <div class="faq-answer">
+                    <p>You may qualify if your BMI or weight meets clinical requirements.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                    Is Chime Health legitimate?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button>
+                    <div class="faq-answer">
+                    <p>Yes! We work only with licensed U.S. providers and accredited pharmacies.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                    How fast will I see results?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button>
+                    <div class="faq-answer">
+                    <p>Most members begin seeing results within the first few weeks.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                    What states do you serve?
+                    <span class="chevron">
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 7L13 1" stroke="#C9A04D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>
+                    </button>
+                    <div class="faq-answer">
+                    <p>We are expanding rapidly — eligibility is checked during sign-up.</p>
+                    </div>
+                </div>
+            </div>
+	</div>
+    
+
+</div>
+
+<div class="lander-before-footer-icons">
+    <div class="page-width">
+        <h2>You're Protected with <span>Chime Health</span></h2>
+
+        <div class="lander-before-footer-icon-items">
+            <div class="lander-before-footer-icons-item">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M37.408 36.5916C38.646 37.8296 38.646 39.8356 37.408 41.0716C36.17 42.3096 34.164 42.3096 32.928 41.0716C31.69 39.8336 31.69 37.8276 32.928 36.5916C34.166 35.3536 36.172 35.3536 37.408 36.5916" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M15.4082 36.5918C16.6462 37.8298 16.6462 39.8358 15.4082 41.0718C14.1702 42.3098 12.1642 42.3098 10.9282 41.0718C9.69224 39.8338 9.69024 37.8278 10.9282 36.5918C12.1662 35.3558 14.1702 35.3538 15.4082 36.5918" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M20 8H28C29.104 8 30 8.896 30 10V30H4" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M10 38.832H6C4.896 38.832 4 37.936 4 36.832V26" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M30 14H38.646C39.464 14 40.2 14.498 40.502 15.258L43.714 23.286C43.902 23.758 44 24.262 44 24.77V36.666C44 37.77 43.104 38.666 42 38.666H38.338" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M31.9998 38.8398H16.3398" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M44 28H36V20H42.4" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M4 8H14" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M4 14H10" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M6 20H4" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div>Always-free delivery</div>
+            </div>
+            <div class="lander-before-footer-icons-item">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M34 14H38C40.21 14 42 15.79 42 18V38C42 40.21 40.21 42 38 42H10C7.79 42 6 40.21 6 38V18C6 15.79 7.79 14 10 14H14" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.168 19.533L15.88 17.363L14.55 15.621C13.818 14.663 13.818 13.333 14.55 12.375L15.88 10.635L16.17 8.46105C16.33 7.26505 17.27 6.32505 18.466 6.16505L20.636 5.87705L22.378 4.54705C23.336 3.81505 24.666 3.81505 25.624 4.54705L27.364 5.87705L29.538 6.16705C30.734 6.32705 31.674 7.26705 31.834 8.46305L32.122 10.633L33.452 12.375C34.184 13.333 34.184 14.663 33.452 15.621L32.122 17.361L31.832 19.535C31.672 20.731 30.732 21.671 29.536 21.831L27.366 22.119L25.624 23.449C24.666 24.181 23.336 24.181 22.378 23.449L20.638 22.119L18.464 21.829C17.268 21.671 16.328 20.729 16.168 19.533Z" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M27.1121 12.4434L23.2221 16.3334L20.8901 13.9994" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M14 30H34" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M18 36H30" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div>U.S. licensed clinicians</div>
+            </div>
+            <div class="lander-before-footer-icons-item">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M28.584 33.3259L27.126 31.7639L25.668 33.3259" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M37.6682 38.8104C36.5742 39.5564 35.2582 40.0004 33.8342 40.0004C30.0542 40.0004 26.9902 36.9364 26.9902 33.1564C26.9902 32.6984 27.0382 32.2504 27.1242 31.8164" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M39.084 33.1282L40.542 34.6882L42 33.1282" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M29.998 27.6441C31.092 26.8981 32.408 26.4561 33.832 26.4561C37.612 26.4561 40.676 29.5201 40.676 33.3001C40.676 33.7581 40.628 34.2041 40.54 34.6401" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M30 6V10" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M14 6V10" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M6 16H38" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M38 20V12C38 9.79 36.21 8 34 8H10C7.79 8 6 9.79 6 12V34C6 36.21 7.79 38 10 38H20" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M13.998 21.5C13.722 21.5 13.498 21.724 13.5 22C13.5 22.276 13.724 22.5 14 22.5C14.276 22.5 14.5 22.276 14.5 22C14.5 21.724 14.276 21.5 13.998 21.5" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M13.998 29.5C13.722 29.5 13.498 29.724 13.5 30C13.5 30.276 13.724 30.5 14 30.5C14.276 30.5 14.5 30.276 14.5 30C14.5 29.724 14.276 29.5 13.998 29.5" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M21.5 22.002C21.5 22.278 21.724 22.502 22 22.5C22.276 22.5 22.5 22.276 22.5 22C22.5 21.724 22.276 21.5 22 21.5C21.724 21.5 21.5 21.724 21.5 22.002" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div>On-time monthly refills</div>
+            </div>
+            <div class="lander-before-footer-icons-item">
+                <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M42.0174 19.0075V13.005C42.0174 10.2424 39.7779 8.00293 37.0154 8.00293H11.0045C8.24195 8.00293 6.00244 10.2424 6.00244 13.005V20.0079" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M42.0174 29.0117V35.0142C42.0174 37.7768 39.7779 40.0163 37.0153 40.0163H26.0107" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M37.0153 19.0078H42.0174C43.1224 19.0078 44.0182 19.9036 44.0182 21.0086V27.0111C44.0182 28.1162 43.1224 29.012 42.0174 29.012H37.0153C34.2527 29.012 32.0132 26.7725 32.0132 24.0099V24.0099C32.0132 21.2473 34.2527 19.0078 37.0153 19.0078V19.0078Z" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <circle cx="13.0052" cy="33.0135" r="9.00375" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></circle>
+                    <path d="M16.033 31.2305L12.2515 35.0098L9.97803 32.7431" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div>Transparent pricing</div>
+            </div>
+            <div class="lander-before-footer-icons-item">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.3636C40 31.4456 33.174 39.9376 24 41.9996C14.826 39.9376 8 31.4456 8 22.3636V15.2296C8 13.6056 8.982 12.1416 10.486 11.5276L20.486 7.43564C22.738 6.51364 25.262 6.51364 27.514 7.43564L37.514 11.5276C39.018 12.1436 40 13.6056 40 15.2296V22.3636V22.3636Z" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M30.5 20.25L23 27.75L18.5 23.25" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div>Secure, private platform</div>
+            </div>
+            <div class="lander-before-footer-icons-item">
+                <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M40.0164 16.0061H32.013C30.908 16.0061 30.0122 15.1103 30.0122 14.0053V6.00195" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12.0049 16.0061V10.0036C12.0049 7.79356 13.7965 6.00195 16.0065 6.00195H30.3565C31.4177 6.00195 32.4354 6.42393 33.1857 7.17444L38.8441 12.8328C39.5946 13.5831 40.0166 14.6008 40.0166 15.662V38.0153C40.0166 40.2253 38.2249 42.017 36.0149 42.017H16.0065C13.7965 42.017 12.0049 40.2253 12.0049 38.0153V36.0145" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M18.5075 23.5098L13.5054 28.5118" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M13.5054 23.5098L18.5075 28.5118" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <rect x="6.00244" y="16.0068" width="20.0083" height="20.0083" rx="3" stroke="#C29B5D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></rect>
+                </svg>
+                <div>No insurance required</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="floating_on_mobile">
+    <a class="btn btn_primary" href="../chimeAssessment.html">Check Eligibility</a>
+    <div class="text_with_checkIcon">
+        <svg class="w-3 h-3 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span>Semaglutide &amp; Tirzepatide in-stock</span>
+    </div>
+</div>
+
+<div class="lander-footer">
+    <div class="page-width">
+
+        <a href="../index.html" class="footer-logo">
+            <img width="128" height="32" src="images/logo-footer.webp">
+        </a>
+
+        <div class="lander-footer-buttons">
+            <a >
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.582 15.318C12.7885 15.4128 13.0212 15.4345 13.2417 15.3794C13.4622 15.3244 13.6573 15.1958 13.795 15.015L14.15 14.55C14.3363 14.3016 14.5779 14.1 14.8556 13.9611C15.1333 13.8223 15.4395 13.75 15.75 13.75H18.75C19.2804 13.75 19.7891 13.9607 20.1642 14.3358C20.5393 14.7109 20.75 15.2196 20.75 15.75V18.75C20.75 19.2804 20.5393 19.7891 20.1642 20.1642C19.7891 20.5393 19.2804 20.75 18.75 20.75C13.9761 20.75 9.39773 18.8536 6.02208 15.4779C2.64642 12.1023 0.75 7.5239 0.75 2.75C0.75 2.21957 0.960714 1.71086 1.33579 1.33579C1.71086 0.960714 2.21957 0.75 2.75 0.75H5.75C6.28043 0.75 6.78914 0.960714 7.16421 1.33579C7.53929 1.71086 7.75 2.21957 7.75 2.75V5.75C7.75 6.06049 7.67771 6.36672 7.53885 6.64443C7.4 6.92214 7.19839 7.16371 6.95 7.35L6.482 7.701C6.29842 7.84118 6.16902 8.04059 6.11579 8.26535C6.06256 8.49012 6.08878 8.72638 6.19 8.934C7.55668 11.7099 9.80442 13.9548 12.582 15.318Z" stroke="#243746" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span>1-XXX-XXX-XXXX</span>
+            </a>
+            <a href="#">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 6V12L16 14" stroke="#243746" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#243746" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div>Monday-Saturday<br>8:00am - 8:00pm (ET)</div>
+            </a>
+        </div>
+
+        <div class="lander-footer-three-logos">
+                 <a>
+  <img width="140" height="140" src="images/legitscript.webp" alt="LegitScript Certified">
+</a>
+            <a href="../index.html">
+                <img width="140" height="140" src="images/seal-pharmacy.webp">
+            </a>
+            <a href="../index.html">
+                <img width="140" height="140" src="images/seal-hipaa.webp">
+            </a>
+        </div>
+
+        <div class="lander-footer-menu">
+            <a href="../index.html">About us</a>
+            <a href="../faq.html">Customer Support</a>
+            <a href="../privacy-policy.html">Privacy Policy</a>
+            <a href="../terms-conditions.html">Terms &amp; Conditions </a>
+            <a href="../telehealth-consent.html">Telehealth consent</a>
+            <a href="../return-refund-policy.html">Refund and cancellation</a>
+        </div>
+
+
+        <div class="lander-footer-copyright">
+            <div>© 2026 Chime Health</div>
+        </div>
+        <div class="wellmedoc-health-info footer-disc">
+
+  <h2>Important information about this health assessment</h2>
+
+  <p>
+    Completing this health assessment does not guarantee treatment or a
+    prescription and does not create a provider-patient relationship with
+    Chime Health. A licensed clinician will review the information you provide,
+    determine whether telehealth care is appropriate, and make all diagnosis and
+    prescribing decisions using independent clinical judgment. A prescription is
+    never guaranteed.
+  </p>
+
+  <p>
+    Chime Health provides technology and non-clinical administrative support.
+    Chime Health does not practice medicine, prescribe medication, or manufacture,
+    compound, or dispense medication. If medication is prescribed, it will be
+    prepared and dispensed by the licensed pharmacy identified on your
+    prescription or medication label.
+  </p>
+
+  <p>
+    When clinically appropriate and legally available, a clinician may prescribe
+    a compounded medication. Compounded medications are not FDA-approved, are
+    not FDA-approved generic drugs, and are not reviewed by FDA for safety,
+    effectiveness, or quality before marketing. A compounded medication should
+    not be assumed to be the same as or equivalent to an FDA-approved product.
+    The exact medication, formulation, ingredients, concentration, dose, storage
+    instructions, pharmacy, and availability may vary. Follow your current
+    prescription label and pharmacy instructions.
+  </p>
+
+  <p>
+    Individual responses vary, and no specific treatment result or amount of
+    weight loss is guaranteed. Information on this website and in this assessment
+    is general information and does not replace advice from your licensed
+    clinician. Chime Health’s services are intended for adults age 18 or older. This
+    service does not provide emergency care; call 911 or go to the nearest
+    emergency room for a medical emergency.
+  </p>
+
+  <div class="legal-links footer-links">
+
+    <div class="legal-links__items footer-links">
+      <a href="../terms-conditions.html">Terms &amp; Conditions</a>
+
+      <a href="../privacy-policy.html">Privacy Notice</a>
+
+      <a href="../privacy-policy.html">
+        California Privacy Notice
+      </a>
+
+      <a href="../telehealth-consent.html">
+        Telehealth Consent
+      </a>
+
+      <a href="#">
+        GLP-1 Safety Information
+      </a>
+
+      <a href="../return-refund-policy.html">
+        Refund and cancellation policy
+      </a>
+    </div>
+
+    <p class="legal-links__support">
+      For account support, call <a >1-XXX-XXX-XXXX</a>.
+      For medical questions, contact your licensed clinician through the
+      patient portal.
+    </p>
+
+  </div>
+
+</div>
+    </div>
+</div>
+
+
+
+    </b></main>
+    <script src="js/lander.js?v=20260959"></script>
+  </body>
+</html>
