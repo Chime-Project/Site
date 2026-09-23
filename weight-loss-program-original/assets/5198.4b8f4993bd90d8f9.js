@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[5198],{5198:(e,a,n)=>{n.r(a),n.d(a,{default:()=>d});var s=n(37876);n(14232);var l=n(46824);let t=(0,n(17880).Cc)(l.Ay),d=({children:e,onChangeActiveIndex:a})=>(0,s.jsx)(t,{enableMouseEvents:!0,interval:5e3,onChangeIndex:e=>a(e),slideStyle:{paddingRight:"var(--spacing-0-25)"},children:e})}}]);
+//# sourceMappingURL=5198.4b8f4993bd90d8f9.js.map
