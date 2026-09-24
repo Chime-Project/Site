@@ -73,6 +73,9 @@ page.replace(/(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g, function (_, u) { refs.pus
 css.replace(/url\(([^)]+)\)/g, function (_, u) { refs.push(path.join("css", u)); });
 refs.forEach(function (u) { eq(fs.existsSync(path.join(DIR, u)), true, "asset exists: " + u); });
 
+// Chime vials repainted into both images; cache-busted so nobody keeps seeing Aspen's
+eq(/src="images\/hero-offer\.webp\?v=\d+"/.test(page) && /src="images\/mini-product\.webp\?v=\d+"/.test(page), true, "vial-swapped images carry ?v=");
+
 // One ?v= across the page
 var vs = {};
 page.replace(/\?v=(\d+)/g, function (_, v) { vs[v] = 1; });

@@ -31,16 +31,19 @@
            certificate and linked to a check of startaspen.com)
          · Privacy / Telehealth → Chime's own legal pages
          · Every CTA → ../chimeAssessment.html (theirs: /intake/weight-loss?v=2). One constant in js/lp.js.
+         · Their Semaglutide / Tirzepatide vials → Chime's vials, in the hero art and the 3-tile product
+           thumbnail (Luis, 2026-09-23). The rest of both images is theirs; repainted by
+           uploads/weight-loss-lp-ref/vials.py (untracked).
          REMOVED: Google Analytics, Microsoft Clarity, Facebook domain verification (Aspen's).
 
          KEPT AS IS, flagged for the copy team, NOT Chime's:
-         · the hero image is Aspen's ad creative: "$179 Includes Medication" is their price
+         · the hero image is Aspen's ad creative (only the vials are Chime's): "$179 Includes Medication" is their price
          · the "Excellent 4.8 · 1,000s of happy customers" Trustpilot badge is their rating
          · the $179 in the description / alt text, and every line of copy -->
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="apple-touch-icon" href="images/favicon.png" />
     <link rel="preload" href="fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="css/lp.css?v=20260958" />
+    <link rel="stylesheet" href="css/lp.css?v=20260961" />
   </head>
   <body>
     <div id="root">
@@ -59,9 +62,9 @@
           </header>
           <section id="hero" class="relative overflow-hidden" data-screen-label="Hero">
             <div class="mx-auto -mt-[15px] flex max-w-6xl flex-col items-center px-6 py-14 text-center md:px-8 md:py-20">
-              <img id="lp-hero-img" alt="Weight loss plans starting at $179 — includes medication (semaglutide &amp; tirzepatide). 3-minute online assessment." class="-mt-[20px] w-full max-w-[546px] object-contain" src="images/hero-offer.webp" width="1092" height="1092" fetchpriority="high" />
+              <img id="lp-hero-img" alt="Weight loss plans starting at $179 — includes medication (semaglutide &amp; tirzepatide). 3-minute online assessment." class="-mt-[20px] w-full max-w-[546px] object-contain" src="images/hero-offer.webp?v=20260961" width="1092" height="1092" fetchpriority="high" />
               <div class="mt-8 flex w-full max-w-[546px] items-center justify-between gap-4">
-                <img alt="Tirzepatide and semaglutide vials with a GLP-1 injection pen." class="h-16 w-auto object-contain" src="images/mini-product.webp" width="288" height="192" />
+                <img alt="Tirzepatide and semaglutide vials with a GLP-1 injection pen." class="h-16 w-auto object-contain" src="images/mini-product.webp?v=20260961" width="288" height="192" />
                 <span id="lp-hero-cta" class="inline-flex">
                   <button type="button" data-cta="quiz" class="inline-flex h-14 cursor-pointer items-center justify-center gap-2 rounded-full px-9 text-[16px] font-semibold text-white transition-transform hover:-translate-y-0.5" style="background-color: var(--lp-brand);">Get approved now<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-4 w-4" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
                 </span>
@@ -132,6 +135,6 @@
         </div>
       </div>
     </div>
-    <script src="js/lp.js?v=20260958"></script>
+    <script src="js/lp.js?v=20260961"></script>
   </body>
 </html>

@@ -16,7 +16,12 @@ team rewrites the words later.
 **To change the brand colour:** edit the `--lp-brand*`, `--primary` and `--secondary` variables in
 the brand layer. Aspen's original values are noted beside each one.
 
-**Still the reference's, and not Chime's:** the hero image (Aspen's ad, "$179 Includes
+**Chime's vials (2026-09-23):** Aspen's Semaglutide / Tirzepatide vials in the hero image and the 3-tile
+product thumbnail are replaced with Chime's vials (`uploads/vials`). The background behind them was
+rebuilt from the surrounding gradient and the rest of both images is untouched. The script is
+`uploads/weight-loss-lp-ref/vials.py` (untracked), next to their original PNGs.
+
+**Still the reference's, and not Chime's:** the rest of the hero image (Aspen's ad, "$179 Includes
 Medication"), the "Excellent 4.8" Trustpilot badge, and all of the copy.
 
 The reference material (rendered HTML, their full stylesheet, the component source and
