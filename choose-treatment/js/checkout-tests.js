@@ -69,26 +69,35 @@ ok(u.indexOf('data-discounts') === -1 && count(u, '<span') === 2, 'urgency node 
 ok(count(sc, '<span') === count(C.renderSelectorCard(sm, false, 11251), '<span') && sc.indexOf('11,251 chose this today</span>') > -1, 'counter span shape = reference');
 ok(C.PLAN_TERM.twelveMonth === 12 && C.PLAN_TERM.monthly === 1, 'plan terms');
 
-// ---- V2 (client price points, 2026-09-17): 1M / 3M / 6M, no 12-month, per-month = total ÷ months ----
+// ---- V2 = the MICRODOSE plans (client doc "Chime Microdose Gold Page", 2026-09-24): 1M / 3M / 6M / 12M ----
 var D2 = require(path.join(__dirname, 'plans-data-v2.js'));
-var client = { tirz: { monthly: 359, threeMonth: 948, sixMonth: 1794 }, sema: { monthly: 299, threeMonth: 627, sixMonth: 1194 } };
-ok(D2.heroPlan === 'sixMonth' && JSON.stringify(D2.rowPlans) === '["threeMonth","monthly"]', 'V2 hero = 6-month, rows = 3-month + monthly');
+// the client's table: [per month, due today]
+var client = { tirz: { monthly: [149, 149], threeMonth: [139, 417], sixMonth: [129, 774], twelveMonth: [119, 1428] },
+               sema: { monthly: [129, 129], threeMonth: [119, 357], sixMonth: [109, 654], twelveMonth: [99, 1188] } };
+var names = { tirz: 'Microdose Tirzepatide', sema: 'Microdose Semaglutide' };
+ok(D2.heroPlan === 'twelveMonth' && JSON.stringify(D2.rowPlans) === '["sixMonth","threeMonth","monthly"]', 'V2 hero = 12-month, rows = 6 / 3 / monthly');
+ok(D2.checkoutHref === 'checkout/', 'V2 plan buttons open the checkout');
+ok(C.checkoutUrl('checkout/', 'tirz', 'sixMonth') === 'checkout/?med=tirz&term=6', 'V2 checkout URL carries med + term');
+ok(C.checkoutUrl('checkout/', 'sema', 'monthly') === 'checkout/?med=sema&term=1', 'V2 checkout URL, monthly = term 1');
 D2.treatments.forEach(function (t) {
-  ok(!t.plans.twelveMonth, 'V2 ' + t.key + ' has no 12-month plan');
-  ok(t.plans.monthly.price === client[t.key].monthly, 'V2 ' + t.key + ' monthly = client');
-  ['threeMonth', 'sixMonth'].forEach(function (k) {
-    var p = t.plans[k], total = client[t.key][k];
-    ok(p.totalPrice === total, 'V2 ' + t.key + ' ' + k + ' total = client');
-    ok(p.price * p.months === total, 'V2 ' + t.key + ' ' + k + ' per-month × months = total (' + p.price + ' × ' + p.months + ')');
-    ok(p.savingsToday === p.months * t.plans.monthly.price - total, 'V2 ' + t.key + ' ' + k + ' savings = months × monthly − total');
+  ok(t.name === names[t.key] && t.cardTitle === names[t.key], 'V2 ' + t.key + ' named ' + names[t.key]);
+  Object.keys(client[t.key]).forEach(function (k) {
+    var p = t.plans[k], e = client[t.key][k];
+    ok(p.price === e[0], 'V2 ' + t.key + ' ' + k + ' per month = client ($' + e[0] + ')');
+    ok(p.totalPrice === e[1], 'V2 ' + t.key + ' ' + k + ' due today = client ($' + e[1] + ')');
+    ok(p.price * p.months === e[1], 'V2 ' + t.key + ' ' + k + ' per-month × months = due today');
+    if (k !== 'monthly') ok(p.savingsToday === p.months * t.plans.monthly.price - e[1], 'V2 ' + t.key + ' ' + k + ' savings = months × monthly − total');
   });
   var c2 = C.renderTreatmentCard(t, D2);
-  ok(c2.indexOf('12') === -1 || !/12[- ]MONTH|12 month/.test(c2), 'V2 ' + t.key + ' card mentions no 12-month');
-  ok(count(c2, 'btn-lilac') === 3 && c2.indexOf('data-plan="sixMonth"') > -1 && c2.indexOf('data-plan="twelveMonth"') === -1, 'V2 ' + t.key + ' 3 buttons, hero = sixMonth');
-  ok(c2.indexOf('GET 6 MONTHS + SAVE ' + C.fmtMoney(t.plans.sixMonth.savingsToday)) > -1, 'V2 ' + t.key + ' big button label');
-  ok(c2.indexOf('billed today for a full 6 month supply') > -1, 'V2 ' + t.key + ' billed line says 6 month');
+  ok(count(c2, 'btn-lilac') === 4 && c2.indexOf('data-plan="twelveMonth"') > -1, 'V2 ' + t.key + ' 4 buttons, hero = twelveMonth');
+  ok(c2.indexOf('GET 12 MONTHS + SAVE $360') > -1, 'V2 ' + t.key + ' big button label');
+  ok(c2.indexOf(C.fmtMoney(t.plans.twelveMonth.totalPrice) + ' billed today for a full 12 month supply') > -1, 'V2 ' + t.key + ' billed line');
+  ok(c2.indexOf('>' + names[t.key] + '</h3>') > -1, 'V2 ' + t.key + ' card title');
   ok(c2.indexOf('monthly savings locked in for life') === -1, 'V2 ' + t.key + ' reference-only savings bullet dropped');
+  var s2 = C.renderSelectorCard(t, false, 1);
+  ok(s2.indexOf('truncate') === -1 && s2.indexOf('>' + names[t.key] + '</h3>') > -1, 'V2 ' + t.key + ' selector name wraps, not truncated');
 });
+ok(C.renderSelectorCard(DATA.treatments[0], false, 1).indexOf('leading-tight truncate">Tirzepatide</h3>') > -1, 'V1 selector name still truncates');
 ok(C.bigButtonLabel(DATA.treatments[0].plans.twelveMonth) === 'GET 12 MONTHS + SAVE $1,082', 'V1 label unchanged after generalisation');
 
 console.log((fails ? 'FAIL ' : 'OK ') + (n - fails) + '/' + n + ' checks');

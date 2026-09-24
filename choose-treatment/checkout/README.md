@@ -10,15 +10,35 @@ and so is the font (Quicksand).
 |---|---|
 | `index.html` | Their rendered markup (classes untouched), plus `<template>`s for their other states: the summary without the coupon and the four reviews |
 | `css/checkout.css` | Their compiled Tailwind sheet pruned with PurgeCSS, colours untouched. Then a small layer: Quicksand and the card-form look-alike in Stripe's default colours |
-| `js/checkout.js` | Their behaviour: Remove / Redeem the 200off coupon, the review carousel and the phone accordions. "Choose" goes back to `../` |
+| `js/plan-fill.js` | Makes the order summary follow the plan chosen on `../v2.html` (see below) |
+| `js/checkout.js` | Their behaviour: Remove / Redeem the 200off coupon, the review carousel and the phone accordions. "Choose" goes back to `../v2.html` |
 | `js/checkout-tests.js` | `node choose-treatment/checkout/js/checkout-tests.js` |
-| `images/`, `fonts/` | The Chime logo, their gold seal with the Chime wordmark, their van with the Chime wordmark, the amber Chime Semaglutide vial, their three staff and member photos, and Quicksand |
+| `images/`, `fonts/` | The Chime logo, their gold seal with the Chime wordmark, their van with the Chime wordmark, the amber Chime Semaglutide and Tirzepatide vials, their three staff and member photos, and Quicksand |
 
 **No payment can happen on this page.** Their Stripe card form is replaced by a static look-alike of the same size.
 Its fields have no names, the form has no action, the script sends and stores nothing, and "Complete Intake &
 Checkout" does nothing.
 
-**Still theirs, not confirmed for Chime:** every price ($467 → $267, $317 without the coupon), the 200off coupon,
+## The order summary follows the chosen plan (2026-09-24)
+
+This follows the client's doc "Chime Microdose Gold Page.docx". The markup still carries their Semaglutide 3-Month numbers.
+`js/plan-fill.js` swaps them for the chosen plan in both summaries (desktop and phone) and in both coupon templates.
+It prices the plan from `../js/plans-data-v2.js`, the same file the plan page renders from.
+
+The plan comes from the URL, `?med=tirz|sema&term=1|3|6|12`, which is what the plan page's buttons open.
+Without one it uses the plan page's sessionStorage record, and failing that, Microdose Semaglutide 3-Month.
+
+| Spot | Rule | Tirzepatide 6-month |
+|---|---|---|
+| Title + photo | "<name> <N>-Month Plan" and that drug's amber vial and badge | Microdose Tirzepatide 6-Month Plan |
+| As low as | the monthly price ÷ 30, to the cent | $129 / 30 = $4.30/day |
+| Package line | "<N>-Month Treatment Package", "Covers N months" | 6-Month |
+| Package and Total Due Today | crossed-out = total + $200, then the total | ~~$974~~ $774 |
+| Per day under the total | same as "As low as" | $4.30/day |
+
+When the coupon is removed, the price is the crossed-out one (total + $200).
+
+**Still theirs, not confirmed for Chime:** the 200off coupon,
 "FSA/HSA eligible", the free benefits and their crossed-out values, "Join 200,000+", Excellent 4.7 and the four
 reviews, "FedEx within 48 hours", "Results or you don't pay" and the care guarantee. The phone number is a
 `1-XXX-XXX-XXXX` placeholder.

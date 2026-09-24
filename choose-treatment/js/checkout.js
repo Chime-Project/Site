@@ -8,9 +8,11 @@
         p = .8; if none moved, one at random does;
      3. treatment selector (mobile): aria-pressed + accent border + radio dot, then a smooth scroll to
         the matching card.
-   Plan buttons are intentionally BLANK (Luis, 2026-09-16): they are real <button>s like the reference's
-   but onPlanSelect() only records the choice in sessionStorage; no navigation (the payment step that
-   the reference goes to is not built — "next step open").
+   Plan buttons: onPlanSelect() records the choice in sessionStorage. On V1 that is all they do (BLANK,
+   Luis, 2026-09-16). When the data names a checkoutHref (V2 = the microdose plans, 2026-09-24) the button
+   then opens it with the choice in the URL: checkout/?med=<tirz|sema>&term=<months>.
+   A treatment with nameWraps lets its name wrap in the phone selector instead of truncating (V2's
+   "Microdose Tirzepatide" would cut off at 390 px); V1's names keep the reference's `truncate`.
    Pure parts are exported on window.ChimeChooseTreatment and module.exports for js/checkout-tests.js. */
 (function (root) {
   'use strict';
@@ -121,7 +123,7 @@
     var a = ACCENT[t.accent];
     var h = '<button type="button" aria-pressed="' + (selected ? 'true' : 'false') + '" data-select-treatment="' + esc(t.id) + '" class="w-full flex items-center gap-4 p-4 rounded-2xl bg-white border-2 transition-all text-left active:scale-[0.99] ' + (selected ? a.border + ' shadow-sm' : 'border-gray-200') + '">';
     h += '<div class="w-[5.5rem] h-[5.5rem] flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-b from-blue-100 via-blue-50 to-white flex items-center justify-center"><img alt="' + esc(t.name) + '" class="w-full h-full object-contain" src="' + esc(t.image) + '"></div>';
-    h += '<div class="flex-1 min-w-0"><h3 class="text-xl font-bold text-secondary-500 leading-tight truncate">' + esc(t.name) + '</h3><p class="text-base text-gray-600 mt-1 leading-snug line-clamp-2">' + esc(t.tagline) + '</p>';
+    h += '<div class="flex-1 min-w-0"><h3 class="text-xl font-bold text-secondary-500 leading-tight' + (t.nameWraps ? '' : ' truncate') + '">' + esc(t.name) + '</h3><p class="text-base text-gray-600 mt-1 leading-snug line-clamp-2">' + esc(t.tagline) + '</p>';
     h += '<div class="inline-flex items-center gap-1 text-sm font-semibold px-3 py-0.5 rounded-full mt-2 ' + a.badge + '">' + (t.badgeIcon === 'clock' ? SVG_CLOCK : SVG_BOLT) + '<span>' + esc(t.badgeLabel) + '</span></div>';
     h += '<div class="flex items-center gap-1.5 mt-2"><span class="w-2 h-2 rounded-full bg-brand-green flex-shrink-0"></span><span class="text-sm text-gray-700 font-medium tabular-nums" data-count="' + esc(t.id) + '">' + Number(count).toLocaleString('en-US') + ' chose this today</span></div></div>';
     h += '<div class="flex-shrink-0 w-9 h-9 rounded-full border-2 flex items-center justify-center transition-colors ' + (selected ? a.radioBorder + ' ' + a.radioBg : 'border-gray-300 bg-white') + '">' + (selected ? '<span class="w-[0.9rem] h-[0.9rem] rounded-full bg-white"></span>' : '') + '</div>';
@@ -136,8 +138,10 @@
   var state = { selected: null, counts: {}, discounts: 0 };
 
   function onPlanSelect(treatmentKey, planKey) {
-    // BLANK on purpose (Luis, 2026-09-16): the payment step is not built. Selection is recorded only.
     try { sessionStorage.setItem('chime.chooseTreatment', JSON.stringify({ med: treatmentKey, term: PLAN_TERM[planKey], plan: planKey, at: Date.now() })); } catch (e) { /* private mode */ }
+  }
+  function checkoutUrl(href, treatmentKey, planKey) {
+    return href + '?med=' + encodeURIComponent(treatmentKey) + '&term=' + PLAN_TERM[planKey];
   }
 
   function mount(data, doc) {
@@ -162,11 +166,13 @@
       var id = state.selected;
       requestAnimationFrame(function () { var el = doc.getElementById('treatment-' + id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     });
-    // plan buttons: blank
+    // plan buttons: record the choice; V2 then opens the checkout (V1 stays blank)
     grid.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-plan]'); if (!b) return;
       e.preventDefault();
-      onPlanSelect(b.getAttribute('data-treatment'), b.getAttribute('data-plan'));
+      var med = b.getAttribute('data-treatment'), plan = b.getAttribute('data-plan');
+      onPlanSelect(med, plan);
+      if (data.checkoutHref) root.location.href = checkoutUrl(data.checkoutHref, med, plan);
     });
 
     // 1. countdown + discounts
@@ -196,7 +202,7 @@
     return state;
   }
 
-  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect };
+  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl };
   root.ChimeChooseTreatment = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 

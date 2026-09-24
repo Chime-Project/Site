@@ -29,20 +29,40 @@ eq(count(/Chime Health/g, visible) >= 18, true, "Chime Health in place of every 
 eq(visible.indexOf("© 2026 Chime Health") > -1, true, "copyright line");
 eq(visible.indexOf("Is Chime Health legitimate?") > -1, true, "FAQ question renamed");
 eq(/<title>[^<]*\| Chime Health<\/title>/.test(page), true, "title");
-["images/logo-header.webp", "images/logo-footer.webp", "images/warranty-badge.webp", "images/hero-offer.webp",
+["images/logo-header.webp", "images/logo-footer.webp", "images/warranty-badge.webp", "images/hero-offer-amber.webp",
  "images/refills-van.webp", "images/clinician-phone.webp", "images/legitscript.webp"].forEach(function (f) {
   eq(page.indexOf('src="' + f + '"') > -1, true, "brand-swapped art used: " + f);
 });
 eq(count(/src="images\/warranty-badge\.webp"/g, page), 2, "warranty seal in both gold cards (the third is inside the hero art)");
 
-// Their links, phone and certificate are gone; CTAs go to the Chime assessment
+// Their links, phone and certificate are gone; CTAs go to the microdose plans (client doc, 2026-09-24)
 eq(count(/intake\.wellmedr|legitscript\.com|tel:/g, page), 0, "no intake, LegitScript checker or tel: link");
 eq(count(/1-888-397-6905/g, page), 0, "their phone number removed");
 eq(count(/1-XXX-XXX-XXXX/g, visible), 2, "phone placeholder in the footer pill and the legal block");
-eq(count(/href="\.\.\/chimeAssessment\.html"/g, page), 3, "anchor CTAs → assessment (header, hero, phone bar)");
-eq(count(/window\.location\.href='\.\.\/chimeAssessment\.html'/g, page), 6, "button CTAs → assessment");
+eq(count(/href="\.\.\/choose-treatment\/v2\.html"/g, page), 3, "anchor CTAs → the plans (header, hero, phone bar)");
+eq(count(/window\.location\.href='\.\.\/choose-treatment\/v2\.html'/g, page), 6, "button CTAs → the plans");
+eq(/(href="|href=')[^"']*chimeAssessment/.test(page), false, "no link to the assessment");
 eq(/(src|href)="https?:/.test(page), false, "no external src/href");
-eq(fs.existsSync(path.join(DIR, "..", "chimeAssessment.html")), true, "assessment exists with exact case");
+eq(fs.existsSync(path.join(DIR, "..", "choose-treatment", "v2.html")), true, "the plan page exists with exact case");
+
+// The MICRODOSE version (client doc "Chime Microdose Gold Page.docx", 2026-09-24)
+[["Applied at Checkout <strong>$99/mo</strong> Semaglutide and <strong>$119/mo</strong> Tirzepatide.", "banner prices"],
+ ["<h1>See if you qualify for Microdose GLP-1 weight loss medication</h1>", "hero title"],
+ ["<h3>Choose Your GLP Microdose Plan</h3>", "plans title"],
+ ['<h2 class="plan-title">Microdose Tirzepatide</h2>', "Tirzepatide card name"],
+ ['<h2 class="plan-title">Microdose Semaglutide</h2>', "Semaglutide card name"],
+ ['<span class="badge green">⭐ Recommended for faster results</span>', "Tirzepatide pill"],
+ ['<span class="badge gray">⭐ Recommended for most patients</span>', "Semaglutide pill unchanged (not in the doc)"],
+ ['$149 a <span class="price-note">month</span>', "Tirzepatide starting price"],
+ ['$129 a <span class="price-note">month</span>', "Semaglutide starting price"],
+ ["<li>✔ Tirzepatide shipped every 4 weeks</li>\n                <li>✔ Up to 5mg per week</li>", "Tirzepatide dose (swapped from the doc, Luis)"],
+ ["<li>✔ Semaglutide shipped every 4 weeks</li>\n                        <li>✔ Up to 1mg per week</li>", "Semaglutide dose (swapped from the doc, Luis)"]
+].forEach(function (c) { eq(page.indexOf(c[0]) > -1, true, "microdose: " + c[1]); });
+eq(/\$(49|89)(\/mo| a )|Dosing adjusted as your body responds|Choose Your GLP-1 Plan|qualify for GLP-1 weight-loss/.test(page.replace(/<!--[\s\S]*?-->/g, "")), false, "none of the old copy left");
+["hero-offer-amber", "tirzepatide-plan-amber", "semaglutide-plan-amber"].forEach(function (f) {
+  eq(page.indexOf('src="images/' + f + '.webp"') > -1, true, "amber vial photo used: " + f);
+});
+eq(/src="images\/(hero-offer|semaglutide-plan|compounded-glp-1)\.webp"/.test(page), false, "no clear-glass vial photo left");
 var chimeSeal = crypto.createHash("md5").update(fs.readFileSync(path.join(DIR, "..", "chime-weight-loss-lp", "images", "legitscript.png"))).digest("hex");
 eq(chimeSeal, "697d329a6658ba1ec251c0ae24c12e12", "the LegitScript mark source is Chime's");
 

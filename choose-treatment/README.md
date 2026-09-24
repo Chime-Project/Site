@@ -25,10 +25,10 @@ treatment selector are phone-only, `md:hidden`; the "Choose Your Treatment" titl
 | `css/checkout.css` | The reference's Tailwind 3.4 output reduced to the rules this page's DOM uses (extracted from its 59 KB `app.css`), class names kept so the DOM can be diffed 1:1 against the reference. Hand additions at the bottom: the selected-treatment state (`border-brand-gold`, the 0.9 rem radio dot), `.site-logo` width cap, and the grouped selectors the extractor dropped. |
 | `js/plans-data.js` | **One place for every price, label and bullet** — `window.CHIME_CHOOSE_TREATMENT`. The client's ladder goes here when it arrives. Also the urgency defaults (5 discounts, 6:57), press names, rating, "what happens next" steps. |
 | `js/checkout.js` | Vanilla port of the reference's React page: renders both medication cards and the mobile selector from the data with the reference's exact class strings; countdown (1 s) + "discounts left" decrement (8–15 s, first after 10–15 s, floor 1); "chose this today" counters (+1 with p = .8 per tick, same cadence, one random bump if none moved); selector click → `aria-pressed`, accent border + radio dot, smooth scroll to `#treatment-<id>` (`scroll-mt-20`). Timers stop on `pagehide`. |
-| `js/checkout-tests.js` | `node choose-treatment/js/checkout-tests.js` — 78 checks (V1 + V2): money/copy lines, the reference's price literals, countdown and counter maths, renderer shape (4 buttons, 14 ticks, 4.5 stars, no hrefs, press strip, selected/unselected selector states). |
+| `js/checkout-tests.js` | `node choose-treatment/js/checkout-tests.js` — 100 checks (V1 + V2): money/copy lines, the reference's price literals, countdown and counter maths, renderer shape (4 buttons, 14 ticks, 4.5 stars, no hrefs, press strip, selected/unselected selector states). |
 | `images/` | `logo-chime.svg` (= `assets/logo-main.svg`), `tirzepatide.webp`, `semaglutide.webp`. |
 
-## V2 — the client's price points (2026-09-17)
+## V2 — the client's price points (2026-09-17, replaced by the Microdose plans below)
 
 `v2.html` = the same page on the client's offer table ("only 6m/3m/1m, no 12M; push out the per month
 price as well"): Semaglutide 1M $299 / 3M $627 / 6M $1,194, Tirzepatide 1M $359 / 3M $948 / 6M $1,794.
@@ -38,6 +38,29 @@ total ($600 / $270 and $360 / $129). Data: `js/plans-data-v2.js` (`heroPlan`, `r
 plan); css/js shared with V1 — `checkout.js` reads those three from data, so V1's output is unchanged.
 The monthly plan's "$140 / $70 monthly savings locked in for life" bullet is dropped on V2 (the number
 was the reference's and is false at these prices). Other copy and the stand-in claims are V1's.
+
+## V2 = the Microdose plans (2026-09-24)
+
+The client's doc "Chime Microdose Gold Page.docx" turned V2 into the microdose plan page. Luis chose to edit it in place,
+so the questionnaire, which ends here, now lands on these prices.
+
+- Names: "Microdose Tirzepatide" and "Microdose Semaglutide", on the cards and in the phone selector. The selector
+  names wrap instead of truncating (`nameWraps`), so they are not cut off at 390 px.
+- A 12-month option is back. The 12-month plan takes the highlighted card and 6 / 3 / monthly are the rows,
+  which is V1's layout.
+- "Save" = months × the 1-month price − total, which is $30 / $120 / $360 on both drugs.
+
+| | 1 month | 3 months | 6 months | 12 months |
+|---|---|---|---|---|
+| Microdose Semaglutide, per month | $129 | $119 | $109 | $99 |
+| Due today | $129 | $357 | $654 | $1,188 |
+| Microdose Tirzepatide, per month | $149 | $139 | $129 | $119 |
+| Due today | $149 | $417 | $774 | $1,428 |
+
+Every plan button now opens `checkout/?med=<tirz|sema>&term=<months>`. That comes from `checkoutHref` in the data.
+V1's buttons stay blank, and V1's rendered markup is byte-identical to before.
+
+The section above describes the V2 ladder this replaced.
 
 ## Luis's picks (2026-09-16)
 

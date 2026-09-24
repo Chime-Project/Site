@@ -72,7 +72,7 @@ eq(page.indexOf('<template id="co-summary-applied">') > -1 && page.indexOf('<tem
 [0, 1, 2, 3].forEach(function (n) { eq(page.indexOf('<template id="co-review-' + n + '">') > -1, true, "review " + (n + 1)); });
 var removed = page.slice(page.indexOf('<template id="co-summary-removed">'));
 removed = removed.slice(0, removed.indexOf("</template>"));
-eq(removed.indexOf("$317") > -1 && removed.indexOf("Redeem") > -1 && removed.indexOf("200off applied") === -1, true, "no-coupon state: $317 + Redeem");
+eq(removed.indexOf("$317") > -1 && removed.indexOf("Redeem") > -1 && removed.indexOf("200off applied") === -1, true, "no-coupon state: their $317 literal (plan-fill.js swaps it) + Redeem");
 eq(count(/\$267/g, page) >= 4 && count(/\$467/g, page) >= 4, true, "their prices ($467 → $267)");
 eq(count(/<div class="mt-4 space-y-4" hidden>/g, page), 2, "two phone accordions, closed");
 eq(/Invalid or expired coupon code/.test(js) && /200OFF/.test(js), true, "Redeem: 200OFF or their error");
@@ -95,6 +95,47 @@ refs.forEach(function (u) { eq(fs.existsSync(path.join(DIR, u)), true, "asset ex
 var vs = {};
 page.replace(/\?v=(\d+)/g, function (_, v) { vs[v] = 1; });
 eq(Object.keys(vs).length, 1, "single ?v= value");
+
+// The order summary follows the chosen plan (client doc "Chime Microdose Gold Page", 2026-09-24): js/plan-fill.js
+// prices it from ../js/plans-data-v2.js. Client rules: per day = monthly ÷ 30, crossed-out = total + $200.
+var P = require("./plan-fill.js");
+var D2 = require("../../js/plans-data-v2.js");
+var fillJs = fs.readFileSync(path.join(__dirname, "plan-fill.js"), "utf8");
+var expectPlans = {
+  "sema-1": ["Microdose Semaglutide 1-Month Plan", "$4.30", "$129", "$329"],
+  "sema-3": ["Microdose Semaglutide 3-Month Plan", "$3.97", "$357", "$557"],
+  "sema-6": ["Microdose Semaglutide 6-Month Plan", "$3.63", "$654", "$854"],
+  "sema-12": ["Microdose Semaglutide 12-Month Plan", "$3.30", "$1,188", "$1,388"],
+  "tirz-1": ["Microdose Tirzepatide 1-Month Plan", "$4.97", "$149", "$349"],
+  "tirz-3": ["Microdose Tirzepatide 3-Month Plan", "$4.63", "$417", "$617"],
+  "tirz-6": ["Microdose Tirzepatide 6-Month Plan", "$4.30", "$774", "$974"],
+  "tirz-12": ["Microdose Tirzepatide 12-Month Plan", "$3.97", "$1,428", "$1,628"]
+};
+Object.keys(expectPlans).forEach(function (id) {
+  var e = expectPlans[id], med = id.split("-")[0], term = +id.split("-")[1];
+  var s = P.summaryFor(D2, med, term);
+  eq([s.title, s.perDay, s.total, s.crossed], e, "summary " + id);
+  eq(s.packageLabel, term + "-Month Treatment Package", "package label " + id);
+  eq(s.image, "images/" + (med === "tirz" ? "tirzepatide" : "semaglutide") + "-amber.webp", "vial " + id);
+});
+eq(P.summaryFor(D2, "tirz", 1).covers, "One-time payment · Covers 1 month of medication", "1 month, singular");
+eq(P.summaryFor(D2, "tirz", 6).badge, "Fastest Results", "Tirzepatide badge");
+eq(P.summaryFor(D2, "sema", 3).badge, "Most Affordable", "Semaglutide badge");
+eq(P.summaryFor(D2, "sema", 3).perDayNoCoupon, "$6.19", "no-coupon per day = (total + 200) ÷ days");
+eq(P.summaryFor(D2, "tirz", 2), null, "unknown term → null");
+eq(P.summaryFor(D2, "nad", 3), null, "unknown drug → null");
+eq(P.pick("?med=tirz&term=6", { med: "sema", term: 1 }), { med: "tirz", term: 6 }, "URL wins");
+eq(P.pick("", { med: "sema", term: 12 }), { med: "sema", term: 12 }, "else the plan page's record");
+eq(P.pick("", null), { med: "sema", term: 3 }, "else Semaglutide 3-Month");
+// every literal it swaps is really on the page as a whole text node (so no plan ever shows their numbers)
+Object.keys(P.replacements(P.summaryFor(D2, "sema", 3))).forEach(function (lit) {
+  eq(page.indexOf(">" + lit + "<") > -1, true, "literal on the page: " + lit);
+});
+eq(page.indexOf('src="images/tirzepatide-amber.webp"') === -1 && fs.existsSync(path.join(DIR, "images", "tirzepatide-amber.webp")), true, "Tirzepatide vial ships (swapped in by the script)");
+eq(fs.existsSync(path.join(DIR, "..", "js", "plans-data-v2.js")), true, "../js/plans-data-v2.js exists");
+eq(page.indexOf("../js/plans-data-v2.js") < page.indexOf("js/plan-fill.js") && page.indexOf('src="js/plan-fill.js') < page.indexOf('src="js/checkout.js'), true, "script order: data → plan-fill → checkout");
+eq(/fetch\(|XMLHttpRequest|sendBeacon|localStorage|setItem/.test(fillJs), false, "plan-fill only reads the choice");
+eq(/window\.location\.href = "\.\.\/v2\.html"/.test(js), true, "Choose → the plan page");
 
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

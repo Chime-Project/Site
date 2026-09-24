@@ -1,10 +1,10 @@
 /* Chime Health checkout — the behaviour of the WellMedoc checkout it rips, ported to vanilla JS:
-   · the 200off coupon: "Remove" swaps the order summary to their no-coupon state ($317) with a promo box;
+   · the 200off coupon: "Remove" swaps the order summary to their no-coupon state (total + $200) with a promo box;
      "Redeem" is disabled while empty, upper-cases what you type, re-applies 200OFF, and otherwise shows
      "Invalid or expired coupon code" (their exact behaviour and prices)
    · the review carousel: arrows wrap round, dots jump; "Read More" does nothing (it does nothing on theirs)
    · the two phone-only accordions (Terms, Guarantees & Details / Reviews & Testimonials)
-   · "Choose" goes back to the Choose Treatment step
+   · "Choose" goes back to the plan page (../v2.html, the microdose plans)
    · the card form is a look-alike: it formats what you type like Stripe does and nothing else. No payment is
      taken, nothing is sent anywhere, and "Complete Intake & Checkout" does nothing (Luis's pick). */
 (function () {
@@ -77,7 +77,7 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
       return;
     }
-    if (text === "Choose") { window.location.href = "../"; return; }
+    if (text === "Choose") { window.location.href = "../v2.html"; return; }
   });
 
   // Redeem: disabled while empty, upper-case as typed (as theirs)
