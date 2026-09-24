@@ -1,17 +1,18 @@
 # choose-treatment/checkout
 
 The payment step of the Choose Treatment funnel. It is a rip of the WellMedoc checkout
-(`intake.wellmedr.com/checkout`, Semaglutide 3-Month plan) with the **Chime look and feel** (client, 2026-09-24:
-"checkout rip … use amber chime vials"; Luis: "do the chime look and feel"). The layout, copy, prices and behaviour
-are theirs. The colours, font and branding are Chime's.
+(`intake.wellmedr.com/checkout`, Semaglutide 3-Month plan) with Chime branding (client, 2026-09-24: "checkout rip …
+use amber chime vials"). The layout, copy, prices, behaviour **and colour theme** are theirs: the client asked to keep
+"the same color theme as the original", which replaced a first version on the Chime palette. The branding is Chime's,
+and so is the font (Quicksand).
 
 | File | What it is |
 |---|---|
 | `index.html` | Their rendered markup (classes untouched), plus `<template>`s for their other states: the summary without the coupon and the four reviews |
-| `css/checkout.css` | Their compiled Tailwind sheet pruned with PurgeCSS, with every colour value remapped onto the Chime ramp (blue / slate). Then the Chime layer: Quicksand and the card-form look-alike |
+| `css/checkout.css` | Their compiled Tailwind sheet pruned with PurgeCSS, colours untouched. Then a small layer: Quicksand and the card-form look-alike in Stripe's default colours |
 | `js/checkout.js` | Their behaviour: Remove / Redeem the 200off coupon, the review carousel and the phone accordions. "Choose" goes back to `../` |
 | `js/checkout-tests.js` | `node choose-treatment/checkout/js/checkout-tests.js` |
-| `images/`, `fonts/` | The Chime logo, their seal repainted in Chime blue with the Chime wordmark, their van with the Chime wordmark, the amber Chime Semaglutide vial, their three staff and member photos, and Quicksand |
+| `images/`, `fonts/` | The Chime logo, their gold seal with the Chime wordmark, their van with the Chime wordmark, the amber Chime Semaglutide vial, their three staff and member photos, and Quicksand |
 
 **No payment can happen on this page.** Their Stripe card form is replaced by a static look-alike of the same size.
 Its fields have no names, the form has no action, the script sends and stores nothing, and "Complete Intake &

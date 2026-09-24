@@ -1,4 +1,4 @@
-// node choose-treatment/checkout/js/checkout-tests.js — checks for the WellMedoc checkout rip with the Chime look:
+// node choose-treatment/checkout/js/checkout-tests.js — checks for the WellMedoc checkout rip (Chime branding, their colours):
 // the brand swap is complete, nothing of theirs ships (links, phone, trackers, Stripe), no personal data from the
 // client's link exists anywhere, the card form cannot take a payment, their states are all there, and every local
 // file resolves. No DOM.
@@ -40,7 +40,7 @@ eq(count(/well ?med(oc|r)/gi, cssCode + js.replace(/\/\*[\s\S]*?\*\//g, "")), 0,
 eq(count(/Chime Health/g, page) >= 10, true, "Chime Health in place of the name");
 eq(/<title>Checkout \| Chime Health<\/title>/.test(page), true, "title");
 eq(count(/src="images\/logo-chime\.svg"/g, page), 1, "Chime logo");
-eq(count(/src="images\/chime-seal\.webp"/g, page) >= 3, true, "the Chime seal in place of theirs");
+eq(count(/src="images\/seal-gold\.webp"/g, page) >= 3, true, "the seal with the Chime wordmark in place of theirs");
 eq(count(/src="images\/semaglutide-amber\.webp"/g, page) >= 2, true, "the amber Chime vial in the plan card");
 eq(page.indexOf('src="images/refills-van.webp"') > -1, true, "the repainted van");
 eq(count(/1-XXX-XXX-XXXX/g, page), 1, "phone placeholder");
@@ -77,12 +77,15 @@ eq(count(/\$267/g, page) >= 4 && count(/\$467/g, page) >= 4, true, "their prices
 eq(count(/<div class="mt-4 space-y-4" hidden>/g, page), 2, "two phone accordions, closed");
 eq(/Invalid or expired coupon code/.test(js) && /200OFF/.test(js), true, "Redeem: 200OFF or their error");
 
-// The Chime look: Quicksand, their palette gone, the Chime ramp in
+// Their colour theme stays (client 2026-09-24), with Chime's font
 eq(/font-family:"Quicksand"/.test(css) && /--font-outfit:"Quicksand"/.test(cssCode), true, "Quicksand");
 eq(/Outfit/.test(cssCode.replace(/--font-outfit/g, "")), false, "no Outfit face");
-eq(/193[ ,]+159[ ,]+104|38[ ,]+175[ ,]+89|123[ ,]+149[ ,]+169|65[ ,]+54[ ,]+42|#c19f68|#26af59/i.test(cssCode + page), false, "their gold / green / lilac / brown gone");
-eq(/101 128 188|101, 128, 188/.test(cssCode) && /50 69 99/.test(cssCode), true, "Chime blue-500 and blue-800 in");
-eq(/255, 223, 173|239, 200, 138/.test(page), false, "benefits card gradient on the blue ramp");
+eq(/193 159 104/.test(cssCode), true, "their gold");
+eq(/38 175 89/.test(cssCode), true, "their green");
+eq(/123, 149, 169/.test(cssCode) && /12, 38, 49/.test(cssCode), true, "their grey-blue button and its hover");
+eq(/65 54 42/.test(cssCode), true, "their brown ink");
+eq(/255, 223, 173/.test(page) && /239, 200, 138/.test(page), true, "their gold benefits card");
+eq(/101 128 188|50 69 99/.test(cssCode), false, "no Chime palette remap");
 
 // Every local asset resolves
 var refs = [];
