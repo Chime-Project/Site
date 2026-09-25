@@ -43,6 +43,19 @@ empty (their Email box already did this). Otherwise the button still does nothin
 It lives in `build.py` (`SHIP_FORM`, which replaces the Email `<div>` the same way `CARD_FORM` replaces Stripe's box) and in
 `chime-layer.css`. The formatting is in `js/checkout.js`.
 
+## Checkout V3 shares this folder (2026-09-25)
+
+`../checkout-v3/` is the same page for the price-lock funnel. `build.py` writes it as a second output, and it holds only its
+`index.html`. It loads this folder's CSS, images, font and scripts plus `../js/plans-data-v3.js`, so fix things here once.
+`js/plan-fill.js` applies a plan's `checkout` block when the data has one:
+
+- the client's crossed-out price replaces total + $200
+- the badge and the coupon code follow the term (Redeem accepts that code)
+- "-$X" and "You save $X!" become crossed-out − price
+- "Choose" goes to the data's `productHref`
+
+V2's plans have no such block and keep the rules below.
+
 ## The order summary follows the chosen plan (2026-09-24)
 
 This follows the client's doc "Chime Microdose Gold Page.docx". The markup still carries their Semaglutide 3-Month numbers.

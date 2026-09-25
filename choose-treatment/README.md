@@ -62,6 +62,27 @@ V1's buttons stay blank, and V1's rendered markup is byte-identical to before.
 
 The section above describes the V2 ladder this replaced.
 
+## V3 = the Gold product page of the price-lock funnel (2026-09-25)
+
+This follows the client's doc "price lock to Gold product and checkout.docx". The funnel runs `chime-price-lock-offer/` (every button) →
+`v3.html` → `checkout-v3/`. `v3.html` is V2's page on `js/plans-data-v3.js`, with these changes:
+
+- the names are "Tirzepatide" / "Semaglutide"
+- Tirzepatide's badge reads "Recommended for faster results"
+- there is **no 12-month plan**, so there is no highlighted card, only the three rows
+
+| Plan | Tirzepatide | Semaglutide | Line under the price |
+|---|---|---|---|
+| 6 months | $279 / month, $1,674 today | $179, $1,074 | "LOCK IN THIS PRICE" (green) |
+| 3 months | $299, $897 | $249, $747 | "EVERY 4TH MONTH **FREE**, FOREVER" (FREE bold green) |
+| Monthly | ~~$399~~ $279, "$279 due today" | ~~$299~~ $179, "$179 due today" | "Prescribed for only:" above; first tick "Ships every 4 weeks"; no footer note |
+
+The renderer's new data fields are optional and default to the old output: `heroPlan: null`, `recommendedLabel`, `dueTag` /
+`dueTagTone` (`*WORD*` = bold green), `wasPrice` and `plainDue`. The V1 and V2 renders are byte-identical to live.
+`checkout-v3/` is the checkout page from the same build, sharing `checkout/`'s assets. Its order summary follows each plan's
+`checkout` block (crossed-out price, badge, coupon code); see the root README. Flagged: the 3-month price per month is above
+the monthly plan's, so its "As low as" per day is too. The free 4th month explains it, but the page doesn't say so.
+
 ## Luis's picks (2026-09-16)
 
 - **Page one only.** The reference's buttons go to `/checkout` (a Stripe payment step with an order

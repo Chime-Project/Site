@@ -4,7 +4,8 @@
      "Invalid or expired coupon code" (their exact behaviour and prices)
    · the review carousel: arrows wrap round, dots jump; "Read More" does nothing (it does nothing on theirs)
    · the two phone-only accordions (Terms, Guarantees & Details / Reviews & Testimonials)
-   · "Choose" goes back to the plan page (../v2.html, the microdose plans)
+   · "Choose" goes back to the plan page (../v2.html, the microdose plans; checkout-v3/: the data's productHref, ../v3.html)
+   · Redeem accepts the chosen plan's code (plan-fill.js sets it: 200OFF here, 120OFF / 4THMONTH / LOCKED on checkout-v3/)
    · Shipping Information (client, 2026-09-25): the phone formats as (515) 321-2343 and the ZIP keeps 5 digits; the
      fields have no names and nothing is sent or stored
    · the card form is a look-alike: it formats what you type like Stripe does and nothing else. No payment is
@@ -65,7 +66,7 @@
       e.preventDefault();
       var box = btn.closest(".mt-4");
       var input = box.querySelector("input");
-      if (input.value.trim() === "200OFF") { setSummary("applied"); return; }
+      if (input.value.trim() === (window.CHIME_COUPON_CODE || "200OFF")) { setSummary("applied"); return; }
       if (!box.querySelector(".text-red-500")) box.insertAdjacentHTML("beforeend", ERROR_HTML);
       return;
     }
@@ -79,7 +80,7 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
       return;
     }
-    if (text === "Choose") { window.location.href = "../v2.html"; return; }
+    if (text === "Choose") { window.location.href = (window.CHIME_CHOOSE_TREATMENT && window.CHIME_CHOOSE_TREATMENT.productHref) || "../v2.html"; return; }
   });
 
   // Redeem: disabled while empty, upper-case as typed (as theirs)

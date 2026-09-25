@@ -168,7 +168,45 @@ eq(page.indexOf('src="images/tirzepatide-amber.webp"') === -1 && fs.existsSync(p
 eq(fs.existsSync(path.join(DIR, "..", "js", "plans-data-v2.js")), true, "../js/plans-data-v2.js exists");
 eq(page.indexOf("../js/plans-data-v2.js") < page.indexOf("js/plan-fill.js") && page.indexOf('src="js/plan-fill.js') < page.indexOf('src="js/checkout.js'), true, "script order: data → plan-fill → checkout");
 eq(/fetch\(|XMLHttpRequest|sendBeacon|localStorage|setItem/.test(fillJs), false, "plan-fill only reads the choice");
-eq(/window\.location\.href = "\.\.\/v2\.html"/.test(js), true, "Choose → the plan page");
+eq(/productHref\) \|\| "\.\.\/v2\.html"/.test(js), true, "Choose → the plan page (V2 unless the data names another)");
+
+// ---------- checkout-v3/ (client doc "price lock to Gold product and checkout", 2026-09-25) ----------
+var DIR3 = path.join(DIR, "..", "checkout-v3");
+var html3 = fs.readFileSync(path.join(DIR3, "index.html"), "utf8");
+var page3 = html3.replace(/<!--[\s\S]*?-->/g, "");
+var D3 = require("../../js/plans-data-v3.js");
+var strip = function (h) { return h.replace(/<!--[\s\S]*?-->/g, "").replace(/\n{2,}/g, "\n").replace(/\.\.\/checkout\//g, "").replace(/plans-data-v[23]/g, "plans-data"); };
+eq(strip(html3), strip(html), "checkout-v3 = the same page, with checkout/'s assets and the V3 data");
+var refs3 = [];
+page3.replace(/(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g, function (_, u) { refs3.push(u); });
+refs3.forEach(function (u) { eq(fs.existsSync(path.join(DIR3, u)), true, "v3 asset exists: " + u); });
+eq(/(src|href)="(images|css|js|fonts)\//.test(page3), false, "v3 loads nothing from its own folder");
+eq(fs.readdirSync(DIR3), ["index.html"], "checkout-v3 holds only its page");
+eq(/[\w.+-]+@[\w-]+\.[a-z]{2,}|userid=|[?&]email=|addressl[12]=/.test(html3), false, "v3: no personal data");
+var expect3 = {   // title, per day, price, crossed-out, discount, badge, code
+  "sema-1": ["Semaglutide 1-Month Plan", "$5.97", "$179", "$299", "$120", "$120 off", "120off"],
+  "sema-3": ["Semaglutide 3-Month Plan", "$8.30", "$747", "$996", "$249", "4TH MONTH FREE, FOREVER", "4thMONTH"],
+  "sema-6": ["Semaglutide 6-Month Plan", "$5.97", "$1,074", "$1,794", "$720", "PRICE LOCKED IN, FOREVER", "LOCKED"],
+  "tirz-1": ["Tirzepatide 1-Month Plan", "$9.30", "$279", "$399", "$120", "$120 off", "120off"],
+  "tirz-3": ["Tirzepatide 3-Month Plan", "$9.97", "$897", "$1,196", "$299", "4TH MONTH FREE, FOREVER", "4thMONTH"],
+  "tirz-6": ["Tirzepatide 6-Month Plan", "$9.30", "$1,674", "$2,394", "$720", "PRICE LOCKED IN, FOREVER", "LOCKED"]
+};
+Object.keys(expect3).forEach(function (id) {
+  var e = expect3[id], med = id.split("-")[0], term = +id.split("-")[1];
+  var s = P.summaryFor(D3, med, term);
+  eq([s.title, s.perDay, s.total, s.crossed, s.discount, s.badge, s.code], e, "v3 summary " + id);
+  var r = P.replacements(s);
+  eq([r["200off applied"], r["-$200"], r["You save $200!"], r["$467"], r["$267"], r["$317"]],
+     [e[6] + " applied", "-" + e[4], "You save " + e[4] + "!", e[3], e[2], e[3]], "v3 swaps " + id);
+});
+eq(P.summaryFor(D3, "sema", 12), null, "v3 has no 12-month plan");
+var v2s = P.summaryFor(D2, "sema", 3);
+eq([v2s.code, v2s.discount, v2s.badge], ["200off", "$200", "Most Affordable"], "V2 keeps its coupon rules");
+eq(D3.productHref, "../v3.html", "v3 Choose → ../v3.html");
+["200off applied", "-$200", "You save $200!", "Most Affordable"].forEach(function (lit) {
+  eq(page.indexOf(">" + lit + "<") > -1, true, "literal on the page: " + lit);
+});
+eq(/CHIME_COUPON_CODE = s\.code\.toUpperCase\(\)/.test(fillJs) && /CHIME_COUPON_CODE \|\| "200OFF"/.test(js), true, "Redeem takes the plan's code");
 
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

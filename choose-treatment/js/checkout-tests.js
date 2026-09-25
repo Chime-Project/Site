@@ -100,5 +100,33 @@ D2.treatments.forEach(function (t) {
 ok(C.renderSelectorCard(DATA.treatments[0], false, 1).indexOf('leading-tight truncate">Tirzepatide</h3>') > -1, 'V1 selector name still truncates');
 ok(C.bigButtonLabel(DATA.treatments[0].plans.twelveMonth) === 'GET 12 MONTHS + SAVE $1,082', 'V1 label unchanged after generalisation');
 
+// ---- V3 = the Gold product page (client doc "price lock to Gold product and checkout", 2026-09-25): no 12-month ----
+var D3 = require(path.join(__dirname, 'plans-data-v3.js'));
+var doc3 = { tirz: { sixMonth: [279, 1674], threeMonth: [299, 897], monthly: [279, 279, 399] },
+             sema: { sixMonth: [179, 1074], threeMonth: [249, 747], monthly: [179, 179, 299] } };
+ok(D3.heroPlan === null && JSON.stringify(D3.rowPlans) === '["sixMonth","threeMonth","monthly"]', 'V3: no highlighted card, rows 6 / 3 / monthly');
+ok(D3.checkoutHref === 'checkout-v3/' && D3.productHref === '../v3.html', 'V3 buttons open checkout-v3, which comes back to v3');
+D3.treatments.forEach(function (t) {
+  var nm = t.key === 'tirz' ? 'Tirzepatide' : 'Semaglutide';
+  ok(t.name === nm && t.cardTitle === nm, 'V3 ' + t.key + ' named ' + nm);
+  ok(!t.plans.twelveMonth, 'V3 ' + t.key + ' has no 12-month plan');
+  Object.keys(doc3[t.key]).forEach(function (k) {
+    var p = t.plans[k], e = doc3[t.key][k];
+    ok(p.price === e[0] && p.totalPrice === e[1] && p.price * p.months === e[1], 'V3 ' + t.key + ' ' + k + ' = doc ($' + e[0] + ' / $' + e[1] + ')');
+  });
+  var c3 = C.renderTreatmentCard(t, D3);
+  ok(count(c3, 'btn-lilac') === 3 && c3.indexOf('twelveMonth') === -1 && c3.indexOf('Best value') === -1, 'V3 ' + t.key + ' 3 Select buttons, no hero card');
+  ok(c3.indexOf('>' + nm + '</h3>') > -1, 'V3 ' + t.key + ' card title');
+  ok(c3.indexOf(t.key === 'tirz' ? 'Recommended for faster results' : 'Recommended for most patients') > -1, 'V3 ' + t.key + ' recommended badge');
+  var six = t.plans.sixMonth, three = t.plans.threeMonth, mo = t.plans.monthly;
+  ok(c3.indexOf(C.fmtMoney(six.totalPrice) + ' due today -</span> <span class="text-brand-green">LOCK IN THIS PRICE</span>') > -1, 'V3 ' + t.key + ' 6-month: LOCK IN THIS PRICE (green)');
+  ok(c3.indexOf(C.fmtMoney(three.totalPrice) + ' due today -</span> <span class="text-secondary-500">EVERY 4TH MONTH <span class="text-brand-green font-black">FREE</span>, FOREVER</span>') > -1, 'V3 ' + t.key + ' 3-month: FREE bold green');
+  ok(c3.indexOf('text-gray-400 line-through mr-2">' + C.fmtMoney(doc3[t.key].monthly[2]) + '</span><span class="text-3xl font-bold" style="color: rgb(184, 146, 46);">' + C.fmtMoney(mo.price) + '<') > -1, 'V3 ' + t.key + ' monthly: grey crossed-out then gold price');
+  ok(c3.indexOf('>Prescribed for only:<') > -1 && c3.indexOf('>' + C.fmtMoney(mo.price) + ' due today</p>') > -1, 'V3 ' + t.key + ' monthly sublabel + plain due line');
+  ok(c3.indexOf('Ships every 4 weeks') > -1 && c3.indexOf('no increases ever') === -1 && c3.indexOf('No surprises') === -1 && c3.indexOf('your price never goes up') === -1, 'V3 ' + t.key + ' monthly copy edits');
+  ok(c3.indexOf('save $') === -1 && c3.indexOf('Lowest industry pricing') === -1, 'V3 ' + t.key + ' no save figures, no old sublabel');
+});
+ok(C.renderTreatmentCard(D2.treatments[0], D2).indexOf('Recommended for most patients') > -1, 'V2 badge unchanged');
+
 console.log((fails ? 'FAIL ' : 'OK ') + (n - fails) + '/' + n + ' checks');
 process.exit(fails ? 1 : 0);

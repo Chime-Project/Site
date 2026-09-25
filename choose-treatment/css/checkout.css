@@ -261,3 +261,6 @@ input[type=checkbox]{cursor:pointer}
 .shadow-md{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}
 .shadow-sm{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}
 .hover\:shadow-lg:hover{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}
+/* ---- V3 (client doc "price lock to Gold product and checkout", 2026-09-25): the grey crossed-out monthly price ---- */
+.line-through{text-decoration-line:line-through}
+.mr-2{margin-right:.5rem}

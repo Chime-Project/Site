@@ -25,11 +25,11 @@ eq(/<title>[^<]*\| Chime Health<\/title>/.test(page), true, "title");
 eq(count(/href="images\/favicon\.png"/g, page), 2, "Chime favicon + touch icon");
 
 // Their links and trackers are gone; CTAs go to the Chime assessment
-eq(count(/href="\.\.\/chimeAssessment\.html"/g, page), 7, "every Lock the Price / Lock My Price Now → assessment (both breakpoints)");
+eq(count(/href="\.\.\/choose-treatment\/v3\.html"/g, page), 7, "every Lock the Price / Lock My Price Now → the Gold product page (both breakpoints)");
 eq(count(/href="#">/g, page), 2, "Safety Information → # (both breakpoints)");
 eq(/(src|href|srcset)="https?:/.test(page), false, "no external src/href");
 eq(/url\(["']?https?:/.test(cssCode), false, "no external url() in the stylesheet");
-eq(fs.existsSync(path.join(DIR, "..", "chimeAssessment.html")), true, "assessment exists with exact case");
+eq(fs.readdirSync(path.join(DIR, "..", "choose-treatment")).indexOf("v3.html") > -1, true, "choose-treatment/v3.html exists with exact case");
 ["figpii", "mjkkj8trk", "EF.click", "events.framer", "bat.bing", "googletagmanager", "trustpilot", "framerusercontent",
  "fonts.gstatic", "<script", "modulepreload", "data-framer-hydrate"].forEach(function (w) {
   eq(page.indexOf(w) + cssCode.indexOf(w), -2, "no '" + w + "'");
@@ -37,7 +37,8 @@ eq(fs.existsSync(path.join(DIR, "..", "chimeAssessment.html")), true, "assessmen
 eq(/noindex/.test(page), true, "noindex");
 
 // Nothing else changed: their prices (as the price-lock link shows them), copy, colours and fonts
-eq(count(/>\$174</g, page), 2, "GLP-1 $174 (desktop + phone)");
+eq(count(/>\$179</g, page), 2, "GLP-1 $179 (desktop + phone; client 2026-09-25)");
+eq(count(/>\$174</g, page), 0, "the old $174 is gone");
 eq(count(/>\$279</g, page), 2, "GLP-1 + GIP $279 (desktop + phone)");
 eq(count(/\$149|\$249/g, page), 0, "their built-in default prices replaced as the link shows");
 ["LIMITED-TIME PRICE LOCK OFFER", "START YOUR PLAN", "This price is available for a limited time.", "STATE", "LICENSED",

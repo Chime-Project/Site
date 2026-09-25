@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Choose Your Treatment | Chime Health</title>
+    <meta name="description" content="Choose your treatment: select your medication and billing plan." />
+    <meta name="robots" content="noindex" />
+    <!-- V3 = the GOLD product page of the price-lock funnel (client doc "price lock to Gold product and checkout.docx",
+         2026-09-25: "CREATE A NEW VERSION OF THIS"): chime-price-lock-offer → here → checkout-v3/. V2's page with the
+         doc's edits: "Tirzepatide" / "Semaglutide", Tirzepatide's badge "Recommended for faster results", no 12-month
+         plan (so no highlighted card, the 6 / 3 / monthly rows alone) and the doc's ladder: Tirzepatide $279 / $299 /
+         $279 a month for 6 / 3 / 1 months ($1,674 / $897 / $279 due today), Semaglutide $179 / $249 / $179 ($1,074 /
+         $747 / $179). 6 months "LOCK IN THIS PRICE", 3 months "EVERY 4TH MONTH FREE, FOREVER", monthly "Prescribed for
+         only:" with a crossed-out $399 / $299, "Ships every 4 weeks". Every plan button opens
+         checkout-v3/?med=<tirz|sema>&term=<months>. Data: js/plans-data-v3.js (checkout-v3/ reads it too); everything
+         else is shared with index.html (V1) and v2.html. Copy the doc does not name is V2's.
+    -->
+    <!-- Chime Health — Choose Your Treatment (plan-selection checkout step).
+         Rip of https://intake.wellmedr.com/approval-confirmation (client request 2026-09-16 via Luis:
+         "rip this as is, don't change colors or anything, just swap logo; vials can swap, prices I'll
+         look at after"; plan in CHOOSE-TREATMENT-RIP-PLAN.md, Asana 1218566380294259).
+         AS IS means: the reference's own palette, Outfit font, copy, layout and motion — NOT the Chime
+         theme. Only the logo (images/logo-chime.svg) and the vials (images/*.webp, the client's amber
+         set) are Chime's.
+         Luis's picks (2026-09-16): page one only — the payment step the reference's buttons lead to
+         stays open; plan buttons are BLANK (real buttons, no navigation); the "chose this today"
+         counters and the countdown tick like the reference; the "Forbes · USA TODAY" strip stays.
+         STAND-INS, flagged: every price / "billed today" / "save" figure (js/plans-data.js — the
+         reference's; Chime's checkout ladder is $359 / $897 / $1,794), "Forbes · USA TODAY", the 4.7
+         rating, "17,482 / 11,251 chose this today", "Only 5 discounts left" countdown, "Lowest
+         industry pricing", "Highest success rate", "$140 / $70 monthly savings locked in for life",
+         "Clinician review within 24 hours", "Free delivery". noindex until signed off.
+         Files: css/checkout.css (the reference's Tailwind output reduced to this page's rules),
+         js/plans-data.js (ONE place for prices and copy), js/checkout.js (renderer, countdown,
+         counters, selector), js/checkout-tests.js (node). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bodoni+Moda:wght@400&display=swap" />
+    <link rel="stylesheet" href="css/checkout.css?v=20260967" />
+  </head>
+  <body class="font-sans antialiased">
+    <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
+      <header class="bg-white border-b border-gray-100 sticky top-0 z-40" data-screen-label="CT Header">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <img alt="Chime Health" width="222" height="28" class="h-7 w-auto site-logo" src="images/logo-chime.svg" />
+          <div class="flex items-center gap-1.5 text-sm">
+            <svg class="w-3.5 h-3.5 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+            <span class="text-gray-600 text-xs font-medium">Secure Checkout</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="w-full flex items-center justify-center py-4 bg-white border-b border-gray-100" data-screen-label="CT Steps">
+        <div class="flex items-center gap-3 sm:gap-6">
+          <div class="flex gap-2 sm:gap-2.5 items-center">
+            <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 bg-[#7b95a9] border-[#7b95a9]">
+              <svg class="w-2.5 h-2.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="font-medium text-xs sm:text-base transition-colors duration-200 text-secondary-500">Quiz</span>
+          </div>
+          <div class="flex-1 w-8 sm:w-16 rounded-full h-0.5 transition-colors duration-200 bg-[#7b95a9]"></div>
+          <div class="flex gap-2 sm:gap-2.5 items-center">
+            <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 bg-[#7b95a9] border-[#7b95a9]">
+              <svg class="w-2.5 h-2.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="font-medium text-xs sm:text-base transition-colors duration-200 text-secondary-500">Shipping</span>
+          </div>
+          <div class="flex-1 w-8 sm:w-16 rounded-full h-0.5 transition-colors duration-200 bg-gray-200"></div>
+          <div class="flex gap-2 sm:gap-2.5 items-center">
+            <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 border-[#7b95a9] bg-white">
+              <div class="w-2 h-2 sm:w-3 sm:h-3 bg-[#7b95a9] rounded-full"></div>
+            </div>
+            <span class="font-medium text-xs sm:text-base transition-colors duration-200 text-secondary-500">Payment</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:hidden w-full bg-gradient-to-r from-[#FFDFAD] via-[#e5eaee] to-[#d1fae5] border-y border-black/5" data-screen-label="CT Urgency">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-center">
+          <p id="ct-urgency" class="text-[0.7rem] sm:text-sm tracking-wide uppercase text-secondary-500 text-center">Only <span class="font-bold">5</span> discounts left. Yours is reserved for: <span class="font-bold tabular-nums ml-0.5">06:57</span></p>
+        </div>
+      </div>
+
+      <main class="max-w-6xl mx-auto px-4 py-4 md:py-6">
+        <div class="text-center mb-4 md:mb-6 hidden md:block" data-screen-label="CT Title">
+          <h1 class="text-xl md:text-2xl font-bold text-secondary-500 mb-1">Choose Your Treatment</h1>
+          <p class="text-gray-600 text-sm">Select your medication and billing plan</p>
+        </div>
+        <div class="md:hidden mb-6" data-screen-label="CT Select">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-brand-gold text-white text-sm font-bold tracking-[0.12em] px-4 py-1.5 rounded-full">STEP 1</div>
+            <h1 class="text-2xl font-bold text-secondary-500">Select Treatment</h1>
+          </div>
+          <div id="ct-selector" class="space-y-3"></div>
+        </div>
+        <div id="ct-grid" class="space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0"></div>
+      </main>
+    </div>
+
+    <script src="js/plans-data-v3.js?v=20260967"></script>
+    <script src="js/checkout.js?v=20260967"></script>
+  </body>
+</html>

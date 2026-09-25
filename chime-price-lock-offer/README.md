@@ -16,7 +16,7 @@ The page runs no JavaScript. The phone-only pinned "Lock My Price Now" button is
 
 **What changed (branding only):**
 - the tab title and favicon
-- every "Lock the Price" / "Lock My Price Now", now `../chimeAssessment.html` (it opens in a new tab, as theirs does)
+- every "Lock the Price" / "Lock My Price Now", now `../choose-treatment/v3.html`, the Gold product page (client, 2026-09-25; it was the assessment). It opens in a new tab, as theirs does
 - "Safety Information", now `#`, since Chime has no such page yet
 - their trackers are removed: FigPii, Everflow affiliate clicks, Framer events, Bing, GTM and the Trustpilot bootstrap
 
@@ -26,7 +26,10 @@ Their page has no logo, so none was added (Luis's pick).
 - the copy, colours, flag and "State Licensed Pharmacy" seal
 - the 0–250 "limited time" bar
 - the unbranded vials
-- the prices: **$174 / $279 a month**, what the price-lock link shows (their page's built-in default is $149 / $249)
+- GLP-1 + GIP at **$279 a month**, what the price-lock link shows (their page's built-in default is $249)
+
+**Price (client, 2026-09-25, "price lock to Gold product and checkout.docx"):** GLP-1 is **$179 a month** (the link showed
+$174). Both prices now match the monthly plans on the Gold product page the buttons open.
 
 The page is rebuilt by `build.py`, kept untracked in `uploads/price-lock-offer-ref/`, from the saved reference
 `raw.html` in that same folder. The folder also holds the screenshots and image originals. It must never be committed.

@@ -35,6 +35,12 @@
   function youSaveLine(plan) { return 'You save ' + fmtMoney(plan.savingsToday) + ' over month to month pricing.'; }
   function monthlyLine(plan) { return fmtMoney(plan.price) + ' due today and forever, your price never goes up, no surprises or changes.'; }
   function bigButtonLabel(plan) { return 'GET ' + (plan.months || 12) + ' MONTHS + SAVE ' + fmtMoney(plan.savingsToday); }
+  // V3 row copy (client doc "price lock to Gold product and checkout", 2026-09-25): dueTag replaces "save $X"
+  // ("*WORD*" = bold green, dueTagTone 'green' = the whole tag green); plainDue = "$X due today" and nothing more
+  function dueTagHtml(plan) {
+    var tone = plan.dueTagTone === 'green' ? 'text-brand-green' : 'text-secondary-500';
+    return '<span class="' + tone + '">' + esc(plan.dueTag).replace(/\*([^*]+)\*/g, '<span class="text-brand-green font-black">$1</span>') + '</span>';
+  }
 
   // Reference: discount count s → s<=1 ? s : s-1
   function decrementDiscount(n) { return n <= 1 ? n : n - 1; }
@@ -68,7 +74,9 @@
   }
   // heroKey = the highlighted plan (V1: twelveMonth, V2: sixMonth); rowKeys = the plans listed under it
   function renderBestValue(t, plan, heroKey, rowKeys) {
-    heroKey = heroKey || 'twelveMonth'; rowKeys = rowKeys || PLAN_ORDER;
+    rowKeys = rowKeys || PLAN_ORDER;
+    if (!plan) return '<div class="mb-4">' + renderRows(t, rowKeys, '') + '</div>';   // V3: no highlighted card, rows only
+    heroKey = heroKey || 'twelveMonth';
     var h = '<div class="mb-4"><div class="relative rounded-2xl border-2 border-brand-green bg-gradient-to-b from-brand-green/[0.06] via-white to-white px-5 pt-6 pb-5 shadow-md">';
     if (plan.bestValue) h += '<div class="absolute -top-3 left-5"><span class="rounded-full bg-brand-green px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-sm">⭐ Best value</span></div>';
     h += '<div class="flex items-start justify-between gap-3"><div class="min-w-0"><p class="text-sm font-black uppercase tracking-wide text-secondary-500">' + esc(plan.label) + '</p></div>';
@@ -81,23 +89,27 @@
     if (plan.popularBadge) h += '<div class="mt-3 inline-block rounded-full bg-amber-100 px-2.5 py-1.5"><span class="whitespace-nowrap text-[10px] font-bold text-amber-600 md:text-sm">⭐ Most patients choose this plan</span></div>';
     h += '<button type="button" class="btn-lilac mt-4 w-full " data-plan="' + heroKey + '" data-treatment="' + esc(t.key) + '">' + esc(bigButtonLabel(plan)) + SVG_ARROW('h-4 w-4') + '</button>';
     h += '</div>';
-    // the rows under the hero card (V1: 6 / 3 / monthly; V2: 3 / monthly)
-    h += '<div class="bg-gray-50 rounded-xl p-4 mt-4"><div class="space-y-0">';
+    return h + renderRows(t, rowKeys, ' mt-4') + '</div>';
+  }
+  // the plan rows (V1 / V2: 6 / 3 / monthly under the hero card; V3: the rows alone)
+  function renderRows(t, rowKeys, gap) {
+    var h = '<div class="bg-gray-50 rounded-xl p-4' + gap + '"><div class="space-y-0">';
     rowKeys.forEach(function (key, i) {
       var p = t.plans[key]; if (!p) return;
       h += '<div class="py-4 px-3 rounded-lg transition-all ' + (i ? 'border-t border-gray-200' : '') + '">';
       h += '<div class="mb-1"><span class="font-black text-lg text-gray-900">' + esc(p.label) + '</span></div>';
       if (p.sublabel) h += '<p class="text-xs text-secondary-500 italic font-bold mb-1">' + esc(p.sublabel) + '</p>';
-      h += '<div class="mb-1 flex items-baseline"><span class="text-3xl font-bold" style="' + PRICE_GOLD + '">' + fmtMoney(p.price) + '</span><span class="text-sm text-gray-500">/month</span></div>';
-      if (key === 'monthly') h += '<p class="text-base font-bold italic mb-2 text-secondary-500">' + esc(monthlyLine(p)) + '</p>';
+      h += '<div class="mb-1 flex items-baseline">' + (p.wasPrice ? '<span class="text-2xl font-bold text-gray-400 line-through mr-2">' + fmtMoney(p.wasPrice) + '</span>' : '') + '<span class="text-3xl font-bold" style="' + PRICE_GOLD + '">' + fmtMoney(p.price) + '</span><span class="text-sm text-gray-500">/month</span></div>';
+      if (p.plainDue) h += '<p class="text-base font-bold italic mb-2 text-secondary-500">' + esc(fmtMoney(p.totalPrice || p.price) + ' due today') + '</p>';
+      else if (key === 'monthly') h += '<p class="text-base font-bold italic mb-2 text-secondary-500">' + esc(monthlyLine(p)) + '</p>';
+      else if (p.dueTag) h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(fmtMoney(p.totalPrice) + ' due today -') + '</span> ' + dueTagHtml(p) + '</p>';
       else h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(savingsLine(p)) + '</span> <span class="text-brand-green">' + fmtMoney(p.savingsToday) + '</span></p>';
       h += '<div class="space-y-1">' + p.features.map(function (f) { return tick(f, 'flex items-start gap-2 text-sm text-brand-green font-semibold'); }).join('') + '</div>';
       if (p.footerNote) h += '<p class="text-xs text-gray-500 italic mt-2">' + esc(p.footerNote) + '</p>';
       h += '<button type="button" class="w-full mt-3 btn-lilac " data-plan="' + key + '" data-treatment="' + esc(t.key) + '">Select' + SVG_ARROW('w-4 h-4') + '</button>';
       h += '</div>';
     });
-    h += '</div></div></div>';
-    return h;
+    return h + '</div></div>';
   }
   function renderNextSteps(steps) {
     var h = '<div class="border-t border-gray-100 my-4"></div><div class="bg-brand-green/5 border border-brand-green/20 rounded-xl p-4"><h4 class="text-center font-bold text-secondary-500 text-sm tracking-wide mb-4">WHAT HAPPENS NEXT?</h4><div class="flex items-start justify-between gap-2">';
@@ -113,10 +125,10 @@
     h += '<div class="flex items-center justify-center gap-6 py-2 border-b border-gray-100"><span class="text-base font-serif text-gray-400">' + esc(data.press[0]) + '</span><span class="text-sm font-bold text-gray-400 tracking-wide">' + esc(data.press[1]) + '</span></div>';
     h += '<div class="px-5 py-4"><h3 class="text-xl font-bold text-secondary-500 mb-1">' + esc(t.cardTitle) + '</h3>' + renderStars(data.rating);
     h += '<div class="bg-brand-green/10 border border-brand-green/20 rounded-lg px-4 py-3 mb-3"><p class="text-sm text-brand-green font-medium">' + esc(t.tagline) + '</p></div>';
-    h += '<div class="bg-brand-green/10 border-2 border-brand-green rounded-lg px-4 py-2 mb-3 inline-flex items-center gap-2"><span class="text-yellow-500">⭐</span><span class="text-sm font-semibold text-secondary-500">Recommended for most patients</span></div>';
+    h += '<div class="bg-brand-green/10 border-2 border-brand-green rounded-lg px-4 py-2 mb-3 inline-flex items-center gap-2"><span class="text-yellow-500">⭐</span><span class="text-sm font-semibold text-secondary-500">' + esc(t.recommendedLabel || 'Recommended for most patients') + '</span></div>';
     h += '<div class="space-y-1 mb-3">' + t.highlights.map(function (x) { return '<div class="flex items-center gap-2"><span class="text-secondary-500 font-bold">•</span><span class="text-sm text-secondary-500">' + esc(x) + '</span></div>'; }).join('') + '</div>';
-    var heroKey = data.heroPlan || 'twelveMonth';
-    h += renderBestValue(t, t.plans[heroKey], heroKey, data.rowPlans || PLAN_ORDER) + renderNextSteps(data.nextSteps);
+    var heroKey = data.heroPlan === null ? null : data.heroPlan || 'twelveMonth';   // null (V3) = no highlighted card
+    h += renderBestValue(t, heroKey ? t.plans[heroKey] : null, heroKey, data.rowPlans || PLAN_ORDER) + renderNextSteps(data.nextSteps);
     return h + '</div></div>';
   }
   function renderSelectorCard(t, selected, count) {
@@ -202,7 +214,7 @@
     return state;
   }
 
-  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl };
+  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, dueTagHtml: dueTagHtml, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl };
   root.ChimeChooseTreatment = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 
