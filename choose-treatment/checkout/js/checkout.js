@@ -5,6 +5,8 @@
    · the review carousel: arrows wrap round, dots jump; "Read More" does nothing (it does nothing on theirs)
    · the two phone-only accordions (Terms, Guarantees & Details / Reviews & Testimonials)
    · "Choose" goes back to the plan page (../v2.html, the microdose plans)
+   · Shipping Information (client, 2026-09-25): the phone formats as (515) 321-2343 and the ZIP keeps 5 digits; the
+     fields have no names and nothing is sent or stored
    · the card form is a look-alike: it formats what you type like Stripe does and nothing else. No payment is
      taken, nothing is sent anywhere, and "Complete Intake & Checkout" does nothing (Luis's pick). */
 (function () {
@@ -98,7 +100,12 @@
     if (kind === "cc-number") el.value = d.slice(0, 19).replace(/(\d{4})(?=\d)/g, "$1 ");
     else if (kind === "cc-exp") el.value = d.length > 2 ? d.slice(0, 2) + " / " + d.slice(2, 4) : d;
     else if (kind === "cc-cvc") el.value = d.slice(0, 4);
-    else if (kind === "cc-zip") el.value = d.slice(0, 5);
+    else if (kind === "cc-zip" || kind === "ship-zip") el.value = d.slice(0, 5);
+    else if (kind === "ship-tel") {
+      d = d.slice(0, 10);
+      el.value = d.length > 6 ? "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6)
+        : d.length > 3 ? "(" + d.slice(0, 3) + ") " + d.slice(3) : d;
+    }
   });
 
   // "Complete Intake & Checkout": no payment on this page

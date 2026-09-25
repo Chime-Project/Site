@@ -19,6 +19,30 @@ and so is the font (Quicksand).
 Its fields have no names, the form has no action, the script sends and stores nothing, and "Complete Intake &
 Checkout" does nothing.
 
+## Shipping Information (2026-09-25)
+
+The client's doc "checkout page address addition.docx" asked for the Email box (between "OR" and "Payment Method") to be
+replaced by a Shipping Information section. It sits in the same spot and has these fields, in the reference's order:
+
+- First name and Last name
+- Address line 1
+- Address line 2 (optional, with the placeholder "Apt., suite, unit number, etc. (optional)")
+- City
+- State (50 states + DC, starting on "Select") and ZIP code
+- Phone number, with a US +1 prefix
+- Email, which moves in here, so the page still has one email field
+
+It uses the card form's look-alike (Stripe's default colours, label and field sizes, Quicksand), and the heading is in the "Payment
+Method" style. On phones the two-up rows stack, with the same container rule as Country / ZIP. The phone formats as typed
+to `(515) 321-2343` and the ZIP keeps 5 digits. Every field carries an `autocomplete` hint so browser autofill works.
+
+**Nothing is sent or stored.** The fields have no names and sit in no posting form, just like the card form. The fields are
+`required`, so the browser's own "fill out this field" hint shows when "Complete Intake & Checkout" is pressed with a field
+empty (their Email box already did this). Otherwise the button still does nothing.
+
+It lives in `build.py` (`SHIP_FORM`, which replaces the Email `<div>` the same way `CARD_FORM` replaces Stripe's box) and in
+`chime-layer.css`. The formatting is in `js/checkout.js`.
+
 ## The order summary follows the chosen plan (2026-09-24)
 
 This follows the client's doc "Chime Microdose Gold Page.docx". The markup still carries their Semaglutide 3-Month numbers.

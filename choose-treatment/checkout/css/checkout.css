@@ -38,7 +38,6 @@ img { max-width: 100%; height: auto; }
 .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
 .my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
 .mb-1 { margin-bottom: 0.25rem; }
-.mb-1\.5 { margin-bottom: 0.375rem; }
 .mb-2 { margin-bottom: 0.5rem; }
 .mb-3 { margin-bottom: 0.75rem; }
 .mb-4 { margin-bottom: 1rem; }
@@ -50,7 +49,6 @@ img { max-width: 100%; height: auto; }
 .mt-2 { margin-top: 0.5rem; }
 .mt-3 { margin-top: 0.75rem; }
 .mt-4 { margin-top: 1rem; }
-.block { display: block; }
 .inline-block { display: inline-block; }
 .flex { display: flex; }
 .hidden { display: none; }
@@ -142,7 +140,6 @@ img { max-width: 100%; height: auto; }
 .p-5 { padding: 1.25rem; }
 .p-6 { padding: 1.5rem; }
 .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
-.px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
 .px-4 { padding-left: 1rem; padding-right: 1rem; }
 .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
 .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
@@ -220,7 +217,6 @@ button { transition: 0.15s; }
 .btn-lilac { background-color: rgb(123, 149, 169); color: white; font-weight: 600; padding: 0.875rem 2rem; border-radius: 9999px; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .btn-lilac:hover { background-color: rgb(12, 38, 49); transform: translateY(-1px); box-shadow: rgba(12, 38, 49, 0.3) 0px 4px 12px; }
 .btn-lilac:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-.placeholder\:text-gray-400::placeholder { --tw-text-opacity: 1; color: rgb(156 163 175/var(--tw-text-opacity,1)); }
 .last\:border-b-0:last-child { border-bottom-width: 0px; }
 .last\:pb-0:last-child { padding-bottom: 0px; }
 .hover\:bg-primary-600:hover { --tw-bg-opacity: 1; background-color: rgb(98 122 140/var(--tw-bg-opacity,1)); }
@@ -299,3 +295,12 @@ body{font-feature-settings:"lnum"}
 .co-pe-cvc{flex:none;width:24px;height:16px;margin-right:12px;color:#6D6E78}
 .co-pe-chevron{position:absolute;right:12px;width:16px;height:16px;color:#6D6E78;pointer-events:none}
 .co-pe-mandate{margin:10px 0 0;font-size:14px;line-height:20px;color:#6D6E78}
+
+/* Shipping Information (client, 2026-09-25): the card form's look-alike, open on the page (no box). Name and
+   State / ZIP stack on phones with the same container rule as Country / ZIP. The +1 prefix is US only. */
+.co-pe-input select:invalid{color:#77787E}
+.co-pe-input select option{color:#30313D}
+.co-ship-cc{flex:none;display:flex;align-items:center;gap:5px;padding-left:12px;font:500 16px/1 "Quicksand",system-ui,sans-serif;color:#30313D}
+.co-ship-flag{display:block;width:20px;height:14px;border-radius:2px;box-shadow:0 0 0 .5px rgba(0,0,0,.15)}
+.co-ship-cc-chevron{width:12px;height:12px;color:#6D6E78}
+.co-ship-tel input{padding-left:8px}

@@ -67,6 +67,39 @@ eq(/addEventListener\("submit", function \(e\) \{ e\.preventDefault\(\); \}\)/.t
 eq(/fetch\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage/.test(js), false, "the script sends and stores nothing");
 eq(page.indexOf("By subscribing, you authorize Chime Health") > -1, true, "mandate line renamed");
 
+// Shipping Information in place of their Email box (client, 2026-09-25, "checkout page address addition.docx")
+var shipAt = page.indexOf('data-co="shipping"');
+var ship = page.slice(shipAt, page.indexOf("Payment Method"));
+eq(shipAt > page.indexOf(">OR<") && shipAt < page.indexOf("Payment Method"), true, "shipping sits between OR and Payment Method");
+eq(/<h2 class="text-xl font-semibold text-secondary-500 mb-4">Shipping Information<\/h2>/.test(ship), true, "heading in the Payment Method style");
+var labels = [];
+ship.replace(/<span class="co-pe-label">([^<]+)<\/span>/g, function (_, l) { labels.push(l); });
+eq(labels, ["First name", "Last name", "Address line 1", "Address line 2", "City", "State", "ZIP code", "Phone number", "Email"], "the reference's fields, in its order");
+eq(count(/<input\b/g, ship) + count(/<select\b/g, ship), 9, "9 controls");
+eq(/\sname="|<form\b/.test(ship), false, "shipping fields have no names and no form of their own");
+var acs = [];
+ship.replace(/autocomplete="([^"]+)"/g, function (_, a) { acs.push(a); });
+eq(acs, ["given-name", "family-name", "address-line1", "address-line2", "address-level2", "address-level1", "postal-code", "tel-national", "email"], "autofill hints");
+eq(ship.indexOf('placeholder="Apt., suite, unit number, etc. (optional)"') > -1 && count(/placeholder=/g, ship), 1, "only Address line 2 has a placeholder");
+eq(count(/ required/g, ship), 8, "everything but Address line 2 is required");
+eq(count(/<option value="[A-Z]{2}">/g, ship), 51, "50 states + DC");
+eq(/<option value="" disabled selected>Select<\/option>/.test(ship), true, "State starts on Select");
+eq(ship.indexOf("co-ship-flag") > -1 && ship.indexOf("<span>+1</span>") > -1, true, "US +1 prefix");
+eq(count(/>Email</g, page) + count(/type="email"/g, page), 2, "one email field on the page");
+eq(page.indexOf("you@example.com"), -1, "their email placeholder is gone");
+// the phone and ZIP formatting, run through the page script's own input handler
+var handlers = {};
+var fakeDoc = { addEventListener: function (t, f) { handlers[t] = f; }, querySelectorAll: function () { return []; } };
+new Function("document", "window", js)(fakeDoc, {});
+function typed(kind, v) {
+  var el = { value: v, matches: function () { return false; }, getAttribute: function () { return kind; } };
+  handlers.input({ target: el });
+  return el.value;
+}
+eq([typed("ship-tel", "515"), typed("ship-tel", "5153"), typed("ship-tel", "5153212343"), typed("ship-tel", "(515) 321-23439")],
+   ["515", "(515) 3", "(515) 321-2343", "(515) 321-2343"], "phone formats as (515) 321-2343");
+eq([typed("ship-zip", "72201-1234"), typed("ship-zip", "7a2b")], ["72201", "72"], "ZIP keeps 5 digits");
+
 // Their states are all there (coupon, reviews, accordions) with their prices
 eq(page.indexOf('<template id="co-summary-applied">') > -1 && page.indexOf('<template id="co-summary-removed">') > -1, true, "coupon states");
 [0, 1, 2, 3].forEach(function (n) { eq(page.indexOf('<template id="co-review-' + n + '">') > -1, true, "review " + (n + 1)); });
