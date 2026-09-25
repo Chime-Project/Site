@@ -1,0 +1,170 @@
+/*
+ * redesign.css — chime-burn-boost/ only. Everything the redesign adds sits here, loaded last,
+ * so the reference's compiled sheets and the carried css files stay untouched.
+ *
+ * 1. hero-merge (2026-09-21): the hero, the visitor's report (Today / With Chime) and the
+ *    "Why is everyone switching to Chime?" results as one block; the plans follow it directly.
+ *    Round 3: no members photo, the results are one white strip.
+ *    Round 4 (client: the report back in the first section, no button, plans right under it):
+ *    Phone:   head / report / results + treatment selector / footnote.
+ *    Desktop: head centred, then the report on the left and the results + treatment selector on
+ *             the right, footnote under both. The plans are the next block.
+ */
+.hero-merge { padding: 40px 0 32px; }
+.hm-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "report" "side" "note";
+  gap: 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.hm-head { grid-area: head; display: flex; flex-direction: column; gap: 16px; }
+.hm-head .bonus-ribbon { margin: 0; max-width: none; justify-content: flex-start; }
+
+/* the report keeps the original's markup; only its place in the grid is new */
+.hm-report { grid-area: report; min-width: 0; }
+
+.hm-side { grid-area: side; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.hm-stats {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 4px 20px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+}
+.hm-stat { display: flex; align-items: center; gap: 16px; padding: 14px 0; }
+.hm-stat + .hm-stat { border-top: 1px solid #e5e7eb; }
+.hm-num { flex: 0 0 116px; margin: 0; font-size: 36px; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+.hm-unit { margin-left: 3px; font-size: 20px; }
+.hm-cap { margin: 0; font-size: 14px; line-height: 1.4; }
+
+.hm-note { grid-area: note; margin: 0; }
+
+/* 2. treatment selector (round 5): the radio cards of choose-treatment/v2.html's phone selector.
+      A tap marks the card and js/treatment-select.js scrolls down to that combo's plan rows. */
+.ts { display: flex; flex-direction: column; gap: 10px; }
+.ts-title { margin: 0 0 2px; font-size: 20px; line-height: 1.2; font-weight: 500; }
+.ts-card {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  padding: 12px 14px; text-align: left; cursor: pointer;
+  background: #fff; border: 2px solid #e5e7eb; border-radius: 1rem;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .1s ease;
+}
+.ts-card:hover { border-color: #c7d0ee; }
+.ts-card:active { transform: scale(.99); }
+.ts-card:focus-visible { outline: 3px solid hsl(var(--brand)); outline-offset: 2px; }
+.ts-card[aria-pressed="true"] { border-color: hsl(var(--brand)); box-shadow: 0 6px 18px rgba(43, 69, 197, .16); }
+.ts-thumb {
+  flex: 0 0 72px; height: 72px; border-radius: .75rem; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(#dbeafe, #eff6ff 55%, #fff);
+}
+/* the compiled sheets pad every vial image by 6% — reset it for the thumb */
+.ts-thumb img { width: 100%; height: 100%; padding: 0 !important; object-fit: contain; transform: scale(1.15); }
+.ts-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.ts-name { font-size: 17px; line-height: 1.25; font-weight: 700; color: #111827; }
+.ts-line { font-size: 13px; line-height: 1.35; color: #4b5563; }
+.ts-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 3px; }
+.ts-badge { padding: 2px 10px; border-radius: 999px; background: #f0fdf4; color: #15803d; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.ts-price { font-size: 13px; color: #374151; white-space: nowrap; }
+.ts-price b { font-weight: 700; color: #111827; }
+.ts-radio {
+  flex: 0 0 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 2px solid #d1d5db; transition: background-color .15s ease, border-color .15s ease;
+}
+.ts-card[aria-pressed="true"] .ts-radio { background: hsl(var(--brand)); border-color: hsl(var(--brand)); }
+.ts-card[aria-pressed="true"] .ts-radio::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: #fff; }
+
+/* the chosen combo card flashes once when the scroll arrives */
+@keyframes ts-arrive {
+  0%   { box-shadow: 0 0 0 0 rgba(43, 69, 197, 0); }
+  35%  { box-shadow: 0 0 0 5px rgba(43, 69, 197, .45); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 69, 197, 0); }
+}
+.ts-arrived { animation: ts-arrive 1.1s ease-out 1 both; border-radius: 1rem; }
+
+/* outside links to a combo's plan rows land with the card's name and rating still in view
+   (the name starts 168px over the rows) */
+#plans-sema, #plans-tirz { scroll-margin-top: 188px; }
+
+/* phones: the plans are the point, so the block above them stays short — smaller silhouettes,
+   tighter results */
+@media (max-width: 899px) {
+  .hm-wrap { gap: 18px; }
+  .hm-report img.h-52 { height: 9rem; }
+  .hm-report .p-5 { padding: 12px 20px; }
+  .hm-report .py-3 { padding-top: 9px; padding-bottom: 9px; }
+  .hm-side { gap: 12px; }
+  .hm-stat { padding: 10px 0; }
+  .hm-num { flex-basis: 100px; font-size: 30px; }
+  .hm-unit { font-size: 17px; }
+  .hm-cap { font-size: 13px; }
+}
+
+@media (min-width: 900px) {
+  .hero-merge { padding: 64px 0 48px; }
+  .hm-wrap {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "head head" "report side" "note note";
+    column-gap: 48px;
+    row-gap: 32px;
+    max-width: 1040px;
+    padding: 0 32px;
+  }
+  .hm-head { align-items: center; text-align: center; max-width: 720px; margin: 0 auto; }
+  .hm-head h2 { text-align: center; }
+  .hm-head .bonus-ribbon { justify-content: center; }
+  .hm-side { justify-content: center; gap: 20px; }
+  .hm-note { text-align: center; max-width: 760px; margin: 0 auto; }
+}
+
+/* 3. the 3 Month Plan row as an offer card (client, 2026-09-21, reference devinrequest01: "making the
+      3 month button like this in our style … the banner at the top and the pricing"). A banner band
+      on top (gift tile + "Commit to 3 Months & / Get EVERY 4TH MONTH FREE"), under it the radio and
+      the price set large (the vial tile was taken out the same day, on request). It replaces the row's green tag and the +1 corner seal —
+      the banner says both. Still a .mp-row with its .sv-radio, .mp-shine and data-term, so
+      plan-select.js (selection, pulse, shine) works on it unchanged. */
+.mp-row.mp-row--offer { display: block; padding: 0; }
+.mp3-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: #dbe3fb; color: #0f1a4a;
+  border-radius: 10px 10px 0 0;
+}
+.mp3-gift {
+  flex: 0 0 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(#fff, #eef2fd); color: #2b45c5;
+  box-shadow: 0 1px 2px rgba(15, 26, 74, .18), inset 0 0 0 1px rgba(255, 255, 255, .9);
+}
+.mp3-banner-t { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.mp3-banner-t span { font-size: 13px; font-weight: 500; }
+/* the combo cards are ~290px wide at every breakpoint, so one size: the bold line stays on one row */
+.mp3-banner-t b { font-size: 14px; font-weight: 800; letter-spacing: 0; white-space: nowrap; }
+.mp3-body {
+  display: grid; grid-template-columns: 18px minmax(0, 1fr);
+  grid-template-areas: "r info" "foot foot";
+  column-gap: 12px; row-gap: 10px; align-items: center;
+  padding: 14px;
+}
+.mp3-body .sv-radio { grid-area: r; }
+.mp3-info { grid-area: info; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.mp3-info .mp-name { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1d293d; }
+.mp-row.mp-row--offer .mp-price { margin-right: 0; font-size: 34px; letter-spacing: -0.01em; }
+.mp-row.mp-row--offer .mp-price sup { font-size: 16px; top: -12px; }
+.mp-row.mp-row--offer .mp-price small { margin-left: 4px; font-size: 16px; }
+.mp3-with { font-size: 13px; line-height: 1.35; color: #45556c; }
+.mp3-foot {
+  grid-area: foot; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px;
+  padding-top: 10px; border-top: 1px solid #dbe3fb;
+}
+.mp3-foot .mp-due { margin: 0; }
+@media (max-width: 767px) {
+  .mp-row.mp-row--offer .mp-price { font-size: 30px; }
+}
