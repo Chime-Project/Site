@@ -129,9 +129,13 @@
   }
 
   /* ---- Step 1: treatments ---- */
+  /* Three treatments since the readiness pass (Semaglutide, Tirzepatide,
+     NAD+). The row is allowed out past .cart-wrap's 900px — three cards in 900
+     leaves each name ~150px, and "Semaglutide" at display size needs more. */
   .cart-treatments {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--spacing-4); max-width: 720px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-4); width: min(1080px, calc(100vw - 2 * var(--spacing-5)));
+    margin: 0 0 0 50%; transform: translateX(-50%);
   }
 
   /* ---- Step 2: treatment configurator ----
@@ -637,6 +641,22 @@
   .cart-form.has-error .cart-input:required:placeholder-shown {
     border-color: var(--error-default) !important;
   }
+  /* The field's own message, under it. Same red as the border, at the size
+     of the other small print so a stack of messages does not shout. */
+  .cart-field-error {
+    margin: 2px 0 0; font-size: var(--text-xs); line-height: 1.4; color: var(--error-default);
+  }
+  /* Native select, drawn as a .cart-input with the site chevron. appearance
+     none so iOS does not paint its own gradient pill; 16px font on phones (see
+     the 620px block) so Safari does not zoom in on focus. */
+  .cart-select {
+    appearance: none; -webkit-appearance: none; cursor: pointer; color: var(--text-default);
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+      linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%;
+    background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+  }
+  .cart-select.is-empty { color: var(--text-muted); }
   .cart-error {
     max-width: 400px; margin: var(--spacing-4) auto 0; text-align: center;
     font-size: var(--text-sm); color: var(--error-default);
@@ -676,7 +696,8 @@
     margin: clamp(40px, 5vw, 64px) auto 0; max-width: 640px; text-align: center;
     font-size: 11px; line-height: 1.6; color: var(--text-muted);
   }
-  .cart-placed { text-align: center; max-width: 480px; }
+  .cart-placed { text-align: center; max-width: 480px; scroll-margin-top: var(--spacing-6); }
+  .cart-placed h2:focus { outline: none; }
   .cart-placed h2 {
     margin: var(--spacing-4) 0 var(--spacing-3); font-size: var(--text-3xl);
     font-weight: var(--font-weight-medium); color: var(--text-default);
@@ -688,6 +709,31 @@
   .cart-placed-sum { font-weight: var(--font-weight-bold); color: var(--text-default) !important; }
   .cart-placed-sum p { margin: var(--spacing-1) 0 0; }
   .cart-placed-sum p:first-child { margin-top: 0; }
+  .cart-placed-who { font-weight: var(--font-weight-semibold); overflow-wrap: anywhere; }
+  /* What happens next: numbered, left-aligned inside the centered card — a
+     centered numbered list loses its numbers' alignment. */
+  .cart-next-title {
+    margin: var(--spacing-8) 0 var(--spacing-3); font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold); color: var(--text-default);
+  }
+  .cart-next {
+    list-style: none; counter-reset: cart-next; text-align: left;
+    margin: 0 auto var(--spacing-8); padding: 0; max-width: 400px;
+    display: flex; flex-direction: column; gap: var(--spacing-4);
+  }
+  .cart-next li {
+    counter-increment: cart-next; position: relative; padding-left: 40px;
+    display: flex; flex-direction: column; gap: 2px;
+    font-size: var(--text-sm); line-height: 1.5; color: var(--text-secondary);
+  }
+  .cart-next li::before {
+    content: counter(cart-next); position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-subtle); color: var(--accent-strong);
+    font-weight: var(--font-weight-bold); font-size: var(--text-sm);
+  }
+  .cart-next b { color: var(--text-default); }
 
   /* ---- Payment brand marks ----
      Third-party trademark colors. They live here, not in the JSX, because they
@@ -722,6 +768,9 @@
      change shape together rather than at three different widths. */
   @media (max-width: 960px) {
     .cart-bento > div { grid-column: span 12 !important; }
+    /* Three across stops fitting a name beside its vial well before phone
+       width; stack them into the same centred column the phone layout uses. */
+    .cart-treatments { grid-template-columns: 1fr; width: auto; max-width: 420px; margin: 0 auto; transform: none; }
     .cart-tile-text { padding: var(--spacing-8) var(--spacing-6); }
     .cart-tile-text h1 { font-size: var(--text-4xl); }
     /* The media tile leads on a stacked layout: the photograph sets the mood
@@ -745,7 +794,7 @@
     .cart-hero-sub { font-size: var(--text-lg); }
   }
   @media (max-width: 620px) {
-    .cart-treatments { grid-template-columns: 1fr; max-width: 420px; }
+    .cart-treatments { grid-template-columns: 1fr; width: auto; max-width: 420px; margin: 0 auto; transform: none; }
     .cart-includes ul { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
     /* Two terms per row rather than four across — at 390px a 4-up row gives
        each term about 78px, which clips "12 Months" and squeezes the rate. */
@@ -760,6 +809,11 @@
        field — enough that the placeholder is cut mid-digit ("1234 1234 1234
        123"). Drop them on phones; the tile above still says which cards are
        taken. !important because the padding they reserve is an inline style. */
+    /* 16px, not the 14px the fields use on desktop: iOS Safari zooms the
+       whole page into any focused field under 16px and does not zoom back
+       out, which left the checkout scrolled sideways mid-form. !important
+       because CartField/CartSelect set the font shorthand inline. */
+    .cart-input { font-size: 16px !important; }
     .cart-input-marks { display: none !important; }
     .cart-input.has-marks { padding-right: var(--spacing-4) !important; }
     .cart-summary-panel { grid-template-columns: 72px minmax(0, 1fr); gap: var(--spacing-3); }
@@ -778,11 +832,11 @@
 <!-- Shared catalog + cart config load first (plain scripts), then the
      primitives, then the controls and the flow. -->
 <script src="ui_kits/shared/data/products.js?v=20260852"></script>
-<script src="ui_kits/cart/cart-data.js?v=20260881"></script>
+<script src="ui_kits/cart/cart-data.js?v=20260969"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
 <script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
-<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260858"></script>
-<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260881"></script>
+<script type="text/babel" src="ui_kits/cart/CartControls.jsx?v=20260969"></script>
+<script type="text/babel" src="ui_kits/cart/CartFlow.jsx?v=20260969"></script>
 <script type="text/babel">
 function ChimeCartPage() {
   return (

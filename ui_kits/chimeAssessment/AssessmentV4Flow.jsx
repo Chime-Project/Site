@@ -27,6 +27,8 @@
 // B2.2 / B3.1 / B4.1 no longer exist and A3 swapped dob+address for age, so a
 // session saved under the previous key could restore onto a deleted screen or
 // a field list that is gone. A new key retires those sessions cleanly.
+// ui_kits/cart/cart-data.js (chimeCartPrefill) reads this key to prefill the
+// checkout with A3's name, email and phone — change both together.
 const ASMT_V4_STORE_KEY = "chime_assessment_v4_4";
 const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
 
@@ -457,8 +459,11 @@ function ChimeAssessmentFlowV4() {
     body = <AsmtV4Placeholder note={screen.note} />;
   else if (screen.type === "result")
     body = (
+      // The CTA opens the cart with the recommendation selected (see
+      // asmtV4CartHref). Answers stay in localStorage, so Back from the cart
+      // returns to this result rather than to an empty assessment.
       <AsmtV4Result rec={asmtV4Recommendation(answers)} headingRef={headingRef}
-        onCreateAccount={() => say("PLACEHOLDER — account creation lands here.")} />
+        onCreateAccount={() => { window.location.href = asmtV4CartHref(answers); }} />
     );
 
   const showContinue = ["cards", "checkboxes", "contact", "chips", "snapshot",

@@ -59,11 +59,11 @@
      the source you are reading is already correct. Bump these together with the
      tags in cart.html. -->
 <script src="../shared/data/products.js?v=20260861"></script>
-<script src="cart-data.js?v=20260881"></script>
+<script src="cart-data.js?v=20260969"></script>
 <script type="text/babel" src="../shared/ui/Icon.jsx?v=20260861"></script>
 <script type="text/babel" src="../shared/ui/Button.jsx?v=20260861"></script>
-<script type="text/babel" src="CartControls.jsx?v=20260861"></script>
-<script type="text/babel" src="CartFlow.jsx?v=20260881"></script>
+<script type="text/babel" src="CartControls.jsx?v=20260969"></script>
+<script type="text/babel" src="CartFlow.jsx?v=20260969"></script>
 
 <script type="text/babel">
 // The runner is one async IIFE, so ANY throw inside it becomes an unhandled
@@ -382,8 +382,10 @@ window.addEventListener("unhandledrejection", (e) => {
   // ================= CartSelectScreen =================
   group("CartSelectScreen");
   {
+    // Readiness pass: three treatments (Semaglutide, Tirzepatide, NAD+), the
+    // GLP-1s on the client ladder via chimeCartTreatmentProduct.
     const treatments = window.CHIME_CART_TREATMENTS
-      .map((t) => Object.assign({}, t, { product: window.chimeCartProduct(t.id) }));
+      .map((t) => Object.assign({}, t, { product: window.chimeCartTreatmentProduct(t) }));
     let chosenPlan = null; let checkedOut = false;
     // Mirrors ChimeCartFlow's basket derivation: ids in pick order, each with
     // its OWN ladder and its own chosen term.
@@ -406,14 +408,14 @@ window.addEventListener("unhandledrejection", (e) => {
     const cta = (c) => c.$$("button").filter((b) => /Continue to checkout/.test(b.textContent))[0];
 
     const c = await mount(<Harness />);
-    eq("both treatments render as checkboxes", c.$$('[role="group"] [role="checkbox"]').length, 2);
+    eq("all three treatments render as checkboxes", c.$$('[role="group"] [role="checkbox"]').length, 3);
     // The treatments are a plain group; the only radiogroups on the step are
     // the per-treatment term pickers, where the options ARE exclusive.
     eq("treatments are not a radiogroup", c.$('[role="group"][role="radiogroup"]'), null);
     eq("one term radiogroup per panel",
       c.$$('[role="radiogroup"]').length, c.$$(".cart-config").length);
-    eq("NAD+ starts checked", c.$$('[role="checkbox"]')[0].getAttribute("aria-checked"), "true");
-    // NAD+ quotes two terms; GLP-1 quotes four. The ladder is data-driven, so
+    eq("NAD+ starts checked", c.$$('[role="checkbox"]')[2].getAttribute("aria-checked"), "true");
+    // NAD+ quotes two terms; Semaglutide quotes three. The ladder is data-driven, so
     // this is the assertion that a hardcoded 2x2 grid would break.
     eq("one panel, showing NAD+'s two terms", c.$$(".cart-term").length, 2);
     eq("one treatment renders one panel", c.$$(".cart-config").length, 1);
@@ -421,12 +423,12 @@ window.addEventListener("unhandledrejection", (e) => {
 
     // Adding a treatment must ADD a ladder, not replace the first one — the bug
     // a single-product model would reintroduce.
-    c.$$('[role="checkbox"]')[1].click();
+    c.$$('[role="checkbox"]')[0].click();
     await tick();
     eq("both treatments are now checked",
       c.$$('[role="checkbox"]').filter((b) => b.getAttribute("aria-checked") === "true").length, 2);
     eq("two panels now render", c.$$(".cart-config").length, 2);
-    eq("each panel keeps its own terms (2 + 4)", c.$$(".cart-term").length, 6);
+    eq("each panel keeps its own terms (2 + 3)", c.$$(".cart-term").length, 5);
     eq("each panel is named", c.$$(".cart-config-name").length, 2);
 
     // A term chosen for one treatment must not satisfy the other.
@@ -435,7 +437,7 @@ window.addEventListener("unhandledrejection", (e) => {
     eq("Select Plan reports the treatment AND the term", chosenPlan, "prod-nad:1mo");
     ok("Continue stays disabled while a treatment has no term", cta(c).disabled);
     has("it names the treatment still missing a term",
-      c.$(".cart-continue-note").textContent, "GLP-1");
+      c.$(".cart-continue-note").textContent, "Semaglutide");
 
     c.$$(".cart-config")[1].querySelectorAll(".cart-term")[0].click();
     await tick();
@@ -446,7 +448,7 @@ window.addEventListener("unhandledrejection", (e) => {
     eq("Continue advances the flow", checkedOut, true);
 
     // Unchecking drops the ladder and its term with it.
-    c.$$('[role="checkbox"]')[1].click();
+    c.$$('[role="checkbox"]')[0].click();
     await tick();
     eq("unchecking removes that panel", c.$$(".cart-config").length, 1);
     eq("and leaves only its terms", c.$$(".cart-term").length, 2);
@@ -459,7 +461,8 @@ window.addEventListener("unhandledrejection", (e) => {
   // `lines` takes a full basket for the multi-treatment cases.
   function CheckoutHarness({ plan, lines, onBack }) {
     const [form, setForm] = React.useState({
-      name: "", line1: "", line2: "", city: "", state: "", zip: "", phone: "",
+      name: "", email: "", dob: "", phone: "",
+      line1: "", line2: "", city: "", state: "", zip: "",
       card: "", exp: "", cvc: "",
     });
     const [method, setMethod] = React.useState("card");
@@ -541,22 +544,52 @@ window.addEventListener("unhandledrejection", (e) => {
   }
   {
     const c = await mount(<CheckoutHarness plan={planBy("3mo")} />);
-    c.$(".cart-submit button, .cart-submit a").click();
+    c.$(".cart-submit button").click();
     await tick();
     ok("empty submit is blocked", !c.$(".cart-placed"));
     ok("empty submit raises an alert", c.$('[role="alert"]'));
     eq("the alert carries the id the fields reference", c.$('[role="alert"]').id, "cart-form-error");
-    eq("every empty required field is flagged to AT", c.$$('[aria-invalid="true"]').length, 9);
+    // 11 since the readiness pass: email and date of birth joined the eight.
+    eq("every empty required field is flagged to AT", c.$$('[aria-invalid="true"]').length, 11);
     eq("the optional address line is NOT flagged",
       c.$("#cart-line2").getAttribute("aria-invalid"), null);
     eq("focus moves to the first offending field", document.activeElement.id, "cart-name");
+    // Each field says what is wrong with IT, under it, and points at that text.
+    eq("each flagged field has its own message", c.$$(".cart-field-error").length, 11);
+    eq("the email field points at its own message",
+      c.$("#cart-email").getAttribute("aria-describedby"), "cart-email-error");
+    has("the state message asks for a choice", c.$("#cart-state-error").textContent, "Choose your state");
 
-    ["cart-name", "cart-line1", "cart-city", "cart-state", "cart-zip",
-      "cart-phone", "cart-card", "cart-exp", "cart-cvc"].forEach((id) => typeInto(c.$("#" + id), "x"));
+    // Junk is no longer enough: "x" in every box is still eleven problems.
+    ["cart-name", "cart-email", "cart-dob", "cart-phone", "cart-line1", "cart-city", "cart-zip",
+      "cart-card", "cart-exp", "cart-cvc"].forEach((id) => typeInto(c.$("#" + id), "x"));
     await tick();
-    c.$(".cart-submit button, .cart-submit a").click();
+    c.$(".cart-submit button").click();
     await tick();
+    ok("junk values do not submit", !c.$(".cart-placed"));
+    has("a junk ZIP still asks for the ZIP", c.$("#cart-zip-error").textContent, "ZIP code");
+
+    const valid = { "cart-name": "Jamie Rivera", "cart-email": "jamie@example.com",
+      "cart-dob": "04151988", "cart-phone": "5153212343", "cart-line1": "1 Main St",
+      "cart-city": "Des Moines", "cart-zip": "50309", "cart-card": "4242424242424242",
+      "cart-exp": "0839", "cart-cvc": "123" };
+    Object.keys(valid).forEach((id) => typeInto(c.$("#" + id), valid[id]));
+    const sel = c.$("#cart-state");
+    Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, "value").set.call(sel, "IA");
+    sel.dispatchEvent(new Event("change", { bubbles: true }));
+    await tick();
+    eq("phone formats as typed", c.$("#cart-phone").value, "(515) 321-2343");
+    eq("card groups in fours", c.$("#cart-card").value, "4242 4242 4242 4242");
+    eq("a fixed field clears its own message", c.$("#cart-zip-error"), null);
+    c.$(".cart-submit button").click();
+    await tick();
+    await tick(30);
     ok("a complete form submits", c.$(".cart-placed"));
+    const stored = JSON.parse(sessionStorage.getItem("chime:cart-order") || "null");
+    ok("the order record is handed off", stored && stored.lines && stored.lines.length === 1);
+    eq("the hand-off carries no card number", /4242/.test(JSON.stringify(stored)), false);
+    has("the confirmation reads back the email", c.$(".cart-placed-who").textContent, "jamie@example.com");
+    eq("the confirmation lists what happens next", c.$$(".cart-next li").length, 3);
     has("confirmation states nothing was charged", c.text(), "Nothing has been charged");
     has("confirmation restates the plan and the ORDER total", c.$(".cart-placed-sum").textContent,
       window.chimeCartOrder([{ product: glp, plan: planBy("3mo") }]).totalLabel);

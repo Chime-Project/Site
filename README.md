@@ -48,7 +48,7 @@ The homepage is `index.html`. Pages:
 | `/chimeAssessment.html` | **The** health assessment (v4 build, `ui_kits/chimeAssessment/`) — every CTA on the site lands here. Case‑sensitive URL |
 | `/assessment.html` | The retired v1 funnel. Unlinked, but **not deletable** — `chimeAssessment.html` still loads its `AssessmentControls.jsx` |
 | `/nad.html` | NAD+ add‑on page, Chime theme (`ui_kits/nad/NadPage.jsx`) |
-| `/cart.html` | Plan selection → checkout (`ui_kits/cart/`), bare chrome by design |
+| `/cart.html` | Plan selection → checkout (`ui_kits/cart/`), bare chrome by design. **Readiness pass 2026-09-25** (Asana 1218871555785842): sells Semaglutide + Tirzepatide on the client ladder ($299 / $747 3+1 / $1,194 · $359 / $897 3+1 / $1,794, via `plans` on `CHIME_CART_TREATMENTS` — `products.js` untouched) + NAD+ on the catalog; opens pre-selected from `?treatment=semaglutide,nad&term=3mo` (also `?med=sema&term=3`), and `#checkout` deep-links straight to checkout when every term is set; the assessment result CTA links here (`asmtV4CartHref`) and the checkout prefills name / email / phone from the assessment's stored A3 answers. Checkout adds email, date of birth (18+), a State select, as-you-type formatting and per-field messages; submit hands one record (`chimeCartOrderRecord`, no card data) to `window.chimeCartSubmitOrder` — **the one function a backend replaces** (default: sessionStorage `chime:cart-order`). Card inputs are the design only: production uses the processor's hosted fields. Tests: `node ui_kits/cart/cart-tests.js` (211), `ui_kits/cart/cart-component-tests.html` (154) |
 | `/chimeUpsell01–03.html` | NAD+ / Tesamorelin / Zofran checkout upsells, Chime theme (token‑wired) |
 | `/select-plan.html` | Select treatment → select plan, the AmeriLean `tr12m/step40` funnel step on the Chime theme (`ui_kits/select-plan/`, no React). Semaglutide / Tirzepatide, then the chime‑checkout plan ladder (Monthly, 3 Month + 4th month free for life, 6 Month); each *Select Plan* links into `chime-checkout/checkout.html?med&term`. `noindex`, bare chrome. AmeriLean claims carried over are flagged in the file's head comment |
 | `/select-plan-v2.html` | The package variant: Step 1 treatment → Step 2 second product (Tesamorelin / NAD+, same card style) → Step 3 plans, Monthly and 3 Month only; the add‑on rides into the checkout as `&addon=tesa|nad` (the checkout does not display it yet). Same kit and script as v1; bundle prices are stand‑ins until the client confirms them |
@@ -229,7 +229,7 @@ It animates screen changes with GSAP core. Its copy is locked to the reviewed
 spec — run the tests before touching routing or wording:
 
 ```bash
-node ui_kits/chimeAssessment/assessment-v4-tests.js   # 114 checks
+node ui_kits/chimeAssessment/assessment-v4-tests.js   # 126 checks
 ```
 
 `assessment.html` / `ui_kits/assessment/` is the retired v1 funnel (the

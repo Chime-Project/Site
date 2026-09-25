@@ -308,8 +308,42 @@ function CartCheckoutScreen({ order, onBack, entry }) {
   const uploads = window.CHIME_UPLOADS_BASE || "uploads";
 
   const { form, setForm, method, setMethod, sameBilling, setSameBilling, placed, setPlaced } = entry;
+  // { field: message }. Only fields that have been judged appear here.
   const [errors, setErrors] = React.useState({});
-  const set = (k) => (v) => setForm((f) => Object.assign({}, f, { [k]: v }));
+  const [submitting, setSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState("");
+  const fmt = window.chimeCartFormat || {};
+  const judge = (k, v) => window.chimeCartFieldError(k, v);
+  // Typing formats as it goes (phone, ZIP, date, card, expiry, CVC), and a
+  // field that is already flagged re-checks on every keystroke, so the message
+  // clears the moment the value is fixed instead of waiting for another submit.
+  const set = (k) => (raw) => {
+    const v = fmt[k] ? fmt[k](raw) : raw;
+    setForm((f) => Object.assign({}, f, { [k]: v }));
+    if (errors[k]) setErrors((e) => Object.assign({}, e, { [k]: judge(k, v) }));
+  };
+  // Leaving a field judges it — but only once something is in it. Tabbing
+  // through an empty form must not paint every field red before the customer
+  // has had a chance to fill it.
+  const blur = (k) => () => {
+    const v = form[k];
+    if (!String(v || "").trim() && !errors[k]) return;
+    setErrors((e) => Object.assign({}, e, { [k]: judge(k, v) }));
+  };
+  const errorCount = Object.keys(errors).filter((k) => errors[k]).length;
+
+  // The confirmation replaces the form, which is far taller — so the customer
+  // who pressed Continue at the bottom of it was left looking at the empty
+  // space below a short card. Bring the confirmation to them, and give its
+  // heading focus so a screen reader starts there too.
+  const placedRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!placed || !placedRef.current) return;
+    const smooth = !window.cartReduced();
+    placedRef.current.scrollIntoView({ block: "start", behavior: smooth ? "smooth" : "auto" });
+    const h = placedRef.current.querySelector("h2");
+    if (h) h.focus({ preventScroll: true });
+  }, [placed]);
 
   const hold = useCartHold(promo.holdSeconds, promo.enabled);
   // Float math on parsed currency: compare against half a cent, never === 0.
@@ -321,34 +355,40 @@ function CartCheckoutScreen({ order, onBack, entry }) {
 
   // Card fields are only required when paying by card — a BNPL handoff collects
   // them on the provider's side, so demanding them here would block that path.
-  const REQUIRED = ["name", "line1", "city", "state", "zip", "phone"];
+  // Order = the order the fields appear in, so "first offending field" is the
+  // first one on screen.
+  const REQUIRED = ["name", "email", "dob", "phone", "line1", "city", "state", "zip"];
   const CARD_REQUIRED = ["card", "exp", "cvc"];
 
   function onSubmit(e) {
     e.preventDefault();
+    if (submitting) return;
     const need = REQUIRED.concat(method === "card" ? CARD_REQUIRED : []);
     const bad = {};
-    need.forEach((k) => { if (!String(form[k]).trim()) bad[k] = true; });
+    need.forEach((k) => { const m = judge(k, form[k]); if (m) bad[k] = m; });
     setErrors(bad);
-    if (Object.keys(bad).length) {
-      const first = document.getElementById("cart-" + need.filter((k) => bad[k])[0]);
-      if (first) { first.focus(); first.scrollIntoView({ block: "center", behavior: "smooth" }); }
+    setSubmitError("");
+    const first = need.filter((k) => bad[k])[0];
+    if (first) {
+      const el = document.getElementById("cart-" + first);
+      if (el) { el.focus(); el.scrollIntoView({ block: "center", behavior: "smooth" }); }
       return;
     }
-    // TODO(checkout): POST to the real order endpoint. There is no backend in
-    // this repo, so the payload is logged and the page shows the $0-due
-    // confirmation. Card fields are intentionally NOT logged — never send raw
-    // PAN through anything but the payment processor's own SDK/iframe.
-    console.log("[cart] submit", {
-      lines: order.lines.map((l) => ({
-        product: l.product.id, plan: l.plan.key, total: l.plan.total,
-      })),
-      method: method, subtotal: order.subtotal,
-      code: order.promoApplied ? order.promoCode : null,
-      discount: order.promoDiscount, total: order.total,
-      ship: { city: form.city, state: form.state, zip: form.zip },
-    });
-    setPlaced(true);
+    // The hand-off. chimeCartOrderRecord (cart-data.js) is the whole order —
+    // lines, figures, codes, patient and shipping — and carries NO card data;
+    // chimeCartSubmitOrder is the one function a backend replaces. Until one
+    // does, the default keeps the record in sessionStorage and resolves.
+    const record = window.chimeCartOrderRecord(order,
+      Object.assign({}, form, { sameBilling: sameBilling }), method);
+    setSubmitting(true);
+    Promise.resolve()
+      .then(() => window.chimeCartSubmitOrder(record))
+      .then(() => { setSubmitting(false); setPlaced(record); })
+      .catch((err) => {
+        setSubmitting(false);
+        setSubmitError((err && err.message)
+          || "We couldn\u2019t place your order. Nothing was charged \u2014 please try again.");
+      });
   }
 
   return (
@@ -513,17 +553,22 @@ function CartCheckoutScreen({ order, onBack, entry }) {
             </ul>
           </div>
       {placed ? (
-        <div className="cart-placed" role="status">
+        <div className="cart-placed" role="status" ref={placedRef}>
             <span aria-hidden="true" style={{ color: "var(--success-default)", display: "flex", justifyContent: "center" }}>
               <Icon size={44} strokeWidth={1.8}>
                 <circle cx="12" cy="12" r="10" /><path d="M8 12.5l2.5 2.5L16 9.5" />
               </Icon>
             </span>
-            <h2>Your request is in</h2>
+            <h2 tabIndex={-1}>Your request is in</h2>
             <p>
               A licensed provider will review your intake. Nothing has been charged
               — your card is only charged if your prescription is approved.
             </p>
+            {/* Who and where, read back from the hand-off record, so the
+                customer can spot a mistyped email before anything is sent. */}
+            {placed && placed.patient && <p className="cart-placed-who">
+              {placed.patient.name} · {placed.patient.email}
+            </p>}
             {/* One line per treatment, then the order total — a single joined
                 string would run to three products' worth of text and bury the
                 figure that matters. */}
@@ -533,6 +578,12 @@ function CartCheckoutScreen({ order, onBack, entry }) {
               ))}
               <p><strong>{order.totalLabel}</strong></p>
             </div>
+            <h3 className="cart-next-title">What happens next</h3>
+            <ol className="cart-next">
+              {copy.nextSteps.map((n) => (
+                <li key={n.title}><b>{n.title}</b><span>{n.body}</span></li>
+              ))}
+            </ol>
             <Button label="Back to home" onClick={() => { window.location.href = "index.html"; }} />
         </div>
       ) : (
@@ -555,39 +606,61 @@ function CartCheckoutScreen({ order, onBack, entry }) {
               </label>
             </div>
 
-            <h2 className="cart-h2">Enter Your Shipping Address</h2>
+            {/* Contact details come first: they are what the provider and the
+                pharmacy need to reach the patient, and the email is where the
+                order is confirmed. Date of birth because every prescription is
+                written for a verified adult. */}
+            <h2 className="cart-h2">Your Details</h2>
             <p className="cart-h2-sub">Your privacy guaranteed</p>
-            <div className={"cart-form" + (Object.keys(errors).length ? " has-error" : "")}>
-              <CartField required id="cart-name" invalid={!!errors.name} errorId="cart-form-error" label="Full name" placeholder="Full name"
-                value={form.name} onChange={set("name")} autoComplete="name" />
-              <CartField required id="cart-line1" invalid={!!errors.line1} errorId="cart-form-error" label="Address line 1" placeholder="Address line 1"
-                value={form.line1} onChange={set("line1")} autoComplete="address-line1" />
-              <CartField id="cart-line2" label="Address line 2 (optional)" placeholder="Address line 2"
+            <div className={"cart-form" + (errorCount ? " has-error" : "")}>
+              <CartField required id="cart-name" error={errors.name} label="Full name" placeholder="Full name"
+                value={form.name} onChange={set("name")} onBlur={blur("name")} autoComplete="name" />
+              <CartField required id="cart-email" error={errors.email} label="Email" placeholder="Email"
+                value={form.email} onChange={set("email")} onBlur={blur("email")} autoComplete="email"
+                type="email" inputMode="email" />
+              {/* Full width, not two-up: the placeholder is the only visible
+                  statement of the MM/DD/YYYY format, and at half width on a
+                  phone it was cut to "Date of birth (MM/". */}
+              <CartField required id="cart-dob" error={errors.dob} label="Date of birth" placeholder="Date of birth (MM/DD/YYYY)"
+                value={form.dob} onChange={set("dob")} onBlur={blur("dob")} autoComplete="bday" inputMode="numeric" />
+              <CartField required id="cart-phone" error={errors.phone} label="Phone number" placeholder="Phone number"
+                value={form.phone} onChange={set("phone")} onBlur={blur("phone")} autoComplete="tel" type="tel" inputMode="tel" />
+            </div>
+
+            <h2 className="cart-h2">Enter Your Shipping Address</h2>
+            <div className={"cart-form" + (errorCount ? " has-error" : "")}>
+              <CartField required id="cart-line1" error={errors.line1} label="Address line 1" placeholder="Address line 1"
+                value={form.line1} onChange={set("line1")} onBlur={blur("line1")} autoComplete="address-line1" />
+              <CartField id="cart-line2" label="Address line 2 (optional)" placeholder="Apt., suite, unit (optional)"
                 value={form.line2} onChange={set("line2")} autoComplete="address-line2" />
-              <CartField required id="cart-city" invalid={!!errors.city} errorId="cart-form-error" label="City" placeholder="City"
-                value={form.city} onChange={set("city")} autoComplete="address-level2" />
+              <CartField required id="cart-city" error={errors.city} label="City" placeholder="City"
+                value={form.city} onChange={set("city")} onBlur={blur("city")} autoComplete="address-level2" />
               <div className="cart-row-2">
-                <CartField required id="cart-state" invalid={!!errors.state} errorId="cart-form-error" label="State" placeholder="State"
-                  value={form.state} onChange={set("state")} autoComplete="address-level1" />
-                <CartField required id="cart-zip" invalid={!!errors.zip} errorId="cart-form-error" label="ZIP" placeholder="ZIP"
-                  value={form.zip} onChange={set("zip")} autoComplete="postal-code" inputMode="numeric" />
+                <CartSelect required id="cart-state" error={errors.state} label="State" placeholder="State"
+                  value={form.state} onChange={set("state")} onBlur={blur("state")}
+                  options={window.CHIME_US_STATES} autoComplete="address-level1" />
+                <CartField required id="cart-zip" error={errors.zip} label="ZIP" placeholder="ZIP"
+                  value={form.zip} onChange={set("zip")} onBlur={blur("zip")} autoComplete="postal-code" inputMode="numeric" />
               </div>
-              <CartField required id="cart-phone" invalid={!!errors.phone} errorId="cart-form-error" label="Phone number" placeholder="Phone number"
-                value={form.phone} onChange={set("phone")} autoComplete="tel" type="tel" inputMode="tel" />
             </div>
 
             {method === "card" ? (
               <React.Fragment>
                 <h2 className="cart-h2">Enter Your Card Details</h2>
-                <div className={"cart-form cart-form-card" + (Object.keys(errors).length ? " has-error" : "")}>
-                  <CartField required id="cart-card" invalid={!!errors.card} errorId="cart-form-error" label="Card number" showLabel placeholder="1234 1234 1234 1234"
-                    value={form.card} onChange={set("card")} autoComplete="cc-number" inputMode="numeric"
+                {/* ⚠️ PRODUCTION: these three inputs are the design of the card
+                    step, not the implementation. Raw card numbers must never pass
+                    through this page's own inputs — the payment processor's hosted
+                    fields (Stripe Elements or equivalent) take their place, in
+                    this layout. None of the three is ever stored or handed off. */}
+                <div className={"cart-form cart-form-card" + (errorCount ? " has-error" : "")}>
+                  <CartField required id="cart-card" error={errors.card} label="Card number" showLabel placeholder="1234 1234 1234 1234"
+                    value={form.card} onChange={set("card")} onBlur={blur("card")} autoComplete="cc-number" inputMode="numeric"
                     trailing={pay.cards.map((b) => <PayMark key={b} brand={b} />)} />
                   <div className="cart-row-2">
-                    <CartField required id="cart-exp" invalid={!!errors.exp} errorId="cart-form-error" label="Expiration Date" showLabel placeholder="MM / YY"
-                      value={form.exp} onChange={set("exp")} autoComplete="cc-exp" inputMode="numeric" />
-                    <CartField required id="cart-cvc" invalid={!!errors.cvc} errorId="cart-form-error" label="Security Code" showLabel placeholder="CVC"
-                      value={form.cvc} onChange={set("cvc")} autoComplete="cc-csc" inputMode="numeric" />
+                    <CartField required id="cart-exp" error={errors.exp} label="Expiration Date" showLabel placeholder="MM / YY"
+                      value={form.exp} onChange={set("exp")} onBlur={blur("exp")} autoComplete="cc-exp" inputMode="numeric" />
+                    <CartField required id="cart-cvc" error={errors.cvc} label="Security Code" showLabel placeholder="CVC"
+                      value={form.cvc} onChange={set("cvc")} onBlur={blur("cvc")} autoComplete="cc-csc" inputMode="numeric" />
                   </div>
                   <label className="cart-check">
                     <input type="checkbox" checked={sameBilling} onChange={(e) => setSameBilling(e.target.checked)} />
@@ -606,9 +679,13 @@ function CartCheckoutScreen({ order, onBack, entry }) {
               </p>
             )}
 
-            {!!Object.keys(errors).length && <p className="cart-error" id="cart-form-error" role="alert">
-              Please complete the highlighted fields.
+            {/* The summary line under the form. The per-field messages carry the
+                detail; this is what a screen reader hears on submit, and what a
+                sighted customer sees beside the button they just pressed. */}
+            {!!errorCount && <p className="cart-error" id="cart-form-error" role="alert">
+              {errorCount === 1 ? "Please fix the highlighted field." : "Please fix the " + errorCount + " highlighted fields."}
             </p>}
+            {submitError && <p className="cart-error" role="alert">{submitError}</p>}
 
             <div className="cart-submit">
               {/* The policies the Continue button binds the user to, visible
@@ -621,7 +698,8 @@ function CartCheckoutScreen({ order, onBack, entry }) {
                 <a href="terms-conditions.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>, and{" "}
                 <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.
               </p>
-              <Button label="Continue" onClick={onSubmit} />
+              <Button label={submitting ? "Placing your order…" : "Continue"} onClick={onSubmit}
+                disabled={submitting} />
               <p className="cart-secure">Your payment information is secure and encrypted.</p>
             </div>
         </form>
@@ -647,17 +725,31 @@ function ChimeCartFlow() {
   // row is dropped rather than rendered as a blank card.
   const treatments = React.useMemo(() => (
     (window.CHIME_CART_TREATMENTS || [])
-      .map((t) => Object.assign({}, t, { product: window.chimeCartProduct(t.id) }))
+      .map((t) => Object.assign({}, t, { product: window.chimeCartTreatmentProduct(t) }))
       .filter((t) => t.product)
   ), []);
 
-  const [step, setStep] = React.useState(1);
+  // What the page was opened with (?treatment=…&term=…, see chimeCartEntry).
+  // Read once: after this the URL follows the flow, not the other way round.
+  const entryPick = React.useMemo(() => {
+    const e = window.chimeCartEntry(window.location.search);
+    const ids = e.ids.filter((id) => treatments.some((t) => t.id === id));
+    return { ids: ids, terms: e.terms };
+  }, [treatments]);
+  // A shared link to cart.html#checkout opens the checkout ONLY when the link
+  // also settles every term — otherwise there is no order to check out, and
+  // the plan screen is the honest place to land.
+  const [step, setStep] = React.useState(() => (
+    window.location.hash === "#checkout" && entryPick.ids.length
+      && entryPick.ids.every((id) => entryPick.terms[id]) ? 2 : 1));
   // A basket, not a single choice. `selectedIds` keeps picker order so the
   // summary lists treatments the way they were chosen; `planKeys` maps each
   // chosen treatment to ITS OWN term, because the ladders differ per product
   // (see chimeCartOrder in cart-data.js).
-  const [selectedIds, setSelectedIds] = React.useState(treatments.length ? [treatments[0].id] : []);
-  const [planKeys, setPlanKeys] = React.useState({});
+  // With no selection passed, the first treatment starts checked, as before.
+  const [selectedIds, setSelectedIds] = React.useState(entryPick.ids.length
+    ? entryPick.ids : (treatments.length ? [treatments[0].id] : []));
+  const [planKeys, setPlanKeys] = React.useState(entryPick.terms);
   // The entered discount code lives here, not in the field, so it survives the
   // trip to checkout and back — the same reason the address does.
   const [codeObj, setCodeObj] = React.useState(null);
@@ -680,12 +772,17 @@ function ChimeCartFlow() {
 
   // Checkout entry state lives here so it outlives CartCheckoutScreen, which
   // unmounts on every return to screen 1. See the note on that component.
-  const [form, setForm] = React.useState({
-    name: "", line1: "", line2: "", city: "", state: "", zip: "", phone: "",
+  // Name, email and phone start from the assessment's answers when this device
+  // has them (chimeCartPrefill) — the funnel asked once, the cart does not ask
+  // again from scratch.
+  const [form, setForm] = React.useState(() => Object.assign({
+    name: "", email: "", dob: "", phone: "",
+    line1: "", line2: "", city: "", state: "", zip: "",
     card: "", exp: "", cvc: "",
-  });
+  }, window.chimeCartPrefill ? window.chimeCartPrefill() : {}));
   const [method, setMethod] = React.useState("card");
   const [sameBilling, setSameBilling] = React.useState(true);
+  // false, or the hand-off record once the order is placed.
   const [placed, setPlaced] = React.useState(false);
   const checkoutEntry = {
     form, setForm, method, setMethod, sameBilling, setSameBilling, placed, setPlaced,
@@ -714,7 +811,7 @@ function ChimeCartFlow() {
   const screenRef = React.useRef(null);
   const dirRef = React.useRef(1);      // 1 = forward, -1 = back
   const busyRef = React.useRef(false); // one transition at a time
-  const stepRef = React.useRef(1);     // read inside listeners without re-binding
+  const stepRef = React.useRef(step);  // read inside listeners without re-binding
   const navigatedRef = React.useRef(false);
   const [announce, setAnnounce] = React.useState("");
   stepRef.current = step;
@@ -752,8 +849,10 @@ function ChimeCartFlow() {
   function goTo(next, dir, apply) {
     if (busyRef.current) return;
     if (window.history && window.history.pushState) {
+      // pathname + search: the query is the selection the page was opened
+      // with, and dropping it would make a reload forget the treatment.
       window.history.pushState({ cartStep: next }, "",
-        next === 2 ? "#checkout" : window.location.pathname);
+        window.location.pathname + window.location.search + (next === 2 ? "#checkout" : ""));
     }
     animateTo(next, dir, apply);
   }
@@ -786,8 +885,15 @@ function ChimeCartFlow() {
   React.useEffect(() => {
     // Seed the entry so the first Back has somewhere to land rather than
     // popping straight out of the page.
+    // Opened straight on the checkout (cart.html?…#checkout): step 1 sits
+    // UNDER it in history, so Back from the checkout lands on plan selection
+    // rather than leaving the page. A #checkout that could not open the
+    // checkout is cleared, so the address bar does not claim a screen that is
+    // not showing.
     if (window.history && window.history.replaceState) {
-      window.history.replaceState({ cartStep: 1 }, "", window.location.pathname);
+      const base = window.location.pathname + window.location.search;
+      window.history.replaceState({ cartStep: 1 }, "", base);
+      if (stepRef.current === 2) window.history.pushState({ cartStep: 2 }, "", base + "#checkout");
     }
     const onPop = (e) => {
       const next = (e.state && e.state.cartStep) || 1;

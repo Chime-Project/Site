@@ -176,10 +176,12 @@ function CartTreatmentCard({ product, meta, selected, onSelect, onKeyDown, inner
           borderBottom: "1px solid var(--border-default)",
           fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)", color: "var(--accent-strong)",
         }}>{meta.highlight}</p>
-        <p style={{
+        {/* Optional: a treatment with no verified count shows no count, rather
+            than an empty line or a number nobody can stand behind. */}
+        {meta.proof && <p style={{
           margin: "var(--spacing-2) 0 0", fontSize: "var(--text-xs)",
           lineHeight: 1.5, color: "var(--text-muted)",
-        }}>{meta.proof}</p>
+        }}>{meta.proof}</p>}
       </div>
 
       <img src={uploads + "/" + product.img} alt="" width="440" height="800" aria-hidden="true"
@@ -354,27 +356,35 @@ function PayRow({ brands, style }) {
 // Text input. The label is always rendered — visually hidden when the design
 // shows only a placeholder, because a placeholder is not a label: it vanishes
 // on the first keystroke and is skipped by some screen readers.
-function CartField({ id, label, placeholder, type = "text", value, onChange,
-  autoComplete, inputMode, showLabel, trailing, required, invalid, errorId, style }) {
+//
+// `error` is the field's OWN message. It used to be one shared "Please complete
+// the highlighted fields" line that every invalid field pointed at, which told
+// nobody what was wrong with a ZIP that had four digits or an expired card. Now
+// the message sits under the field it is about, and aria-describedby points the
+// field at exactly that text. `errorId` still works for a caller that wants a
+// shared message instead.
+function CartField({ id, label, placeholder, type = "text", value, onChange, onBlur,
+  autoComplete, inputMode, showLabel, trailing, required, invalid, error, errorId,
+  maxLength, style }) {
+  const bad = !!error || !!invalid;
+  const describedBy = error ? id + "-error" : (bad && errorId ? errorId : undefined);
   return (
     <div style={Object.assign({ display: "flex", flexDirection: "column", gap: "var(--spacing-1)" }, style)}>
       <label htmlFor={id} className={showLabel ? undefined : "visually-hidden"} style={{
         fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-secondary)",
       }}>{label}</label>
       <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-        {/* The real `required` attribute, not just a JS check: it is what the
-            error styling keys off (so the optional address line never reddens)
-            and what assistive tech announces. The form carries noValidate, so
-            it does not also trigger the browser's own bubble.
+        {/* The real `required` attribute, not just a JS check: it is what
+            assistive tech announces. The form carries noValidate, so it does
+            not also trigger the browser's own bubble.
             aria-invalid is what makes the failure perceivable without sight: the
-            red border is the ONLY other signal, and "complete the highlighted
-            fields" is useless to someone who cannot see the highlight. */}
+            red border is the ONLY other signal. */}
         <input id={id} type={type} placeholder={placeholder} value={value}
-          onChange={(e) => onChange(e.target.value)} required={!!required}
-          aria-invalid={invalid ? "true" : undefined}
-          aria-describedby={invalid && errorId ? errorId : undefined}
-          autoComplete={autoComplete} inputMode={inputMode}
-          className={"cart-input" + (trailing ? " has-marks" : "")}
+          onChange={(e) => onChange(e.target.value)} onBlur={onBlur} required={!!required}
+          aria-invalid={bad ? "true" : undefined}
+          aria-describedby={describedBy}
+          autoComplete={autoComplete} inputMode={inputMode} maxLength={maxLength}
+          className={"cart-input" + (trailing ? " has-marks" : "") + (bad ? " is-invalid" : "")}
           style={{
             width: "100%", boxSizing: "border-box",
             padding: "var(--spacing-3) var(--spacing-4)",
@@ -382,7 +392,8 @@ function CartField({ id, label, placeholder, type = "text", value, onChange,
             // !important — same pattern MembershipPanel documents for its
             // mobile collapse. The marks are dropped below 620px; see there.
             paddingRight: trailing ? 132 : undefined,
-            borderRadius: "var(--radius-lg)", border: "1px solid var(--border-default)",
+            borderRadius: "var(--radius-lg)",
+            border: "1px solid " + (bad ? "var(--error-default)" : "var(--border-default)"),
             background: "var(--bg-elevated)", color: "var(--text-default)",
             font: "var(--font-weight-medium) var(--text-sm)/1.4 var(--font-family-base)",
           }} />
@@ -390,6 +401,39 @@ function CartField({ id, label, placeholder, type = "text", value, onChange,
           position: "absolute", right: "var(--spacing-2)", display: "flex", gap: 4, pointerEvents: "none",
         }}>{trailing}</span>}
       </div>
+      {error && <p className="cart-field-error" id={id + "-error"}>{error}</p>}
+    </div>
+  );
+}
+
+// Select, drawn to match CartField. Used for State: a free-text state takes
+// "Tex", "tx" and "Texsa" alike, and a pharmacy cannot ship to any of them.
+// The first option is a real, empty "Select" so nothing is chosen for the
+// customer — the same starting state the other checkouts' State box has.
+function CartSelect({ id, label, value, onChange, onBlur, options, placeholder,
+  autoComplete, required, error, showLabel, style }) {
+  return (
+    <div style={Object.assign({ display: "flex", flexDirection: "column", gap: "var(--spacing-1)" }, style)}>
+      <label htmlFor={id} className={showLabel ? undefined : "visually-hidden"} style={{
+        fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-secondary)",
+      }}>{label}</label>
+      <select id={id} value={value} required={!!required} autoComplete={autoComplete}
+        onChange={(e) => onChange(e.target.value)} onBlur={onBlur}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={error ? id + "-error" : undefined}
+        className={"cart-input cart-select" + (value ? "" : " is-empty") + (error ? " is-invalid" : "")}
+        style={{
+          width: "100%", boxSizing: "border-box",
+          padding: "var(--spacing-3) var(--spacing-10) var(--spacing-3) var(--spacing-4)",
+          borderRadius: "var(--radius-lg)",
+          border: "1px solid " + (error ? "var(--error-default)" : "var(--border-default)"),
+          backgroundColor: "var(--bg-elevated)",
+          font: "var(--font-weight-medium) var(--text-sm)/1.4 var(--font-family-base)",
+        }}>
+        <option value="">{placeholder || "Select"}</option>
+        {options.map((o) => <option key={o[0]} value={o[0]}>{o[1]}</option>)}
+      </select>
+      {error && <p className="cart-field-error" id={id + "-error"}>{error}</p>}
     </div>
   );
 }
@@ -524,6 +568,6 @@ function CartHoldSticker({ time, expired }) {
 Object.assign(window, {
   CartHeader, CartBack, CartStep, CartTreatmentCard,
   CartTermOption, CartTreatmentConfig, CartCodeField,
-  CartCheckLine, PayMark, PayRow, CartField, CartSummaryRow, CartHoldSticker,
+  CartCheckLine, PayMark, PayRow, CartField, CartSelect, CartSummaryRow, CartHoldSticker,
   cartReduced, cartCanHover, cartCardHover, cartSelectPop,
 });

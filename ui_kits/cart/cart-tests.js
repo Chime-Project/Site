@@ -319,6 +319,114 @@ eq("the discount never reaches the subtotal",
   sandbox.chimeCartOrder([line("prod-nad", "3mo")], { enabled: true, code: "X", discount: 447 }).promoApplied,
   false);
 
+// ---- Readiness pass (Asana 1218871555785842, 2026-09-25) -----------------
+// The cart sells Semaglutide + Tirzepatide on the client ladder (the figures
+// chime-checkout/js/checkout-selection.js quotes) and NAD+ on the catalog.
+const T = Object.fromEntries(sandbox.CHIME_CART_TREATMENTS.map((t) => [t.slug, t]));
+eq("the picker offers Semaglutide, Tirzepatide and NAD+",
+  sandbox.CHIME_CART_TREATMENTS.map((t) => t.slug).join(","), "semaglutide,tirzepatide,nad");
+eq("generic GLP-1 is no longer sold here", !!T["glp-1"], false);
+const L = (slug) => byKey(sandbox.chimeCartPlans(sandbox.chimeCartTreatmentProduct(T[slug])));
+const sema = L("semaglutide"), tirz = L("tirzepatide"), nadL = L("nad");
+eq("sema quotes the ladder's three terms, no 12 months", Object.keys(sema).join(","), "1mo,3mo,6mo");
+eq("sema 1 month is $299", sema["1mo"].total, 299);
+eq("sema 3 months is $747 today", sema["3mo"].total, 747);
+eq("sema 3 months ships 4 (the free month)", sema["3mo"].supplyMonths, 4);
+eq("sema 3 months averages $186.75", sema["3mo"].perMonth, 186.75);
+eq("sema 6 months is $1,194", sema["6mo"].totalLabel, "$1,194");
+eq("sema 6 months is $199 a month", sema["6mo"].perMonth, 199);
+eq("sema saving is measured against $299 month to month", sema["3mo"].savings, 4 * 299 - 747);
+eq("tirz 1 month is $359", tirz["1mo"].total, 359);
+eq("tirz 3 months is $897 today", tirz["3mo"].total, 897);
+eq("tirz 3 months averages $224.25", tirz["3mo"].perMonth, 224.25);
+eq("tirz 6 months is $1,794 over 6 months", tirz["6mo"].perMonth, 299);
+eq("tirz 1 month carries no saving", tirz["1mo"].savings, 0);
+eq("NAD+ keeps its catalog ladder", nadL["3mo"].total, 420);
+eq("the shared catalog is untouched (Semaglutide still has its 1 Year row)",
+  !!byKey(sandbox.chimeCartPlans(sandbox.chimeCartProduct("prod-semaglutide")))["1yr"], true);
+eq("no false Best Deal: the cheapest sema term already says Most Popular",
+  Object.values(sema).filter((p) => p.badge === "Best Deal").length, 0);
+eq("the result screen's weight-loss 'From' price is the cart's lowest rate",
+  Math.min(...Object.values(sema).map((p) => p.perMonth), ...Object.values(tirz).map((p) => p.perMonth)), 186.75);
+eq("the result screen's NAD+ 'From' price is the cart's lowest rate",
+  Math.min(...Object.values(nadL).map((p) => p.perMonth)), 105);
+
+// Entry: what funnels hand the cart.
+const E = (q) => sandbox.chimeCartEntry(q);
+eq("no query selects nothing", E("").ids.length, 0);
+eq("a slug selects its treatment", E("?treatment=tirzepatide").ids.join(), "prod-tirzepatide");
+eq("a list keeps its order", E("?treatment=nad,semaglutide").ids.join(), "prod-nad,prod-semaglutide");
+eq("unknown slugs are dropped, not guessed", E("?treatment=widgets,nad").ids.join(), "prod-nad");
+eq("duplicates collapse", E("?treatment=nad,NAD").ids.join(), "prod-nad");
+eq("a term applies to each treatment that has it",
+  JSON.stringify(E("?treatment=semaglutide,nad&term=3mo").terms),
+  JSON.stringify({ "prod-semaglutide": "3mo", "prod-nad": "3mo" }));
+eq("a term a ladder lacks is dropped for that treatment",
+  JSON.stringify(E("?treatment=semaglutide,nad&term=6mo").terms), JSON.stringify({ "prod-semaglutide": "6mo" }));
+eq("a per-treatment term wins", E("?treatment=semaglutide&term=1mo&term_semaglutide=6mo").terms["prod-semaglutide"], "6mo");
+eq("the chime-checkout shape is understood", JSON.stringify(E("?med=tirz&term=3")),
+  JSON.stringify({ ids: ["prod-tirzepatide"], terms: { "prod-tirzepatide": "3mo" } }));
+eq("a 12-month term is refused on the client ladder", E("?treatment=semaglutide&term=1yr").terms["prod-semaglutide"], undefined);
+eq("href builder matches the parser", sandbox.chimeCartHref(["semaglutide", "nad"], "3mo"), "cart.html?treatment=semaglutide,nad&term=3mo");
+eq("href with nothing is the bare cart", sandbox.chimeCartHref([]), "cart.html");
+
+// Fields.
+const F = sandbox.chimeCartFormat, FE = (k, v) => sandbox.chimeCartFieldError(k, v, new Date(2026, 8, 25));
+eq("states: 50 + DC", sandbox.CHIME_US_STATES.length, 51);
+eq("phone formats as typed", F.phone("5153212343"), "(515) 321-2343");
+eq("phone drops a leading US 1", F.phone("+1 515 321 2343"), "(515) 321-2343");
+eq("zip keeps 5 digits", F.zip("50309"), "50309");
+eq("zip+4", F.zip("503091234"), "50309-1234");
+eq("dob slashes", F.dob("04151988"), "04/15/1988");
+eq("card groups of four", F.card("4242424242424242"), "4242 4242 4242 4242");
+eq("expiry", F.exp("0829"), "08 / 29");
+eq("cvc is digits only, max 4", F.cvc("12a345"), "1234");
+eq("empty email asks for it", FE("email", ""), "Enter your email.");
+eq("bad email says how", FE("email", "jamie@"), "Enter an email like name@example.com.");
+eq("good email passes", FE("email", "jamie@example.com"), "");
+eq("one-word name asks for both", FE("name", "Jamie"), "Enter your first and last name.");
+eq("state must be chosen", FE("state", ""), "Choose your state.");
+eq("4-digit zip fails", FE("zip", "5030"), "Enter a 5-digit ZIP code.");
+eq("9-digit phone fails", FE("phone", "(515) 321-234"), "Enter a 10-digit US phone number.");
+eq("dob must be a real date", FE("dob", "02/30/1990"), "Enter a real date as MM/DD/YYYY.");
+eq("under 18 is refused", FE("dob", "09/26/2008"), "You must be 18 or older to order treatment.");
+eq("18 today passes", FE("dob", "09/25/2008"), "");
+eq("a Luhn-valid card passes", FE("card", "4242 4242 4242 4242"), "");
+eq("a mistyped card fails", FE("card", "4242 4242 4242 4241"), "Check your card number.");
+eq("an expired card fails", FE("exp", "08 / 26"), "This card has expired.");
+eq("this month's card is still good", FE("exp", "09 / 26"), "");
+eq("month 13 fails", FE("exp", "13 / 29"), "Enter the expiration date as MM / YY.");
+eq("cvc needs 3-4 digits", FE("cvc", "12"), "Enter the 3 or 4 digits on your card.");
+
+// The hand-off record: complete, and never carrying card data.
+const semaLine = { product: sandbox.chimeCartTreatmentProduct(T.semaglutide), plan: sema["3mo"] };
+const rec = sandbox.chimeCartOrderRecord(sandbox.chimeCartOrder([semaLine]), {
+  name: " Jamie Rivera ", email: "jamie@example.com", dob: "04/15/1988", phone: "(515) 321-2343",
+  line1: "1 Main St", line2: "", city: "Des Moines", state: "IA", zip: "50309",
+  card: "4242 4242 4242 4242", exp: "08 / 29", cvc: "123", sameBilling: true,
+}, "card", new Date(Date.UTC(2026, 8, 25)));
+const recText = JSON.stringify(rec);
+eq("record carries no card number", /4242/.test(recText), false);
+eq("record carries no card, expiry or cvc field", /"(card|exp|cvc)":/.test(recText), false);
+eq("record names the line", rec.lines[0].productId + ":" + rec.lines[0].planKey, "prod-semaglutide:3mo");
+eq("record total is what the page charges", rec.total, 747 - 120);
+eq("record carries the automatic promo", rec.promo.code, sandbox.CHIME_CART_PROMO.code);
+eq("record trims the name", rec.patient.name, "Jamie Rivera");
+eq("record ships to the state picked", rec.shipping.state, "IA");
+eq("nothing is due today", rec.dueToday, 0);
+eq("submit hook exists", typeof sandbox.chimeCartSubmitOrder, "function");
+
+// Prefill from the assessment's stored answers (screen A3).
+const store = (v) => ({ getItem: () => (v == null ? null : JSON.stringify(v)) });
+eq("prefill reads name, email and phone",
+  JSON.stringify(sandbox.chimeCartPrefill(store({ answers: { A3: {
+    firstName: "Jamie", lastName: "Rivera", age: "38", email: "jamie@example.com", phone: "5153212343" } } }))),
+  JSON.stringify({ name: "Jamie Rivera", email: "jamie@example.com", phone: "(515) 321-2343" }));
+eq("prefill without an assessment is empty", JSON.stringify(sandbox.chimeCartPrefill(store(null))), "{}");
+eq("prefill never writes empty keys", JSON.stringify(sandbox.chimeCartPrefill(store({ answers: { A3: { firstName: "Jamie" } } }))),
+  JSON.stringify({ name: "Jamie" }));
+eq("prefill survives a corrupt entry", JSON.stringify(sandbox.chimeCartPrefill({ getItem: () => "{nope" })), "{}");
+
 console.log(fails.length
   ? `\nFAIL — ${pass} passed, ${fails.length} failed:\n\n${fails.join("\n\n")}\n`
   : `PASS — ${pass} checks`);

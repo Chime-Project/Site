@@ -478,6 +478,34 @@
   }
 
   // -------------------------------------------------------------------------
+  // Result → cart hand-off (Asana 1218871555785842, 2026-09-25). The result
+  // screen's CTA used to end the journey on a placeholder; it now opens the
+  // cart with what the assessment learned already selected. The URL shape is
+  // the one cart-data.js's chimeCartEntry reads (cart.html?treatment=a,b).
+  //   weightLoss → the GLP-1 they already take if they said Tirzepatide,
+  //                otherwise Semaglutide — plus NAD+ when it is a top add-on
+  //   energy     → NAD+ (the path's own product)
+  //   labs       → labs.html (the cart does not sell lab panels)
+  //   advanced / coaching → cart.html with no selection: the cart sells
+  //                neither Sermorelin nor coaching, so nothing is ticked for them.
+  // No term is passed: the membership length is the customer's call, made on
+  // the cart's own ladder, never pre-ticked for them.
+  // Ineligible answers never reach a medication pre-selection — v4PathId
+  // already sends them to labs / coaching.
+  // -------------------------------------------------------------------------
+  function v4CartHref(answers, rec) {
+    rec = rec || v4Recommendation(answers);
+    var nad = (rec.offer.addOns || []).some(function (a) { return a.name === "NAD+"; });
+    if (rec.pathId === "weightLoss") {
+      var med = answers["B1.1_med"] === "Tirzepatide" ? "tirzepatide" : "semaglutide";
+      return "cart.html?treatment=" + med + (nad ? ",nad" : "");
+    }
+    if (rec.pathId === "energy") return "cart.html?treatment=nad";
+    if (rec.pathId === "labs") return "labs.html";
+    return "cart.html";
+  }
+
+  // -------------------------------------------------------------------------
   // ?product= entry routing — pre-selects A1 goals, never skips the screen.
   // -------------------------------------------------------------------------
   function v4ProductGoals(search) {
@@ -528,6 +556,7 @@
   g.asmtV4WhyBullets = v4WhyBullets;
   g.asmtV4Recommendation = v4Recommendation;
   g.asmtV4ProductGoals = v4ProductGoals;
+  g.asmtV4CartHref = v4CartHref;
   g.asmtV4Track = v4Track;
 
 })(typeof window !== "undefined" ? window : globalThis);

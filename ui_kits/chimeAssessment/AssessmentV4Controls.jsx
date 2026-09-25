@@ -1361,10 +1361,6 @@ function AsmtV4Result({ rec, headingRef, onCreateAccount }) {
       {/* 4 · Offer — pricing appears here for the first time */}
       <div style={card}>
         <p style={sectionTag}>Your Offer</p>
-        <p style={{
-          margin: 0, fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)",
-          letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--warning-default)",
-        }}>Placeholder pricing — pending final pricing config</p>
         {/* flexWrap + no minWidth on the name group: the price is nowrap and
             ~212px wide, so at 375px it left the group 17px and the thumb and
             name spilled out from under it. Wrapping drops the price onto its
@@ -1381,7 +1377,9 @@ function AsmtV4Result({ rec, headingRef, onCreateAccount }) {
               {rec.offer.plan.name}{rec.offer.labsTier ? " — " + rec.offer.labsTier : ""}
             </span>
           </span>
-          <span style={{ fontSize: "var(--text-base)", color: "var(--accent-onSubtle)", whiteSpace: "nowrap", marginLeft: "auto" }}>{rec.offer.plan.price}</span>
+          {/* No figure when the product has no approved price (null in the
+              pricing config) — an empty row beats a placeholder in production. */}
+          {rec.offer.plan.price && <span style={{ fontSize: "var(--text-base)", color: "var(--accent-onSubtle)", whiteSpace: "nowrap", marginLeft: "auto" }}>{rec.offer.plan.price}</span>}
         </div>
         {rec.offer.labsPanelNote &&
           <p style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, color: "var(--text-secondary)" }}>
@@ -1398,7 +1396,7 @@ function AsmtV4Result({ rec, headingRef, onCreateAccount }) {
               <AsmtV4OfferThumb spec={thumbs[a.name]} />
               <span style={{ fontSize: "var(--text-base)", color: "var(--text-default)" }}>Add-on: {a.name}</span>
             </span>
-            <span style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", whiteSpace: "nowrap", marginLeft: "auto" }}>{a.price}</span>
+            {a.price && <span style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", whiteSpace: "nowrap", marginLeft: "auto" }}>{a.price}</span>}
           </div>
         ))}
       </div>

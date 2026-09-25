@@ -471,6 +471,44 @@ check("the exit option never scores a labs tier on its own",
   g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": [g.CHIME_ASSESSMENT_V4.b32SkipValue] }, A2_CLEAR)).offer.labsTier === null);
 
 // ---------------------------------------------------------------------------
+// Result → cart hand-off (readiness pass, 2026-09-25). The result CTA used to
+// end on a placeholder; it now opens the cart with the recommendation selected,
+// and the cart must be able to read what it is handed.
+// ---------------------------------------------------------------------------
+var WL = merge({ A1: ["Lose weight"] }, A2_CLEAR);
+eq("cart · weight loss opens Semaglutide", g.asmtV4CartHref(WL), "cart.html?treatment=semaglutide");
+eq("cart · weight loss on Tirzepatide opens Tirzepatide",
+  g.asmtV4CartHref(merge(WL, { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Tirzepatide" })),
+  "cart.html?treatment=tirzepatide");
+(function () {
+  var a = merge(WL, { A4: ["Energy", "Clarity"] });
+  var nad = g.asmtV4Recommendation(a).offer.addOns.some(function (x) { return x.name === "NAD+"; });
+  check("cart · the fixture really scores NAD+ as an add-on", nad);
+  eq("cart · a NAD+ add-on joins the basket", g.asmtV4CartHref(a), "cart.html?treatment=semaglutide,nad");
+})();
+eq("cart · energy opens NAD+", g.asmtV4CartHref(merge({ A1: ["Feel more energy"] }, A2_CLEAR)), "cart.html?treatment=nad");
+eq("cart · labs goes to the labs page",
+  g.asmtV4CartHref(merge({ A1: ["Understand my health better"] }, A2_CLEAR)), "labs.html");
+(function () {
+  var a = merge({ A1: ["Lose weight"] }, A2_DQ, { A2F: "coaching" });
+  eq("cart · ineligible answers never pre-select a medication", g.asmtV4CartHref(a), "cart.html");
+})();
+check("cart · no placeholder price is left in the offer config",
+  JSON.stringify(g.CHIME_ASSESSMENT_V4.pricing).indexOf("PLACEHOLDER") < 0);
+
+// The cart reads exactly what the assessment writes.
+g.window = g;
+require("../shared/data/products.js");
+require("../cart/cart-data.js");
+[["cart.html?treatment=semaglutide", ["prod-semaglutide"]],
+ ["cart.html?treatment=tirzepatide", ["prod-tirzepatide"]],
+ ["cart.html?treatment=semaglutide,nad", ["prod-semaglutide", "prod-nad"]],
+ ["cart.html?treatment=nad", ["prod-nad"]]].forEach(function (c) {
+  eq("cart · " + c[0] + " → " + c[1].join(" + "),
+    g.chimeCartEntry(c[0].slice(c[0].indexOf("?"))).ids, c[1]);
+});
+
+// ---------------------------------------------------------------------------
 console.log("");
 if (failed) {
   console.error("assessment-v4 tests: " + failed + " FAILED, " + passed + " passed");

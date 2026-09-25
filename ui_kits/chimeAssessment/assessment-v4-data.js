@@ -623,22 +623,30 @@
     resultCta: "Create My Account",
     resultCtaSupport: "You’re Not Doing This Alone™",
 
-    // Pricing data not in doc — placeholder pricing config keyed by
-    // path + add-on, trivial to swap for real numbers.
+    // Offer prices. Readiness pass (2026-09-25): the placeholders are gone
+    // from production. Where the cart sells the product, the figure is the
+    // cart's own lowest per-month rate, so the price on this screen is one the
+    // next screen shows too (ui_kits/cart/cart-data.js):
+    //   weight loss — Semaglutide 3 months + 1 free, $747 / 4 = $186.75
+    //   NAD+        — 3 months + 1 free, $420 / 4 = $105
+    // Everything else has no approved price anywhere on the site yet, so it
+    // shows NONE (null) rather than a made-up one; the result screen renders
+    // the row without a figure. Update both files together.
+    // Key order is still the stable add-on display order — do not reorder.
     pricing: {
       plans: {
-        weightLoss: { price: "PLACEHOLDER — $—/mo" },
-        energy: { price: "PLACEHOLDER — $—/mo" },
-        labs: { price: "PLACEHOLDER — $—" },
-        advanced: { price: "PLACEHOLDER — $—/mo" },
-        coaching: { price: "PLACEHOLDER — $—/mo" },
+        weightLoss: { price: "From $186.75/mo" },
+        energy: { price: "From $105/mo" },
+        labs: { price: null },
+        advanced: { price: null },
+        coaching: { price: null },
       },
       addOns: {
-        "NAD+": { price: "PLACEHOLDER — $—/mo", medication: true },
-        "Coaching": { price: "PLACEHOLDER — $—/mo", medication: false },
-        "App": { price: "PLACEHOLDER — $—/mo", medication: false },
-        "Labs": { price: "PLACEHOLDER — $—", medication: false },
-        "Sermorelin": { price: "PLACEHOLDER — $—/mo", medication: true },
+        "NAD+": { price: "From $105/mo", medication: true },
+        "Coaching": { price: null, medication: false },
+        "App": { price: null, medication: false },
+        "Labs": { price: null, medication: false },
+        "Sermorelin": { price: null, medication: true },
       },
     },
 

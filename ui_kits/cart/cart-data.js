@@ -17,11 +17,36 @@
   // only the marketing lines that exist nowhere else live here.
   // ⚠️ `proof` counts are from the mockup and are UNVERIFIED marketing claims.
   // They need real numbers or removal before launch — see CART_REVIEW below.
+  //
+  // Readiness pass (Asana 1218871555785842, 2026-09-25): generic "GLP-1" is
+  // split into Semaglutide + Tirzepatide on the CLIENT price ladder — the same
+  // figures chime-checkout, select-plan and choose-treatment quote (source:
+  // chime-checkout/js/checkout-selection.js). `plans` here overrides the shared
+  // catalog row for THIS PAGE ONLY: products.js still feeds the shop pages and
+  // was left alone. The ladder has no 12-month plan. Tirzepatide's 6 months
+  // covers 6 months, as the live product page states it ("includes 6 months").
+  // NAD+ keeps its catalog ladder. The mockup's two cards' copy moved with the
+  // comparison it actually makes (Sema = proven + affordable, Tirz = dual-action
+  // + faster); NAD+ has no mockup copy, so its lines restate the catalog
+  // category and carry no count.
+  // `slug` is the public URL name: cart.html?treatment=semaglutide,nad&term=3mo
   window.CHIME_CART_TREATMENTS = [
-    { id: "prod-nad", claim: "Proven, effective.",
-      highlight: "More Affordable", proof: "10,909 patients chose this today" },
-    { id: "prod-glp-1", claim: "Dual-action, but more expensive.",
-      highlight: "Fastest Results", proof: "19,528 patients chose this today" },
+    { id: "prod-semaglutide", slug: "semaglutide", claim: "Proven, effective.",
+      highlight: "More Affordable", proof: "10,909 patients chose this today",
+      plans: [
+        { key: "1mo", term: "1 Month", price: "$299.00" },
+        { key: "3mo", term: "3 Months", price: "$747.00", permo: "$249" },
+        { key: "6mo", term: "6 Months", price: "$1,194.00", permo: "$199" },
+      ] },
+    { id: "prod-tirzepatide", slug: "tirzepatide", claim: "Dual-action, but more expensive.",
+      highlight: "Fastest Results", proof: "19,528 patients chose this today",
+      plans: [
+        { key: "1mo", term: "1 Month", price: "$359.00" },
+        { key: "3mo", term: "3 Months", price: "$897.00", permo: "$299" },
+        { key: "6mo", term: "6 Months", price: "$1,794.00", permo: "$299" },
+      ] },
+    { id: "prod-nad", slug: "nad", claim: "Energy & wellness support.",
+      highlight: "Pairs with any plan", proof: null },
   ];
 
   // ---- Step 2: plan ladder presentation ------------------------------------
@@ -67,6 +92,14 @@
     dueToday: "$0 Due Today!",
     dueTodayNote: "Only charged if your prescription is approved.",
     hipaaNote: "Your data is protected by HIPAA. All transactions are secured and encrypted.",
+    // Confirmation screen, "What happens next". Every line restates a claim
+    // this page already makes (the $0-due note, checkoutNotes, "Shipping:
+    // FREE") — the confirmation adds no new promise, timing or SLA.
+    nextSteps: [
+      { title: "Provider review", body: "A licensed provider reviews your information and decides whether treatment is right for you." },
+      { title: "Approval", body: "Your card is only charged if your prescription is approved." },
+      { title: "Delivery", body: "A licensed pharmacy partner ships your treatment to the address you gave, free of charge." },
+    ],
     // Pre-payment disclosures (merchant-account requirement, Asana
     // 1218018600323416): provider review, no guarantee of medication,
     // pharmacy-partner fulfilment, delivery variability, and renewal terms,
@@ -223,10 +256,10 @@
     var built = rows.map(function (p) {
       var m = meta[p.key];
       if (!m) return null;
-      // 1-month total is the list rate itself — for a WL product that is the
-      // real month-to-month rate, and for the others it is the same number the
-      // catalog already prints.
-      var total = p.key === "1mo" ? listRate : cartMoney(p.price);
+      // A "From $" 1-month row is a marketing floor, so its total is the list
+      // rate — the real month-to-month rate. A 1-month row that quotes an
+      // outright price (NAD+, the client ladder) is charged at that price.
+      var total = p.key === "1mo" && /from/i.test(p.price) ? listRate : cartMoney(p.price);
       var perMonth = total / m.supplyMonths;
       var billed = m.billedMonths || m.supplyMonths;
       return {
@@ -421,6 +454,248 @@
     return (window.CHIME_PRODUCTS || []).filter(function (p) { return p.id === id; })[0] || null;
   }
 
+  // The catalog product as THIS page sells it: the treatment's own `plans`
+  // (the client ladder) replace the catalog rows; name and vial art stay the
+  // catalog's. Null when the id has no catalog row.
+  function chimeCartTreatmentProduct(t) {
+    var base = t && chimeCartProduct(t.id);
+    if (!base) return null;
+    return t.plans ? Object.assign({}, base, { plans: t.plans }) : base;
+  }
+
+  // ---- Entry: what the page was opened with --------------------------------
+  // Funnels hand the cart a selection in the URL:
+  //   cart.html?treatment=semaglutide,nad&term=3mo
+  //   cart.html?treatment=tirzepatide&term=6mo#checkout
+  // `treatment` is a comma list of slugs (or catalog ids); `term` applies to
+  // each listed treatment whose ladder has it, and a per-treatment
+  // `term_<slug>=` wins over it. The chime-checkout shape (?med=sema|tirz&
+  // term=1|3|6) is accepted too, so a link written for one checkout does not
+  // silently land empty on the other.
+  // Returns { ids: [...], terms: { id: key } } — unknown slugs and terms are
+  // dropped, never guessed; an empty `ids` means "no selection passed".
+  var CART_TERM_ALIASES = { "1": "1mo", "3": "3mo", "6": "6mo", "12": "1yr" };
+  var CART_MED_ALIASES = { sema: "semaglutide", tirz: "tirzepatide" };
+  function chimeCartEntry(search) {
+    var q = {};
+    String(search || "").replace(/^\?/, "").split("&").forEach(function (pair) {
+      if (!pair) return;
+      var i = pair.indexOf("="), k = i < 0 ? pair : pair.slice(0, i), v = i < 0 ? "" : pair.slice(i + 1);
+      try { v = decodeURIComponent(v.replace(/\+/g, " ")); } catch (e) {}
+      q[k.toLowerCase()] = v;
+    });
+    var list = window.CHIME_CART_TREATMENTS || [];
+    var find = function (s) {
+      s = String(s || "").trim().toLowerCase();
+      s = CART_MED_ALIASES[s] || s;
+      return list.filter(function (t) { return t.slug === s || t.id === s; })[0] || null;
+    };
+    var term = function (s) {
+      s = String(s || "").trim().toLowerCase();
+      return CART_TERM_ALIASES[s] || s;
+    };
+    var ids = [], terms = {};
+    String(q.treatment || q.med || "").split(",").forEach(function (s) {
+      var t = find(s);
+      if (!t || ids.indexOf(t.id) >= 0) return;
+      ids.push(t.id);
+      var want = term(q["term_" + t.slug] || q.term);
+      var product = chimeCartTreatmentProduct(t);
+      var ok = product && product.plans.some(function (p) { return p.key === want; });
+      if (ok) terms[t.id] = want;
+    });
+    return { ids: ids, terms: terms };
+  }
+
+  // The URL the funnel pages should link to. Kept here so the assessment and
+  // any future funnel build the same shape the parser above reads.
+  function chimeCartHref(slugs, termKey) {
+    var s = (slugs || []).filter(Boolean);
+    if (!s.length) return "cart.html";
+    return "cart.html?treatment=" + s.join(",") + (termKey ? "&term=" + termKey : "");
+  }
+
+  // ---- Prefill from the assessment -----------------------------------------
+  // chimeAssessment.html already asked for first/last name, email and phone
+  // (screen A3) and keeps its answers in localStorage under its versioned key
+  // (ASMT_V4_STORE_KEY in AssessmentV4Flow.jsx — change both together). Asking
+  // the same patient for the same four things twice in one journey is the
+  // clearest "information not transferred" failure there is, so the checkout
+  // starts with them filled in; the customer can still edit every one.
+  // Returns only the fields it could read — never an empty key — and nothing at
+  // all when there is no assessment on this device.
+  var ASMT_STORE_KEY = "chime_assessment_v4_4";
+  function chimeCartPrefill(storage) {
+    var saved = null;
+    try { saved = JSON.parse((storage || window.localStorage).getItem(ASMT_STORE_KEY) || "null"); } catch (e) {}
+    var a = saved && saved.answers && saved.answers.A3;
+    if (!a || typeof a !== "object") return {};
+    var out = {};
+    var name = [a.firstName, a.lastName].map(function (x) { return String(x || "").trim(); })
+      .filter(Boolean).join(" ");
+    if (name) out.name = name;
+    if (String(a.email || "").trim()) out.email = String(a.email).trim();
+    var phone = CART_FORMAT.phone(a.phone);
+    if (phone) out.phone = phone;
+    return out;
+  }
+
+  // ---- Checkout fields ------------------------------------------------------
+  // 50 states + DC, the list the choose-treatment checkout's State select uses.
+  window.CHIME_US_STATES = [
+    ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"],
+    ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"],
+    ["DC", "District of Columbia"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"],
+    ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"],
+    ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"],
+    ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"],
+    ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"],
+    ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"],
+    ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"],
+    ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"],
+    ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"],
+    ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"],
+    ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"],
+  ];
+
+  // As-you-type formatting. Each takes what is in the box and returns what
+  // should be; digits are the only thing kept, so pasting "555.321.2343" or
+  // "4242-4242-…" lands in the same shape as typing it.
+  function digits(v, max) { return String(v == null ? "" : v).replace(/\D/g, "").slice(0, max); }
+  var CART_FORMAT = {
+    phone: function (v) {
+      var d = digits(v, 11);
+      if (d.length === 11 && d[0] === "1") d = d.slice(1);
+      d = d.slice(0, 10);
+      if (d.length < 4) return d;
+      if (d.length < 7) return "(" + d.slice(0, 3) + ") " + d.slice(3);
+      return "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6);
+    },
+    zip: function (v) {
+      var d = digits(v, 9);
+      return d.length > 5 ? d.slice(0, 5) + "-" + d.slice(5) : d;
+    },
+    dob: function (v) {
+      var d = digits(v, 8);
+      if (d.length < 3) return d;
+      if (d.length < 5) return d.slice(0, 2) + "/" + d.slice(2);
+      return d.slice(0, 2) + "/" + d.slice(2, 4) + "/" + d.slice(4);
+    },
+    card: function (v) { return digits(v, 19).replace(/(\d{4})(?=\d)/g, "$1 "); },
+    exp: function (v) {
+      var d = digits(v, 4);
+      return d.length < 3 ? d : d.slice(0, 2) + " / " + d.slice(2);
+    },
+    cvc: function (v) { return digits(v, 4); },
+  };
+
+  function luhn(num) {
+    var sum = 0, dbl = false;
+    for (var i = num.length - 1; i >= 0; i--) {
+      var n = +num[i];
+      if (dbl) { n *= 2; if (n > 9) n -= 9; }
+      sum += n; dbl = !dbl;
+    }
+    return num.length > 0 && sum % 10 === 0;
+  }
+
+  // One message per field, or "" when it is fine. Messages say what to fix,
+  // not that something is "invalid" — the customer can act on the first kind.
+  // `now` is injectable so the date rules are testable.
+  var CART_LABELS = {
+    email: "your email", name: "your full name", dob: "your date of birth",
+    line1: "your street address", city: "your city", state: "your state",
+    zip: "your ZIP code", phone: "your phone number",
+    card: "your card number", exp: "the expiration date", cvc: "the security code",
+  };
+  function chimeCartFieldError(key, value, now) {
+    var v = String(value == null ? "" : value).trim();
+    if (key === "state") return v ? "" : "Choose your state.";
+    if (!v) return "Enter " + CART_LABELS[key] + ".";
+    now = now || new Date();
+    if (key === "email") {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? "" : "Enter an email like name@example.com.";
+    }
+    if (key === "name") return /\S+\s+\S+/.test(v) ? "" : "Enter your first and last name.";
+    if (key === "zip") return /^\d{5}(-\d{4})?$/.test(v) ? "" : "Enter a 5-digit ZIP code.";
+    if (key === "phone") return digits(v, 20).length === 10 ? "" : "Enter a 10-digit US phone number.";
+    if (key === "dob") {
+      var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v);
+      if (!m) return "Enter your date of birth as MM/DD/YYYY.";
+      var mo = +m[1], d = +m[2], y = +m[3];
+      var dt = new Date(y, mo - 1, d);
+      if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d || y < 1900) {
+        return "Enter a real date as MM/DD/YYYY.";
+      }
+      var age = now.getFullYear() - y - ((now.getMonth() < mo - 1
+        || (now.getMonth() === mo - 1 && now.getDate() < d)) ? 1 : 0);
+      if (age < 0) return "Enter a real date as MM/DD/YYYY.";
+      return age >= 18 ? "" : "You must be 18 or older to order treatment.";
+    }
+    if (key === "card") {
+      var n = digits(v, 30);
+      return n.length >= 13 && n.length <= 19 && luhn(n) ? "" : "Check your card number.";
+    }
+    if (key === "exp") {
+      var e = /^(\d{2}) \/ (\d{2})$/.exec(v);
+      if (!e || +e[1] < 1 || +e[1] > 12) return "Enter the expiration date as MM / YY.";
+      // A card is good through the LAST day of its expiry month.
+      var end = new Date(2000 + +e[2], +e[1], 1);
+      return end > now ? "" : "This card has expired.";
+    }
+    if (key === "cvc") return /^\d{3,4}$/.test(v) ? "" : "Enter the 3 or 4 digits on your card.";
+    return "";
+  }
+
+  // ---- Order hand-off -------------------------------------------------------
+  // The ONE record the checkout produces, shaped for whatever backend takes the
+  // order (the platform is not this repo's to build). Everything a fulfilment
+  // system needs is here — the treatments and terms, every figure as charged,
+  // both codes, the patient and shipping details — and NOTHING from the card:
+  // raw card data must only ever reach the payment processor's own fields.
+  function chimeCartOrderRecord(order, form, method, now) {
+    now = now || new Date();
+    var f = form || {};
+    return {
+      version: 1,
+      source: "cart.html",
+      createdAt: now.toISOString(),
+      lines: (order.lines || []).map(function (l) {
+        return {
+          productId: l.product.id, product: l.product.name,
+          planKey: l.plan.key, plan: l.plan.title,
+          supplyMonths: l.plan.supplyMonths, billedMonths: l.plan.billedMonths,
+          total: l.plan.total, perMonth: Math.round(l.plan.perMonth * 100) / 100,
+        };
+      }),
+      subtotal: order.subtotal,
+      promo: order.promoApplied ? { code: order.promoCode, amount: order.promoDiscount } : null,
+      code: order.codeApplied ? { code: order.code, percent: order.codePercent, amount: order.codeDiscount } : null,
+      total: Math.round(order.total * 100) / 100,
+      dueToday: 0,
+      paymentMethod: method,
+      patient: {
+        name: String(f.name || "").trim(), email: String(f.email || "").trim(),
+        dob: f.dob || "", phone: f.phone || "",
+      },
+      shipping: {
+        line1: String(f.line1 || "").trim(), line2: String(f.line2 || "").trim(),
+        city: String(f.city || "").trim(), state: f.state || "", zip: f.zip || "",
+      },
+      billingSameAsShipping: method === "card" ? !!f.sameBilling : null,
+    };
+  }
+
+  // The integration point. The checkout awaits this with the record above; a
+  // backend replaces it with its own function (POST, then resolve — or reject
+  // with an Error whose message the customer should read). The default keeps
+  // the record in this tab so the confirmation, QA and analytics can read it:
+  //   JSON.parse(sessionStorage.getItem("chime:cart-order"))
+  window.chimeCartSubmitOrder = window.chimeCartSubmitOrder || function (record) {
+    try { sessionStorage.setItem("chime:cart-order", JSON.stringify(record)); } catch (e) {}
+    return Promise.resolve({ ok: true });
+  };
+
   Object.assign(window, {
     chimeCartPlans: chimeCartPlans,
     chimeCartApplyPromo: chimeCartApplyPromo,
@@ -428,6 +703,13 @@
     chimeCartBadges: chimeCartBadges,
     chimeCartResolveCode: chimeCartResolveCode,
     chimeCartProduct: chimeCartProduct,
+    chimeCartTreatmentProduct: chimeCartTreatmentProduct,
+    chimeCartEntry: chimeCartEntry,
+    chimeCartHref: chimeCartHref,
+    chimeCartFormat: CART_FORMAT,
+    chimeCartPrefill: chimeCartPrefill,
+    chimeCartFieldError: chimeCartFieldError,
+    chimeCartOrderRecord: chimeCartOrderRecord,
     chimeCartMoney: cartMoney,
     chimeCartUSD: cartUSD,
   });
