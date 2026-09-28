@@ -15,7 +15,18 @@
    coupon code follow the term (1 month "$120 off" / 120off, 3 months "4TH MONTH FREE, FOREVER" / 4thMONTH, 6 months
    "PRICE LOCKED IN, FOREVER" / LOCKED), and the discount, "You save" and the Remove state all come from
    crossed-out − price. Without that block the V2 rules above apply. checkout-v3/ loads the images from ../checkout/,
-   so the vial swap keeps the page's own path and changes only the file name. */
+   so the vial swap keeps the page's own path and changes only the file name.
+   NAD+ OFFER MODE (checkout-v4/ and checkout-v5/, client doc "glp plus nad gold pages - 2 product selection versions",
+   2026-09-28): data with a `checkoutOffer` (../js/plans-data-v4.js, -v5.js). Then:
+     title = the treatment's checkoutName ("Burn & Boost Plan" / "Burn & Boost Plus Plan"), the vial = the product + NAD+
+     pair, the badge = "+ FREE NAD+ ($299 value)" plus a second box with the plan ("Monthly" / "3 Months" / "6 Months" /
+     "3 Months + 1 free"), coupon FREENAD, package line and Total = the plan's crossed-out price (monthly × months) then
+     the package price, the crossed-out figure hidden when it equals the price (the monthly plan), "New Patient Discount
+     -$200" → "BONUS: NAD+ - both products, one price" ~~$299~~ FREE, "You save" removed, the package label and months
+     from the plan (V5's 3 + 1: "3-Month Treatment Package + 1 free month", covers 4 months).
+     Without the coupon ("Remove"): the package line is unchanged, an "NAD+ $299" row takes the bonus row's place, and
+     the total is the package price + $299 (per day = that ÷ (months × 30)).
+   Without a `checkoutOffer` nothing here runs and every string is as above. */
 (function (root) {
   "use strict";
 
@@ -36,21 +47,35 @@
     if (!t || !key || !t.plans[key]) return null;
     var p = t.plans[key], total = p.totalPrice || p.price * p.months, rules = p.checkout;
     var full = rules ? rules.crossed : total + COUPON;
-    return {
+    var offer = data.checkoutOffer || null;
+    var covered = (rules && rules.coversMonths) || term;
+    var s = {
       med: med, term: term,
-      title: t.name + " " + term + "-Month Plan",
-      alt: t.name + " Injection - " + term + " Month Supply",
-      image: IMAGE[med],
-      badge: rules ? rules.badge : t.badgeLabel,
-      code: rules ? rules.code : "200off",
+      title: offer ? t.checkoutName : t.name + " " + term + "-Month Plan",
+      alt: offer ? t.checkoutName + " - GLP-1 and NAD+ vials" : t.name + " Injection - " + term + " Month Supply",
+      image: offer ? offer.images[med] : IMAGE[med],
+      badge: offer ? offer.badge : rules ? rules.badge : t.badgeLabel,
+      code: offer ? offer.code : rules ? rules.code : "200off",
       discount: money(full - total),
       perDay: perDay(p.price, 30),
-      packageLabel: term + "-Month Treatment Package",
-      covers: "One-time payment · Covers " + term + (term === 1 ? " month" : " months") + " of medication",
+      packageLabel: (rules && rules.packageLabel) || term + "-Month Treatment Package",
+      covers: "One-time payment · Covers " + covered + (covered === 1 ? " month" : " months") + " of medication",
       total: money(total),
       crossed: money(full),
       perDayNoCoupon: perDay(full, term * 30)
     };
+    if (offer) {
+      s.offer = {
+        termLabel: rules.termLabel,
+        bonusLabel: offer.bonusLabel,
+        bonusValue: money(offer.bonusValue),
+        removedLabel: offer.removedLabel,
+        showCrossed: full !== total,
+        totalNoCoupon: money(total + offer.bonusValue)
+      };
+      s.perDayNoCoupon = perDay(total + offer.bonusValue, term * 30);
+    }
+    return s;
   }
 
   function pick(search, stored) {
@@ -65,6 +90,20 @@
 
   // Their literals (the Semaglutide 3-Month capture) → the chosen plan's strings. Exact text-node matches only.
   function replacements(s) {
+    if (s.offer) return {
+      "Semaglutide 3-Month Plan": s.title,
+      "Most Affordable": s.badge,
+      "200off applied": s.code + " applied",
+      "New Patient Discount": s.offer.bonusLabel,
+      "$2.97": s.perDay,
+      "$2.97/day": s.perDay + "/day",
+      "3-Month Treatment Package": s.packageLabel,
+      "One-time payment · Covers 3 months of medication": s.covers,
+      "$467": s.crossed,
+      "$267": s.total,
+      "$3.52": s.perDayNoCoupon,
+      "$3.52/day": s.perDayNoCoupon + "/day"
+    };
     return {
       "Semaglutide 3-Month Plan": s.title,
       "Most Affordable": s.badge,
@@ -98,6 +137,59 @@
       img.setAttribute("src", src.slice(0, src.length - CAPTURED_IMAGE.length) + s.image.split("/").pop());
       img.setAttribute("alt", s.alt);
     });
+    if (s.offer) offerRows(rootNode, doc, s);
+  }
+
+  // NAD+ offer mode: the parts that are more than a text swap
+  function spansWith(rootNode, text) {
+    return Array.prototype.filter.call(rootNode.querySelectorAll("span, p"), function (el) {
+      return el.children.length === 0 && el.textContent.trim() === text;
+    });
+  }
+  function el(doc, tag, cls, text) {
+    var e = doc.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function offerRows(rootNode, doc, s) {
+    var o = s.offer;
+    // the plan box, a second badge beside "+ FREE NAD+ ($299 value)"
+    spansWith(rootNode, s.badge).forEach(function (b) {
+      if (!/inline-block/.test(b.className)) return;
+      var box = el(doc, "span", b.className, o.termLabel);
+      box.setAttribute("data-co-term", "");
+      // a space between the two inline-blocks: side by side when they fit, a clean wrap (no indent) on phones
+      b.parentNode.insertBefore(box, b.nextSibling);
+      b.parentNode.insertBefore(doc.createTextNode(" "), box);
+    });
+    // "-$200" → ~~$299~~ FREE
+    spansWith(rootNode, "-$200").forEach(function (d) {
+      var wrap = el(doc, "div"), was = el(doc, "span", "text-gray-400 line-through mr-2", o.bonusValue);
+      was.setAttribute("data-co-bonus", "");   // never the plan's crossed-out price, even when the figures match
+      wrap.appendChild(was);
+      wrap.appendChild(el(doc, "span", "text-brand-green font-medium", "FREE"));
+      d.parentNode.replaceChild(wrap, d);
+    });
+    spansWith(rootNode, "You save $200!").forEach(function (p) { p.parentNode.removeChild(p); });
+    // no coupon: package line as with it, an "NAD+ $299" row, total + $299
+    spansWith(rootNode, "$317").forEach(function (n) {
+      if (/text-2xl/.test(n.className)) { n.textContent = o.totalNoCoupon; return; }
+      n.textContent = s.total;
+      if (o.showCrossed) n.parentNode.insertBefore(el(doc, "span", "text-gray-400 line-through mr-2", s.crossed), n);
+      spansWith(rootNode, "Overnight Shipping").forEach(function (ship) {
+        var row = el(doc, "div", "flex justify-between text-sm");
+        row.appendChild(el(doc, "span", "text-gray-700", o.removedLabel));
+        row.appendChild(el(doc, "span", "font-medium", o.bonusValue));
+        ship.parentNode.parentNode.insertBefore(row, ship.parentNode);
+      });
+    });
+    // the monthly plan: crossed-out = the price, so no crossed-out figure (Semaglutide's $299 = the NAD+ value: skip that one)
+    if (!o.showCrossed) {
+      Array.prototype.forEach.call(rootNode.querySelectorAll("span.line-through"), function (x) {
+        if (x.textContent.trim() === s.crossed && !x.hasAttribute("data-co-bonus")) x.parentNode.removeChild(x);
+      });
+    }
   }
 
   var api = { summaryFor: summaryFor, pick: pick, replacements: replacements, TERM_PLAN: TERM_PLAN };

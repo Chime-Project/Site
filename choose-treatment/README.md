@@ -83,6 +83,35 @@ The renderer's new data fields are optional and default to the old output: `hero
 `checkout` block (crossed-out price, badge, coupon code); see the root README. Flagged: the 3-month price per month is above
 the monthly plan's, so its "As low as" per day is too. The free 4th month explains it, but the page doesn't say so.
 
+## V4 / V5 = the GLP + NAD+ Burn & Boost product selection (2026-09-28)
+
+This follows the client's doc "glp plus nad gold pages - 2 product selection versions.docx" ("WE WILL CREATE 2 VERSIONS
+OF THIS"). The funnel runs `chime-get-started-glp-nad/` (every button) → `v4.html` (version 1) → `checkout-v4/`;
+version 2 is `v5.html` → `checkout-v5/`. Both are V2's page on their own data (`js/plans-data-v4.js`, `-v5.js`):
+
+- title "Choose Your Burn & Boost Treatment", subtitle "Weight Loss and All Day Energy" (desktop; phones keep "Select Treatment")
+- Tirzepatide = **Burn & Boost Plus** ("Compounded Tirzepatide and NAD+ - in one plan", "For those looking to lose 20+lbs"),
+  Semaglutide = **Burn & Boost** ("Compounded Semaglutide and NAD+ - in one plan", "For those looking to lose up to 20lbs")
+- the vial is the product + NAD+ pair (`images/tirzepatide-nad.webp`, `images/semaglutide-nad.webp`)
+- **no 12-month plan**, so the three rows alone; monthly sublabel "Pause or Cancel anytime"
+
+| Plan | Burn & Boost Plus | Burn & Boost |
+|---|---|---|
+| 6 months | $249 / month, $1,494 today, save $660 | $199, $1,194, save $600 |
+| 3 months | $299, $897, save $180 | $249, $747, save $150 |
+| Monthly | $359 | $299 |
+
+Version 2 changes the 3-month plan only: "+ 4TH MONTH ON US" under the label (the "due today" type) and "+ EVERY 4TH MONTH
+**FREE**, FOREVER" after the save amount. The renderer gained two optional row fields for it, `labelNote` and `afterSave`;
+without them a row renders as before (V1 to V3 rendered DOM byte-identical to live).
+
+`checkout-v4/` and `checkout-v5/` are the checkout page from the same build. Their data's `checkoutOffer` puts
+`checkout/js/plan-fill.js` in its NAD+ offer mode: "Burn & Boost Plan" / "Burn & Boost Plus Plan", the vial pair,
+"+ FREE NAD+ ($299 value)" and a plan box (Monthly / 3 Months / 6 Months; V5's 3-month "3 Months + 1 free", package line
+"3-Month Treatment Package + 1 free month", covers 4 months), coupon FREENAD, crossed-out = monthly price × months (hidden
+on the monthly plan, where it equals the price), "BONUS: NAD+ - both products, one price" ~~$299~~ FREE, no "You save".
+Remove: an "NAD+ $299" row and the total + $299.
+
 ## Luis's picks (2026-09-16)
 
 - **Page one only.** The reference's buttons go to `/checkout` (a Stripe payment step with an order

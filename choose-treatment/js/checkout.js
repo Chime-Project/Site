@@ -13,6 +13,9 @@
    then opens it with the choice in the URL: checkout/?med=<tirz|sema>&term=<months>.
    A treatment with nameWraps lets its name wrap in the phone selector instead of truncating (V2's
    "Microdose Tirzepatide" would cut off at 390 px); V1's names keep the reference's `truncate`.
+   V5 (client doc "glp plus nad gold pages", 2026-09-28) adds two optional row fields: labelNote, a line under the plan
+   label in the "due today" type ("+ 4TH MONTH ON US"), and afterSave, a tag after the "save $X" amount in dueTag's
+   markup ("+ EVERY 4TH MONTH *FREE*, FOREVER"). Without them a row renders exactly as before.
    Pure parts are exported on window.ChimeChooseTreatment and module.exports for js/checkout-tests.js. */
 (function (root) {
   'use strict';
@@ -37,10 +40,11 @@
   function bigButtonLabel(plan) { return 'GET ' + (plan.months || 12) + ' MONTHS + SAVE ' + fmtMoney(plan.savingsToday); }
   // V3 row copy (client doc "price lock to Gold product and checkout", 2026-09-25): dueTag replaces "save $X"
   // ("*WORD*" = bold green, dueTagTone 'green' = the whole tag green); plainDue = "$X due today" and nothing more
-  function dueTagHtml(plan) {
-    var tone = plan.dueTagTone === 'green' ? 'text-brand-green' : 'text-secondary-500';
-    return '<span class="' + tone + '">' + esc(plan.dueTag).replace(/\*([^*]+)\*/g, '<span class="text-brand-green font-black">$1</span>') + '</span>';
+  function tagHtml(text, toneKey) {
+    var tone = toneKey === 'green' ? 'text-brand-green' : 'text-secondary-500';
+    return '<span class="' + tone + '">' + esc(text).replace(/\*([^*]+)\*/g, '<span class="text-brand-green font-black">$1</span>') + '</span>';
   }
+  function dueTagHtml(plan) { return tagHtml(plan.dueTag, plan.dueTagTone); }
 
   // Reference: discount count s → s<=1 ? s : s-1
   function decrementDiscount(n) { return n <= 1 ? n : n - 1; }
@@ -98,12 +102,13 @@
       var p = t.plans[key]; if (!p) return;
       h += '<div class="py-4 px-3 rounded-lg transition-all ' + (i ? 'border-t border-gray-200' : '') + '">';
       h += '<div class="mb-1"><span class="font-black text-lg text-gray-900">' + esc(p.label) + '</span></div>';
+      if (p.labelNote) h += '<p class="text-base font-bold italic mb-1 text-secondary-500">' + esc(p.labelNote) + '</p>';
       if (p.sublabel) h += '<p class="text-xs text-secondary-500 italic font-bold mb-1">' + esc(p.sublabel) + '</p>';
       h += '<div class="mb-1 flex items-baseline">' + (p.wasPrice ? '<span class="text-2xl font-bold text-gray-400 line-through mr-2">' + fmtMoney(p.wasPrice) + '</span>' : '') + '<span class="text-3xl font-bold" style="' + PRICE_GOLD + '">' + fmtMoney(p.price) + '</span><span class="text-sm text-gray-500">/month</span></div>';
       if (p.plainDue) h += '<p class="text-base font-bold italic mb-2 text-secondary-500">' + esc(fmtMoney(p.totalPrice || p.price) + ' due today') + '</p>';
       else if (key === 'monthly') h += '<p class="text-base font-bold italic mb-2 text-secondary-500">' + esc(monthlyLine(p)) + '</p>';
       else if (p.dueTag) h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(fmtMoney(p.totalPrice) + ' due today -') + '</span> ' + dueTagHtml(p) + '</p>';
-      else h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(savingsLine(p)) + '</span> <span class="text-brand-green">' + fmtMoney(p.savingsToday) + '</span></p>';
+      else h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(savingsLine(p)) + '</span> <span class="text-brand-green">' + fmtMoney(p.savingsToday) + '</span>' + (p.afterSave ? ' ' + tagHtml(p.afterSave, p.afterSaveTone) : '') + '</p>';
       h += '<div class="space-y-1">' + p.features.map(function (f) { return tick(f, 'flex items-start gap-2 text-sm text-brand-green font-semibold'); }).join('') + '</div>';
       if (p.footerNote) h += '<p class="text-xs text-gray-500 italic mt-2">' + esc(p.footerNote) + '</p>';
       h += '<button type="button" class="w-full mt-3 btn-lilac " data-plan="' + key + '" data-treatment="' + esc(t.key) + '">Select' + SVG_ARROW('w-4 h-4') + '</button>';
@@ -214,7 +219,7 @@
     return state;
   }
 
-  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, dueTagHtml: dueTagHtml, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl };
+  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, tagHtml: tagHtml, dueTagHtml: dueTagHtml, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl };
   root.ChimeChooseTreatment = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 

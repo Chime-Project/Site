@@ -128,5 +128,44 @@ D3.treatments.forEach(function (t) {
 });
 ok(C.renderTreatmentCard(D2.treatments[0], D2).indexOf('Recommended for most patients') > -1, 'V2 badge unchanged');
 
+
+// ---- V4 / V5 = the GLP + NAD+ Burn & Boost selection (client doc "glp plus nad gold pages - 2 product selection versions", 2026-09-28) ----
+var fs = require('fs');
+var doc45 = { tirz: { sixMonth: [249, 1494, 660], threeMonth: [299, 897, 180], monthly: [359, 359] },
+              sema: { sixMonth: [199, 1194, 600], threeMonth: [249, 747, 150], monthly: [299, 299] } };
+[4, 5].forEach(function (v) {
+  var D = require(path.join(__dirname, 'plans-data-v' + v + '.js')), V = 'V' + v + ' ';
+  var html = fs.readFileSync(path.join(__dirname, '..', 'v' + v + '.html'), 'utf8');
+  ok(html.indexOf('>Choose Your Burn &amp; Boost Treatment</h1>') > -1 && html.indexOf('>Weight Loss and All Day Energy</p>') > -1, V + 'title + subtitle');
+  ok(html.indexOf('js/plans-data-v' + v + '.js?v=') > -1 && html.indexOf('quiz-handoff') === -1, V + 'loads its own data');
+  ok(D.heroPlan === null && JSON.stringify(D.rowPlans) === '["sixMonth","threeMonth","monthly"]', V + 'no 12-month card, rows 6 / 3 / monthly');
+  ok(D.checkoutHref === 'checkout-v' + v + '/' && D.productHref === '../v' + v + '.html', V + 'buttons open checkout-v' + v + ', which comes back');
+  D.treatments.forEach(function (t) {
+    var tz = t.key === 'tirz', nm = tz ? 'Burn & Boost Plus' : 'Burn & Boost';
+    ok(t.name === nm && t.cardTitle === nm && t.checkoutName === nm + ' Plan', V + t.key + ' named ' + nm);
+    ok(t.tagline === 'Compounded ' + (tz ? 'Tirzepatide' : 'Semaglutide') + ' and NAD+ - in one plan', V + t.key + ' tagline');
+    ok(t.recommendedLabel === (tz ? 'For those looking to lose 20+lbs' : 'For those looking to lose up to 20lbs'), V + t.key + ' badge');
+    ok(t.image === 'images/' + (tz ? 'tirzepatide' : 'semaglutide') + '-nad.webp' && fs.existsSync(path.join(__dirname, '..', t.image)), V + t.key + ' vial + NAD+ image');
+    ok(!t.plans.twelveMonth, V + t.key + ' has no 12-month plan');
+    Object.keys(doc45[t.key]).forEach(function (k) {
+      var p = t.plans[k], e = doc45[t.key][k];
+      ok(p.price === e[0] && p.totalPrice === e[1] && (e[2] === undefined || p.savingsToday === e[2]), V + t.key + ' ' + k + ' = doc');
+      ok(p.checkout.crossed === t.plans.monthly.price * p.months, V + t.key + ' ' + k + ' crossed-out = monthly × months');
+    });
+    var c = C.renderTreatmentCard(t, D), esc = nm.replace('&', '&amp;');
+    ok(count(c, 'btn-lilac') === 3 && c.indexOf('Best value') === -1, V + t.key + ' 3 Select buttons, no hero card');
+    ok(c.indexOf('>' + esc + '</h3>') > -1, V + t.key + ' card title');
+    ok(c.indexOf(C.fmtMoney(t.plans.sixMonth.totalPrice) + ' due today - save</span> <span class="text-brand-green">' + C.fmtMoney(t.plans.sixMonth.savingsToday) + '</span></p>') > -1, V + t.key + ' 6-month save line');
+    ok(count(c, '>Pause or Cancel anytime</p>') === 1 && c.indexOf('Lowest industry pricing') === -1, V + t.key + ' monthly sublabel');
+    var three = C.fmtMoney(t.plans.threeMonth.totalPrice) + ' due today - save</span> <span class="text-brand-green">' + C.fmtMoney(t.plans.threeMonth.savingsToday) + '</span>';
+    if (v === 4) {
+      ok(c.indexOf(three + '</p>') > -1 && c.indexOf('4TH MONTH') === -1, V + t.key + ' 3-month: save only, no 4th month');
+    } else {
+      ok(c.indexOf('<span class="font-black text-lg text-gray-900">3-MONTH PLAN</span></div><p class="text-base font-bold italic mb-1 text-secondary-500">+ 4TH MONTH ON US</p>') > -1, V + t.key + ' 3-month: "+ 4TH MONTH ON US" under the label, due-today type');
+      ok(c.indexOf(three + ' <span class="text-secondary-500">+ EVERY 4TH MONTH <span class="text-brand-green font-black">FREE</span>, FOREVER</span></p>') > -1, V + t.key + ' 3-month: "+ EVERY 4TH MONTH FREE, FOREVER" after the amount, FREE bold green');
+      ok(count(c, '4TH MONTH ON US') === 1, V + t.key + ' only the 3-month plan changes');
+    }
+  });
+});
 console.log((fails ? 'FAIL ' : 'OK ') + (n - fails) + '/' + n + ' checks');
 process.exit(fails ? 1 : 0);
