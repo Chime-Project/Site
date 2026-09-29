@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Chime Health — Assessment v15, Weight Loss launch edition. PREVIEW.
+
+  Source: "Chime_Health_Weight_Loss_Assessment_Proposal_v15.pdf" (Isela,
+  2026-09-28, Asana 1218871561721263, untracked in uploads/). Built for QA
+  (Isela) and the backend hand-off (Devin's team) on Asana 1218871561721289.
+
+  Unlinked and noindex on purpose. The document says none of its legal
+  findings or consent texts are approved and that everything legal/medical
+  must be approved by counsel and the Medical Director "before anything is
+  built or published". The live assessment (chimeAssessment.html) is
+  untouched and stays what every CTA opens until that sign-off.
+
+  Built as written, flagged on screen:
+    - every consent text marked DRAFT in the doc carries a Draft tag
+    - B7 scale, B8 values and the C-WL.6 checklist are the doc's PROPOSED
+      answers (Open Items 2–4)
+    - C-WL.0 uses the doc's recommended threshold (BMI ≥ 30, or ≥ 27 + a
+      C-WL.3.2 condition), pending the Medical Director (Open Item 11)
+    - no state is verified in a modality matrix yet, so every state is
+      treated as video-required and D1.6 shows (Open Item 10)
+    - the result's offer module lists the required terms with the doc's own
+      $[X] / [period] / [Pharmacy legal name] placeholders (Open Item 15)
+  Drafted here because the doc routes to a screen without writing it:
+    under-age / unserved-state / privacy-declined exits, the no-weight-goal
+    scope screen, Variant D's headline, the B6b "why we ask" line, the B9
+    share-summary consent, A2.5 helper lines, the D1 helper line, the result
+    bullets other than the doc's own example line.
+  Headings: A2.3 asks "What's Your Height And Weight?" (doc: "BMI Eligibility
+  Check", a clinical label) and A2.5 says "Create Your Password" (doc:
+  "Password"). Truthfulness + GLP-1 consent are shown once at the end of
+  C-WL; the doc lists them again at D2. Terms of Use are agreed at P0.2.
+
+  BACKEND (not on this page): account creation + email verification + MFA,
+  the consent ledger (IP, user agent, revocation), the ID-verification
+  vendor, the video scheduler, the prescription upload, the state modality
+  matrix, suppression lists / CRM exclusion of A2.2 and B6b, provider-review
+  routing. "Go To My Account" calls window.chimeAssessmentSubmit(payload,
+  extras) when it exists — see asmtV15Payload in assessment-v15-logic.js.
+-->
+<title>Chime Health — Health Assessment</title>
+<link rel="stylesheet" href="styles.css?v=20260762">
+<script src="tailwind.setup.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
+<script src="dsbundle.js"></script>
+<script src="ui_kits/homepage/image-slot.js?v=20260718"></script>
+<script>window.CHIME_UPLOADS_BASE = "uploads"; window.CHIME_ASSETS_BASE = "assets";</script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg-default); padding-top: 72px; }
+  a { color: var(--accent-strong); }
+  a:hover { color: var(--accent-default); }
+
+  /* ---- Assessment v4 responsive + transitions ---- */
+  /* Screens slide in horizontally (GSAP, in AssessmentV4Flow.jsx). The clip
+     must sit on this wrapper, not on the sliding element: overflow clips an
+     element's contents, never its own transform — with it on .asmt-v4-screen
+     the offset frames still widened the page to 435px at a 390px viewport.
+     `clip` (not `hidden`) so overflow-y stays visible and nothing traps the
+     page scroll. */
+  .asmt-v4-viewport { overflow-x: clip; }
+  @supports not (overflow-x: clip) { .asmt-v4-viewport { overflow-x: hidden; } }
+  /* Desktop: the section fills EXACTLY one browser viewport (100vh minus the
+     72px body offset under the floating navbar), and the question block is the
+     flex child that absorbs the slack — so on any screen whose content fits,
+     the Back/Continue row sits at the bottom of the window with no page
+     scroll, at the same spot on every such screen.
+
+     flex: 1 0 auto, not a pixel floor: grow to fill, never shrink. Content
+     taller than the window (b1-5 at ~925px on a short window) simply grows the
+     block and pushes the page — the normal thing for a page to do — instead of
+     nesting a scrollbar. So the height is viewport-min but only exceeds it
+     when the content genuinely needs more (user call, 2026-08-06; replaces the
+     earlier fixed 960px box).
+
+     Content stays centred in the block so short screens read as deliberately
+     airy. overflow-y remains visible — auto/hidden here would re-introduce the
+     inner scrollbar. Mobile keeps its own smaller floor: one-column screens
+     run to ~1450px, and a viewport floor would stack dead space on top. */
+  .asmt-v4-viewport { min-height: 560px; }
+  @media (min-width: 961px) {
+    #assessment { min-height: calc(100vh - 72px); box-sizing: border-box; }
+    .asmt-v4-viewport {
+      min-height: 0; flex: 1 0 auto;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+  }
+  /* Back/Continue row sticks to the bottom of the window (client request), so
+     a screen taller than the viewport never scrolls its own way forward out of
+     reach. It releases at the end of #assessment, coming to rest above "Start
+     over" — which is why the row keeps its place in normal flow rather than
+     being position: fixed.
+
+     Two things this depends on, both already true and both easy to undo:
+     the row is a SIBLING of .asmt-v4-viewport, not a child — sticky dies
+     inside that element's overflow-x: clip; and #assessment sets no overflow
+     of its own, or the same thing happens one level up.
+
+     The background is not decoration: without an opaque bar the option cards
+     scroll through the buttons. It has to track the page, so the accent-page
+     screens (which paint <body> --accent-strong from the flow component)
+     override it below rather than flashing a sand stripe across the blue.
+     On desktop the viewport child already grows to push this row to the
+     bottom, so sticky is a no-op there and only earns its keep on tall
+     screens and on mobile. */
+  .asmt-v4-nav {
+    position: sticky; bottom: 0; z-index: 2;
+    background: var(--bg-default);
+    padding-top: var(--spacing-4);
+    padding-bottom: max(var(--spacing-4), env(safe-area-inset-bottom));
+  }
+  #assessment[data-accent-page] .asmt-v4-nav { background: var(--accent-strong); }
+
+  /* Fallback only — used when GSAP is unavailable; reduced motion drops it.
+     347ms = 120 × 1.7 × 1.7, kept in step with the GSAP tween's two 70%
+     slowdowns so the no-GSAP path does not feel like a different product. */
+  .asmt-v4-anim { animation: asmtV4In 347ms var(--ease-in-out, ease) both; }
+  @keyframes asmtV4In {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .asmt-v4-anim { animation: none; }
+  }
+  /* Goal-card hover. The lift and icon pop are GSAP (AssessmentV4Controls.jsx);
+     shadow and border ride CSS because the two shadow tokens are not
+     interpolatable. Gated on (hover: hover) so a tap on a phone cannot leave a
+     card stuck in its hover state. The border rule needs !important: the
+     component sets the `border` shorthand inline, which otherwise wins.
+     :not(:disabled) covers the pill cards' max-selections state — a blocked
+     pill keeps the class (so it keeps the resting shadow and matches the pills
+     around it) but must offer no hover affordance for a click it will refuse. */
+  .asmt-v4-card { box-shadow: var(--shadow-xs); }
+  @media (hover: hover) {
+    .asmt-v4-card:not(:disabled):hover { box-shadow: var(--shadow-md); }
+    .asmt-v4-card[aria-checked="false"]:not(:disabled):hover { border-color: var(--accent-default) !important; }
+  }
+
+  /* Accent page (A7). The flow sets --accent-strong on <body>; these rules
+     re-colour the chrome that then sits on it. The phrase panel itself needs
+     nothing — it keeps its sand background, so its own text stays dark-on-sand
+     and legible; only the bare chrome around it is affected.
+     The reached progress bar is the important one: it is --accent-strong, i.e.
+     exactly the new page colour, so without this it disappears against it. */
+  body { transition: background 0.25s var(--ease-in-out, ease); }
+  #assessment[data-accent-page] .asmt-v4-block-label { color: var(--color-white) !important; }
+  #assessment[data-accent-page] .asmt-v4-block-bar { background: rgb(255 255 255 / 0.32) !important; }
+  #assessment[data-accent-page] .asmt-v4-block-bar[data-on="1"] { background: var(--color-white) !important; }
+  #assessment[data-accent-page] .asmt-v4-startover { color: var(--color-white) !important; opacity: 0.85; }
+
+  /* Phrase screens carrying a photo (AsmtV4Phrase). Two columns on desktop,
+     stacked on narrow viewports — where the photo moves ABOVE the copy via
+     order, so the mood lands before the words. The copy column aligns left
+     beside the image and re-centres once stacked, so the CTA never ends up
+     orphaned against an edge. */
+  .asmt-v4-phrase-split {
+    display: grid; grid-template-columns: 1.05fr 0.95fr;
+    gap: var(--spacing-10); align-items: center; text-align: left;
+  }
+  .asmt-v4-phrase-copy {
+    display: flex; flex-direction: column;
+    gap: var(--spacing-5); align-items: flex-start;
+  }
+  @media (max-width: 760px) {
+    .asmt-v4-phrase-split {
+      grid-template-columns: 1fr; gap: var(--spacing-6);
+      text-align: center; justify-items: center;
+    }
+    .asmt-v4-phrase-copy { align-items: center; }
+    .asmt-v4-phrase-media { order: -1; max-width: 300px; }
+  }
+
+  /* A1 hero band (feel-section) — same mobile constraints as the homepage. */
+
+  /* Desktop framing. The band is 720x220 (aspect 3.27) against a 1.78 source,
+     so `cover` scales to width and leaves 185px of VERTICAL slack — the crop
+     is decided entirely here. Centred splits that slack evenly and takes her
+     forehead off; 12% keeps the face whole with a little headroom above it and
+     spends the crop on her shoes instead, which is the right thing to lose in
+     a band this shallow. Measured at 1440px, 2026-08-11.
+     Mobile overrides this below, and vertically it does not matter there: at
+     390px the band is ~1.6 against the same 1.78 source, so `cover` scales to
+     HEIGHT and the only slack is horizontal. */
+  #assessment .feel-video { object-position: 50% 12%; }
+
+  @media (max-width: 960px) {
+    .feel-title { font-size: var(--text-4xl) !important; }
+    .feel-content { padding: var(--spacing-6) !important; }
+    /* assesstV1-web.mp4 seats its subject in the right half and leaves the
+       left half flat studio blue. The crop is biased right so the 390px band
+       spends its 56px of horizontal slack on that empty blue rather than on
+       the subject — she stays in frame, and the headline still lands over the
+       plainest part of the picture.
+
+       (The numbers predate this clip and still hold: at 390px the band is
+       335x220 and the 1920x1080 source covers it at 391px wide, so 85% spends
+       48px of the 56 available. They were originally chosen to escape a
+       baked-in "Chime Health" wordmark on the OLD clip's left third — this
+       clip has no wordmark, so that constraint is gone and only the framing
+       argument above keeps the rule.)
+
+       The scrim's deepened left end, however, is not optional and is now
+       doing MORE work than before: this clip is pale, near-white studio blue
+       exactly where the white headline and "Takes about 3 minutes." sit. */
+    #assessment .feel-video { object-position: 85% center; }
+    #assessment .feel-scrim {
+      background: linear-gradient(100deg,
+        rgb(var(--glass-rgb) / 0.92) 0%,
+        rgb(var(--glass-rgb) / 0.78) 34%,
+        rgb(var(--glass-rgb) / 0.34) 72%,
+        rgb(var(--glass-rgb) / 0.12) 100%) !important;
+    }
+  }
+  @media (max-width: 560px) {
+    /* Goal cards + two-column grids collapse to one column (wide fields use
+       1 / -1, which is safe on a single-column grid). */
+    .asmt-v4-cards { grid-template-columns: 1fr !important; }
+    .asmt-v4-grid2 { grid-template-columns: 1fr !important; }
+    .asmt-v4-grid2 > * { grid-column: auto !important; }
+    .asmt-v4-grid3 { grid-template-columns: 1fr 1fr 1fr !important; }
+    /* Block progress: bars only; the labels have no room at 390px. */
+    .asmt-v4-block-label { display: none !important; }
+    /* A4 bubbles: the component sets each diameter as --bubble-d and derives
+       width/height from it, so one scale factor here rescales the whole set
+       without the component knowing about viewports. Padding is a percentage,
+       so the text inset shrinks with the circle instead of eating it.
+
+       0.76, not 0.78, and the number is load-bearing: the field is a 335px
+       flex-wrap row with a 12px gap, so two bubbles fit only under 161.5px
+       each. 0.78 of the 212px group diameter is 165px — 342px for a pair,
+       seven over — so all nine wrapped to their own row and A4 ran 3561px at
+       390px. 0.76 gives 161px (334px a pair) and halves the screen. Anything
+       that raises the group diameter or the gap has to be re-checked here. */
+    .asmt-v4-bubble { --bubble-scale: 0.76; --bubble-font-scale: 0.82; }
+  }
+
+  /* ---- v15 additions ---- */
+  /* DS-1 footer on the accent-page screens (A5, C-WL closer, D.PRE): the
+     page is --accent-strong there, so its text and links invert. */
+  #assessment[data-accent-page] footer p { color: var(--color-white) !important; }
+  #assessment[data-accent-page] footer a { color: var(--color-white); }
+  .asmt-v15-preview {
+    background: var(--warning-subtle); color: var(--text-default);
+    font-size: var(--text-sm); line-height: 1.5; text-align: center;
+    padding: var(--spacing-3) var(--spacing-5); margin: 0 auto;
+    max-width: 760px; border-radius: var(--radius-lg); box-sizing: border-box;
+  }
+  .asmt-v15-preview-wrap { padding: var(--spacing-4) var(--spacing-4) 0; }
+  /* Links inside consent statements are the only way to read the documents
+     being agreed to, so they must read as links. */
+  #assessment label a { text-decoration: underline; text-underline-offset: 2px; }
+  /* iOS WebKit ignores padding on a natively drawn <select>, which rendered
+     the state picker half the height of the field beside it. Draw it
+     ourselves. !important on the image only: the shared input style sets the
+     `background` shorthand inline, which would otherwise reset it. */
+  #assessment select {
+    -webkit-appearance: none; appearance: none; padding-right: 40px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important; background-position: right 16px center !important;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Main menu -->
+<script type="text/babel" src="ui_kits/shared/ui/Button.jsx?v=20260851"></script>
+<script type="text/babel" src="ui_kits/shared/ui/Icon.jsx?v=20260719"></script>
+<script type="text/babel" src="ui_kits/homepage/Navbar.jsx?v=20260840"></script>
+<!-- Assessment v15: config + pure routing first (plain scripts), then the v1
+     and V4 control primitives the live assessment uses, then the v15 controls
+     and flow. The V4 controls are shared, not copied, so both assessments keep
+     one look. -->
+<script src="ui_kits/assessmentV15/assessment-v15-data.js?v=20260972"></script>
+<script src="ui_kits/assessmentV15/assessment-v15-logic.js?v=20260972"></script>
+<script type="text/babel" src="ui_kits/assessment/AssessmentControls.jsx?v=20260751"></script>
+<script type="text/babel" src="ui_kits/chimeAssessment/AssessmentV4Controls.jsx?v=20260969"></script>
+<script type="text/babel" src="ui_kits/assessmentV15/AssessmentV15Controls.jsx?v=20260972"></script>
+<script type="text/babel" src="ui_kits/assessmentV15/AssessmentV15Flow.jsx?v=20260972"></script>
+<!-- Footer -->
+<script type="text/babel" src="ui_kits/homepage/Footer.jsx?v=20260881"></script>
+<script type="text/babel">
+function ChimeAssessmentV15Page() {
+  return (
+    <React.Fragment>
+      <ChimeNavbar />
+      <main>
+        <div className="asmt-v15-preview-wrap">
+          <p className="asmt-v15-preview">
+            <strong>Preview of the next assessment (v15, Weight Loss).</strong> Consent and legal text is a draft
+            pending counsel and Medical Director approval. Nothing you enter is sent anywhere.
+          </p>
+        </div>
+        <ChimeAssessmentFlowV15 />
+      </main>
+      <ChimeFooter />
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<ChimeAssessmentV15Page />);
+</script>
+</body>
+</html>
