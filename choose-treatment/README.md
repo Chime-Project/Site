@@ -114,6 +114,20 @@ Remove: an "NAD+ $299" row and the total + $299.
 Client, 2026-09-28: on V5's 3 + 1 plan "As low as" and the per day under the total are the total ÷ 120 days (Burn & Boost
 $6.23, Burn & Boost Plus $7.48), not monthly ÷ 30; every other plan keeps monthly ÷ 30.
 
+## V6 / V7 = the GLP + Tesamorelin Deep Belly Burn product selection (2026-09-29)
+
+The client's doc "glp plus tesa.docx": "EXACT SAME VERSIONS AND PAGES AS THE ONE YOU DID FOR THE GLP + NAD, ALL WE WILL BE
+DOING IS SWAPPING OUT THE NAD FOR TESAMORELIN". The funnel runs `chime-get-started-glp-tesa/` → `v6.html` (version 1) →
+`checkout-v6/`; version 2 is `v7.html` → `checkout-v7/`. They are V4 / V5 on their own data (`js/plans-data-v6.js`,
+`-v7.js`, generated from v4 / v5 by the untracked `uploads/get-started-wl-ref/glp_tesa_select.py`):
+
+- title "Choose Your Deep Belly Burn Treatment", subtitle "Weight Loss & Stubborn Visceral Belly Fat"
+- Tirzepatide = **Deep Belly Burn Plus**, Semaglutide = **Deep Belly Burn** ("Compounded … and Tesamorelin - in one plan")
+- the vial is the product + amber Tesamorelin pair (`images/*-tesa.webp`, checkout `checkout/images/*-tesa-amber.webp`)
+- checkout: "+ FREE Tesamorelin ($299 value)", coupon FREETESA, "BONUS: Tesamorelin - both products, one price", Remove =
+  a "Tesamorelin $299" row; the thumbnail alt comes from `checkoutOffer.pairAlt`
+- prices, plans, V7's 3-month extras and its total ÷ 120 per day are V4 / V5's, unchanged
+
 ## Luis's picks (2026-09-16)
 
 - **Page one only.** The reference's buttons go to `/checkout` (a Stripe payment step with an order

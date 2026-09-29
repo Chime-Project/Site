@@ -27,6 +27,9 @@
      total ÷ 120 days, not monthly ÷ 30: client, 2026-09-28).
      Without the coupon ("Remove"): the package line is unchanged, an "NAD+ $299" row takes the bonus row's place, and
      the total is the package price + $299 (per day = that ÷ (months × 30)).
+     The same mode runs checkout-v6/ and checkout-v7/ (client doc "glp plus tesa.docx", 2026-09-29: NAD+ swapped for
+     Tesamorelin; ../js/plans-data-v6.js, -v7.js): every offer string comes from `checkoutOffer`, and its optional
+     `pairAlt` names the vials in the thumbnail's alt ("GLP-1 and NAD+ vials" without it).
    Without a `checkoutOffer` nothing here runs and every string is as above. */
 (function (root) {
   "use strict";
@@ -53,7 +56,7 @@
     var s = {
       med: med, term: term,
       title: offer ? t.checkoutName : t.name + " " + term + "-Month Plan",
-      alt: offer ? t.checkoutName + " - GLP-1 and NAD+ vials" : t.name + " Injection - " + term + " Month Supply",
+      alt: offer ? t.checkoutName + " - " + (offer.pairAlt || "GLP-1 and NAD+ vials") : t.name + " Injection - " + term + " Month Supply",
       image: offer ? offer.images[med] : IMAGE[med],
       badge: offer ? offer.badge : rules ? rules.badge : t.badgeLabel,
       code: offer ? offer.code : rules ? rules.code : "200off",

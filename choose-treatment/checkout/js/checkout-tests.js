@@ -209,9 +209,12 @@ eq(D3.productHref, "../v3.html", "v3 Choose → ../v3.html");
 eq(/CHIME_COUPON_CODE = s\.code\.toUpperCase\(\)/.test(fillJs) && /CHIME_COUPON_CODE \|\| "200OFF"/.test(js), true, "Redeem takes the plan's code");
 
 
-// ---------- checkout-v4/ and checkout-v5/ (client doc "glp plus nad gold pages - 2 product selection versions", 2026-09-28) ----------
-var stripN = function (h) { return h.replace(/<!--[\s\S]*?-->/g, "").replace(/\n{2,}/g, "\n").replace(/\.\.\/checkout\//g, "").replace(/plans-data-v[2-5]/g, "plans-data").replace(/\?v=\d+/g, ""); };
-[4, 5].forEach(function (v) {
+// ---------- checkout-v4/ and checkout-v5/ (client doc "glp plus nad gold pages - 2 product selection versions", 2026-09-28),
+// checkout-v6/ and checkout-v7/ (client doc "glp plus tesa.docx", 2026-09-29: the same pages, NAD+ swapped for Tesamorelin) ----------
+var stripN = function (h) { return h.replace(/<!--[\s\S]*?-->/g, "").replace(/\n{2,}/g, "\n").replace(/\.\.\/checkout\//g, "").replace(/plans-data-v[2-7]/g, "plans-data").replace(/\?v=\d+/g, ""); };
+[4, 5, 6, 7].forEach(function (v) {
+  var tesa = v >= 6, v2 = v === 5 || v === 7;
+  var nm = tesa ? "Deep Belly Burn" : "Burn & Boost", bonus = tesa ? "Tesamorelin" : "NAD+";
   var dirN = path.join(DIR, "..", "checkout-v" + v), V = "v" + v + " ";
   var htmlN = fs.readFileSync(path.join(dirN, "index.html"), "utf8"), pageN = htmlN.replace(/<!--[\s\S]*?-->/g, "");
   var DN = require("../../js/plans-data-v" + v + ".js");
@@ -223,33 +226,35 @@ var stripN = function (h) { return h.replace(/<!--[\s\S]*?-->/g, "").replace(/\n
   eq(/(src|href)="(images|css|js|fonts)\//.test(pageN), false, V + "loads nothing from its own folder");
   eq(DN.productHref, "../v" + v + ".html", V + "Choose → ../v" + v + ".html");
   ["tirz", "sema"].forEach(function (med) {
-    eq(fs.existsSync(path.join(DIR, DN.checkoutOffer.images[med])), true, V + med + " vial + NAD+ image exists");
+    eq(fs.existsSync(path.join(DIR, DN.checkoutOffer.images[med])), true, V + med + " vial + " + bonus + " image exists");
   });
-  var term3 = v === 5 ? "3 Months + 1 free" : "3 Months";
-  var pkg3 = v === 5 ? ["3-Month Treatment Package + 1 free month", "One-time payment · Covers 4 months of medication"]
+  var term3 = v2 ? "3 Months + 1 free" : "3 Months";
+  var pkg3 = v2 ? ["3-Month Treatment Package + 1 free month", "One-time payment · Covers 4 months of medication"]
                      : ["3-Month Treatment Package", "One-time payment · Covers 3 months of medication"];
   var expectN = {   // title, plan box, per day, price, crossed-out, crossed shown, no-coupon total, no-coupon per day
-    "tirz-1": ["Burn & Boost Plus Plan", "Monthly", "$11.97", "$359", "$359", false, "$658", "$21.93"],
-    "tirz-3": ["Burn & Boost Plus Plan", term3, v === 5 ? "$7.48" : "$9.97", "$897", "$1,077", true, "$1,196", v === 5 ? "$9.97" : "$13.29"],
-    "tirz-6": ["Burn & Boost Plus Plan", "6 Months", "$8.30", "$1,494", "$2,154", true, "$1,793", "$9.96"],
-    "sema-1": ["Burn & Boost Plan", "Monthly", "$9.97", "$299", "$299", false, "$598", "$19.93"],
-    "sema-3": ["Burn & Boost Plan", term3, v === 5 ? "$6.23" : "$8.30", "$747", "$897", true, "$1,046", v === 5 ? "$8.72" : "$11.62"],
-    "sema-6": ["Burn & Boost Plan", "6 Months", "$6.63", "$1,194", "$1,794", true, "$1,493", "$8.29"]
+    "tirz-1": [nm + " Plus Plan", "Monthly", "$11.97", "$359", "$359", false, "$658", "$21.93"],
+    "tirz-3": [nm + " Plus Plan", term3, v2 ? "$7.48" : "$9.97", "$897", "$1,077", true, "$1,196", v2 ? "$9.97" : "$13.29"],
+    "tirz-6": [nm + " Plus Plan", "6 Months", "$8.30", "$1,494", "$2,154", true, "$1,793", "$9.96"],
+    "sema-1": [nm + " Plan", "Monthly", "$9.97", "$299", "$299", false, "$598", "$19.93"],
+    "sema-3": [nm + " Plan", term3, v2 ? "$6.23" : "$8.30", "$747", "$897", true, "$1,046", v2 ? "$8.72" : "$11.62"],
+    "sema-6": [nm + " Plan", "6 Months", "$6.63", "$1,194", "$1,794", true, "$1,493", "$8.29"]
   };
   Object.keys(expectN).forEach(function (id) {
     var e = expectN[id], med = id.split("-")[0], term = +id.split("-")[1];
     var s = P.summaryFor(DN, med, term);
     eq([s.title, s.offer.termLabel, s.perDay, s.total, s.crossed, s.offer.showCrossed, s.offer.totalNoCoupon, s.perDayNoCoupon], e, V + "summary " + id);
     eq([s.badge, s.code, s.offer.bonusLabel, s.offer.bonusValue, s.image.split("/").pop()],
-       ["+ FREE NAD+ ($299 value)", "FREENAD", "BONUS: NAD+ - both products, one price", "$299", (med === "tirz" ? "tirzepatide" : "semaglutide") + "-nad-amber.webp"], V + "offer " + id);
+       ["+ FREE " + bonus + " ($299 value)", tesa ? "FREETESA" : "FREENAD", "BONUS: " + bonus + " - both products, one price", "$299", (med === "tirz" ? "tirzepatide" : "semaglutide") + (tesa ? "-tesa" : "-nad") + "-amber.webp"], V + "offer " + id);
     var r = P.replacements(s);
     eq([r["Most Affordable"], r["200off applied"], r["New Patient Discount"], r["$467"], r["$267"], r["$2.97/day"]],
-       [s.badge, "FREENAD applied", "BONUS: NAD+ - both products, one price", e[4], e[3], e[2] + "/day"], V + "swaps " + id);
+       [s.badge, (tesa ? "FREETESA" : "FREENAD") + " applied", "BONUS: " + bonus + " - both products, one price", e[4], e[3], e[2] + "/day"], V + "swaps " + id);
     eq(["-$200", "You save $200!", "$317"].filter(function (k) { return k in r; }), [], V + "the discount, You save and no-coupon lines are rebuilt, not swapped " + id);
+    eq([s.alt, s.offer.removedLabel], [e[0] + " - GLP-1 and " + bonus + " vials", bonus], V + "thumbnail alt + no-coupon row " + id);
     if (term === 3) eq([r["3-Month Treatment Package"], r["One-time payment · Covers 3 months of medication"]], pkg3, V + "3-month package line");
   });
   eq(P.summaryFor(DN, "sema", 12), null, V + "has no 12-month plan");
-  if (v === 5) eq([P.summaryFor(DN, "sema", 3).perDay, P.summaryFor(DN, "tirz", 3).perDay], ["$6.23", "$7.48"], "v5 3 + 1: total ÷ 120 days = the client's $6.23 / $7.48 (2026-09-28)");
+  if (v2) eq([P.summaryFor(DN, "sema", 3).perDay, P.summaryFor(DN, "tirz", 3).perDay], ["$6.23", "$7.48"], V + "3 + 1: total ÷ 120 days = the client's $6.23 / $7.48 (2026-09-28)");
+  if (tesa) eq(/NAD|nad-|Boost/.test(htmlN.replace(/<!--[\s\S]*?-->/g, "") + JSON.stringify(DN)), false, V + "no NAD+ or Burn & Boost in the page or its data");
 });
 eq(P.replacements(P.summaryFor(D3, "tirz", 3))["-$200"], "-$299", "V3 swaps unchanged by the offer mode");
 eq(/data-co-bonus/.test(fillJs) && /!x\.hasAttribute\("data-co-bonus"\)/.test(fillJs), true, "the NAD+ $299 is never taken for Semaglutide's monthly crossed-out $299");
