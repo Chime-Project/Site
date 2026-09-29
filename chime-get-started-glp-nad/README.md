@@ -12,7 +12,7 @@ folder's README), with the doc's edits:
 |---|---|
 | Banner | "Fall sale discount: 🎉 BONUS: **FREE NAD+ ($299 VALUE)**" (the doc's box leaves the "Fall sale discount" start as it was) |
 | Hero | "See if you qualify for this special GLP/NAD+ offer", "Your Complete GLP-1 and NAD+ Program Starts Today" |
-| Hero art | `images/hero-glp-nad.webp`: the gold-label Tirzepatide vial, a gold-label NAD+ vial made from it, and a smaller warranty seal, all inside the original art's area |
+| Hero art | `images/hero-glp-nad-2.webp`: the gold-label Tirzepatide vial, a gold-label NAD+ vial made from it (drawn larger, Luis 2026-09-28), and a smaller warranty seal, all inside the original art's area |
 | Plan cards | "Choose Your GLP Medication"; "Burn & Boost Plus" (Compounded GLP-1+GIP & NAD+ - both in one plan, For those looking to lose 20+lbs, Starting At $359) and "Burn & Boost" (Compounded GLP-1 & NAD+ - both in one plan, For those looking to lose up to 20lbs, Starting At $299); each gets "Free NAD+ to support energy, focus and recovery while you lose" above "Cancel or change anytime" |
 | Card art | `images/tirzepatide-nad-plan.webp`, `images/semaglutide-nad-plan.webp`: the card's vial and a taupe-label NAD+ vial side by side with a "+" disc, on the card's own gold panel |
 | Offer band | "New Customer Offer: FREE NAD+ ($299 Value)", "Join today to receive your free NAD+!" |

@@ -230,10 +230,10 @@ var stripN = function (h) { return h.replace(/<!--[\s\S]*?-->/g, "").replace(/\n
                      : ["3-Month Treatment Package", "One-time payment · Covers 3 months of medication"];
   var expectN = {   // title, plan box, per day, price, crossed-out, crossed shown, no-coupon total, no-coupon per day
     "tirz-1": ["Burn & Boost Plus Plan", "Monthly", "$11.97", "$359", "$359", false, "$658", "$21.93"],
-    "tirz-3": ["Burn & Boost Plus Plan", term3, "$9.97", "$897", "$1,077", true, "$1,196", "$13.29"],
+    "tirz-3": ["Burn & Boost Plus Plan", term3, v === 5 ? "$7.48" : "$9.97", "$897", "$1,077", true, "$1,196", v === 5 ? "$9.97" : "$13.29"],
     "tirz-6": ["Burn & Boost Plus Plan", "6 Months", "$8.30", "$1,494", "$2,154", true, "$1,793", "$9.96"],
     "sema-1": ["Burn & Boost Plan", "Monthly", "$9.97", "$299", "$299", false, "$598", "$19.93"],
-    "sema-3": ["Burn & Boost Plan", term3, "$8.30", "$747", "$897", true, "$1,046", "$11.62"],
+    "sema-3": ["Burn & Boost Plan", term3, v === 5 ? "$6.23" : "$8.30", "$747", "$897", true, "$1,046", v === 5 ? "$8.72" : "$11.62"],
     "sema-6": ["Burn & Boost Plan", "6 Months", "$6.63", "$1,194", "$1,794", true, "$1,493", "$8.29"]
   };
   Object.keys(expectN).forEach(function (id) {
@@ -249,6 +249,7 @@ var stripN = function (h) { return h.replace(/<!--[\s\S]*?-->/g, "").replace(/\n
     if (term === 3) eq([r["3-Month Treatment Package"], r["One-time payment · Covers 3 months of medication"]], pkg3, V + "3-month package line");
   });
   eq(P.summaryFor(DN, "sema", 12), null, V + "has no 12-month plan");
+  if (v === 5) eq([P.summaryFor(DN, "sema", 3).perDay, P.summaryFor(DN, "tirz", 3).perDay], ["$6.23", "$7.48"], "v5 3 + 1: total ÷ 120 days = the client's $6.23 / $7.48 (2026-09-28)");
 });
 eq(P.replacements(P.summaryFor(D3, "tirz", 3))["-$200"], "-$299", "V3 swaps unchanged by the offer mode");
 eq(/data-co-bonus/.test(fillJs) && /!x\.hasAttribute\("data-co-bonus"\)/.test(fillJs), true, "the NAD+ $299 is never taken for Semaglutide's monthly crossed-out $299");

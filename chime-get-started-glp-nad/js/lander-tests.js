@@ -30,7 +30,7 @@ eq(count(/Chime Health/g, visible) >= 18, true, "Chime Health in place of every 
 eq(visible.indexOf("© 2026 Chime Health") > -1, true, "copyright line");
 eq(visible.indexOf("Is Chime Health legitimate?") > -1, true, "FAQ question renamed");
 eq(/<title>[^<]*\| Chime Health<\/title>/.test(page), true, "title");
-["images/logo-header.webp", "images/logo-footer.webp", "images/warranty-badge.webp", "images/hero-glp-nad.webp",
+["images/logo-header.webp", "images/logo-footer.webp", "images/warranty-badge.webp", "images/hero-glp-nad-2.webp",
  "images/refills-van.webp", "images/clinician-phone.webp", "images/legitscript.webp"].forEach(function (f) {
   eq(page.indexOf('src="' + f + '"') > -1, true, "brand-swapped art used: " + f);
 });
@@ -64,10 +64,10 @@ eq(fs.existsSync(path.join(DIR, "..", "choose-treatment", "v4.html")), true, "th
 ].forEach(function (c) { eq(page.indexOf(c[0]) > -1, true, "glp + nad: " + c[1]); });
 eq(count(/<li>✔ Free NAD\+ to support energy, focus and recovery while you lose<\/li>\s*<li>✔ Cancel or change anytime<\/li>/g, page), 2, "the NAD+ tick sits above \"Cancel or change anytime\" on both cards");
 eq(/Microdose|\$(49|89|99|119|129|149|150)\b|Most Affordable Entry|Applied at Checkout|lock in \$150/.test(page), false, "none of the Microdose offer left");
-["hero-glp-nad", "tirzepatide-nad-plan", "semaglutide-nad-plan"].forEach(function (f) {
+["hero-glp-nad-2", "tirzepatide-nad-plan", "semaglutide-nad-plan"].forEach(function (f) {
   eq(page.indexOf('src="images/' + f + '.webp"') > -1, true, "GLP + NAD+ art used: " + f);
 });
-eq(count(/src="images\/hero-glp-nad\.webp"/g, page), 2, "the hero art on desktop and phone");
+eq(count(/src="images\/hero-glp-nad-2\.webp"/g, page), 2, "the hero art on desktop and phone");
 eq(/src="images\/(hero-offer|semaglutide-plan|compounded-glp-1)[-a-z]*\.webp"|plan-amber/.test(page), false, "no single-vial photo left");
 var chimeSeal = crypto.createHash("md5").update(fs.readFileSync(path.join(DIR, "..", "chime-weight-loss-lp", "images", "legitscript.png"))).digest("hex");
 eq(chimeSeal, "697d329a6658ba1ec251c0ae24c12e12", "the LegitScript mark source is Chime's");

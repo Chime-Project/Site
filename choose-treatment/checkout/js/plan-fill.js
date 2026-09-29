@@ -23,7 +23,8 @@
      "3 Months + 1 free"), coupon FREENAD, package line and Total = the plan's crossed-out price (monthly × months) then
      the package price, the crossed-out figure hidden when it equals the price (the monthly plan), "New Patient Discount
      -$200" → "BONUS: NAD+ - both products, one price" ~~$299~~ FREE, "You save" removed, the package label and months
-     from the plan (V5's 3 + 1: "3-Month Treatment Package + 1 free month", covers 4 months).
+     from the plan (V5's 3 + 1: "3-Month Treatment Package + 1 free month", covers 4 months, and its per day is the
+     total ÷ 120 days, not monthly ÷ 30: client, 2026-09-28).
      Without the coupon ("Remove"): the package line is unchanged, an "NAD+ $299" row takes the bonus row's place, and
      the total is the package price + $299 (per day = that ÷ (months × 30)).
    Without a `checkoutOffer` nothing here runs and every string is as above. */
@@ -57,7 +58,9 @@
       badge: offer ? offer.badge : rules ? rules.badge : t.badgeLabel,
       code: offer ? offer.code : rules ? rules.code : "200off",
       discount: money(full - total),
-      perDay: perDay(p.price, 30),
+      // a plan with free months (V5's 3 + 1: coversMonths 4) = its total over the days it covers (client 2026-09-28:
+      // "the total price divided by 120"); every other plan = its monthly price ÷ 30
+      perDay: rules && rules.coversMonths ? perDay(total, covered * 30) : perDay(p.price, 30),
       packageLabel: (rules && rules.packageLabel) || term + "-Month Treatment Package",
       covers: "One-time payment · Covers " + covered + (covered === 1 ? " month" : " months") + " of medication",
       total: money(total),
@@ -73,7 +76,7 @@
         showCrossed: full !== total,
         totalNoCoupon: money(total + offer.bonusValue)
       };
-      s.perDayNoCoupon = perDay(total + offer.bonusValue, term * 30);
+      s.perDayNoCoupon = perDay(total + offer.bonusValue, covered * 30);
     }
     return s;
   }

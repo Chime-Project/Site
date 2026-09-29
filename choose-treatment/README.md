@@ -111,6 +111,8 @@ without them a row renders as before (V1 to V3 rendered DOM byte-identical to li
 "3-Month Treatment Package + 1 free month", covers 4 months), coupon FREENAD, crossed-out = monthly price × months (hidden
 on the monthly plan, where it equals the price), "BONUS: NAD+ - both products, one price" ~~$299~~ FREE, no "You save".
 Remove: an "NAD+ $299" row and the total + $299.
+Client, 2026-09-28: on V5's 3 + 1 plan "As low as" and the per day under the total are the total ÷ 120 days (Burn & Boost
+$6.23, Burn & Boost Plus $7.48), not monthly ÷ 30; every other plan keeps monthly ÷ 30.
 
 ## Luis's picks (2026-09-16)
 
