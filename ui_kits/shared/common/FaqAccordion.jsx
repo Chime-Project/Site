@@ -22,7 +22,7 @@ function FaqBlock({ block }) {
 function FaqItem({ item, open, onToggle, last }) {
   const [hover, setHover] = React.useState(false);
   return (
-    <div style={{ borderBottom: last ? "none" : "1px solid var(--accent-border)" }}>
+    <div id={item.id} style={{ borderBottom: last ? "none" : "1px solid var(--accent-border)", scrollMarginTop: 96 }}>
       <button type="button" onClick={onToggle} aria-expanded={open}
         onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
         style={{
@@ -77,7 +77,9 @@ function FaqItem({ item, open, onToggle, last }) {
 // match it to a neighbouring card. All items start collapsed by default.
 function FaqAccordion({ items, maxWidth, title, defaultOpen = -1 }) {
   const list = items || [];
-  const [openIdx, setOpenIdx] = React.useState(defaultOpen);
+  // A URL hash naming an item's id (faq.html#jurisdictions) opens that item.
+  const hashIdx = list.findIndex(function (it) { return it.id && "#" + it.id === window.location.hash; });
+  const [openIdx, setOpenIdx] = React.useState(hashIdx !== -1 ? hashIdx : defaultOpen);
   return (
     <div style={{ maxWidth: maxWidth || 880, margin: "0 auto" }}>
       <div className="faq-card" style={{
@@ -129,6 +131,12 @@ function ChimeFaqSection({ theme = "default", items, title }) {
 function ChimeFaqBrowser({ theme = "default" }) {
   const sections = window.CHIME_FAQ_SECTIONS || [];
   const closing = window.CHIME_FAQ_CLOSING;
+  // The page renders after in-browser Babel, so the browser's own jump to
+  // #hash finds nothing on load — scroll to the target once it exists.
+  React.useEffect(function () {
+    const el = window.location.hash && document.getElementById(window.location.hash.slice(1));
+    if (el) el.scrollIntoView();
+  }, []);
   const Btn = window.Button;
   return (
     <section data-screen-label="FAQ Browser" data-theme={theme} style={{

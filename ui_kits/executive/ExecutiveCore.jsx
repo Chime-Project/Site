@@ -134,8 +134,17 @@ function ExecFooter({ ground = "var(--accent-default)" } = {}) {
           <span>© 2026 Chime Health</span>
           <nav style={{ display: "flex", gap: "var(--spacing-6)", flexWrap: "wrap" }}>
             <a href="faq.html" style={footLink}>FAQ</a>
-            <a href="privacy-policy.html" style={footLink}>Privacy Policy</a>
-            <a href="terms-conditions.html" style={footLink}>Terms &amp; Conditions</a>
+            {/* Legal set as on the live chimehealth.com footer (Asana 1218871555785832). */}
+            {[["Privacy Policy", "privacy-policy.html"],
+              ["HIPAA Notice of Privacy Practices", "hipaa-notice.html"],
+              ["Consumer Health Data Privacy Policy", "consumer-health-data-privacy-policy.html"],
+              ["Telehealth Consent", "telehealth-consent.html"],
+              ["Shipping Policy", "shipping-policy.html"],
+              ["Return & Refund Policy", "return-refund-policy.html"],
+              ["Terms & Conditions", "terms-conditions.html"],
+              ["Service Availability", "faq.html#jurisdictions"]].map(([l, h]) => (
+              <a key={h} href={h} style={footLink}>{l}</a>
+            ))}
           </nav>
         </div>
       </div>

@@ -253,7 +253,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--focus-ring); ou
 .hsa { display: block; height: 40px; width: auto; margin-top: 14px; }
 
 /* ---- Footer --------------------------------------------------------------- */
-.foot { display: flex; justify-content: center; gap: 10px; padding: 8px var(--gutter) 32px; font-size: var(--text-sm); color: var(--ink-3); }
+.foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; padding: 8px var(--gutter) 32px; font-size: var(--text-sm); color: var(--ink-3); }
 .foot a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---- Phones --------------------------------------------------------------- */

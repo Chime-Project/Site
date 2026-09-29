@@ -1,6 +1,6 @@
 // Chime Health — Homepage UI kit: Footer
 // Deep slate-blue panel: white lockup left · link columns · pill CTA ·
-// legal links · hairline · disclaimer · copyright.
+// legal links · hairline · disclaimer · copyright · LegitScript seal.
 // Reference: uploads/pasted-1783918075389-0.png
 
 const FOOTER_ASSETS = window.CHIME_ASSETS_BASE || "../../assets";
@@ -20,11 +20,13 @@ const FOOTER_FAQ_HREF = "faq.html";
 // CHIME_NAV_HREFS for its product nav can't accidentally drop the legal links.
 const FOOTER_LEGAL_HREFS = {
   "Privacy Policy": "privacy-policy.html",
-  "HIPAA Notice": "hipaa-notice.html",
+  "HIPAA Notice of Privacy Practices": "hipaa-notice.html",
+  "Consumer Health Data Privacy Policy": "consumer-health-data-privacy-policy.html",
   "Telehealth Consent": "telehealth-consent.html",
-  "Terms & Conditions": "terms-conditions.html",
-  "Return & Refund Policy": "return-refund-policy.html",
   "Shipping Policy": "shipping-policy.html",
+  "Return & Refund Policy": "return-refund-policy.html",
+  "Terms & Conditions": "terms-conditions.html",
+  "Service Availability": "faq.html#jurisdictions",
 };
 
 function ChimeFooter() {
@@ -91,8 +93,9 @@ function ChimeFooter() {
         </nav>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {["Privacy Policy", "HIPAA Notice", "Telehealth Consent", "Terms & Conditions",
-            "Return & Refund Policy", "Shipping Policy"].map((l) => (
+          {/* Labels and order match the live chimehealth.com footer (compliance
+              review, Asana 1218871555785832). */}
+          {Object.keys(FOOTER_LEGAL_HREFS).map((l) => (
             <FooterLink key={l} label={l} href={FOOTER_LEGAL_HREFS[l]} />
           ))}
         </div>
@@ -110,16 +113,24 @@ function ChimeFooter() {
           color: "var(--color-blue-100)",
           display: "grid", rowGap: "var(--spacing-3)",
         }}>
-          <p style={{ margin: 0 }}>Chime Health connects patients with licensed healthcare providers through an online telehealth platform. Chime Health does not practice medicine or provide medical services directly.</p>
-          <p style={{ margin: 0 }}>Compounded medications are not FDA-approved drug products and have not been evaluated by the FDA for safety, effectiveness, or quality. They are prepared by licensed 503A compounding pharmacies pursuant to a valid prescription from a licensed healthcare provider.</p>
-          <p style={{ margin: 0 }}>Individual results vary. Results are not typical or guaranteed. State availability varies &mdash; not all services are available in all states. Prescription treatments require consultation and approval by a licensed healthcare provider. Treatment is not guaranteed.</p>
-          <p style={{ margin: 0 }}>Next-day shipping availability depends on provider approval, pharmacy processing times, patient location, and carrier service.</p>
-          <p style={{ margin: 0 }}>This website is for informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Not for emergencies &mdash; call 911.</p>
+          {/* Disclaimer verbatim from the live chimehealth.com footer. */}
+          <p style={{ margin: 0 }}>Chime Health connects patients with licensed healthcare providers through an online telehealth platform and does not practice medicine or provide medical services directly. Prescription treatments require consultation with, and approval by, a licensed healthcare provider; treatment is not guaranteed. Services are available only in eligible jurisdictions. <a href={FOOTER_LEGAL_HREFS["Service Availability"]} style={{ color: "var(--color-white)" }}>See Service Availability.</a></p>
+          <p style={{ margin: 0 }}>Compounded medications are not FDA-approved drug products and have not been evaluated by the FDA for safety, effectiveness, or quality. They are prescribed only following an individualized clinical assessment by a licensed healthcare provider and are prepared and fulfilled by appropriately licensed 503A compounding pharmacies pursuant to a valid prescription.</p>
+          <p style={{ margin: 0 }}>Individual results vary and are not typical or guaranteed. Next-day shipping availability depends on provider approval, pharmacy processing times, patient location, and carrier service.</p>
+          <p style={{ margin: 0 }}>This website is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Not for emergencies&mdash;call 911.</p>
         </div>
 
         <p style={{ margin: "var(--spacing-4) 0 0 0", fontSize: "var(--text-xs)", color: "var(--color-blue-100)" }}>
-          Copyright &copy; 2026 Chime, Inc. All rights reserved.
+          &copy; 2026 Chime Health. All rights reserved.
         </p>
+
+        {/* LegitScript seal issued to chimehealth.com (seal 51605690, self-hosted
+            copy of static.legitscript.com/seals/51605690.png), as on the live site. */}
+        <a href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com" target="_blank" rel="noopener noreferrer"
+          title="Verify LegitScript Approval for www.chimehealth.com"
+          style={{ display: "inline-block", marginTop: "var(--spacing-6)" }}>
+          <img src={FOOTER_ASSETS + "/legitscript-chimehealth.png"} alt="Verify Approval for www.chimehealth.com" width="73" height="79" loading="lazy" style={{ display: "block" }} />
+        </a>
       </div>
     </footer>
   );

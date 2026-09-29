@@ -1,5 +1,7 @@
 // Chime Health — shared FAQ content. Load before FaqAccordion.jsx.
-// Source of truth: "FAQ Chime.docx" (reviewed marketing copy, 2026-07-23).
+// Source of truth: "FAQ Chime.docx" (reviewed marketing copy, 2026-07-23), plus the
+// compliance answers from the live chimehealth.com FAQ (2026-09-28).
+//   item.id — optional anchor; faq.html#<id> opens and scrolls to that item.
 // Shape: CHIME_FAQ_SECTIONS is the full sitewide FAQ, grouped by category.
 //   item.a  — string, or an array of blocks: a string renders as a paragraph,
 //             { list: [...] } renders as a bulleted list.
@@ -214,6 +216,12 @@ window.CHIME_FAQ_SECTIONS = [
       { q: "Who decides whether treatment is appropriate?",
         a: ["A licensed provider reviews the relevant medical information and determines whether treatment is medically appropriate.",
             "Chime’s marketing, assessment, customer service, AI support, and Wellness Coaches do not make clinical decisions."] },
+      { q: "Who reviews my health information?",
+        a: "Health information submitted through Chime Health may be reviewed by licensed healthcare providers who determine whether services or treatments are appropriate based on your individual circumstances and applicable laws and regulations." },
+      { q: "Will I automatically receive medication?",
+        a: "No. Medication is never guaranteed. Treatment recommendations and prescribing decisions are made solely by a licensed healthcare provider based on an individualized clinical assessment. Not all patients will qualify for prescription treatment." },
+      { q: "How are treatment recommendations made?",
+        a: "Treatment recommendations are made by licensed healthcare providers based on the patient’s medical history, health information, clinical circumstances, and applicable standards of care. Recommendations are individualized, and treatment may differ from patient to patient." },
       { q: "What information may be collected during medical intake?",
         a: ["The medical intake may request information related to:",
             { list: ["Medical history",
@@ -242,8 +250,9 @@ window.CHIME_FAQ_SECTIONS = [
         a: ["When a prescription is medically appropriate, it may be fulfilled by a licensed U.S. pharmacy partner.",
             "Chime does not manufacture, compound, or dispense medications."] },
       { q: "Are compounded medications FDA-approved?",
-        a: ["No. Compounded medications are not FDA-approved.",
-            "The FDA does not evaluate compounded medications for safety, effectiveness, or quality in the same way it reviews FDA-approved drugs. Prescription treatment requires evaluation by a licensed healthcare provider."] },
+        a: "No. Compounded medications are not FDA-approved drug products and have not been evaluated by the U.S. Food and Drug Administration (FDA) for safety, effectiveness, or quality. When prescribed, compounded medications are prepared by a licensed compounding pharmacy pursuant to a valid patient-specific prescription and based on the independent clinical judgment of a licensed healthcare provider. Treatment recommendations are individualized, and medication is not guaranteed." },
+      { q: "Why might a healthcare provider prescribe a compounded medication?",
+        a: "Treatment decisions are made individually by licensed healthcare providers based on the patient’s medical history, clinical circumstances, treatment needs, and applicable legal and professional requirements. A compounded medication may be considered when the prescribing healthcare provider determines that the individual patient has a specific clinical need for a compounded formulation." },
       { q: "Will my medication look exactly like the product images on the website?",
         a: ["Not necessarily.",
             "Product imagery used by Chime may be illustrative. Packaging, labeling, concentration, presentation, and pharmacy information can vary based on the prescribed treatment and licensed pharmacy partner."] },
@@ -261,6 +270,26 @@ window.CHIME_FAQ_SECTIONS = [
       { q: "What should I do if I have a question about my delivery?",
         a: ["Contact Chime support through the available support channel or patient portal.",
             "The support team can help you review order and tracking information. Clinical questions about medication use should be directed to the appropriate licensed provider or clinical team."] },
+    ],
+  },
+  // Service availability, shipping and insurance: verbatim from the live
+  // chimehealth.com FAQ (compliance review, Asana 1218871555785832). The states
+  // item carries id "jurisdictions" — the footer's "Service Availability" link
+  // (faq.html#jurisdictions) opens it.
+  {
+    id: "availability",
+    title: "Service Availability and Shipping",
+    items: [
+      { id: "jurisdictions", q: "What states will Chime Health serve?",
+        a: ["Chime Health services are available in the following jurisdictions:",
+            "Alabama, Alaska, Arizona, Colorado, Connecticut, Delaware, District of Columbia, Georgia, Hawaii, Idaho, Iowa, Kansas, Louisiana, Maine, Maryland, Massachusetts, Michigan, Minnesota, Missouri, Montana, Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, South Dakota, Texas, Utah, Virginia, Washington, West Virginia, Wisconsin, and Wyoming.",
+            "Service availability, treatment options, laboratory services, and prescription fulfillment may vary by jurisdiction and are subject to provider licensure, clinical eligibility, applicable laws and regulations, and pharmacy availability."] },
+      { q: "How does shipping work?",
+        a: "If a licensed healthcare provider determines that treatment is appropriate and a prescription is issued, eligible prescriptions may be fulfilled by a licensed pharmacy partner and shipped directly to the patient. Shipping times may vary based on location, pharmacy processing, and carrier service." },
+      { q: "Is next-day shipping available?",
+        a: "Next-day shipping may be available for eligible prescriptions in certain locations. Availability depends on provider approval, pharmacy processing times, patient location, and carrier service." },
+      { q: "Do I need insurance?",
+        a: "No. Chime Health services are designed to be accessible whether or not you have insurance. Coverage and reimbursement may vary depending on your individual insurance plan" },
     ],
   },
   {
