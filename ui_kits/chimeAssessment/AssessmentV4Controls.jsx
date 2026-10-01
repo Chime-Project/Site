@@ -1119,12 +1119,82 @@ function AsmtV4ContactFields({ value, errors, onField, onBlur, states, dobHint, 
 
 // ---------------------------------------------------------------------------
 // A6 · SnapshotCalculator — weight/height with a live, aria-live result region.
-// The region shows the BMI line (since 2026-10-01, see bmiDisplay in the
-// config) and the tier's headline + message, never a tier id. Tier "flag"
-// shows the BMI line only (A6P handles the rest).
+// The region shows the BMI gauge (since 2026-10-01, see bmiDisplay in the
+// config) with the first milestone, or the tier's headline + message below
+// BMI 25; never a tier id or a category word. Tier "flag" shows the gauge only.
 // ---------------------------------------------------------------------------
-// Since 2026-10-01 it also shows the BMI line (`bmi`, from asmtV4BmiDisplay)
-// and the "Why BMI?" note — the qualify funnel's step 1 (client request).
+// The BMI gauge (Luis, 2026-10-01, option 1): a half dial in the theme's
+// blues, a needle, and the number counting up under it. GSAP sweeps the needle
+// from the left end and draws the arc on first show, then glides between
+// values as the inputs change; prefers-reduced-motion (or no GSAP) sets the
+// end state. The animated number is aria-hidden: a live region would announce
+// every tween frame, so a static sentence carries it for screen readers.
+const ASMT_V4_GAUGE_C = 115;            // dial centre (x and y) in the 230×128 viewBox
+function AsmtV4BmiGauge({ bmi, copy }) {
+  const needleRef = React.useRef(null);
+  const numRef = React.useRef(null);
+  const arcRef = React.useRef(null);
+  const prev = React.useRef(null);       // { value, angle } last shown
+  const angle = -90 + 180 * bmi.fraction;
+
+  React.useLayoutEffect(() => {
+    const g = window.gsap, needle = needleRef.current, num = numRef.current, arc = arcRef.current;
+    const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const origin = ASMT_V4_GAUGE_C + " " + ASMT_V4_GAUGE_C;
+    const done = () => { if (num) num.textContent = bmi.value.toFixed(1); };
+    if (!g || reduced) {
+      if (needle) needle.setAttribute("transform", "rotate(" + angle + " " + origin + ")");
+      done(); prev.current = { value: bmi.value, angle }; return;
+    }
+    const from = prev.current || { value: copy.gauge.min, angle: -90 };
+    const first = !prev.current;
+    prev.current = { value: bmi.value, angle };
+    const tl = g.timeline();
+    if (first && arc) {
+      const len = arc.getTotalLength();
+      tl.fromTo(arc, { strokeDasharray: len, strokeDashoffset: len },
+        { strokeDashoffset: 0, duration: 0.7, ease: "power2.out", clearProps: "strokeDasharray,strokeDashoffset" }, 0);
+    }
+    tl.fromTo(needle, { rotation: from.angle, svgOrigin: origin },
+      { rotation: angle, svgOrigin: origin, duration: first ? 1.3 : 0.6, ease: first ? "back.out(1.4)" : "power2.out" }, first ? 0.15 : 0);
+    const counter = { v: from.value };
+    tl.to(counter, { v: bmi.value, duration: first ? 1.1 : 0.5, ease: "power2.out",
+      onUpdate: () => { if (num) num.textContent = counter.v.toFixed(1); }, onComplete: done }, first ? 0.15 : 0);
+    return () => { tl.progress(1).kill(); };
+  }, [bmi.value]);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <svg width="230" height="128" viewBox="0 0 230 128" aria-hidden="true" style={{ maxWidth: "100%", height: "auto", overflow: "visible" }}>
+        <defs>
+          <linearGradient id="asmt-v4-gauge-grad" x1="0" x2="1">
+            <stop offset="0" style={{ stopColor: "var(--color-blue-200)" }} />
+            <stop offset="1" style={{ stopColor: "var(--accent-strong)" }} />
+          </linearGradient>
+        </defs>
+        <path ref={arcRef} d="M20 115 A95 95 0 0 1 210 115" fill="none" stroke="url(#asmt-v4-gauge-grad)"
+          strokeWidth="16" strokeLinecap="round" />
+        <g ref={needleRef}>
+          <line x1={ASMT_V4_GAUGE_C} y1={ASMT_V4_GAUGE_C} x2={ASMT_V4_GAUGE_C} y2="34"
+            stroke="var(--accent-onSubtle)" strokeWidth="4" strokeLinecap="round" />
+        </g>
+        <circle cx={ASMT_V4_GAUGE_C} cy={ASMT_V4_GAUGE_C} r="8" fill="var(--accent-onSubtle)" />
+      </svg>
+      <span ref={numRef} aria-hidden="true" style={{
+        marginTop: -4, fontSize: 44, lineHeight: 1, fontWeight: 300, fontVariantNumeric: "tabular-nums",
+        fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--accent-onSubtle)",
+      }}>{bmi.value.toFixed(1)}</span>
+      <span style={{
+        position: "absolute", width: 1, height: 1, margin: -1, padding: 0, overflow: "hidden",
+        clipPath: "inset(50%)", whiteSpace: "nowrap", border: 0,
+      }}>Your BMI is {bmi.value.toFixed(1)}.</span>
+      <p style={{ margin: "var(--spacing-1) 0 0", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>{copy.caption}</p>
+    </div>
+  );
+}
+
+// Since 2026-10-01 it also shows the BMI (`bmi`, from asmtV4BmiDisplay) on
+// the gauge above, plus the first milestone or, below BMI 25, the tier message.
 function AsmtV4Snapshot({ value, onField, content, problem, onBlur, bmi, bmiCopy }) {
   const d = value || {};
   return (
@@ -1150,26 +1220,13 @@ function AsmtV4Snapshot({ value, onField, content, problem, onBlur, bmi, bmiCopy
             background: "var(--warning-subtle)", borderRadius: "var(--radius-md)",
             padding: "var(--spacing-3) var(--spacing-4)",
           }}>{problem}</p>}
-        {!problem && (content || bmi) &&
+        {/* No gauge (the v15 preview passes no `bmi`): the tier panel as before. */}
+        {!problem && !bmi && content &&
           <div style={{
             background: "var(--accent-subtle)", borderRadius: "var(--radius-lg)",
             padding: "var(--spacing-5) var(--spacing-5)",
             display: "flex", flexDirection: "column", gap: "var(--spacing-2)",
           }}>
-            {bmi &&
-              <div data-bmi="1" style={{
-                display: "flex", flexDirection: "column", gap: "var(--spacing-1)",
-                paddingBottom: content ? "var(--spacing-3)" : 0,
-                borderBottom: content ? "1px solid var(--accent-border, var(--border-default))" : "none",
-                marginBottom: content ? "var(--spacing-1)" : 0,
-              }}>
-                <p style={{
-                  margin: 0, fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--accent-onSubtle)",
-                }}>{bmi.line}</p>
-                {bmiCopy && <p style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, color: "var(--text-secondary)" }}>{bmiCopy.note}</p>}
-              </div>}
-            {content && <React.Fragment>
             <p style={{
               margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)",
               fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--accent-onSubtle)",
@@ -1177,23 +1234,29 @@ function AsmtV4Snapshot({ value, onField, content, problem, onBlur, bmi, bmiCopy
             <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.6, color: "var(--text-default)" }}>
               {content.message}
             </p>
-            </React.Fragment>}
+          </div>}
+        {!problem && bmi &&
+          <div data-bmi="1" style={{
+            background: "var(--accent-subtle)", borderRadius: "var(--radius-lg)",
+            padding: "var(--spacing-5) var(--spacing-5) var(--spacing-6)",
+            display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "var(--spacing-1)",
+          }}>
+            <AsmtV4BmiGauge bmi={bmi} copy={bmiCopy} />
+            {bmi.milestone
+              ? <p style={{ margin: "var(--spacing-3) 0 0", maxWidth: "30em", fontSize: "var(--text-base)", lineHeight: 1.55, color: "var(--text-default)" }}>
+                  <strong style={{ color: "var(--accent-onSubtle)" }}>{bmi.milestone}</strong> {bmiCopy.milestoneWhy}
+                </p>
+              : content && <React.Fragment>
+                  <p style={{
+                    margin: "var(--spacing-3) 0 0", fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)",
+                    fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--accent-onSubtle)",
+                  }}>{content.headline}</p>
+                  <p style={{ margin: 0, maxWidth: "34em", fontSize: "var(--text-base)", lineHeight: 1.6, color: "var(--text-default)" }}>
+                    {content.message}
+                  </p>
+                </React.Fragment>}
           </div>}
       </div>
-      {bmiCopy &&
-        <aside aria-label="Why we ask for BMI" style={{
-          display: "flex", gap: "var(--spacing-3)", alignItems: "flex-start",
-          border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)",
-          background: "var(--color-white)", padding: "var(--spacing-4) var(--spacing-5)",
-        }}>
-          <span aria-hidden="true" style={{ display: "inline-flex", color: "var(--accent-strong)", marginTop: 2 }}>
-            <Icon size={18}><React.Fragment><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></React.Fragment></Icon>
-          </span>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-1)" }}>
-            <h3 style={{ margin: 0, fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>{bmiCopy.whyTitle}</h3>
-            <p style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, color: "var(--text-secondary)" }}>{bmiCopy.why}</p>
-          </div>
-        </aside>}
     </div>
   );
 }
@@ -1716,5 +1779,5 @@ Object.assign(window, {
   AsmtV4ContactShippingFields, AsmtV4ContactFields, AsmtV4Snapshot,
   AsmtV4Phrase, AsmtV4Placeholder, AsmtV4Fork, AsmtV4Result, AsmtV4HeroHeader,
   AsmtV4Button, AsmtV4GoalCard, AsmtV4PillCard, AsmtV4BubbleCard, AsmtV4BubbleField,
-  AsmtV4Hint, AsmtV4TextArea, AsmtV4SubQuestion, AsmtV4Rows, AsmtV4Meds, AsmtV4Form, AsmtV4Disqualified,
+  AsmtV4BmiGauge, AsmtV4Hint, AsmtV4TextArea, AsmtV4SubQuestion, AsmtV4Rows, AsmtV4Meds, AsmtV4Form, AsmtV4Disqualified,
 });

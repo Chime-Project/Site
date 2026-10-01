@@ -126,11 +126,23 @@
     // (703 × lbs / in², one decimal), same categories, same copy. This
     // replaces the v4 spec's "never the number, never a label" rule on this
     // screen only; the tier ids above still never render.
+    //
+    // Presentation (Luis, 2026-10-01, option 1 of the BMI options review): the
+    // number sits on a gauge (GSAP needle sweep + count-up), with no category
+    // words on screen — research: "obese" is among the terms patients find
+    // most stigmatizing, and BMI is a screening number, not a diagnosis
+    // (2025 Lancet Commission). From BMI 25 the panel adds the personal first
+    // milestone, 5% of their weight, the point where blood pressure, blood
+    // sugar and cholesterol start to improve. Below 25 the tier message shows
+    // instead. `line` + `categories` stay for the backend / tests only.
     bmiDisplay: {
+      caption: "Your BMI · a starting point, not a diagnosis",
+      milestone: "Your first milestone: about {lbs} lbs.",
+      milestoneWhy: "Losing 5% of your weight can already lower blood pressure, blood sugar and cholesterol.",
+      milestoneMinBmi: 25,
+      milestoneShare: 0.05,
+      gauge: { min: 15, max: 40 },
       line: "Your BMI is {value} ({category}).",
-      note: "Even modest weight loss can improve health. Your plan is personalized beyond BMI.",
-      whyTitle: "Why BMI?",
-      why: "Your height & weight calculate BMI — one of several factors your clinician uses to personalize your plan.",
       categories: [
         { below: 18.5, label: "underweight range" },
         { below: 25, label: "healthy range" },

@@ -146,7 +146,16 @@
     var d = CFG().bmiDisplay, value = Math.round(v4Bmi(answers) * 10) / 10, label = "";
     for (var i = 0; i < d.categories.length; i++)
       if (value < d.categories[i].below) { label = d.categories[i].label; break; }
-    return { value: value, category: label, line: d.line.replace("{value}", value).replace("{category}", label) };
+    var lbs = parseFloat(answers.A6.weightLbs), g = d.gauge;
+    var milestoneLbs = value >= d.milestoneMinBmi ? Math.round(lbs * d.milestoneShare) : null;
+    return {
+      value: value, category: label,
+      line: d.line.replace("{value}", value).replace("{category}", label),
+      // 0 … 1 along the gauge (clamped), and the 5% milestone in pounds when shown
+      fraction: Math.max(0, Math.min(1, (value - g.min) / (g.max - g.min))),
+      milestoneLbs: milestoneLbs,
+      milestone: milestoneLbs ? d.milestone.replace("{lbs}", milestoneLbs) : null,
+    };
   }
 
   function v4ScreeningBand(answers) {

@@ -625,6 +625,15 @@ eq("BMI line: 6'1\" 230 lbs → 30.3, obese range", g.asmtV4BmiDisplay(snap(230,
 eq("BMI categories at the funnel's cut-offs",
   [snap(120, 6, 1), snap(150, 6, 1), snap(200, 6, 1), snap(230, 6, 1)].map(function (a) { return g.asmtV4BmiDisplay(a).category; }),
   ["underweight range", "healthy range", "overweight range", "obese range"]);
+(function () {
+  var b = g.asmtV4BmiDisplay(snap(230, 6, 1));
+  eq("gauge: 30.3 sits 61.2% along the 15–40 dial", Math.round(b.fraction * 1000) / 10, 61.2);
+  eq("first milestone = 5% of their weight, rounded (230 → 12 lbs)", [b.milestoneLbs, b.milestone], [12, "Your first milestone: about 12 lbs."]);
+  eq("no milestone below BMI 25 (the tier message shows instead)", g.asmtV4BmiDisplay(snap(170, 6, 1)).milestone, null);
+  eq("gauge clamps past its ends", [g.asmtV4BmiDisplay(snap(60, 6, 1)).fraction, g.asmtV4BmiDisplay(snap(600, 6, 1)).fraction], [0, 1]);
+  check("no category word (\"obese\") in the on-screen copy",
+    JSON.stringify([CFG4.bmiDisplay.caption, CFG4.bmiDisplay.milestone, CFG4.bmiDisplay.milestoneWhy]).indexOf("obese") < 0);
+})();
 eq("no BMI line until the inputs are complete and in range", [g.asmtV4BmiDisplay({}), g.asmtV4BmiDisplay(snap(30, 6, 1))], [null, null]);
 check("analytics still never carry the BMI", JSON.stringify(g.asmtV4Track("step_viewed", { screen: "A6" })).indexOf("bmi") < 0);
 
