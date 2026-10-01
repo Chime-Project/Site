@@ -524,7 +524,7 @@
   // starts with them filled in; the customer can still edit every one.
   // Returns only the fields it could read — never an empty key — and nothing at
   // all when there is no assessment on this device.
-  var ASMT_STORE_KEY = "chime_assessment_v4_4";
+  var ASMT_STORE_KEY = "chime_assessment_v4_5";   // v4_5 since the medical intake (2026-10-01)
   function chimeCartPrefill(storage) {
     var saved = null;
     try { saved = JSON.parse((storage || window.localStorage).getItem(ASMT_STORE_KEY) || "null"); } catch (e) {}

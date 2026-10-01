@@ -7,11 +7,11 @@
 //   A1: [goal, …]            A2G: "Female" | "Male"
 //   A2: "Yes" | "No"  (asked only when A2G is Female)
 //   A2F: "labs" | "coaching"
-//   A3: { firstName, lastName, email, phone, address1, address2, city, zip,
-//         state, dob }
+//   A3: { firstName, lastName, dob, email, phone, state }
 //   A4: [feeling, …]         A5: option             A6: { weightLbs, heightFt, heightIn }
 //   "B1.1": option (single-select) · "B1.1_med": option · "B1.1_med_other": text ·
-//   "B1.4": dose · "B1.5": [..] · "B2.1".. etc. per screen id.
+//   "B1.4": { dose, lastTaken, continuePlan, details } · "B1.5": [..] · "B2.1".. etc.
+//   H7..H18 (medical intake, type "form"): { <reference field name>: value, … }
 //   Phrase/placeholder screens store `true` when their CTA is pressed, so
 //   restore can land on the first incomplete screen.
 //
@@ -106,6 +106,47 @@
     return walked;
   }
 
+  // The medical intake (H screens, the age + BMI band, B3.3's replacement) is
+  // the weight-loss path's (Luis, 2026-10-01): it applies when the branch walk
+  // reaches B1. An ineligible respondent never gets B1, so never gets these.
+  function v4MedicalApplies(answers) {
+    return v4BranchWalk(answers).indexOf("B1") >= 0;
+  }
+
+  // Age + BMI band — the reference's step 7 screening-bands.js, same rules:
+  //   { band: "unknown" | "under18" | "disqualify" | "consent" | "clear",
+  //     consent: "elderly" | "metabolic", reason }
+  function v4ScreeningBandFor(age, bmi) {
+    var b = CFG().screeningBands;
+    if (isNaN(age) || isNaN(bmi) || bmi <= 0) return { band: "unknown" };
+    if (age >= b.elderlyAge) {
+      if (bmi < b.elderlyMinBmi) return { band: "disqualify", reason: "elderly-low-bmi" };
+      return { band: "consent", consent: "elderly" };
+    }
+    if (age < b.adultMinAge) return { band: "under18" };
+    if (bmi < b.adultMinBmi) return { band: "disqualify", reason: "adult-low-bmi" };
+    if (bmi < b.adultConsentMaxBmi) return { band: "consent", consent: "metabolic" };
+    return { band: "clear" };
+  }
+
+  // BMI from A6, or NaN. INTERNAL: only the band and the backend payload read it.
+  function v4Bmi(answers) {
+    var a6 = answers.A6;
+    if (!a6) return NaN;
+    var lbs = parseFloat(a6.weightLbs), totalIn = v4TotalInches(a6);
+    if (isNaN(lbs) || isNaN(totalIn) || totalIn <= 0) return NaN;
+    return (703 * lbs) / (totalIn * totalIn);
+  }
+
+  function v4ScreeningBand(answers) {
+    return v4ScreeningBandFor(v4AgeFromDob((answers.A3 || {}).dob), v4Bmi(answers));
+  }
+
+  // Does the band disqualify? Only where the medical intake applies.
+  function v4BandDisqualifies(answers) {
+    return v4MedicalApplies(answers) && v4ScreeningBand(answers).band === "disqualify";
+  }
+
   // Screens of one branch given the current answers (conditional skips live
   // here: B1.1 without a medication answer → skip B1.4 · B1.1_med "Others" →
   // skip B1.4 · B3.2 skip value → remainder of B3 including the ✦ closer).
@@ -114,9 +155,12 @@
     if (branch === "B1") {
       // B1.2 / B1.3 are merged INTO B1.1 as an inline reveal (Vf C-WL.1), so
       // the only screen the medication answer can still add is the dose ladder.
+      // B1.4 (the reference's step 6) only for the two medications it has
+      // dose ladders for; "Another GLP-based medication" and "Others" skip it.
       var ids = ["B1.1"];
       var med = answers["B1.1_med"];
-      if (med && med !== cfg.b11OtherValue) ids.push("B1.4");
+      var b14 = v4ScreenById("B1.4");
+      if (med && b14 && b14.doses[med]) ids.push("B1.4");
       return ids.concat(["B1.5", "B1.C"]);
     }
     if (branch === "B2") return ["B2.1", "B2.3", "B2.C"]; // B2.2 deleted (Vf)
@@ -125,7 +169,9 @@
       // MULTI-select — so this tests membership, not equality.
       var b32 = answers["B3.2"] || [];
       if (b32.indexOf(cfg.b32SkipValue) >= 0) return ["B3.2"];
-      return ["B3.2", "B3.3", "B3.C"];
+      // B3.3 goes when the medical intake is on the path: H17 asks the same
+      // thing ("When was the last time you had Lab Tests done?").
+      return v4MedicalApplies(answers) ? ["B3.2", "B3.C"] : ["B3.2", "B3.3", "B3.C"];
     }
     if (branch === "B4") return ["B4.2", "B4.3", "B4.C"]; // B4.1 deleted (Vf)
     return [];
@@ -149,7 +195,18 @@
     v4BranchWalk(answers).forEach(function (b) {
       ids = ids.concat(v4BranchScreens(b, answers));
     });
-    return ids.concat(["C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
+    ids.push("C.PRE");
+    ids = ids.concat(v4MedicalScreens(answers));
+    return ids.concat(["C.POST", "D"]);
+  }
+
+  // The medical intake screens for this answer state: none off the weight-loss
+  // path; H7 (the band consent) only when the age + BMI band asks for one.
+  function v4MedicalScreens(answers) {
+    if (!v4MedicalApplies(answers)) return [];
+    var ids = [];
+    if (v4ScreeningBand(answers).band === "consent") ids.push("H7");
+    return ids.concat(["H11", "H12", "H13", "H14", "H17", "H18"]);
   }
 
   // Drop answers whose screens are no longer reachable, so a stale answer can
@@ -279,17 +336,18 @@
   // field id → gentle message, or "" when fine.
   function v4ContactFieldError(field, value, a3) {
     var v = String(value === undefined || value === null ? "" : value).trim();
-    // Vf replaces the exact date of birth with a plain Age field ("exact DOB
-    // deferred"). The 18+ floor is preserved; the upper bound only catches
-    // typos. Age is also what the future A2.3 GREEN LIGHT gate needs.
-    if (field === "age") {
-      if (!v) return "Please add your age.";
-      if (!/^\d{1,3}$/.test(v)) return "Please enter your age in years, as a number.";
-      var age = parseInt(v, 10);
-      if (age < 18) return "You need to be at least 18 for this assessment."; // ASSUMPTION — matches live build; confirm
-      if (age > 120) return "That age looks high — mind double-checking it?";
+    // Date of birth, MM/DD/YYYY (client, 2026-10-01: "this age thing has to be
+    // a date of birth"). The age is calculated from it. The two refusals are
+    // the reference's step 7 wording; the upper bound only catches typos.
+    if (field === "dob") {
+      if (!v) return "Please add your date of birth.";
+      if (!v4ParseDob(v)) return "Please enter a valid date of birth.";
+      var age = v4AgeFromDob(v);
+      if (age < 18) return "You must be at least 18 years old to continue.";
+      if (age > 120) return "That date of birth looks off — mind double-checking it?";
       return "";
     }
+    if (field === "state") return v ? "" : "Please select your state.";
     if (!v) {
       var names = {
         firstName: "first name", lastName: "last name", email: "email", phone: "phone number",
@@ -305,9 +363,8 @@
 
   // No "sex" — it left the Info Page for its own screen (A2G) so that the
   // pregnancy question could follow it directly.
-  // Vf spec A2, verbatim and in order: First Name · Last Name · Age · E-mail ·
-  // Phone. Mailing address and exact DOB are deferred by the doc.
-  var V4_CONTACT_FIELDS = ["firstName", "lastName", "age", "email", "phone"];
+  // In render order (client, 2026-10-01): DOB replaced Age, State was added.
+  var V4_CONTACT_FIELDS = ["firstName", "lastName", "dob", "email", "phone", "state"];
 
   // { field: message } for every field that still needs attention.
   function v4ContactProblems(a3) {
@@ -317,6 +374,167 @@
       if (msg) { out[f] = msg; any = true; }
     });
     return any ? out : null;
+  }
+
+  // -------------------------------------------------------------------------
+  // B1.4 · the reference's step 6 (dose → last taken → how to continue)
+  // -------------------------------------------------------------------------
+  // Which of the three questions are open: each opens once the one before it
+  // is answered (the reference reveals them the same way).
+  function v4MedsOpen(answer) {
+    var a = answer || {};
+    return { lastTaken: !!a.dose, continuePlan: !!(a.dose && a.lastTaken) };
+  }
+
+  function v4MedsProblem(answer) {
+    var a = answer || {};
+    if (!a.dose) return "Please choose your most recent dose to continue.";
+    if (!a.lastTaken) return "Please tell us when you last took this medication.";
+    if (!a.continuePlan) return "Please tell us how you would like to continue.";
+    return null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Medical intake forms (type "form": H7 … H18)
+  // -------------------------------------------------------------------------
+  function v4OptValue(o) { return typeof o === "string" ? o : o.value; }
+
+  // The items a form screen shows for this answer state: H7's consents are
+  // filtered by the age + BMI band; every other item always shows.
+  function v4FormItems(screen, answers) {
+    var band = v4ScreeningBand(answers || {});
+    return (screen.items || []).filter(function (it) {
+      return !it.band || (band.band === "consent" && band.consent === it.band);
+    });
+  }
+
+  // First thing still missing on a form screen, as a kind message, or null.
+  function v4FormProblem(screen, answer, answers) {
+    var a = answer || {};
+    var items = v4FormItems(screen, answers);
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i], v = a[it.key];
+      if (it.kind === "multi" && !(v && v.length)) return "Please choose at least one option for each question.";
+      if (it.kind === "single") {
+        if (!v) return "Please answer each question to continue.";
+        if (it.followUp && v === it.followUp.when && !String(a[it.followUp.key] || "").trim())
+          return "Please fill in the details for your answer above.";
+      }
+      if (it.kind === "consent" && v !== true) return "Please confirm the statement above to continue.";
+      if (it.kind === "consents") {
+        var all = it.options.every(function (o) { return (v || []).indexOf(v4OptValue(o)) >= 0; });
+        if (!all) return "All boxes must be checked to continue.";
+      }
+    }
+    return null;
+  }
+
+  // The reference's disqualify rules (quiz-dq.js), item by item. `safe`: any
+  // pick outside it disqualifies (fail closed); `values`: picking one does.
+  function v4FormDisqualifies(screen, answer, answers) {
+    var a = answer || {};
+    return v4FormItems(screen, answers).some(function (it) {
+      if (!it.dq) return false;
+      var v = a[it.key], picked = v == null ? [] : [].concat(v);
+      if (it.dq.values) return picked.some(function (x) { return it.dq.values.indexOf(x) >= 0; });
+      return picked.some(function (x) { return it.dq.safe.indexOf(x) < 0; });
+    });
+  }
+
+  // A multi item's toggle with the "None" answer exclusive both ways.
+  function v4ToggleMulti(item, current, value) {
+    var cur = (current || []).slice(), pos = cur.indexOf(value);
+    if (pos >= 0) return cur.filter(function (x) { return x !== value; });
+    if (item.none && value === item.none) return [value];
+    return cur.filter(function (x) { return x !== item.none; }).concat(value);
+  }
+
+  // -------------------------------------------------------------------------
+  // Per-step URLs (client, 2026-10-01): chimeAssessment.html?step=N
+  // -------------------------------------------------------------------------
+  function v4StepNumber(screenId) {
+    var i = CFG().stepOrder.indexOf(screenId);
+    return i < 0 ? null : i + 1;
+  }
+  function v4ScreenForStep(step) {
+    var n = parseInt(step, 10);
+    return n >= 1 ? (CFG().stepOrder[n - 1] || null) : null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Backend payload — one flat object in the qualify funnel's field names and
+  // values, so the integration maps 1:1. Discovery answers that have no
+  // counterpart there ride along under `discovery`, keyed by screen id.
+  // -------------------------------------------------------------------------
+  function v4Payload(answers) {
+    var a = answers || {}, out = {}, k;
+    var a3 = a.A3 || {}, a6 = a.A6 || {};
+    out.first_name = a3.firstName || "";
+    out.last_name = a3.lastName || "";
+    out.email = a3.email || "";
+    out.phone = a3.phone || "";
+    out.dob = a3.dob || "";
+    var age = v4AgeFromDob(a3.dob);
+    out.age = isNaN(age) ? null : age;
+    out.state = a3.state || "";
+    out.sex = a.A2G ? String(a.A2G).toLowerCase() : "";
+    if (a.A2) out.pregnant_or_breastfeeding = a.A2;
+    out.heightFeet = a6.heightFt || "";
+    out.heightInches = a6.heightIn || "";
+    out.weightLbs = a6.weightLbs || "";
+    var bmi = v4Bmi(a);
+    out.bmi = isNaN(bmi) ? null : Math.round(bmi * 10) / 10;
+    if (v4MedicalApplies(a)) {
+      var band = v4ScreeningBand(a);
+      out.screening_band = band.band;
+      out.screening_reason = band.reason || "";
+      // Automatic, never a checkbox: obese range (BMI >= 30) and over 65.
+      out.bmi_consent = !isNaN(bmi) && bmi >= 30 && age > 65;
+    }
+    // Step 6: the medication taken and its three answers, prefixed per drug.
+    var b14 = v4ScreenById("B1.4"), med = a["B1.1_med"];
+    var pm = b14 && b14.payloadMedication[med];
+    if (pm) {
+      out.medication = pm.medication;
+      var d = a["B1.4"] || {};
+      out[pm.prefix + "_dose"] = d.dose || "";
+      out[pm.prefix + "_last_taken"] = d.lastTaken || "";
+      out[pm.prefix + "_continue_plan"] = d.continuePlan || "";
+      out.on_weight_loss_meds_current_meds = d.details || "";
+    } else if (med) {
+      out.medication = med;
+      if (a["B1.1_med_other"]) out.medication_other = a["B1.1_med_other"];
+    } else if (a["B1.1"]) {
+      out.medication = "medication-no";
+    }
+    // H7 … H18: every stored field as is; consents expand their hidden twins.
+    CFG().screens.forEach(function (scr) {
+      if (scr.type !== "form" || !a[scr.id]) return;
+      var ans = a[scr.id];
+      (scr.items || []).forEach(function (it) {
+        if (ans[it.key] === undefined) return;
+        if (it.kind === "consents") {
+          var vals = [];
+          it.options.forEach(function (o) {
+            if ((ans[it.key] || []).indexOf(o.value) < 0) return;
+            vals.push(o.value);
+            (o.also || []).forEach(function (x) { vals.push(x); });
+          });
+          out[it.key] = vals;
+        } else out[it.key] = ans[it.key];
+        if (it.followUp && ans[it.followUp.key] !== undefined) out[it.followUp.key] = ans[it.followUp.key];
+      });
+    });
+    var discovery = {};
+    for (k in a) {
+      if (k === "A3" || k === "A6" || k === "A2G" || k === "A2" || k.indexOf("B1.1_med") === 0 || k === "B1.4") continue;
+      var scr2 = v4ScreenById(k);
+      if (!scr2 || scr2.type === "form" || a[k] === true) continue;
+      discovery[k] = a[k];
+    }
+    out.discovery = discovery;
+    out.path = v4PathId(a);
+    return out;
   }
 
   // -------------------------------------------------------------------------
@@ -446,11 +664,16 @@
     return t.executive;
   }
 
+  // From B3.3 — or, when the medical intake replaced it, from H17's
+  // "When was the last time you had Lab Tests done?": "Less than a year ago"
+  // counts as recent (comparison panel), anything older gets a fresh one.
   function v4LabsPanelNote(answers) {
+    var notes = CFG().labsPanelNotes;
     var b33 = answers["B3.3"];
-    if (!b33) return null;
-    var fresh = CFG().labsFreshValues.indexOf(b33) >= 0;
-    return fresh ? CFG().labsPanelNotes.comparison : CFG().labsPanelNotes.fresh;
+    if (b33) return CFG().labsFreshValues.indexOf(b33) >= 0 ? notes.comparison : notes.fresh;
+    var h17 = (answers.H17 || {}).lastLabTests;
+    if (!h17) return null;
+    return h17 === "Less than a year ago" ? notes.comparison : notes.fresh;
   }
 
   // Everything Block D renders, composed from the answer state. No BMI, no
@@ -472,7 +695,7 @@
       },
       persona: v4Persona(answers),
       medicationEligible: v4MedicationEligible(answers),
-      cta: cfg.resultCta,
+      cta: (cfg.resultCtaByPath || {})[pathId] || cfg.resultCta,
       ctaSupport: cfg.resultCtaSupport,
     };
   }
@@ -482,8 +705,7 @@
   // screen's CTA used to end the journey on a placeholder; it now opens the
   // cart with what the assessment learned already selected. The URL shape is
   // the one cart-data.js's chimeCartEntry reads (cart.html?treatment=a,b).
-  //   weightLoss → the GLP-1 they already take if they said Tirzepatide,
-  //                otherwise Semaglutide — plus NAD+ when it is a top add-on
+  //   weightLoss → chime-glp/product.html (since 2026-10-01, see below)
   //   energy     → NAD+ (the path's own product)
   //   labs       → labs.html (the cart does not sell lab panels)
   //   advanced / coaching → cart.html with no selection: the cart sells
@@ -493,13 +715,13 @@
   // Ineligible answers never reach a medication pre-selection — v4PathId
   // already sends them to labs / coaching.
   // -------------------------------------------------------------------------
+  // Since 2026-10-01 the weight-loss result opens the GLP-1 product page
+  // (chime-glp/, the mainglp price points) with the medication they already
+  // take brought into view: ?med=tirz for Tirzepatide, otherwise ?med=sema.
   function v4CartHref(answers, rec) {
     rec = rec || v4Recommendation(answers);
-    var nad = (rec.offer.addOns || []).some(function (a) { return a.name === "NAD+"; });
-    if (rec.pathId === "weightLoss") {
-      var med = answers["B1.1_med"] === "Tirzepatide" ? "tirzepatide" : "semaglutide";
-      return "cart.html?treatment=" + med + (nad ? ",nad" : "");
-    }
+    if (rec.pathId === "weightLoss")
+      return "chime-glp/product.html?med=" + (answers["B1.1_med"] === "Tirzepatide" ? "tirz" : "sema");
     if (rec.pathId === "energy") return "cart.html?treatment=nad";
     if (rec.pathId === "labs") return "labs.html";
     return "cart.html";
@@ -537,6 +759,21 @@
   g.asmtV4MedicationEligible = v4MedicationEligible;
   g.asmtV4BranchWalk = v4BranchWalk;
   g.asmtV4BranchScreens = v4BranchScreens;
+  g.asmtV4MedicalApplies = v4MedicalApplies;
+  g.asmtV4MedicalScreens = v4MedicalScreens;
+  g.asmtV4ScreeningBandFor = v4ScreeningBandFor;
+  g.asmtV4ScreeningBand = v4ScreeningBand;
+  g.asmtV4BandDisqualifies = v4BandDisqualifies;
+  g.asmtV4MedsOpen = v4MedsOpen;
+  g.asmtV4MedsProblem = v4MedsProblem;
+  g.asmtV4FormItems = v4FormItems;
+  g.asmtV4FormProblem = v4FormProblem;
+  g.asmtV4FormDisqualifies = v4FormDisqualifies;
+  g.asmtV4ToggleMulti = v4ToggleMulti;
+  g.asmtV4OptValue = v4OptValue;
+  g.asmtV4StepNumber = v4StepNumber;
+  g.asmtV4ScreenForStep = v4ScreenForStep;
+  g.asmtV4Payload = v4Payload;
   g.asmtV4Queue = v4Queue;
   g.asmtV4Prune = v4Prune;
   g.asmtV4FirstIncomplete = v4FirstIncomplete;

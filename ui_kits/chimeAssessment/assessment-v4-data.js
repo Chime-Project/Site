@@ -12,15 +12,26 @@
 
 (function (g) {
 
-  // DEFERRED, not deleted. The Vf spec removes mailing address from the A2 info
-  // page ("Mailing Address and exact DOB … are deferred"), so nothing renders
-  // this today — it is retained for when address collection returns.
+  // A3's State select (client, 2026-10-01): the qualify funnel's step 7 list —
+  // the 48 states it serves (no AK / HI / DC), stored as the two-letter code,
+  // shown by name. Same codes the old shipping list carried.
   var SHIPPING_STATES = [
-    "AL","AZ","AR","CA","CO","CT","DE","FL","GA","ID","IL","IN","IA","KS","KY",
-    "LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
-    "NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA",
-    "WV","WI","WY",
-  ];
+    ["AL","Alabama"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],["CO","Colorado"],
+    ["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],["ID","Idaho"],
+    ["IL","Illinois"],["IN","Indiana"],["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],
+    ["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],
+    ["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],["MT","Montana"],["NE","Nebraska"],
+    ["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],["NM","New Mexico"],["NY","New York"],
+    ["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],["OK","Oklahoma"],["OR","Oregon"],
+    ["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],["SD","South Dakota"],
+    ["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],["VA","Virginia"],
+    ["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"],
+  ].map(function (s) { return { value: s[0], label: s[1] }; });
+
+  // The qualify funnel's "None"-style answers. Each is exclusive both ways on
+  // its own question, and is (with the noted extra) the only safe answer.
+  var NONE_THESE = "None of these";
+  var NONE_BELOW = "None of the below";
 
   g.CHIME_ASSESSMENT_V4 = {
 
@@ -154,6 +165,54 @@
     // or the text field it opens would leave with the screen.
     b11OtherValue: "Others",
 
+    // A3's State options (see SHIPPING_STATES above).
+    states: SHIPPING_STATES,
+
+    // ---------------------------------------------------------------------
+    // Medical intake (client, 2026-10-01). The weight-loss path now carries the
+    // qualify funnel's medical screens (qualify.chimehealth.com/rnad/v1 steps
+    // 6, 7, 11, 12, 13, 14, 17, 18) with their copy, answers and disqualify
+    // rules unchanged. Answer VALUES are the reference's own input values, so
+    // the backend team can map each one 1:1 (see asmtV4Payload).
+    // ---------------------------------------------------------------------
+
+    // Age + BMI bands — the reference's step 7 (screening-bands.js), verbatim:
+    //   65+        BMI < 22          disqualify
+    //   65+        BMI >= 22         continue, after the ELDERLY consent
+    //   18 to 64   BMI < 20          disqualify
+    //   18 to 64   20 <= BMI < 23    continue, after the METABOLIC consent
+    //   18 to 64   BMI >= 23         straight through, no consent
+    // Applied only where the medical screens apply (the weight-loss path).
+    screeningBands: { elderlyAge: 65, elderlyMinBmi: 22, adultMinAge: 18, adultMinBmi: 20, adultConsentMaxBmi: 23 },
+
+    // The "closer look" screen any disqualifying answer leads to — copy
+    // verbatim from qualify.chimehealth.com/mainglp/disqualified.php. "Go back"
+    // returns to the screen that triggered it with the answers kept; "Keep my
+    // answer" leaves the assessment (the reference exits to its start page).
+    disqualified: {
+      label: "dq-closer-look",
+      title: "Your answer tells us your care deserves a closer look",
+      body: "Based on what you shared, we think you'd be better served by a provider who can evaluate you in person. It's not a no, it's a redirect to the kind of care that fits you best right now.",
+      back: "Go back and change my answer",
+      keep: "Keep my answer",
+      keepHref: "index.html",
+    },
+
+    // Every screen's fixed step number, for the per-step URL
+    // (chimeAssessment.html?step=N) the backend team integrates against.
+    // Numbers never move: a screen a visitor's path skips simply leaves a gap,
+    // like the reference's stepN.php files. The "closer look" screen is
+    // ?step=disqualified. Add new screens at the END so no number shifts.
+    stepOrder: [
+      "A1", "A3", "A2G", "A2", "A2F", "A4", "A5", "A6", "A6P", "A7",
+      "B1.1", "B1.4", "B1.5", "B1.C",
+      "B2.1", "B2.3", "B2.C",
+      "B3.2", "B3.3", "B3.C",
+      "B4.2", "B4.3", "B4.C",
+      "C.PRE", "H7", "H11", "H12", "H13", "H14", "H17", "H18", "C.POST",
+      "D",
+    ],
+
     // B4.3 compliance gate: ONLY these two may be named in results. Every
     // other area gets the generic message until compliance clears BPC-157,
     // TB-500, MOTS-c, GHK-Cu.
@@ -193,16 +252,16 @@
       },
 
       {
-        // Vf spec A2: "Simplified per client request — replaces the legal Info
-        // Page's full field list." Exactly five fields:
-        //   First Name · Last Name · Age · E-mail · Phone
-        // Mailing address (street/apt/city/ZIP/state) and exact DOB are
-        // DEFERRED by the doc, not deleted — SHIPPING_STATES is kept above for
-        // when address collection returns.
-        // ⚠️ OPEN QUESTION for the client: with the address gone from here,
-        // something downstream still has to collect it for fulfilment.
+        // Six fields (client, 2026-10-01):
+        //   First Name · Last Name · Date of Birth · E-mail · Phone · State
+        // "This age thing has to be a date of birth" — the age is calculated
+        // from it. State is the qualify funnel's step 7 field. The two helper
+        // lines under them are the reference's, verbatim. The street address
+        // is still collected by the checkout.
         id: "A3", block: "A", type: "contact", label: "a3-about-you",
         title: "A Few Details About You",
+        dobHint: "Ages 18-75 are eligible for treatment",
+        stateHint: "Ensures your clinician is licensed in your state",
       },
 
       {
@@ -355,42 +414,55 @@
         },
       },
       {
-        id: "B1.4", block: "B", branch: "B1", type: "dynlist", label: "b1-4-dose",
-        autoAdvance: true,
-        cards: true, // presentation only: A1-style option cards
+        // The qualify funnel's step 6 (client, 2026-10-01: "it shouldn't say
+        // placeholder … same logic … with your styling"). One screen, three
+        // questions that open in turn — dose, then when it was last taken, then
+        // how to continue — plus the optional details box. Copy and values are
+        // the reference's. Shown only for the two medications the reference
+        // has ladders for; "Another GLP-based medication" and "Others" skip it.
+        // The answer is an object: { dose, lastTaken, continuePlan, details }.
+        id: "B1.4", block: "B", branch: "B1", type: "meds", label: "b1-4-dose",
         title: "Which dose most closely matches your most recent weekly dose?",
-        // KEPT ON PURPOSE. Vf moves the dose question to C-WL.9 (an 11-option
-        // verbatim ladder) inside the legal screening block, which cannot be
-        // built yet — deleting this now would drop dose capture with nothing
-        // replacing it. Re-gated on B1.1's inline medication answer.
-        // Ladder values not in the doc — clearly-labeled placeholders, trivial
-        // to swap. Keyed by the B1.1_med answer.
-        // ASSUMPTION — the doc names a Semaglutide ladder and a GLP-Squared/
-        // Retatrutide ladder only; Tirzepatide gets its own placeholder ladder.
-        ladders: {
+        titleByMed: {
+          "Semaglutide": "Which dose most closely matches your most recent weekly dose of semaglutide?",
+          "Tirzepatide": "Which dose most closely matches your most recent weekly dose of tirzepatide?",
+        },
+        doses: {
           "Semaglutide": [
-            { value: "PLACEHOLDER 0.25 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 0.5 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 1 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 1.7 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 2.4 mg", icon: "droplet" },
-            { value: "PLACEHOLDER — I’m not sure", icon: "help" },
+            { value: "0.25mg", label: "Semaglutide 0.25 mg" },
+            { value: "0.5mg", label: "Semaglutide 0.50 mg" },
+            { value: "1mg", label: "Semaglutide 1 mg" },
+            { value: "1.5mg", label: "Semaglutide 1.5 mg" },
+            { value: "2mg", label: "Semaglutide 2 mg" },
+            { value: "2.5mg", label: "Semaglutide 2.5 mg" },
+            { value: "not_sure", label: "Semaglutide - Unknown" },
           ],
           "Tirzepatide": [
-            { value: "PLACEHOLDER 2.5 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 5 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 7.5 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 10 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 12.5 mg", icon: "droplet" },
-            { value: "PLACEHOLDER 15 mg", icon: "droplet" },
-            { value: "PLACEHOLDER — I’m not sure", icon: "help" },
+            { value: "2.5mg", label: "Tirzepatide 2.5 mg" },
+            { value: "5mg", label: "Tirzepatide 5 mg" },
+            { value: "7.5mg", label: "Tirzepatide 7.5 mg" },
+            { value: "10mg", label: "Tirzepatide 10 mg" },
+            { value: "12.5mg", label: "Tirzepatide 12.5 mg" },
+            { value: "15mg", label: "Tirzepatide 15 mg" },
+            { value: "not_sure", label: "Tirzepatide - Unknown" },
           ],
-          "Another GLP-based medication (GLP-Squared, Retatrutide)": [
-            { value: "PLACEHOLDER dose 1", icon: "droplet" },
-            { value: "PLACEHOLDER dose 2", icon: "droplet" },
-            { value: "PLACEHOLDER dose 3", icon: "droplet" },
-            { value: "PLACEHOLDER — I’m not sure", icon: "help" },
-          ],
+        },
+        lastTaken: {
+          title: "How long has it been since you last took this medication?",
+          options: ["Less than 1 week ago", "1-2 weeks ago", "2-4 weeks ago", "1-3 months ago", "More than 3 months ago"],
+        },
+        continuePlan: {
+          title: "How would you like to continue your treatment?",
+          options: ["Continue at the same dose", "Continue at a different dose", "Switch to a different medication", "Not sure yet - ask my clinician"],
+        },
+        details: {
+          label: "If you've tried any medications, you can share details below (optional).",
+          placeholder: "e.g., Phentermine 15 mg daily",
+        },
+        // The reference's step-6 field values per medication, for the payload.
+        payloadMedication: {
+          "Semaglutide": { medication: "Yes, I've taken Semaglutide (Ozempic or Wegovy)", prefix: "semaglutide" },
+          "Tirzepatide": { medication: "Yes, I've taken Tirzepatide (Mounjaro or Zepbound)", prefix: "tirzepatide" },
         },
       },
       {
@@ -491,6 +563,10 @@
         ],
       },
       {
+        // Asked only when the medical screens are NOT on the path (client,
+        // 2026-10-01: "get rid of that … one pager like this one"): with them,
+        // H17's "When was the last time you had Lab Tests done?" asks it, and
+        // the Labs panel note reads that answer instead (asmtV4LabsPanelNote).
         id: "B3.3", block: "B", branch: "B3", type: "list", label: "b3-3-recent-labs",
         autoAdvance: true,
         cards: true, // presentation only: A1-style option cards
@@ -570,20 +646,200 @@
         supportingLine: "Provider-guided care. Personalized recommendations. Ongoing support.",
         cta: "Continue.",
       },
+      // ---- Medical intake (client, 2026-10-01) ----
+      // Replaces the Health History / Full Picture / Consent placeholders.
+      // Weight-loss path only (asmtV4MedicalApplies). type "form": a screen of
+      // `items`, each stored under its reference field name inside the screen's
+      // answer object, e.g. answers.H11 = { healthConditions: [...] }.
+      //   kind "multi"    checkbox rows; `none` is exclusive both ways
+      //   kind "single"   radio rows; `followUp` opens a required text box
+      //   kind "text"     optional free text
+      //   kind "consents" every box required; `also` = hidden twin values the
+      //                   reference records with the same tick
+      //   kind "consent"  one required box, shown only for its screening `band`
+      // `dq` = the reference's disqualify rule: `safe` (anything else picked
+      // disqualifies) or `values` (picking one of these disqualifies).
       {
-        id: "C1", block: "C", type: "placeholder", label: "c1-health-history",
-        title: "Health History",
-        note: "Health History — fields per current live build, no content changes.",
+        // The reference's step 7 consents. Only on the path when the age + BMI
+        // band asks for one, and then only that band's box shows.
+        id: "H7", block: "C", type: "form", label: "h7-acknowledge",
+        title: "Please read and acknowledge before continuing",
+        items: [
+          {
+            key: "elderly_consent", kind: "consent", band: "elderly",
+            body: "We would like to make sure you are fully aware of some important considerations regarding GLP-1 medications, especially for older adults. These medications, while effective for weight loss and metabolic health, can sometimes cause gastrointestinal side effects like nausea, vomiting, and diarrhea. In older patients, these symptoms can lead to dehydration and may have an impact on kidney function, particularly if you have known kidney issues. Additionally, GLP-1 medications can occasionally cause dizziness or balance problems, which could raise the risk of falls. Appetite suppression and rapid weight loss may increase the risk of frailty, weakness, or malnutrition. Muscle wasting and bone demineralization is also a concern with rapid or aggressive weight loss. This is compounded in the elderly. It's important that your doctor is aware you are starting this medication so they can help monitor your health during treatment. If you haven't spoken with your primary care provider yet, I recommend sharing your plan with them before starting therapy.",
+            label: "I have read and understand the considerations above.",
+          },
+          {
+            key: "metabolic_consent", kind: "consent", band: "metabolic",
+            label: "I acknowledge that with this BMI I am using these medications for metabolic health, anti-inflammatory, and better eating habits, but not for weight loss primarily.",
+          },
+        ],
       },
       {
-        id: "C2", block: "C", type: "placeholder", label: "c2-full-picture",
-        title: "Full Picture",
-        note: "Full Picture — fields per current live build, no content changes.",
+        id: "H11", block: "C", type: "form", label: "h11-health-screening",
+        title: "Do any of these apply to you?",
+        tag: "Final health check",
+        supportingLine: "*Select all that apply & click \"Continue\" below",
+        items: [{
+          key: "healthConditions", kind: "multi", none: NONE_THESE, dq: { safe: [NONE_THESE] },
+          options: [
+            NONE_THESE,
+            "End-stage kidney disease (on or about to be on dialysis)",
+            "End-stage liver disease (cirrhosis)",
+            "Current suicidal thoughts and/or prior suicidal attempt",
+            "Cancer (active diagnosis, active treatment, or in remission or cancer-free for less than 5 continuous years - does not apply to non-melanoma skin cancer that was considered cured via simple excision)",
+            "History of organ transplant on anti-rejection medication",
+            "Severe gastrointestinal condition (gastroparesis, blockage, inflammatory bowel disease)",
+            "Current diagnosis of or treatment for alcohol, opioid, or substance use disorder/dependence",
+            "Have or had an eating disorder (like anorexia or bulimia)",
+          ],
+        }],
       },
       {
-        id: "C3", block: "C", type: "placeholder", label: "c3-consent",
-        title: "Consent",
-        note: "Consent — current consent copy per live build, no content changes.",
+        id: "H12", block: "C", type: "form", label: "h12-medical-history",
+        title: "Have you experienced or been diagnosed with any of the following?",
+        tag: "Final health check",
+        supportingLine: "*Select all that apply & click \"Continue\" below",
+        footnote: "HIPAA-protected. Only visible to your clinician.",
+        items: [{
+          // The reference's one exception: type 2 diabetes NOT on insulin is safe.
+          key: "healthConditionsAdditional", kind: "multi", none: NONE_BELOW,
+          dq: { safe: [NONE_BELOW, "Type 2 diabetes (not on insulin)"] },
+          options: [
+            NONE_BELOW,
+            "Current symptomatic gallstones",
+            "Diabetic Retinopathy (diabetic eye disease), damage to the optic nerve from trauma or reduced blood flow, or blindness",
+            "History of glucose-6-phosphate dehydrogenase (G6PD) deficiency",
+            "Hypoglycemia (low blood sugar)",
+            "Pancreatitis or Pancreatic Cancer",
+            "Personal or family history of thyroid cyst/nodule, thyroid cancer, medullary thyroid carcinoma, or multiple endocrine neoplasia syndrome type 2",
+            "QT prolongation or other heart rhythm disorder (including Heart Arrhythmia)",
+            "Type 1 diabetes",
+            "Type 2 diabetes (not on insulin)",
+            "Type 2 diabetes (on insulin)",
+          ],
+        }],
+      },
+      {
+        // The live reference records step 13 without disqualifying; Chime
+        // disqualifies here like steps 11 and 12 (Luis, 2026-10-01).
+        id: "H13", block: "C", type: "form", label: "h13-more-conditions",
+        title: "Do any of these apply to you?",
+        tag: "Final health check",
+        supportingLine: "*Select all that apply & click \"Continue\" below",
+        items: [{
+          key: "moreHealthConditions", kind: "multi", none: NONE_THESE, dq: { safe: [NONE_THESE] },
+          options: [
+            NONE_THESE,
+            "Active Gall Bladder Disease",
+            "Hypertension (high blood pressure)",
+            "Sleep apnea",
+            "High cholesterol or triglycerides",
+            "Severe Depression",
+            "Liver disease, including fatty liver",
+            "Congestive heart failure",
+            "Urinary stress incontinence",
+            "Polycystic ovarian syndrome (PCOS)",
+            "Clinically proven low testosterone",
+            "Osteoarthritis",
+            "Acid reflux",
+            "Asthma/reactive airway disease",
+            "Constipation",
+            "Coronary artery disease or heart attack/stroke in last 2 years",
+            "Hospitalization within the last 1 year",
+            "Tumor/infection in brain/spinal cord",
+          ],
+        }],
+      },
+      {
+        id: "H14", block: "C", type: "form", label: "h14-last-questions",
+        title: "Three last questions before your review",
+        tag: "Final health check",
+        supportingLine: "*Select one answer for each",
+        items: [
+          { key: "takenPainMedicationsOrStreetDrugs", kind: "single", options: ["Yes", "No"], dq: { values: ["Yes"] },
+            title: "Within the last 3 months, have you taken opiate pain medications and/or opiate-based street drugs?" },
+          { key: "gastricBypass6Months", kind: "single", options: ["Yes", "No"], dq: { values: ["Yes"] },
+            title: "Have you had gastric bypass surgery in the past 6 months?" },
+          { key: "heart_arrhythmia", kind: "single", options: ["Yes", "No"], dq: { values: ["Yes"] },
+            title: "Do you now, or have you ever had, any heart arrhythmia or irregular heartbeat?" },
+        ],
+      },
+      {
+        // The one-page "full picture" (reference step 17). Every question is
+        // required, and so is the text box behind each "Yes" follow-up.
+        id: "H17", block: "C", type: "form", label: "h17-full-picture",
+        title: "Let's make sure our providers have the full picture",
+        supportingLine: "*Please answer each question below",
+        items: [
+          { key: "bloodPressure", kind: "single", title: "What is your average blood pressure range?",
+            options: ["Less than 120/80 (Normal)", "120-129/less than 80 (Elevated)", "130-139/80-89 (High Stage 1)", "140/90 or higher (High Stage 2)"] },
+          { key: "restingHeartRate", kind: "single", title: "How about your average resting heart rate?",
+            options: ["Less than 60 beats per minute (Slow)", "60-100 beats per minute (Normal)", "101-110 beats per minute (Slightly Fast)", "More than 110 beats per minute (Fast)"] },
+          { key: "lastMedicalEvaluation", kind: "single", title: "When was the last time you had an in-person Medical Evaluation?",
+            options: ["Less than a year ago", "1 to 2 years ago", "More than 2 years ago"] },
+          { key: "lastLabTests", kind: "single", title: "When was the last time you had Lab Tests done?",
+            options: ["Less than a year ago", "1 to 2 years ago", "More than 2 years ago"] },
+          { key: "prescriptionMedications", kind: "single", title: "Are you currently taking any Prescription Medications?",
+            options: ["Yes - Please list the names and dosages", "No - I affirm I'm not taking any medications"],
+            followUp: { when: "Yes - Please list the names and dosages", key: "prescriptionMedications_info",
+              label: "Please list your medications, strengths, and how often you take them." } },
+          { key: "medicationAllergies", kind: "single", title: "Do you have any medication allergies?",
+            options: ["Yes - Please list your allergies and any known reactions", "No - I affirm I have no known drug allergies"],
+            followUp: { when: "Yes - Please list your allergies and any known reactions", key: "medicationAllergies_info",
+              label: "Please list your allergies and any known reactions." } },
+          { key: "additionalDocInformation", kind: "single", title: "Do you have any further information which you would like our medical team to know?",
+            options: ["Yes", "No"],
+            followUp: { when: "Yes", key: "additionalDocInformation_info",
+              label: "What would you like our medical team to know?" } },
+        ],
+      },
+      {
+        // Reference step 18, with the consents at the bottom (client: "put these
+        // same check boxes at the bottom of that page, that'll be our consents").
+        id: "H18", block: "C", type: "form", label: "h18-medication-check",
+        title: "Are you allergic to any of the following medications?",
+        tag: "Medication check",
+        supportingLine: "*Select all that apply & click \"Continue\" below",
+        items: [
+          { key: "glp1_allergies", kind: "multi", none: "I am NOT allergic to any of these medications",
+            dq: { safe: ["I am NOT allergic to any of these medications"] },
+            options: [
+              "I am NOT allergic to any of these medications",
+              { value: "semaglutide", label: "Semaglutide" },
+              { value: "tirzepatide", label: "Tirzepatide" },
+              { value: "liraglutide", label: "Liraglutide" },
+              { value: "dulaglutide", label: "Dulaglutide" },
+            ] },
+          { key: "current_glucose_medications", kind: "multi", none: "I am NOT on any of these medications",
+            dq: { safe: ["I am NOT on any of these medications"] },
+            title: "Please affirm you are not currently on any of the following medications",
+            help: "*Select all that apply & click \"Continue\" below",
+            options: [
+              "I am NOT on any of these medications",
+              { value: "insulin", label: "Insulin" },
+              { value: "glimepiride_amaryl", label: "Glimepiride (Amaryl)" },
+              { value: "glipizide", label: "Glipizide (Glucotrol and Glucotrol XL)" },
+              { value: "glyburide", label: "Glyburide (Micronase, Glynase, and DiaBeta)" },
+              { value: "sitagliptin", label: "Sitagliptin" },
+              { value: "saxagliptin", label: "Saxagliptin" },
+              { value: "linagliptin", label: "Linagliptin" },
+              { value: "alogliptin", label: "Alogliptin" },
+            ] },
+          { key: "doctor_note", kind: "text", title: "Is there anything you want your doctor to know?",
+            help: "Optional — share any additional context for your clinician" },
+          { key: "consents", kind: "consents", title: "A few things we need you to confirm",
+            help: "*All boxes must be checked to continue",
+            options: [
+              { value: "truthfulness_consent", also: ["age_consent"],
+                label: "I confirm that I am at least 18 years of age and that all information I have provided in this questionnaire is accurate and complete to the best of my knowledge." },
+              { value: "glp1_glp1_gip_consent",
+                label: "I understand the potential benefits, risks, and side effects of GLP-1 and GLP-1/GIP medications and consent to treatment if deemed appropriate by my clinician." },
+              { value: "informed_consent",
+                label: "I have read and understood the terms of telehealth treatment and voluntarily consent to a clinical evaluation based on the information I have provided." },
+            ] },
+        ],
       },
       {
         id: "C.POST", block: "C", type: "phrase", label: "c-post-bring-together",
@@ -622,12 +878,17 @@
 
     resultCta: "Create My Account",
     resultCtaSupport: "You’re Not Doing This Alone™",
+    // The weight-loss result opens the GLP-1 product page (chime-glp/, the
+    // mainglp price points) instead of account creation (client, 2026-10-01:
+    // "I don't know why this says create account … create … a checkout page").
+    resultCtaByPath: { weightLoss: "Choose My Treatment" },
 
     // Offer prices. Readiness pass (2026-09-25): the placeholders are gone
     // from production. Where the cart sells the product, the figure is the
     // cart's own lowest per-month rate, so the price on this screen is one the
     // next screen shows too (ui_kits/cart/cart-data.js):
-    //   weight loss — Semaglutide 3 months + 1 free, $747 / 4 = $186.75
+    //   weight loss — since 2026-10-01 the result opens chime-glp/, whose lowest
+    //                 rate is Semaglutide 6 months, $1,194 / 6 = $199
     //   NAD+        — 3 months + 1 free, $420 / 4 = $105
     // Everything else has no approved price anywhere on the site yet, so it
     // shows NONE (null) rather than a made-up one; the result screen renders
@@ -635,7 +896,7 @@
     // Key order is still the stable add-on display order — do not reorder.
     pricing: {
       plans: {
-        weightLoss: { price: "From $186.75/mo" },
+        weightLoss: { price: "From $199/mo" },
         energy: { price: "From $105/mo" },
         labs: { price: null },
         advanced: { price: null },

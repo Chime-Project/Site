@@ -27,10 +27,45 @@
 // B2.2 / B3.1 / B4.1 no longer exist and A3 swapped dob+address for age, so a
 // session saved under the previous key could restore onto a deleted screen or
 // a field list that is gone. A new key retires those sessions cleanly.
+// Bumped again for the medical intake (client, 2026-10-01): A3 swapped age for
+// dob + state, B1.4 became an object, and C1–C3 are gone.
 // ui_kits/cart/cart-data.js (chimeCartPrefill) reads this key to prefill the
 // checkout with A3's name, email and phone — change both together.
-const ASMT_V4_STORE_KEY = "chime_assessment_v4_4";
+const ASMT_V4_STORE_KEY = "chime_assessment_v4_5";
 const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
+
+// The medical answers (type "form" screens, H7 … H18) are never written to
+// localStorage — health information stays in memory only. A reload inside the
+// medical block therefore restarts it at its first screen.
+function asmtV4Persistable(answers) {
+  const out = {};
+  for (const k in answers) {
+    const scr = asmtV4ScreenById(k);
+    if (scr && scr.type === "form") continue;
+    out[k] = answers[k];
+  }
+  return out;
+}
+
+// ?step=N in the address bar (client, 2026-10-01: "each step has its own
+// [URL] … easier to tell the guys what to integrate where"). The flow keeps
+// every other query parameter (?product=, campaign tags) as it found it.
+function asmtV4StepUrl(screenId, dq) {
+  const q = new URLSearchParams(location.search);
+  q.set("step", dq ? "disqualified" : String(asmtV4StepNumber(screenId)));
+  return location.pathname + "?" + q.toString() + location.hash;
+}
+
+// The screen a ?step=N URL may land on: one in the current queue that is not
+// past the first unanswered screen (a URL can't skip questions).
+function asmtV4ScreenFromUrl(answers) {
+  const step = new URLSearchParams(location.search).get("step");
+  const id = step && asmtV4ScreenForStep(step);
+  if (!id) return null;
+  const q = asmtV4Queue(answers), i = q.indexOf(id);
+  if (i < 0) return null;
+  return i <= q.indexOf(asmtV4FirstIncomplete(answers)) ? id : null;
+}
 
 // Visual order of A3 fields, for focusing the first field needing attention.
 // Every entry needs a real DOM id: the walk in advance() breaks at the first
@@ -41,8 +76,9 @@ const ASMT_V4_CFG = () => window.CHIME_ASSESSMENT_V4;
 // track the render order in AsmtV4ContactFields. Vf trimmed the list to five.
 const ASMT_V4_FIELD_IDS = [
   ["firstName", "asmt-v4-first"], ["lastName", "asmt-v4-last"],
-  ["age", "asmt-v4-age"],
+  ["dob", "asmt-v4-dob"],
   ["email", "asmt-v4-email"], ["phone", "asmt-v4-phone"],
+  ["state", "asmt-v4-state"],
 ];
 
 function asmtV4InitState() {
@@ -62,8 +98,13 @@ function asmtV4InitState() {
   }
   if (!screenId) screenId = "A1";
   else if (asmtV4Queue(answers).indexOf(screenId) < 0) screenId = asmtV4FirstIncomplete(answers);
+  // A medical screen saved as current lost its answers (they are never saved),
+  // so the restore lands on the first unanswered screen instead.
+  if (asmtV4Queue(answers).indexOf(screenId) > asmtV4Queue(answers).indexOf(asmtV4FirstIncomplete(answers)))
+    screenId = asmtV4FirstIncomplete(answers);
+  screenId = asmtV4ScreenFromUrl(answers) || screenId;
   maxBlock = Math.max(maxBlock, asmtV4BlockIndex(screenId));
-  return { answers, screenId, maxBlock };
+  return { answers, screenId, maxBlock, dq: null };
 }
 
 function ChimeAssessmentFlowV4() {
@@ -81,7 +122,7 @@ function ChimeAssessmentFlowV4() {
   const stateRef = React.useRef(state);
   stateRef.current = state;
 
-  const { answers, screenId, maxBlock } = state;
+  const { answers, screenId, maxBlock, dq } = state;
   const screen = asmtV4ScreenById(screenId);
   const queue = asmtV4Queue(answers);
   const idx = queue.indexOf(screenId);
@@ -89,8 +130,51 @@ function ChimeAssessmentFlowV4() {
     matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   React.useEffect(() => {
-    try { localStorage.setItem(ASMT_V4_STORE_KEY, JSON.stringify({ answers, screenId, maxBlock })); } catch (e) {}
+    try { localStorage.setItem(ASMT_V4_STORE_KEY, JSON.stringify({ answers: asmtV4Persistable(answers), screenId, maxBlock })); } catch (e) {}
   }, [answers, screenId, maxBlock]);
+
+  // Per-step URLs: a forward or Back move pushes ?step=N, so the browser's own
+  // Back / Forward walk the steps too; the first render only replaces it. A
+  // popstate lands on the step in the URL when the answers allow it.
+  const fromPop = React.useRef(false);
+  const firstUrl = React.useRef(true);
+  React.useEffect(() => {
+    const url = asmtV4StepUrl(screenId, !!dq);
+    if (firstUrl.current || fromPop.current) history.replaceState(null, "", url);
+    else if (url !== location.pathname + location.search + location.hash) history.pushState(null, "", url);
+    firstUrl.current = false; fromPop.current = false;
+  }, [screenId, dq]);
+  React.useEffect(() => {
+    const onPop = () => {
+      fromPop.current = true;
+      setState((s) => {
+        const id = asmtV4ScreenFromUrl(s.answers);
+        if (!id) return { ...s, dq: null };
+        const q = asmtV4Queue(s.answers);
+        dirRef.current = q.indexOf(id) < q.indexOf(s.screenId) ? -1 : 1;
+        return { ...s, screenId: id, dq: null, maxBlock: Math.max(s.maxBlock, asmtV4BlockIndex(id)) };
+      });
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Backend hook for the integration: called on every completed step (and on
+  // the closer-look screen) with the step number, the screen id and the whole
+  // payload so far in the qualify funnel's field names. Off unless defined.
+  const notify = (id, disqualified, answersNow) => {
+    if (typeof window.chimeAssessmentOnStep !== "function") return;
+    try {
+      window.chimeAssessmentOnStep({
+        step: asmtV4StepNumber(id), screen: id, disqualified: !!disqualified,
+        payload: asmtV4Payload(answersNow || stateRef.current.answers),
+      });
+    } catch (e) {}
+  };
+  React.useEffect(() => {
+    window.chimeAssessmentPayload = () => asmtV4Payload(stateRef.current.answers);
+    return () => { delete window.chimeAssessmentPayload; };
+  }, []);
 
   // Site chrome CTAs call window.openChimeAssessment(); here the assessment IS
   // the page, so the call scrolls to the flow instead of reloading.
@@ -103,7 +187,7 @@ function ChimeAssessmentFlowV4() {
 
   // Every transition: analytics, scroll, and focus on the new heading.
   React.useEffect(() => {
-    asmtV4Track("step_viewed", { screen: screenId });
+    asmtV4Track("step_viewed", { screen: dq ? "disqualified" : screenId });
     if (screenId === "D") {
       const rec = asmtV4Recommendation(stateRef.current.answers);
       asmtV4Track("assessment_completed", {
@@ -118,7 +202,7 @@ function ChimeAssessmentFlowV4() {
       if (headingRef.current) headingRef.current.focus({ preventScroll: true });
     }, 60);
     return () => { clearTimeout(t); clearTimeout(autoTimer.current); };
-  }, [screenId]);
+  }, [screenId, dq]);
 
   // GSAP horizontal slide: each question enters from the side it was reached
   // from (right on Continue, left on Back). Layout effect so the first frame
@@ -140,7 +224,7 @@ function ChimeAssessmentFlowV4() {
       { x: 0, autoAlpha: 1, duration: 0.87, ease: "power1.out",
         clearProps: "transform,opacity,visibility" });
     return () => tween.kill();
-  }, [screenId]);
+  }, [screenId, dq]);
 
   // Screens flagged pageAccent paint the whole page in the theme's main blue.
   // It goes on <body> rather than on #assessment because the section is a
@@ -148,11 +232,13 @@ function ChimeAssessmentFlowV4() {
   // Safe to take over: the footer carries its own dark background and the
   // navbar is 88%-opaque, so neither inherits this. Cleanup clears the inline
   // style, which hands the colour back to the stylesheet rule.
+  // The closer-look screen is never painted, even over an accent screen (C.PRE).
+  const accent = screen.pageAccent && !dq;
   React.useEffect(() => {
-    if (!screen.pageAccent) return;
+    if (!accent) return;
     document.body.style.background = "var(--accent-strong)";
     return () => { document.body.style.background = ""; };
-  }, [screen.pageAccent]);
+  }, [accent]);
 
   const say = (msg) => {
     setFlash(msg);
@@ -166,14 +252,24 @@ function ChimeAssessmentFlowV4() {
     const i = q.indexOf(s.screenId);
     if (i < 0 || i >= q.length - 1) return s;
     asmtV4Track("step_completed", { screen: s.screenId });
+    notify(s.screenId, false, s.answers);
     dirRef.current = 1;
     const next = q[i + 1];
     return { ...s, screenId: next, maxBlock: Math.max(s.maxBlock, asmtV4BlockIndex(next)) };
   };
 
+  // A disqualifying answer opens the closer-look screen on top of the screen
+  // that triggered it; nothing moves in the queue.
+  const disqualify = (s) => {
+    asmtV4Track("disqualified", { screen: s.screenId });
+    dirRef.current = 1;
+    return { ...s, dq: { from: s.screenId } };
+  };
+
   const goBack = () => {
     clearTimeout(autoTimer.current);
     setState((s) => {
+      if (s.dq) { dirRef.current = -1; return { ...s, dq: null }; }
       const q = asmtV4Queue(s.answers);
       const i = q.indexOf(s.screenId);
       if (i <= 0) return s;
@@ -203,7 +299,7 @@ function ChimeAssessmentFlowV4() {
     setForceErrors(false);
     dirRef.current = 1;
     const goals = asmtV4ProductGoals(location.search);
-    setState({ answers: goals.length ? { A1: goals } : {}, screenId: "A1", maxBlock: 0 });
+    setState({ answers: goals.length ? { A1: goals } : {}, screenId: "A1", maxBlock: 0, dq: null });
   };
 
   // ---------------------------------------------------------------- answers
@@ -270,8 +366,38 @@ function ChimeAssessmentFlowV4() {
   const markTouched = (field) => setTouched((t) => (t[field] ? t : { ...t, [field]: true }));
 
   // Phrase + placeholder screens store `true` so restore lands after them.
+  // C.PRE opens the medical intake, so the age + BMI band is checked here too:
+  // a weight-loss path can arrive after A6 (B2.3's cross-sell adds B1 later).
   const completeStatic = () =>
-    setState((s) => stepForward({ ...s, answers: { ...s.answers, [s.screenId]: true } }));
+    setState((s) => {
+      const next = { ...s, answers: { ...s.answers, [s.screenId]: true } };
+      if (s.screenId === "C.PRE" && asmtV4BandDisqualifies(next.answers)) { notify(s.screenId, true, next.answers); return disqualify(next); }
+      return stepForward(next);
+    });
+
+  // B1.4 · a changed answer closes the questions after it, the way the
+  // reference's step 6 resets its follow-ups.
+  const setMeds = (field, value) =>
+    setState((s) => {
+      const cur = { ...(s.answers["B1.4"] || {}), [field]: value };
+      if (field === "dose" && (s.answers["B1.4"] || {}).dose !== value) { delete cur.lastTaken; delete cur.continuePlan; }
+      return { ...s, answers: { ...s.answers, "B1.4": cur } };
+    });
+
+  // Medical forms: one object per screen, keyed by the reference's field names.
+  const setFormField = (key, value) =>
+    setState((s) => {
+      const cur = { ...(s.answers[s.screenId] || {}) };
+      if (value === undefined) delete cur[key]; else cur[key] = value;
+      return { ...s, answers: { ...s.answers, [s.screenId]: cur } };
+    });
+  const toggleFormMulti = (item, value) =>
+    setState((s) => {
+      const cur = { ...(s.answers[s.screenId] || {}) };
+      const next = asmtV4ToggleMulti(item, cur[item.key], value);
+      if (next.length) cur[item.key] = next; else delete cur[item.key];
+      return { ...s, answers: { ...s.answers, [s.screenId]: cur } };
+    });
 
   // ------------------------------------------------------------- validation
   const contactErrors = (() => {
@@ -328,6 +454,17 @@ function ChimeAssessmentFlowV4() {
       if (problem) { setForceErrors(true); return say(problem); }
       if (!answers.A6 || asmtV4SnapshotTier(answers) === null)
         return say("Please add your height and weight to continue.");
+      // The reference's first disqualifier: the age + BMI band (step 7).
+      if (asmtV4BandDisqualifies(answers)) { notify(screenId, true); return setState(disqualify); }
+    }
+    if (t === "meds") {
+      const problem = asmtV4MedsProblem(answers[screenId]);
+      if (problem) return say(problem);
+    }
+    if (t === "form") {
+      const problem = asmtV4FormProblem(screen, answers[screenId], answers);
+      if (problem) return say(problem);
+      if (asmtV4FormDisqualifies(screen, answers[screenId], answers)) { notify(screenId, true); return setState(disqualify); }
     }
     if ((t === "list" || t === "gate" || t === "dynlist" || t === "listFree" || t === "journey") && !answers[screenId])
       return say("Please choose an option to continue.");
@@ -348,6 +485,7 @@ function ChimeAssessmentFlowV4() {
   // question attached. One id per screen, so back-navigation can't leave a
   // stale reference behind.
   const headingId = "asmt-v4-q-" + screenId;
+  const title = (screen.titleByMed && screen.titleByMed[answers["B1.1_med"]]) || screen.title;
 
   const header = screen.title && screen.type !== "phrase" && (screen.hero ?
     <AsmtV4HeroHeader screen={screen} headingRef={headingRef} headingId={headingId} />
@@ -356,7 +494,15 @@ function ChimeAssessmentFlowV4() {
       <h2 id={headingId} ref={headingRef} tabIndex={-1} style={{
         margin: 0, outline: "none", fontSize: "var(--text-3xl)", fontWeight: 400, lineHeight: 1.2,
         fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--text-default)",
-      }}>{screen.title}</h2>
+      }}>{title}</h2>
+      {/* The reference's section tag ("Final health check"), below the title —
+          house rule: no eyebrows above titles. */}
+      {screen.tag &&
+        <p style={{ margin: "0 auto", display: "inline-block", alignSelf: "center",
+          fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-semibold)", letterSpacing: "0.04em",
+          color: "var(--accent-onSubtle)", background: "var(--accent-subtle)",
+          borderRadius: "var(--radius-4xl)", padding: "var(--spacing-1) var(--spacing-3)",
+        }}>{screen.tag}</p>}
       {screen.supportingLine && screen.type !== "fork" &&
         <p style={{ margin: "0 auto", maxWidth: "36em", fontSize: "var(--text-base)", lineHeight: 1.6, color: "var(--text-secondary)" }}>
           {screen.supportingLine}
@@ -401,6 +547,7 @@ function ChimeAssessmentFlowV4() {
         borderRadius: "var(--radius-xl)", padding: "var(--spacing-6)",
       }}>
         <AsmtV4ContactFields value={answers.A3} errors={contactErrors}
+          states={cfg.states} dobHint={screen.dobHint} stateHint={screen.stateHint}
           onField={(f, v) => setNested("A3", f, v)} onBlur={markTouched} />
       </div>
     );
@@ -457,6 +604,18 @@ function ChimeAssessmentFlowV4() {
     );
   else if (screen.type === "placeholder")
     body = <AsmtV4Placeholder note={screen.note} />;
+  else if (screen.type === "meds")
+    body = <AsmtV4Meds screen={screen} med={answers["B1.1_med"]} value={answers[screenId]}
+      onField={setMeds} labelledBy={headingId} />;
+  else if (screen.type === "form")
+    body = (
+      <React.Fragment>
+        <AsmtV4Form screenId={screenId} items={asmtV4FormItems(screen, answers)} value={answers[screenId]}
+          onField={setFormField} onToggle={toggleFormMulti} labelledBy={headingId} />
+        {screen.footnote &&
+          <p style={{ margin: 0, textAlign: "center", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{screen.footnote}</p>}
+      </React.Fragment>
+    );
   else if (screen.type === "result")
     body = (
       // The CTA opens the cart with the recommendation selected (see
@@ -466,12 +625,12 @@ function ChimeAssessmentFlowV4() {
         onCreateAccount={() => { window.location.href = asmtV4CartHref(answers); }} />
     );
 
-  const showContinue = ["cards", "checkboxes", "contact", "chips", "snapshot",
-    "list", "gate", "listFree", "dynlist", "journey", "placeholder"].indexOf(screen.type) >= 0;
-  const showBack = idx > 0 && screen.type !== "result";
+  const showContinue = !dq && ["cards", "checkboxes", "contact", "chips", "snapshot",
+    "list", "gate", "listFree", "dynlist", "journey", "placeholder", "meds", "form"].indexOf(screen.type) >= 0;
+  const showBack = !dq && idx > 0 && screen.type !== "result";
 
   return (
-    <section id="assessment" ref={topRef} data-accent-page={screen.pageAccent ? "1" : undefined} style={{
+    <section id="assessment" ref={topRef} data-accent-page={accent ? "1" : undefined} style={{
       maxWidth: 760, margin: "0 auto",
       padding: "var(--spacing-10) var(--spacing-5) var(--spacing-20)",
       display: "flex", flexDirection: "column", gap: "var(--spacing-6)",
@@ -493,11 +652,14 @@ function ChimeAssessmentFlowV4() {
       <AsmtV4Progress blocks={cfg.blocks} current={maxBlock} />
 
       <div className="asmt-v4-viewport">
-        <div key={screenId} ref={screenRef} className={window.gsap ? "asmt-v4-screen" : "asmt-v4-screen asmt-v4-anim"}>
-          <section data-screen-label={screen.label} style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
-            {header}
-            {body}
-          </section>
+        <div key={dq ? "dq" : screenId} ref={screenRef} className={window.gsap ? "asmt-v4-screen" : "asmt-v4-screen asmt-v4-anim"}>
+          {dq
+            ? <AsmtV4Disqualified copy={cfg.disqualified} headingRef={headingRef} onBack={goBack}
+                onKeep={() => { window.location.href = cfg.disqualified.keepHref; }} />
+            : <section data-screen-label={screen.label} style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
+                {header}
+                {body}
+              </section>}
         </div>
       </div>
 

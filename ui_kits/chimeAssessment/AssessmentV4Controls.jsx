@@ -7,7 +7,10 @@
 const ASMT_V4_INPUT = {
   width: "100%", boxSizing: "border-box", display: "block",
   background: "var(--color-white)", color: "var(--text-default)",
-  border: "1px solid var(--border-strong)", borderRadius: "var(--radius-md)",
+  // Longhands, not `border`: asmtV4FocusStyle swaps borderColor alone, and
+  // React warns (and can drop the colour) when a shorthand and its longhand
+  // change across re-renders.
+  borderWidth: 1, borderStyle: "solid", borderColor: "var(--border-strong)", borderRadius: "var(--radius-md)",
   padding: "var(--spacing-3) var(--spacing-4)", minHeight: 44,
   fontSize: "var(--text-base)", fontFamily: "var(--font-family-base)",
   outline: "none",
@@ -966,9 +969,10 @@ function AsmtV4JourneyWithReveal({
 // ---------------------------------------------------------------------------
 // A3 · field primitives with inline validation (kind tone, on blur/change)
 // ---------------------------------------------------------------------------
-function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, error, onChange, onBlur, autoComplete, required }) {
+function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, error, onChange, onBlur, autoComplete, required, hint }) {
   const [focus, setFocus] = React.useState(false);
-  const errId = id + "-error";
+  const errId = id + "-error", hintId = id + "-hint";
+  const describedBy = [error ? errId : null, hint ? hintId : null].filter(Boolean).join(" ") || undefined;
   return (
     <div>
       <AsmtFieldLabel text={label} htmlFor={id} />
@@ -979,11 +983,12 @@ function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, 
         // different voice. This only tells AT which fields are mandatory —
         // the visible cue is the "(optional)" suffix on the one that isn't.
         aria-required={required ? "true" : undefined}
-        aria-invalid={error ? "true" : undefined} aria-describedby={error ? errId : undefined}
+        aria-invalid={error ? "true" : undefined} aria-describedby={describedBy}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocus(true)}
         onBlur={() => { setFocus(false); if (onBlur) onBlur(); }}
         style={{ ...ASMT_V4_INPUT, ...asmtV4FocusStyle(focus, !!error) }} />
+      {hint && <AsmtV4Hint id={hintId}>{hint}</AsmtV4Hint>}
       {error &&
         <p id={errId} style={{ margin: "var(--spacing-1) 0 0", fontSize: "var(--text-xs)", lineHeight: 1.4, color: "var(--error-default)" }}>
           {error}
@@ -992,25 +997,51 @@ function AsmtV4Field({ id, label, type = "text", value, placeholder, inputMode, 
   );
 }
 
-function AsmtV4Select({ id, label, value, options, placeholder, error, onChange, onBlur, autoComplete, required }) {
+// A field's helper line (the reference's small print under DOB and State).
+function AsmtV4Hint({ id, children }) {
+  return (
+    <p id={id} style={{ margin: "var(--spacing-1) 0 0", fontSize: "var(--text-xs)", lineHeight: 1.4, color: "var(--text-muted)" }}>
+      {children}
+    </p>
+  );
+}
+
+// Options may be plain strings or { value, label } (A3's State: code + name).
+// No `label` → no visible label; `labelledBy` then names it (B1.4's dose
+// dropdown is named by the screen heading, which already asks the question).
+function AsmtV4Select({ id, label, value, options, placeholder, error, onChange, onBlur, autoComplete, required, hint, labelledBy }) {
   const [focus, setFocus] = React.useState(false);
-  const errId = id + "-error";
+  const errId = id + "-error", hintId = id + "-hint";
+  const describedBy = [error ? errId : null, hint ? hintId : null].filter(Boolean).join(" ") || undefined;
   return (
     <div>
-      <AsmtFieldLabel text={label} htmlFor={id} />
-      <select id={id} value={value || ""} autoComplete={autoComplete}
-        aria-required={required ? "true" : undefined}
-        aria-invalid={error ? "true" : undefined} aria-describedby={error ? errId : undefined}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocus(true)}
-        onBlur={() => { setFocus(false); if (onBlur) onBlur(); }}
-        style={{
-          ...ASMT_V4_INPUT, ...asmtV4FocusStyle(focus, !!error),
-          color: value ? "var(--text-default)" : "var(--text-muted)",
-        }}>
-        <option value="" disabled>{placeholder || "Select an option"}</option>
-        {options.map((o) => <option key={o} value={o}>{o}</option>)}
-      </select>
+      {label && <AsmtFieldLabel text={label} htmlFor={id} />}
+      {/* appearance:none + our own chevron: iOS Safari otherwise draws the
+          native select short and grey, unlike every input beside it. */}
+      <div style={{ position: "relative" }}>
+        <select id={id} value={value || ""} autoComplete={autoComplete}
+          aria-labelledby={label ? undefined : labelledBy}
+          aria-required={required ? "true" : undefined}
+          aria-invalid={error ? "true" : undefined} aria-describedby={describedBy}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocus(true)}
+          onBlur={() => { setFocus(false); if (onBlur) onBlur(); }}
+          style={{
+            ...ASMT_V4_INPUT, ...asmtV4FocusStyle(focus, !!error),
+            appearance: "none", WebkitAppearance: "none", paddingRight: "var(--spacing-10)",
+            color: value ? "var(--text-default)" : "var(--text-muted)",
+          }}>
+          <option value="" disabled>{placeholder || "Select an option"}</option>
+          {options.map((o) => typeof o === "string"
+            ? <option key={o} value={o}>{o}</option>
+            : <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+        <span aria-hidden="true" style={{
+          position: "absolute", right: "var(--spacing-4)", top: "50%", transform: "translateY(-50%)",
+          display: "inline-flex", pointerEvents: "none", color: "var(--text-secondary)",
+        }}><Icon size={16}><path d="m6 9 6 6 6-6" /></Icon></span>
+      </div>
+      {hint && <AsmtV4Hint id={hintId}>{hint}</AsmtV4Hint>}
       {error &&
         <p id={errId} style={{ margin: "var(--spacing-1) 0 0", fontSize: "var(--text-xs)", lineHeight: 1.4, color: "var(--error-default)" }}>
           {error}
@@ -1060,7 +1091,7 @@ function AsmtV4ContactShippingFields({ value, errors, onField, onBlur, states })
 // Height and weight are NOT here — they live in A6. Sex is no longer here
 // either: it became its own screen (A2G) so the pregnancy question could sit
 // directly after it, per the client's request.
-function AsmtV4ContactFields({ value, errors, onField, onBlur }) {
+function AsmtV4ContactFields({ value, errors, onField, onBlur, states, dobHint, stateHint }) {
   const d = value || {}, e = errors || {};
   return (
     <div className="asmt-v4-grid2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--spacing-4)" }}>
@@ -1068,14 +1099,20 @@ function AsmtV4ContactFields({ value, errors, onField, onBlur }) {
         value={d.firstName} error={e.firstName} onChange={(v) => onField("firstName", v)} onBlur={() => onBlur("firstName")} />
       <AsmtV4Field id="asmt-v4-last" label="Last name" autoComplete="family-name" required
         value={d.lastName} error={e.lastName} onChange={(v) => onField("lastName", v)} onBlur={() => onBlur("lastName")} />
-      {/* Age, not date of birth — Vf defers the exact DOB. Digits only, so the
-          numeric keypad opens on mobile and the value parses without masking. */}
-      <AsmtV4Field id="asmt-v4-age" label="Age" type="number" inputMode="numeric" placeholder="42" required
-        value={d.age} error={e.age} onChange={(v) => onField("age", v)} onBlur={() => onBlur("age")} />
+      {/* Date of birth (client, 2026-10-01), masked to MM/DD/YYYY as it is
+          typed. A text input with the numeric keypad rather than type="date":
+          the native pickers start at today and make a birth year a long
+          scroll on phones. */}
+      <AsmtV4Field id="asmt-v4-dob" label="Date of birth" inputMode="numeric" placeholder="MM/DD/YYYY" required
+        autoComplete="bday" hint={dobHint}
+        value={d.dob} error={e.dob} onChange={(v) => onField("dob", asmtV4MaskDob(v))} onBlur={() => onBlur("dob")} />
       <AsmtV4Field id="asmt-v4-email" label="Email" type="email" autoComplete="email" required
         value={d.email} error={e.email} onChange={(v) => onField("email", v)} onBlur={() => onBlur("email")} />
       <AsmtV4Field id="asmt-v4-phone" label="Phone" type="tel" inputMode="tel" autoComplete="tel" required
         value={d.phone} error={e.phone} onChange={(v) => onField("phone", v)} onBlur={() => onBlur("phone")} />
+      <AsmtV4Select id="asmt-v4-state" label="State" placeholder="Select your state" options={states || []}
+        autoComplete="address-level1" required hint={stateHint}
+        value={d.state} error={e.state} onChange={(v) => onField("state", v)} onBlur={() => onBlur("state")} />
     </div>
   );
 }
@@ -1255,6 +1292,181 @@ function AsmtV4Placeholder({ note, children }) {
       </p>
       {children}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Medical intake (client, 2026-10-01) — the qualify funnel's screens on the
+// assessment's own controls: option rows, h3 sub-questions, the input style.
+// ---------------------------------------------------------------------------
+function AsmtV4TextArea({ id, label, value, placeholder, error, onChange, rows = 3 }) {
+  const [focus, setFocus] = React.useState(false);
+  const errId = id + "-error";
+  return (
+    <div>
+      {label && <AsmtFieldLabel text={label} htmlFor={id} />}
+      <textarea id={id} rows={rows} value={value || ""} placeholder={placeholder}
+        aria-invalid={error ? "true" : undefined} aria-describedby={error ? errId : undefined}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+        style={{ ...ASMT_V4_INPUT, ...asmtV4FocusStyle(focus, !!error), resize: "vertical", lineHeight: 1.5 }} />
+      {error &&
+        <p id={errId} style={{ margin: "var(--spacing-1) 0 0", fontSize: "var(--text-xs)", lineHeight: 1.4, color: "var(--error-default)" }}>
+          {error}
+        </p>}
+    </div>
+  );
+}
+
+// One sub-question block: an h3 (or nothing, when the screen heading already
+// asks it), its small print, then the control. Blocks after the first are
+// ruled off, the way B1.1's inline reveal is.
+function AsmtV4SubQuestion({ id, title, help, first, children, live }) {
+  return (
+    <section aria-labelledby={title ? id : undefined} className={live ? "asmt-v4-anim" : undefined} style={{
+      display: "flex", flexDirection: "column", gap: "var(--spacing-3)",
+      borderTop: first ? "none" : "1px solid var(--border-subtle)",
+      paddingTop: first ? 0 : "var(--spacing-5)",
+    }}>
+      {title &&
+        <h3 id={id} style={{
+          margin: 0, fontSize: "var(--text-lg)", lineHeight: 1.3, fontWeight: "var(--font-weight-semibold)",
+          fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--text-default)",
+        }}>{title}</h3>}
+      {help && <p style={{ margin: 0, fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>{help}</p>}
+      {children}
+    </section>
+  );
+}
+
+// Option rows over { value, label } or plain strings; `kind` radio | checkbox.
+function AsmtV4Rows({ kind, options, isOn, onPick, labelledBy }) {
+  return (
+    <div role={kind === "radio" ? "radiogroup" : "group"} aria-labelledby={labelledBy}
+      style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
+      {options.map((o) => {
+        const v = typeof o === "string" ? o : o.value, l = typeof o === "string" ? o : o.label;
+        return <AsmtOptionRow key={v} kind={kind} label={l} checked={isOn(v)} onToggle={() => onPick(v)} />;
+      })}
+    </div>
+  );
+}
+
+// B1.4 · the reference's step 6: dose, then when it was last taken, then how
+// to continue — each opening once the one before it is answered — and the
+// optional details box. `med` is B1.1's medication answer. The dose is a
+// dropdown (Luis, 2026-10-01); the two follow-ups stay as option rows.
+function AsmtV4Meds({ screen, med, value, onField, labelledBy }) {
+  const a = value || {};
+  const open = asmtV4MedsOpen(a);
+  const doses = screen.doses[med] || [];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
+      <AsmtV4SubQuestion id="asmt-v4-meds-dose" first>
+        <AsmtV4Select id="asmt-v4-meds-dose-select" placeholder="Select your dose" options={doses} required
+          value={a.dose} onChange={(v) => onField("dose", v)} labelledBy={labelledBy} />
+      </AsmtV4SubQuestion>
+      <div aria-live="polite" style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
+        {open.lastTaken &&
+          <AsmtV4SubQuestion id="asmt-v4-meds-last" title={screen.lastTaken.title} live>
+            <AsmtV4Rows kind="radio" options={screen.lastTaken.options} isOn={(v) => a.lastTaken === v}
+              onPick={(v) => onField("lastTaken", v)} labelledBy="asmt-v4-meds-last" />
+          </AsmtV4SubQuestion>}
+        {open.continuePlan &&
+          <AsmtV4SubQuestion id="asmt-v4-meds-continue" title={screen.continuePlan.title} live>
+            <AsmtV4Rows kind="radio" options={screen.continuePlan.options} isOn={(v) => a.continuePlan === v}
+              onPick={(v) => onField("continuePlan", v)} labelledBy="asmt-v4-meds-continue" />
+          </AsmtV4SubQuestion>}
+      </div>
+      <AsmtV4SubQuestion id="asmt-v4-meds-details">
+        <AsmtV4TextArea id="asmt-v4-meds-details-input" label={screen.details.label} rows={4}
+          placeholder={screen.details.placeholder} value={a.details} onChange={(v) => onField("details", v)} />
+      </AsmtV4SubQuestion>
+    </div>
+  );
+}
+
+// H7 … H18 · a medical form screen. `items` come from the config already
+// filtered for this answer state (asmtV4FormItems); every answer is reported
+// as (key, value) and stored under the reference's field name.
+function AsmtV4Form({ screenId, items, value, onField, onToggle, labelledBy }) {
+  const a = value || {};
+  const p = (s) => "asmt-v4-" + screenId.toLowerCase() + "-" + s;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
+      {items.map((it, i) => {
+        const hid = p(it.key);
+        const labelled = it.title ? hid : labelledBy;
+        let control = null;
+        if (it.kind === "multi" || it.kind === "consents")
+          control = <AsmtV4Rows kind="checkbox" options={it.options}
+            isOn={(v) => (a[it.key] || []).indexOf(v) >= 0}
+            onPick={(v) => onToggle(it, v)} labelledBy={labelled} />;
+        else if (it.kind === "single")
+          control = (
+            <React.Fragment>
+              <AsmtV4Rows kind="radio" options={it.options} isOn={(v) => a[it.key] === v}
+                onPick={(v) => onField(it.key, v)} labelledBy={labelled} />
+              {it.followUp && a[it.key] === it.followUp.when &&
+                <div className="asmt-v4-anim">
+                  <AsmtV4TextArea id={p(it.followUp.key)} label={it.followUp.label}
+                    value={a[it.followUp.key]} onChange={(v) => onField(it.followUp.key, v)} />
+                </div>}
+            </React.Fragment>
+          );
+        else if (it.kind === "text")
+          control = <AsmtV4TextArea id={hid + "-input"} rows={4} value={a[it.key]}
+            onChange={(v) => onField(it.key, v)} />;
+        else if (it.kind === "consent")
+          control = (
+            <React.Fragment>
+              {it.body &&
+                <p style={{
+                  margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.6, color: "var(--text-secondary)",
+                  background: "var(--bg-secondary)", borderRadius: "var(--radius-md)",
+                  padding: "var(--spacing-4) var(--spacing-5)",
+                }}>{it.body}</p>}
+              <AsmtOptionRow kind="checkbox" label={it.label} checked={a[it.key] === true}
+                onToggle={() => onField(it.key, a[it.key] === true ? undefined : true)} />
+            </React.Fragment>
+          );
+        return (
+          <AsmtV4SubQuestion key={it.key} id={hid} title={it.title} help={it.help} first={i === 0}>
+            {control}
+          </AsmtV4SubQuestion>
+        );
+      })}
+    </div>
+  );
+}
+
+// The "closer look" screen every disqualifying answer leads to — copy from the
+// qualify funnel's disqualified.php. Back returns to the screen with answers
+// kept; "Keep my answer" leaves the assessment.
+function AsmtV4Disqualified({ copy, headingRef, onBack, onKeep }) {
+  return (
+    <section data-screen-label={copy.label} style={{
+      display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
+      gap: "var(--spacing-5)", background: "var(--color-white)",
+      border: "1px solid var(--border-default)", borderRadius: "var(--radius-xl)",
+      padding: "var(--spacing-10) var(--spacing-6)",
+    }}>
+      <span aria-hidden="true" style={{
+        width: 56, height: 56, borderRadius: "50%", background: "var(--accent-subtle)",
+        color: "var(--accent-strong)", display: "inline-flex", alignItems: "center", justifyContent: "center",
+      }}><Icon size={26}>{ASMT_V4_ICONS.heart}</Icon></span>
+      <h2 ref={headingRef} tabIndex={-1} style={{
+        margin: 0, outline: "none", maxWidth: "18em", fontSize: "var(--text-3xl)", fontWeight: 400, lineHeight: 1.2,
+        fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--text-default)",
+      }}>{copy.title}</h2>
+      <p style={{ margin: 0, maxWidth: "34em", fontSize: "var(--text-base)", lineHeight: 1.6, color: "var(--text-secondary)" }}>
+        {copy.body}
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "var(--spacing-3)", width: "100%", maxWidth: 360 }}>
+        <AsmtV4Button label={copy.back} onClick={onBack} />
+        <AsmtV4Button label={copy.keep} variant="secondary" onClick={onKeep} />
+      </div>
+    </section>
   );
 }
 
@@ -1472,4 +1684,5 @@ Object.assign(window, {
   AsmtV4ContactShippingFields, AsmtV4ContactFields, AsmtV4Snapshot,
   AsmtV4Phrase, AsmtV4Placeholder, AsmtV4Fork, AsmtV4Result, AsmtV4HeroHeader,
   AsmtV4Button, AsmtV4GoalCard, AsmtV4PillCard, AsmtV4BubbleCard, AsmtV4BubbleField,
+  AsmtV4Hint, AsmtV4TextArea, AsmtV4SubQuestion, AsmtV4Rows, AsmtV4Meds, AsmtV4Form, AsmtV4Disqualified,
 });

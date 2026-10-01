@@ -56,7 +56,7 @@ eq("base order, single B2 goal, no fork, no flag",
   g.asmtV4Queue(merge({ A1: ["Feel more energy"] }, A2_CLEAR)),
   ["A1", "A3", "A2G", "A2", "A4", "A5", "A6", "A7",
    "B2.1", "B2.3", "B2.C",
-   "C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
+   "C.PRE", "C.POST", "D"]);
 
 // ---------------------------------------------------------------------------
 // Client request (v7) · pregnancy sits DIRECTLY after gender, which sits
@@ -97,23 +97,28 @@ check("Male keeps the full branch queue — no accidental fork reroute",
   })());
 check("gender is asked once — A3 no longer validates a sex field",
   g.asmtV4ContactProblems({}).sex === undefined);
-// Vf · A2 is exactly five fields: First · Last · Age · Email · Phone.
-check("a complete A3 is satisfied by the five Vf fields alone",
-  g.asmtV4ContactProblems({
-    firstName: "A", lastName: "B", age: "42", email: "a@b.co", phone: "5551234567",
-  }) === null);
-check("A3 no longer validates the deferred address/DOB fields",
+// Client 2026-10-01 · six fields: First · Last · Date of birth · Email · Phone · State.
+function a3(extra) { return merge({ firstName: "A", lastName: "B", dob: "01/15/1980", email: "a@b.co", phone: "5551234567", state: "TX" }, extra || {}); }
+check("a complete A3 is satisfied by the six fields",
+  g.asmtV4ContactProblems(a3()) === null);
+check("A3 no longer asks for age, and never for the address",
   (function () {
     var p = g.asmtV4ContactProblems({}) || {};
-    return p.address1 === undefined && p.city === undefined && p.zip === undefined &&
-           p.state === undefined && p.dob === undefined;
+    return p.age === undefined && p.address1 === undefined && p.city === undefined && p.zip === undefined;
   })());
-check("A3 requires age, and holds the 18+ floor",
-  (g.asmtV4ContactProblems({ firstName: "A", lastName: "B", email: "a@b.co", phone: "5551234567" }) || {}).age !== undefined &&
-  (g.asmtV4ContactProblems({ firstName: "A", lastName: "B", age: "17", email: "a@b.co", phone: "5551234567" }) || {}).age !== undefined &&
-  g.asmtV4ContactProblems({ firstName: "A", lastName: "B", age: "18", email: "a@b.co", phone: "5551234567" }) === null);
-check("A3 rejects a non-numeric age",
-  (g.asmtV4ContactProblems({ firstName: "A", lastName: "B", age: "forty", email: "a@b.co", phone: "5551234567" }) || {}).age !== undefined);
+check("A3 requires a date of birth and a state",
+  (g.asmtV4ContactProblems(a3({ dob: "" })) || {}).dob !== undefined &&
+  (g.asmtV4ContactProblems(a3({ state: "" })) || {}).state !== undefined);
+(function () {
+  var now = new Date(), pad = function (n) { return (n < 10 ? "0" : "") + n; };
+  var md = pad(now.getMonth() + 1) + "/" + pad(now.getDate()) + "/";
+  check("A3 holds the 18+ floor on the date of birth (18 today passes, 17 fails)",
+    g.asmtV4ContactProblems(a3({ dob: md + (now.getFullYear() - 18) })) === null &&
+    /at least 18/.test((g.asmtV4ContactProblems(a3({ dob: md + (now.getFullYear() - 17) })) || {}).dob || ""));
+})();
+check("A3 rejects an impossible date (02/30)",
+  /valid date/.test((g.asmtV4ContactProblems(a3({ dob: "02/30/1980" })) || {}).dob || ""));
+eq("DOB mask: digits become MM/DD/YYYY", g.asmtV4MaskDob("01151980"), "01/15/1980");
 
 // ---------------------------------------------------------------------------
 // Client request (v7) · single-select screens advance on the pick itself
@@ -157,7 +162,7 @@ eq("fork → Coaching skips Block B entirely",
   g.asmtV4BranchWalk(merge({ A1: ["Lose weight"] }, A2_DQ, { A2F: "coaching" })), []);
 eq("fork → Coaching: A7 still runs, then straight to Block C",
   g.asmtV4Queue(merge({ A1: ["Lose weight"] }, A2_DQ, { A2F: "coaching" })),
-  ["A1", "A3", "A2G", "A2", "A2F", "A4", "A5", "A6", "A7", "C.PRE", "C1", "C2", "C3", "C.POST", "D"]);
+  ["A1", "A3", "A2G", "A2", "A2F", "A4", "A5", "A6", "A7", "C.PRE", "C.POST", "D"]);
 
 // ---------------------------------------------------------------------------
 // Rule 5 · Conditional skips
@@ -171,6 +176,9 @@ eq("B1.1 reveal answer, medication unanswered → still one screen, dose waits",
 eq("B1.1_med 'Semaglutide' → B1.4 dose screen shows",
   g.asmtV4BranchScreens("B1", { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Semaglutide" }),
   ["B1.1", "B1.4", "B1.5", "B1.C"]);
+eq("B1.1_med 'Another GLP-based medication' → skip B1.4 (the reference has no ladder for it)",
+  g.asmtV4BranchScreens("B1", { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Another GLP-based medication (GLP-Squared, Retatrutide)" }),
+  ["B1.1", "B1.5", "B1.C"]);
 eq("B1.1_med 'Others' → skip B1.4 (free text, no ladder to show)",
   g.asmtV4BranchScreens("B1", { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Others" }),
   ["B1.1", "B1.5", "B1.C"]);
@@ -265,10 +273,10 @@ check("gentle out-of-range message, no alarm language",
 // Rule 7 · Recompute forward + prune stale answers
 // ---------------------------------------------------------------------------
 eq("prune: switching B1.1 to a non-reveal answer drops the medication answer",
-  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Just starting to explore options", "B1.1_med": "Semaglutide", "B1.4": "PLACEHOLDER 0.25 mg" }, A2_CLEAR))["B1.1_med"],
+  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Just starting to explore options", "B1.1_med": "Semaglutide", "B1.4": { dose: "0.25mg" } }, A2_CLEAR))["B1.1_med"],
   undefined);
 eq("prune: …and the dose that hung off it",
-  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Just starting to explore options", "B1.1_med": "Semaglutide", "B1.4": "PLACEHOLDER 0.25 mg" }, A2_CLEAR))["B1.4"],
+  g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Just starting to explore options", "B1.1_med": "Semaglutide", "B1.4": { dose: "0.25mg" } }, A2_CLEAR))["B1.4"],
   undefined);
 eq("prune: B1.1_med away from 'Others' drops the free text",
   g.asmtV4Prune(merge({ A1: ["Lose weight"], "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Semaglutide", "B1.1_med_other": "stale" }, A2_CLEAR))["B1.1_med_other"],
@@ -297,8 +305,8 @@ check("prune keeps reachable answers intact",
 // ---------------------------------------------------------------------------
 // Rule 8 · Progress derives from blocks only, in order
 // ---------------------------------------------------------------------------
-eq("block indices: A1→0, B1.1→1, C1→2, D→3",
-  ["A1", "B1.1", "C1", "D"].map(g.asmtV4BlockIndex), [0, 1, 2, 3]);
+eq("block indices: A1→0, B1.1→1, H11→2, D→3",
+  ["A1", "B1.1", "H11", "D"].map(g.asmtV4BlockIndex), [0, 1, 2, 3]);
 eq("phrase screens belong to their blocks (A7→A, B1.C→B, C.POST→C)",
   ["A7", "B1.C", "C.POST"].map(g.asmtV4BlockIndex), [0, 1, 2]);
 
@@ -475,17 +483,14 @@ check("the exit option never scores a labs tier on its own",
 // end on a placeholder; it now opens the cart with the recommendation selected,
 // and the cart must be able to read what it is handed.
 // ---------------------------------------------------------------------------
+// Since 2026-10-01 the weight-loss result opens the GLP-1 product page instead.
 var WL = merge({ A1: ["Lose weight"] }, A2_CLEAR);
-eq("cart · weight loss opens Semaglutide", g.asmtV4CartHref(WL), "cart.html?treatment=semaglutide");
-eq("cart · weight loss on Tirzepatide opens Tirzepatide",
+eq("weight loss opens the GLP-1 product page on Semaglutide", g.asmtV4CartHref(WL), "chime-glp/product.html?med=sema");
+eq("weight loss on Tirzepatide opens it on Tirzepatide",
   g.asmtV4CartHref(merge(WL, { "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Tirzepatide" })),
-  "cart.html?treatment=tirzepatide");
-(function () {
-  var a = merge(WL, { A4: ["Energy", "Clarity"] });
-  var nad = g.asmtV4Recommendation(a).offer.addOns.some(function (x) { return x.name === "NAD+"; });
-  check("cart · the fixture really scores NAD+ as an add-on", nad);
-  eq("cart · a NAD+ add-on joins the basket", g.asmtV4CartHref(a), "cart.html?treatment=semaglutide,nad");
-})();
+  "chime-glp/product.html?med=tirz");
+eq("weight-loss result CTA reads Choose My Treatment", g.asmtV4Recommendation(WL).cta, "Choose My Treatment");
+eq("other paths keep Create My Account", g.asmtV4Recommendation(merge({ A1: ["Feel more energy"] }, A2_CLEAR)).cta, "Create My Account");
 eq("cart · energy opens NAD+", g.asmtV4CartHref(merge({ A1: ["Feel more energy"] }, A2_CLEAR)), "cart.html?treatment=nad");
 eq("cart · labs goes to the labs page",
   g.asmtV4CartHref(merge({ A1: ["Understand my health better"] }, A2_CLEAR)), "labs.html");
@@ -507,6 +512,140 @@ require("../cart/cart-data.js");
   eq("cart · " + c[0] + " → " + c[1].join(" + "),
     g.chimeCartEntry(c[0].slice(c[0].indexOf("?"))).ids, c[1]);
 });
+
+// ---------------------------------------------------------------------------
+// Medical intake (client, 2026-10-01) — the qualify funnel's steps 6, 7, 11,
+// 12, 13, 14, 17, 18 on the weight-loss path, with their disqualify rules.
+// ---------------------------------------------------------------------------
+var CFG4 = g.CHIME_ASSESSMENT_V4;
+function scr(id) { return g.asmtV4ScreenById(id); }
+var MED = ["H11", "H12", "H13", "H14", "H17", "H18"];
+// 45 years old, 6'1" 230 lbs (BMI 30.3) → band "clear"
+var WLM = merge({ A1: ["Lose weight"], A3: { dob: "01/15/1980" } }, A2_MALE, snap(230, 6, 1));
+eq("weight loss: the medical screens sit between C.PRE and C.POST",
+  g.asmtV4Queue(WLM).slice(-9), ["C.PRE"].concat(MED, ["C.POST", "D"]));
+check("no placeholder screens remain (C1 / C2 / C3 gone)",
+  ["C1", "C2", "C3"].every(function (id) { return !scr(id) && g.asmtV4Queue(WLM).indexOf(id) < 0; }));
+eq("energy-only path: no medical screens", g.asmtV4MedicalScreens(merge({ A1: ["Feel more energy"] }, A2_CLEAR)), []);
+eq("labs-only path: no medical screens, B3.3 still asked",
+  g.asmtV4BranchScreens("B3", merge({ A1: ["Understand my health better"], "B3.2": ["Inflammation"] }, A2_CLEAR)), ["B3.2", "B3.3", "B3.C"]);
+eq("labs + weight loss: B3.3 drops (H17 asks it)",
+  g.asmtV4BranchScreens("B3", merge({ A1: ["Lose weight", "Understand my health better"], "B3.2": ["Inflammation"] }, A2_CLEAR)), ["B3.2", "B3.C"]);
+check("pregnant / breastfeeding → no B1, so no medical screens",
+  g.asmtV4MedicalScreens(merge({ A1: ["Lose weight"] }, A2_DQ, { A2F: "labs" })).length === 0);
+check("B2.3 cross-sell adding B1 also adds the medical screens",
+  g.asmtV4MedicalScreens(merge({ A1: ["Feel more energy"], "B2.3": "Yes, I’m interested" }, A2_CLEAR)).indexOf("H11") === 0);
+
+// Labs panel note reads H17 when B3.3 is not asked
+eq("labs note from H17: less than a year → comparison",
+  g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": ["Inflammation"], H17: { lastLabTests: "Less than a year ago" } }, A2_CLEAR)).offer.labsPanelNote,
+  CFG4.labsPanelNotes.comparison);
+eq("labs note from H17: older → fresh",
+  g.asmtV4Recommendation(merge({ A1: ["Understand my health better"], "B3.2": ["Inflammation"], H17: { lastLabTests: "More than 2 years ago" } }, A2_CLEAR)).offer.labsPanelNote,
+  CFG4.labsPanelNotes.fresh);
+
+// Age + BMI bands (reference screening-bands.js)
+eq("band 70 y/o BMI 21 → disqualify", g.asmtV4ScreeningBandFor(70, 21).band, "disqualify");
+eq("band 70 y/o BMI 22 → elderly consent", g.asmtV4ScreeningBandFor(70, 22), { band: "consent", consent: "elderly" });
+eq("band 40 y/o BMI 19.9 → disqualify", g.asmtV4ScreeningBandFor(40, 19.9).band, "disqualify");
+eq("band 40 y/o BMI 22.99 → metabolic consent", g.asmtV4ScreeningBandFor(40, 22.99), { band: "consent", consent: "metabolic" });
+eq("band 40 y/o BMI 23 → clear", g.asmtV4ScreeningBandFor(40, 23).band, "clear");
+eq("band without a DOB → unknown", g.asmtV4ScreeningBand(merge({ A1: ["Lose weight"] }, snap(230, 6, 1))).band, "unknown");
+(function () {
+  var old = merge(WLM, { A3: { dob: "01/15/1950" } });             // 76, BMI 30.3 → elderly consent
+  eq("elderly band adds H7 before H11", g.asmtV4MedicalScreens(old)[0], "H7");
+  eq("H7 shows only the elderly box", g.asmtV4FormItems(scr("H7"), old).map(function (i) { return i.key; }), ["elderly_consent"]);
+  check("H7 holds until ticked", !!g.asmtV4FormProblem(scr("H7"), {}, old) && !g.asmtV4FormProblem(scr("H7"), { elderly_consent: true }, old));
+  var thin = merge(WLM, { A3: { dob: "01/15/1950" } }, snap(150, 6, 1)); // BMI 19.8 at 76 → disqualify
+  check("elderly with low BMI disqualifies on the weight-loss path", g.asmtV4BandDisqualifies(thin));
+  check("…but never off it", !g.asmtV4BandDisqualifies(merge(thin, { A1: ["Feel more energy"] })));
+  var meta = merge(WLM, snap(180, 6, 1));                          // 45, BMI 23.7 → clear
+  check("clear band: no H7", g.asmtV4MedicalScreens(meta)[0] === "H11");
+  var met = merge(WLM, snap(170, 6, 1));                           // 45, BMI 22.4 → metabolic
+  eq("metabolic band shows only the metabolic box", g.asmtV4FormItems(scr("H7"), met).map(function (i) { return i.key; }), ["metabolic_consent"]);
+})();
+
+// Disqualify rules, both ways (reference quiz-dq.js; step 13 per Luis)
+function dq(id, ans) { return g.asmtV4FormDisqualifies(scr(id), ans, WLM); }
+check("H11 · None of these is safe", !dq("H11", { healthConditions: ["None of these"] }));
+check("H11 · any condition disqualifies", dq("H11", { healthConditions: ["End-stage liver disease (cirrhosis)"] }));
+check("H12 · None of the below is safe", !dq("H12", { healthConditionsAdditional: ["None of the below"] }));
+check("H12 · Type 2 diabetes (not on insulin) is the one safe condition", !dq("H12", { healthConditionsAdditional: ["Type 2 diabetes (not on insulin)"] }));
+check("H12 · on insulin disqualifies", dq("H12", { healthConditionsAdditional: ["Type 2 diabetes (on insulin)"] }));
+check("H12 · safe + unsafe together still disqualifies", dq("H12", { healthConditionsAdditional: ["Type 2 diabetes (not on insulin)", "Type 1 diabetes"] }));
+check("H13 · None of these is safe", !dq("H13", { moreHealthConditions: ["None of these"] }));
+check("H13 · any condition disqualifies (Luis: 13 disqualifies)", dq("H13", { moreHealthConditions: ["Acid reflux"] }));
+check("H14 · three No is safe", !dq("H14", { takenPainMedicationsOrStreetDrugs: "No", gastricBypass6Months: "No", heart_arrhythmia: "No" }));
+["takenPainMedicationsOrStreetDrugs", "gastricBypass6Months", "heart_arrhythmia"].forEach(function (k) {
+  var a = { takenPainMedicationsOrStreetDrugs: "No", gastricBypass6Months: "No", heart_arrhythmia: "No" }; a[k] = "Yes";
+  check("H14 · Yes on " + k + " disqualifies", dq("H14", a));
+});
+check("H17 never disqualifies", !scr("H17").items.some(function (i) { return i.dq; }));
+var H18_OK = { glp1_allergies: ["I am NOT allergic to any of these medications"], current_glucose_medications: ["I am NOT on any of these medications"],
+  consents: ["truthfulness_consent", "glp1_glp1_gip_consent", "informed_consent"] };
+check("H18 · both NOT answers are safe", !dq("H18", H18_OK));
+check("H18 · a GLP-1 allergy disqualifies", dq("H18", merge(H18_OK, { glp1_allergies: ["semaglutide"] })));
+check("H18 · a glucose medication disqualifies", dq("H18", merge(H18_OK, { current_glucose_medications: ["insulin"] })));
+
+// Validation
+check("H11 · an empty answer is a problem", !!g.asmtV4FormProblem(scr("H11"), {}, WLM));
+check("H14 · two of three answered is a problem", !!g.asmtV4FormProblem(scr("H14"), { takenPainMedicationsOrStreetDrugs: "No", gastricBypass6Months: "No" }, WLM));
+var H17_OK = { bloodPressure: "Less than 120/80 (Normal)", restingHeartRate: "60-100 beats per minute (Normal)", lastMedicalEvaluation: "Less than a year ago",
+  lastLabTests: "Less than a year ago", prescriptionMedications: "No - I affirm I'm not taking any medications",
+  medicationAllergies: "No - I affirm I have no known drug allergies", additionalDocInformation: "No" };
+check("H17 · all seven answered passes", g.asmtV4FormProblem(scr("H17"), H17_OK, WLM) === null);
+check("H17 · a Yes follow-up needs its details",
+  !!g.asmtV4FormProblem(scr("H17"), merge(H17_OK, { additionalDocInformation: "Yes" }), WLM) &&
+  g.asmtV4FormProblem(scr("H17"), merge(H17_OK, { additionalDocInformation: "Yes", additionalDocInformation_info: "x" }), WLM) === null);
+check("H18 · all three consents are required",
+  !!g.asmtV4FormProblem(scr("H18"), merge(H18_OK, { consents: ["truthfulness_consent", "informed_consent"] }), WLM) &&
+  g.asmtV4FormProblem(scr("H18"), H18_OK, WLM) === null);
+check("H18 · the doctor note is optional", g.asmtV4FormProblem(scr("H18"), H18_OK, WLM) === null);
+(function () {
+  var it = scr("H11").items[0];
+  eq("None is exclusive: picking it clears the rest", g.asmtV4ToggleMulti(it, ["Sleep apnea", "End-stage liver disease (cirrhosis)"], "None of these"), ["None of these"]);
+  eq("None is exclusive: a condition clears None", g.asmtV4ToggleMulti(it, ["None of these"], "End-stage liver disease (cirrhosis)"), ["End-stage liver disease (cirrhosis)"]);
+})();
+
+// B1.4 = the reference's step 6
+(function () {
+  var b14 = scr("B1.4");
+  eq("step 6 · Semaglutide ladder values", b14.doses.Semaglutide.map(function (o) { return o.value; }), ["0.25mg", "0.5mg", "1mg", "1.5mg", "2mg", "2.5mg", "not_sure"]);
+  eq("step 6 · Tirzepatide ladder values", b14.doses.Tirzepatide.map(function (o) { return o.value; }), ["2.5mg", "5mg", "7.5mg", "10mg", "12.5mg", "15mg", "not_sure"]);
+  check("step 6 · no PLACEHOLDER left anywhere in the config", JSON.stringify(CFG4).indexOf("PLACEHOLDER") < 0);
+  eq("step 6 · follow-ups open in turn", [g.asmtV4MedsOpen({}), g.asmtV4MedsOpen({ dose: "1mg" }), g.asmtV4MedsOpen({ dose: "1mg", lastTaken: "1-2 weeks ago" })],
+    [{ lastTaken: false, continuePlan: false }, { lastTaken: true, continuePlan: false }, { lastTaken: true, continuePlan: true }]);
+  check("step 6 · all three required, details optional",
+    !!g.asmtV4MedsProblem({ dose: "1mg", lastTaken: "1-2 weeks ago" }) &&
+    g.asmtV4MedsProblem({ dose: "1mg", lastTaken: "1-2 weeks ago", continuePlan: "Continue at the same dose" }) === null);
+})();
+
+// Per-step URLs
+eq("step numbers: A1 1, A3 2, B1.1 11, B1.4 12, H11 26, H18 31, D 33",
+  ["A1", "A3", "B1.1", "B1.4", "H11", "H18", "D"].map(g.asmtV4StepNumber), [1, 2, 11, 12, 26, 31, 33]);
+check("every screen has a step number, and every number a screen",
+  CFG4.screens.every(function (x) { return g.asmtV4StepNumber(x.id) !== null; }) && CFG4.stepOrder.every(function (id) { return !!scr(id); }));
+eq("?step=26 → H11, junk → null", [g.asmtV4ScreenForStep("26"), g.asmtV4ScreenForStep("x"), g.asmtV4ScreenForStep("99")], ["H11", null, null]);
+
+// Payload in the reference's field names
+(function () {
+  var a = merge(WLM, {
+    A3: { firstName: "Devin", lastName: "Test", dob: "01/15/1980", email: "d@t.co", phone: "5551234567", state: "TX" },
+    "B1.1": "Currently using Semaglutide or Tirzepatide and want better support", "B1.1_med": "Tirzepatide",
+    "B1.4": { dose: "5mg", lastTaken: "1-2 weeks ago", continuePlan: "Continue at the same dose", details: "x" },
+    H11: { healthConditions: ["None of these"] }, H17: merge(H17_OK, { prescriptionMedications: "Yes - Please list the names and dosages", prescriptionMedications_info: "Metformin" }),
+    H18: merge(H18_OK, { doctor_note: "hi" }),
+  });
+  var p = g.asmtV4Payload(a);
+  eq("payload · identity", [p.first_name, p.dob, p.state, p.sex], ["Devin", "01/15/1980", "TX", "male"]);
+  eq("payload · step 6 fields", [p.medication, p.tirzepatide_dose, p.tirzepatide_last_taken, p.tirzepatide_continue_plan, p.on_weight_loss_meds_current_meds],
+    ["Yes, I've taken Tirzepatide (Mounjaro or Zepbound)", "5mg", "1-2 weeks ago", "Continue at the same dose", "x"]);
+  eq("payload · medical fields + follow-up", [p.healthConditions, p.prescriptionMedications_info, p.doctor_note], [["None of these"], "Metformin", "hi"]);
+  eq("payload · the first consent records its hidden age twin", p.consents, ["truthfulness_consent", "age_consent", "glp1_glp1_gip_consent", "informed_consent"]);
+  eq("payload · band", [p.screening_band, p.bmi_consent], ["clear", false]);
+  eq("payload · no medication answer → medication-no",
+    g.asmtV4Payload(merge(WLM, { "B1.1": "Just starting to explore options" })).medication, "medication-no");
+})();
 
 // ---------------------------------------------------------------------------
 console.log("");
