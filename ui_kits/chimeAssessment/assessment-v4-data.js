@@ -99,10 +99,10 @@
       "I already know what I want, but I want a safer, more structured path": { id: "p4", label: "Persona 4 — The Optimizer" },
     },
 
-    // A6 · tier names and BMI ranges are INTERNAL — never rendered, never in
-    // analytics. The live region shows headline + message only: never the
-    // number, never a label. Tier "flag" (below 18.5) shows NO calculator
-    // message and routes to the A6P provider-flag screen instead.
+    // A6 · tier ids and these ranges are INTERNAL — never rendered, never in
+    // analytics. The live region shows the tier's headline + message, plus
+    // (since 2026-10-01) the BMI line from bmiDisplay below. Tier "flag"
+    // (below 18.5) shows NO tier message and routes to the A6P screen.
     bmiTiers: [
       {
         id: "balanced", min: 18.5, max: 25,
@@ -120,6 +120,24 @@
         message: "Your numbers point to a meaningful opportunity for change — and you don’t have to figure out where to start on your own. Labs can reveal your biological age and what your body needs, so your plan is built around you, not a generic number.",
       },
     ],
+
+    // A6 shows the BMI (client, 2026-10-01: "height, weight, and it'll
+    // calculate your BMI"), as the qualify funnel's step 1 does: same formula
+    // (703 × lbs / in², one decimal), same categories, same copy. This
+    // replaces the v4 spec's "never the number, never a label" rule on this
+    // screen only; the tier ids above still never render.
+    bmiDisplay: {
+      line: "Your BMI is {value} ({category}).",
+      note: "Even modest weight loss can improve health. Your plan is personalized beyond BMI.",
+      whyTitle: "Why BMI?",
+      why: "Your height & weight calculate BMI — one of several factors your clinician uses to personalize your plan.",
+      categories: [
+        { below: 18.5, label: "underweight range" },
+        { below: 25, label: "healthy range" },
+        { below: 30, label: "overweight range" },
+        { below: Infinity, label: "obese range" },
+      ],
+    },
 
     // Sane-range validation bounds (kind tone, never alarm language).
     snapshotRanges: { weightMin: 50, weightMax: 700, heightInMin: 36, heightInMax: 96 },

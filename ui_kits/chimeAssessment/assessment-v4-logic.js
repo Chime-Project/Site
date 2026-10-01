@@ -15,8 +15,9 @@
 //   Phrase/placeholder screens store `true` when their CTA is pressed, so
 //   restore can land on the first incomplete screen.
 //
-// Compliance invariant: nothing here ever returns a numeric BMI or clinical
-// label for rendering or analytics — only internal tier ids.
+// Compliance: analytics never carry a BMI or a tier id. Since 2026-10-01 the
+// A6 screen shows the BMI and its category (asmtV4BmiDisplay, the qualify
+// funnel's step 1 copy); the tier ids stay internal.
 
 (function (g) {
 
@@ -136,6 +137,16 @@
     var lbs = parseFloat(a6.weightLbs), totalIn = v4TotalInches(a6);
     if (isNaN(lbs) || isNaN(totalIn) || totalIn <= 0) return NaN;
     return (703 * lbs) / (totalIn * totalIn);
+  }
+
+  // A6's visible BMI line — the qualify funnel's step 1: one decimal, its four
+  // categories. Only for in-range inputs (same gate as the tier), else null.
+  function v4BmiDisplay(answers) {
+    if (v4SnapshotTier(answers) === null) return null;
+    var d = CFG().bmiDisplay, value = Math.round(v4Bmi(answers) * 10) / 10, label = "";
+    for (var i = 0; i < d.categories.length; i++)
+      if (value < d.categories[i].below) { label = d.categories[i].label; break; }
+    return { value: value, category: label, line: d.line.replace("{value}", value).replace("{category}", label) };
   }
 
   function v4ScreeningBand(answers) {
@@ -763,6 +774,7 @@
   g.asmtV4MedicalScreens = v4MedicalScreens;
   g.asmtV4ScreeningBandFor = v4ScreeningBandFor;
   g.asmtV4ScreeningBand = v4ScreeningBand;
+  g.asmtV4BmiDisplay = v4BmiDisplay;
   g.asmtV4BandDisqualifies = v4BandDisqualifies;
   g.asmtV4MedsOpen = v4MedsOpen;
   g.asmtV4MedsProblem = v4MedsProblem;

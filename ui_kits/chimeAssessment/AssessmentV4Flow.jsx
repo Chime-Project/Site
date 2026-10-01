@@ -593,6 +593,7 @@ function ChimeAssessmentFlowV4() {
     body = (
       <AsmtV4Snapshot value={answers.A6} onField={(f, v) => setNested("A6", f, v)}
         content={asmtV4SnapshotContent(answers)} problem={snapshotProblem}
+        bmi={asmtV4BmiDisplay(answers)} bmiCopy={cfg.bmiDisplay}
         onBlur={(group) => markTouched("A6" + group)} />
     );
   else if (screen.type === "phrase")

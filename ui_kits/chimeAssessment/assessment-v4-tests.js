@@ -620,6 +620,14 @@ check("H18 · the doctor note is optional", g.asmtV4FormProblem(scr("H18"), H18_
     g.asmtV4MedsProblem({ dose: "1mg", lastTaken: "1-2 weeks ago", continuePlan: "Continue at the same dose" }) === null);
 })();
 
+// A6 shows the BMI like the funnel's step 1 (client, 2026-10-01)
+eq("BMI line: 6'1\" 230 lbs → 30.3, obese range", g.asmtV4BmiDisplay(snap(230, 6, 1)).line, "Your BMI is 30.3 (obese range).");
+eq("BMI categories at the funnel's cut-offs",
+  [snap(120, 6, 1), snap(150, 6, 1), snap(200, 6, 1), snap(230, 6, 1)].map(function (a) { return g.asmtV4BmiDisplay(a).category; }),
+  ["underweight range", "healthy range", "overweight range", "obese range"]);
+eq("no BMI line until the inputs are complete and in range", [g.asmtV4BmiDisplay({}), g.asmtV4BmiDisplay(snap(30, 6, 1))], [null, null]);
+check("analytics still never carry the BMI", JSON.stringify(g.asmtV4Track("step_viewed", { screen: "A6" })).indexOf("bmi") < 0);
+
 // Per-step URLs
 eq("step numbers: A1 1, A3 2, B1.1 11, B1.4 12, H11 26, H18 31, D 33",
   ["A1", "A3", "B1.1", "B1.4", "H11", "H18", "D"].map(g.asmtV4StepNumber), [1, 2, 11, 12, 26, 31, 33]);

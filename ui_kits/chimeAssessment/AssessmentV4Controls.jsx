@@ -1119,10 +1119,13 @@ function AsmtV4ContactFields({ value, errors, onField, onBlur, states, dobHint, 
 
 // ---------------------------------------------------------------------------
 // A6 · SnapshotCalculator — weight/height with a live, aria-live result region.
-// The region shows the tier's headline + message ONLY — never a number, never
-// a label. Tier "flag" renders nothing here (A6P handles it).
+// The region shows the BMI line (since 2026-10-01, see bmiDisplay in the
+// config) and the tier's headline + message, never a tier id. Tier "flag"
+// shows the BMI line only (A6P handles the rest).
 // ---------------------------------------------------------------------------
-function AsmtV4Snapshot({ value, onField, content, problem, onBlur }) {
+// Since 2026-10-01 it also shows the BMI line (`bmi`, from asmtV4BmiDisplay)
+// and the "Why BMI?" note — the qualify funnel's step 1 (client request).
+function AsmtV4Snapshot({ value, onField, content, problem, onBlur, bmi, bmiCopy }) {
   const d = value || {};
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
@@ -1147,12 +1150,26 @@ function AsmtV4Snapshot({ value, onField, content, problem, onBlur }) {
             background: "var(--warning-subtle)", borderRadius: "var(--radius-md)",
             padding: "var(--spacing-3) var(--spacing-4)",
           }}>{problem}</p>}
-        {!problem && content &&
+        {!problem && (content || bmi) &&
           <div style={{
             background: "var(--accent-subtle)", borderRadius: "var(--radius-lg)",
             padding: "var(--spacing-5) var(--spacing-5)",
             display: "flex", flexDirection: "column", gap: "var(--spacing-2)",
           }}>
+            {bmi &&
+              <div data-bmi="1" style={{
+                display: "flex", flexDirection: "column", gap: "var(--spacing-1)",
+                paddingBottom: content ? "var(--spacing-3)" : 0,
+                borderBottom: content ? "1px solid var(--accent-border, var(--border-default))" : "none",
+                marginBottom: content ? "var(--spacing-1)" : 0,
+              }}>
+                <p style={{
+                  margin: 0, fontSize: "var(--text-lg)", fontWeight: "var(--font-weight-semibold)",
+                  color: "var(--accent-onSubtle)",
+                }}>{bmi.line}</p>
+                {bmiCopy && <p style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, color: "var(--text-secondary)" }}>{bmiCopy.note}</p>}
+              </div>}
+            {content && <React.Fragment>
             <p style={{
               margin: 0, fontSize: "var(--text-xl)", fontWeight: "var(--font-weight-semibold)",
               fontFamily: "var(--font-family-display, var(--font-family-base))", color: "var(--accent-onSubtle)",
@@ -1160,8 +1177,23 @@ function AsmtV4Snapshot({ value, onField, content, problem, onBlur }) {
             <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: 1.6, color: "var(--text-default)" }}>
               {content.message}
             </p>
+            </React.Fragment>}
           </div>}
       </div>
+      {bmiCopy &&
+        <aside aria-label="Why we ask for BMI" style={{
+          display: "flex", gap: "var(--spacing-3)", alignItems: "flex-start",
+          border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)",
+          background: "var(--color-white)", padding: "var(--spacing-4) var(--spacing-5)",
+        }}>
+          <span aria-hidden="true" style={{ display: "inline-flex", color: "var(--accent-strong)", marginTop: 2 }}>
+            <Icon size={18}><React.Fragment><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></React.Fragment></Icon>
+          </span>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-1)" }}>
+            <h3 style={{ margin: 0, fontSize: "var(--text-sm)", fontWeight: "var(--font-weight-semibold)", color: "var(--text-default)" }}>{bmiCopy.whyTitle}</h3>
+            <p style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: 1.5, color: "var(--text-secondary)" }}>{bmiCopy.why}</p>
+          </div>
+        </aside>}
     </div>
   );
 }
