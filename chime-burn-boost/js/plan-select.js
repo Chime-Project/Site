@@ -4,11 +4,11 @@
    Nothing is preselected (user request 2026-09-04). */
 (function () {
   var CHIME_PLANS = {
-    sema: { key: "sema", name: "Semaglutide + NAD+", full: "Compounded Semaglutide (GLP-1) + NAD+", image: "images/vial-semaglutide.webp",
+    sema: { key: "sema", name: "Burn & Boost", full: "Compounded Semaglutide (GLP-1) + NAD+", image: "images/vial-semaglutide.webp",
             terms: { 1: { rate: 299, charge: 299, covers: 1, retail: 349, retailTotal: 349, effective: 299 },
                      3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 },
                      6: { rate: 199, charge: 1194, covers: 6, retail: 349, retailTotal: 2094, effective: 199 } } },
-    tirz: { key: "tirz", name: "Tirzepatide + NAD+", full: "Compounded Tirzepatide (GLP-1/GIP) + NAD+", image: "images/vial-tirzepatide.webp",
+    tirz: { key: "tirz", name: "Burn & Boost Plus", full: "Compounded Tirzepatide (GLP-1/GIP) + NAD+", image: "images/vial-tirzepatide.webp",
             terms: { 1: { rate: 359, charge: 359, covers: 1, retail: 399, retailTotal: 399, effective: 359 },
                      3: { rate: 224, charge: 896, covers: 4, retail: 399, retailTotal: 1596, effective: 224 },
                      6: { rate: 249, charge: 1494, covers: 6, retail: 399, retailTotal: 2394, effective: 249 } } }

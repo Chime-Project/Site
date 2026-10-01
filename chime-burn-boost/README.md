@@ -7,7 +7,7 @@ the reference and applies the doc's edits, so change the build, not these files.
 | | This version |
 |---|---|
 | Free gift | NAD+ ($299 value, as the reference has it) |
-| Program | Burn & Boost Program: plan cards "Burn & Boost" (Semaglutide) and "Burn & Boost Plus" (Tirzepatide) |
+| Program | Burn & Boost Program: plan cards "Burn & Boost" (Semaglutide) and "Burn & Boost Plus" (Tirzepatide); since 2026-10-01 also the product names in the selector, sticky bar and checkout summary |
 | Hero | "Congrats, you qualify for the Burn & Boost Program", "Weight Loss & All Day Energy is waiting for you. Our members hit their goals faster." |
 | Monthly | Semaglutide $299, Tirzepatide $359 |
 | 3 months | 3 + 1: every 4th month free (Semaglutide $249/mo, $747 today; Tirzepatide $224/mo, $896) |

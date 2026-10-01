@@ -5,7 +5,7 @@
    the matching card here too. It only points at a combo — plan-select.js still owns the selection. */
 (function () {
   var root = document.querySelector("[data-ts-root]"); if (!root) return;
-  var NAMES = { tirz: "Tirzepatide + NAD+", sema: "Semaglutide + NAD+" };
+  var NAMES = { tirz: "Burn & Boost Plus", sema: "Burn & Boost" };
   var IMAGES = { tirz: "images/vial-tirzepatide.webp", sema: "images/vial-semaglutide.webp" };
   var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
