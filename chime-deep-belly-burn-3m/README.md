@@ -7,7 +7,7 @@ the reference and applies the doc's edits, so change the build, not these files.
 | | This version |
 |---|---|
 | Free gift | Tesamorelin ($299 value, as the reference has it) |
-| Program | Deep Belly Burn Program: plan cards "Deep Belly Burn" (Semaglutide) and "Deep Belly Burn Plus" (Tirzepatide) |
+| Program | Deep Belly Burn Program: plan cards "Deep Belly Burn" (Semaglutide) and "Deep Belly Burn Plus" (Tirzepatide); since 2026-10-01 also the product names in the selector, sticky bar and checkout summary |
 | Hero | "Congrats, you qualify for the Deep Belly Burn Program", "See the Weight Loss & get rid of the Stubborn Visceral Belly Fat." |
 | Monthly | Semaglutide $299, Tirzepatide $359 |
 | 3 months | a straight 3 months (Semaglutide $249/mo, $747 today; Tirzepatide $299/mo, $897), no "4th month free" anywhere |

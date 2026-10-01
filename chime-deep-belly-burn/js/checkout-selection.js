@@ -3,11 +3,11 @@
    Without a selection the page shows Semaglutide, 3 months + 1 free. */
 (function () {
   var CHIME_PLANS = {
-    sema: { key: "sema", name: "Semaglutide + Tesamorelin", full: "Compounded Semaglutide (GLP-1) + Tesamorelin", image: "images/vial-semaglutide.webp",
+    sema: { key: "sema", name: "Deep Belly Burn", full: "Compounded Semaglutide (GLP-1) + Tesamorelin", image: "images/vial-semaglutide.webp",
             terms: { 1: { rate: 299, charge: 299, covers: 1, retail: 349, retailTotal: 349, effective: 299 },
                      3: { rate: 249, charge: 747, covers: 4, retail: 349, retailTotal: 1396, effective: 186.75 },
                      6: { rate: 199, charge: 1194, covers: 6, retail: 349, retailTotal: 2094, effective: 199 } } },
-    tirz: { key: "tirz", name: "Tirzepatide + Tesamorelin", full: "Compounded Tirzepatide (GLP-1/GIP) + Tesamorelin", image: "images/vial-tirzepatide.webp",
+    tirz: { key: "tirz", name: "Deep Belly Burn Plus", full: "Compounded Tirzepatide (GLP-1/GIP) + Tesamorelin", image: "images/vial-tirzepatide.webp",
             terms: { 1: { rate: 359, charge: 359, covers: 1, retail: 399, retailTotal: 399, effective: 359 },
                      3: { rate: 224, charge: 896, covers: 4, retail: 399, retailTotal: 1596, effective: 224 },
                      6: { rate: 249, charge: 1494, covers: 6, retail: 399, retailTotal: 2394, effective: 249 } } }
