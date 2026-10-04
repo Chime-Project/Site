@@ -16,6 +16,11 @@
    V5 (client doc "glp plus nad gold pages", 2026-09-28) adds two optional row fields: labelNote, a line under the plan
    label in the "due today" type ("+ 4TH MONTH ON US"), and afterSave, a tag after the "save $X" amount in dueTag's
    markup ("+ EVERY 4TH MONTH *FREE*, FOREVER"). Without them a row renders exactly as before.
+   ORIGINAL PRICES (choose-treatment-original/, client 2026-10-04: "rip this with the exact price points etc") sets
+   data.upsell12: the reference's two blue upsell boxes, added on their page since the 2026-09-16 rip, priced at the
+   12-month total - the 6-month total (their J()): "Only $X more than the 6-month plan" in the 12-month card and
+   "Upgrade to a 12-month plan above and get another 6 months for only $X" in the 6-month row. Without the flag
+   nothing changes.
    Pure parts are exported on window.ChimeChooseTreatment and module.exports for js/checkout-tests.js. */
 (function (root) {
   'use strict';
@@ -64,7 +69,21 @@
   var SVG_ARROW = function (cls) { return '<svg class="' + cls + '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>'; };
   var SVG_CHEVRON = '<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
   var SVG_BOLT = '<svg class="w-[1.1rem] h-[1.1rem]" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"></path></svg>';
+  var SVG_UP = '<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 19V5m0 0l-6 6m6-6l6 6"></path></svg>';
   var SVG_CLOCK = '<svg class="w-[1.1rem] h-[1.1rem]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.25"><circle cx="12" cy="12" r="9"></circle><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"></path></svg>';
+
+  // upsell12: the 12-month total - the 6-month total, 0 when either plan is missing (their J())
+  function upgradeDelta(t) {
+    var six = t.plans.sixMonth, twelve = t.plans.twelveMonth;
+    return six && twelve ? twelve.totalPrice - six.totalPrice : 0;
+  }
+  // their blue box: star disc with a ping halo (hidden for reduced motion) + the line in blue-700
+  function upsellBox(margin, inner) {
+    return '<div class="' + margin + ' flex items-center gap-3 rounded-xl border-2 border-blue-600 bg-blue-50 px-3 py-2.5 shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"><span class="relative flex h-8 w-8 flex-shrink-0"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-60 motion-reduce:hidden"></span><span class="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-yellow-400 shadow">' + SVG_STAR('').replace('class="w-4 h-4 "', 'class="h-4 w-4"').replace('viewBox="0 0 20 20"', 'viewBox="0 0 20 20" aria-hidden="true"') + '</span></span><p class="text-base font-black leading-snug text-blue-700">' + inner + '</p></div>';
+  }
+  function deltaChip(n) { return '<span class="whitespace-nowrap rounded-md bg-blue-600 px-1.5 py-0.5 text-white">' + fmtMoney(n) + '</span>'; }
+  function upsellHero(n) { return upsellBox('mt-4', 'Only ' + deltaChip(n) + ' more than the 6-month plan — for an additional 6 months.'); }
+  function upsellSix(n) { return upsellBox('mb-3', 'Upgrade to a 12-month plan <span class="inline-flex items-center gap-0.5 whitespace-nowrap">above' + SVG_UP + '</span> and get another 6 months for only ' + deltaChip(n)); }
 
   /* ---------- renderers (class strings = the reference DOM, 2026-09-16) ---------- */
   function tick(text, wrap) {
@@ -77,9 +96,10 @@
     return '<div class="flex items-center gap-1 mb-3">' + s + '<span class="text-sm text-gray-600 ml-1">' + esc(rating.value) + '</span></div>';
   }
   // heroKey = the highlighted plan (V1: twelveMonth, V2: sixMonth); rowKeys = the plans listed under it
-  function renderBestValue(t, plan, heroKey, rowKeys) {
+  // up = the upsell12 figure (0 = no boxes)
+  function renderBestValue(t, plan, heroKey, rowKeys, up) {
     rowKeys = rowKeys || PLAN_ORDER;
-    if (!plan) return '<div class="mb-4">' + renderRows(t, rowKeys, '') + '</div>';   // V3: no highlighted card, rows only
+    if (!plan) return '<div class="mb-4">' + renderRows(t, rowKeys, '', up) + '</div>';   // V3: no highlighted card, rows only
     heroKey = heroKey || 'twelveMonth';
     var h = '<div class="mb-4"><div class="relative rounded-2xl border-2 border-brand-green bg-gradient-to-b from-brand-green/[0.06] via-white to-white px-5 pt-6 pb-5 shadow-md">';
     if (plan.bestValue) h += '<div class="absolute -top-3 left-5"><span class="rounded-full bg-brand-green px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-sm">⭐ Best value</span></div>';
@@ -88,15 +108,16 @@
     h += '<div class="mt-3 flex items-baseline gap-1"><span class="text-5xl font-black leading-none tracking-tight" style="' + PRICE_GOLD + '">' + fmtMoney(plan.price) + '</span><span class="text-base font-bold text-gray-500">/ month</span></div>';
     h += '<p class="mt-3 text-lg font-black leading-snug text-secondary-500">' + esc(billedLine(plan)) + '</p>';
     h += '<p class="mt-2 text-lg font-black leading-snug text-brand-green">' + esc(youSaveLine(plan)) + '</p>';
+    if (up > 0 && heroKey === 'twelveMonth') h += upsellHero(up);
     h += '<div class="mt-4 space-y-1.5 border-t border-brand-green/15 pt-4">' + plan.features.map(function (f) { return tick(f, 'flex items-start gap-2 text-sm font-semibold text-brand-green'); }).join('') + '</div>';
     if (plan.footerNote) h += '<p class="mt-2 text-xs italic text-gray-500">' + esc(plan.footerNote) + '</p>';
     if (plan.popularBadge) h += '<div class="mt-3 inline-block rounded-full bg-amber-100 px-2.5 py-1.5"><span class="whitespace-nowrap text-[10px] font-bold text-amber-600 md:text-sm">⭐ Most patients choose this plan</span></div>';
     h += '<button type="button" class="btn-lilac mt-4 w-full " data-plan="' + heroKey + '" data-treatment="' + esc(t.key) + '">' + esc(bigButtonLabel(plan)) + SVG_ARROW('h-4 w-4') + '</button>';
     h += '</div>';
-    return h + renderRows(t, rowKeys, ' mt-4') + '</div>';
+    return h + renderRows(t, rowKeys, ' mt-4', up) + '</div>';
   }
   // the plan rows (V1 / V2: 6 / 3 / monthly under the hero card; V3: the rows alone)
-  function renderRows(t, rowKeys, gap) {
+  function renderRows(t, rowKeys, gap, up) {
     var h = '<div class="bg-gray-50 rounded-xl p-4' + gap + '"><div class="space-y-0">';
     rowKeys.forEach(function (key, i) {
       var p = t.plans[key]; if (!p) return;
@@ -109,6 +130,7 @@
       else if (key === 'monthly') h += '<p class="text-base font-bold italic mb-2 text-secondary-500">' + esc(monthlyLine(p)) + '</p>';
       else if (p.dueTag) h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(fmtMoney(p.totalPrice) + ' due today -') + '</span> ' + dueTagHtml(p) + '</p>';
       else h += '<p class="text-base font-bold italic mb-2"><span class="text-secondary-500">' + esc(savingsLine(p)) + '</span> <span class="text-brand-green">' + fmtMoney(p.savingsToday) + '</span>' + (p.afterSave ? ' ' + tagHtml(p.afterSave, p.afterSaveTone) : '') + '</p>';
+      if (up > 0 && key === 'sixMonth') h += upsellSix(up);
       h += '<div class="space-y-1">' + p.features.map(function (f) { return tick(f, 'flex items-start gap-2 text-sm text-brand-green font-semibold'); }).join('') + '</div>';
       if (p.footerNote) h += '<p class="text-xs text-gray-500 italic mt-2">' + esc(p.footerNote) + '</p>';
       h += '<button type="button" class="w-full mt-3 btn-lilac " data-plan="' + key + '" data-treatment="' + esc(t.key) + '">Select' + SVG_ARROW('w-4 h-4') + '</button>';
@@ -133,7 +155,7 @@
     h += '<div class="bg-brand-green/10 border-2 border-brand-green rounded-lg px-4 py-2 mb-3 inline-flex items-center gap-2"><span class="text-yellow-500">⭐</span><span class="text-sm font-semibold text-secondary-500">' + esc(t.recommendedLabel || 'Recommended for most patients') + '</span></div>';
     h += '<div class="space-y-1 mb-3">' + t.highlights.map(function (x) { return '<div class="flex items-center gap-2"><span class="text-secondary-500 font-bold">•</span><span class="text-sm text-secondary-500">' + esc(x) + '</span></div>'; }).join('') + '</div>';
     var heroKey = data.heroPlan === null ? null : data.heroPlan || 'twelveMonth';   // null (V3) = no highlighted card
-    h += renderBestValue(t, heroKey ? t.plans[heroKey] : null, heroKey, data.rowPlans || PLAN_ORDER) + renderNextSteps(data.nextSteps);
+    h += renderBestValue(t, heroKey ? t.plans[heroKey] : null, heroKey, data.rowPlans || PLAN_ORDER, data.upsell12 ? upgradeDelta(t) : 0) + renderNextSteps(data.nextSteps);
     return h + '</div></div>';
   }
   function renderSelectorCard(t, selected, count) {
@@ -219,7 +241,7 @@
     return state;
   }
 
-  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, tagHtml: tagHtml, dueTagHtml: dueTagHtml, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl };
+  var api = { fmtMoney: fmtMoney, clock: clock, savingsLine: savingsLine, tagHtml: tagHtml, dueTagHtml: dueTagHtml, billedLine: billedLine, youSaveLine: youSaveLine, monthlyLine: monthlyLine, bigButtonLabel: bigButtonLabel, decrementDiscount: decrementDiscount, bumpCounters: bumpCounters, firstDelay: firstDelay, nextDelay: nextDelay, renderTreatmentCard: renderTreatmentCard, renderSelectorCard: renderSelectorCard, renderUrgency: renderUrgency, renderNextSteps: renderNextSteps, ACCENT: ACCENT, PLAN_TERM: PLAN_TERM, mount: mount, onPlanSelect: onPlanSelect, checkoutUrl: checkoutUrl, upgradeDelta: upgradeDelta, upsellHero: upsellHero, upsellSix: upsellSix };
   root.ChimeChooseTreatment = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 

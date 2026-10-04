@@ -206,7 +206,7 @@ eq(D3.productHref, "../v3.html", "v3 Choose → ../v3.html");
 ["200off applied", "-$200", "You save $200!", "Most Affordable"].forEach(function (lit) {
   eq(page.indexOf(">" + lit + "<") > -1, true, "literal on the page: " + lit);
 });
-eq(/CHIME_COUPON_CODE = s\.code\.toUpperCase\(\)/.test(fillJs) && /CHIME_COUPON_CODE \|\| "200OFF"/.test(js), true, "Redeem takes the plan's code");
+eq(/CHIME_COUPON_CODE = (s\.subscription \? "\\u0000" : )?s\.code\.toUpperCase\(\)/.test(fillJs) && /CHIME_COUPON_CODE \|\| "200OFF"/.test(js), true, "Redeem takes the plan's code");
 
 
 // ---------- checkout-v4/ and checkout-v5/ (client doc "glp plus nad gold pages - 2 product selection versions", 2026-09-28),

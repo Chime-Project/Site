@@ -30,7 +30,13 @@
      The same mode runs checkout-v6/ and checkout-v7/ (client doc "glp plus tesa.docx", 2026-09-29: NAD+ swapped for
      Tesamorelin; ../js/plans-data-v6.js, -v7.js): every offer string comes from `checkoutOffer`, and its optional
      `pairAlt` names the vials in the thumbnail's alt ("GLP-1 and NAD+ vials" without it).
-   Without a `checkoutOffer` nothing here runs and every string is as above. */
+   Without a `checkoutOffer` nothing here runs and every string is as above.
+   ORIGINAL PRICES (choose-treatment-original/checkout/, client 2026-10-04: "rip this with the exact price points etc"):
+   ../js/plans-data.js, the reference's own figures. A plan `checkout` block with noCoupon gives "Remove" their
+   no-coupon total (Semaglutide 3-month $317, not crossed-out $467) and its per day = noCoupon / (months x 30). One with
+   subscription (the monthly plans) shows their monthly summary from the start: no coupon, "Standard Monthly Plan
+   $X", no "One-time payment" line, total = the price, any code "Invalid or expired" (theirs takes none), and the
+   "By subscribing" disclaimer. Without those fields every string is as above. */
 (function (root) {
   "use strict";
 
@@ -65,11 +71,20 @@
       // "the total price divided by 120"); every other plan = its monthly price ÷ 30
       perDay: rules && rules.coversMonths ? perDay(total, covered * 30) : perDay(p.price, 30),
       packageLabel: (rules && rules.packageLabel) || term + "-Month Treatment Package",
+      subscription: !!(rules && rules.subscription),
       covers: "One-time payment · Covers " + covered + (covered === 1 ? " month" : " months") + " of medication",
       total: money(total),
       crossed: money(full),
       perDayNoCoupon: perDay(full, term * 30)
     };
+    if (rules && rules.noCoupon) { s.noCoupon = money(rules.noCoupon); s.perDayNoCoupon = perDay(rules.noCoupon, term * 30); }
+    if (s.subscription) {
+      s.title = t.name + " Monthly Plan";
+      s.packageLabel = "Standard Monthly Plan";
+      s.noCoupon = money(p.price);
+      s.perDayNoCoupon = s.perDay;
+      s.code = ""; s.crossed = s.total; s.discount = money(0);   // no coupon on a monthly plan
+    }
     if (offer) {
       s.offer = {
         termLabel: rules.termLabel,
@@ -122,7 +137,7 @@
       "One-time payment · Covers 3 months of medication": s.covers,
       "$467": s.crossed,
       "$267": s.total,
-      "$317": s.crossed,
+      "$317": s.noCoupon || s.crossed,
       "$3.52": s.perDayNoCoupon,
       "$3.52/day": s.perDayNoCoupon + "/day"
     };
@@ -144,6 +159,28 @@
       img.setAttribute("alt", s.alt);
     });
     if (s.offer) offerRows(rootNode, doc, s);
+    if (s.subscription) subscriptionRows(rootNode);
+  }
+
+  // ORIGINAL PRICES, monthly plans: their summary has no "One-time payment · Covers N months" line, and their
+  // disclaimer is the subscription one
+  var SUBSCRIBE = { from: "By continuing, you authorize a one-time charge today for your selected plan. No recurring billing during your plan period. See our ",
+                    to: "By subscribing, you authorize Chime Health to charge you monthly until you cancel. You may cancel at any time through your account settings as described in the " };
+  function subscriptionRows(rootNode) {
+    Array.prototype.forEach.call(rootNode.querySelectorAll("p"), function (x) {
+      if (/^One-time payment · Covers /.test(x.textContent.trim())) x.parentNode.removeChild(x);
+    });
+    var doc = rootNode.ownerDocument || rootNode;
+    var walker = doc.createTreeWalker(rootNode, 4, null), n;
+    while ((n = walker.nextNode())) if (n.nodeValue === SUBSCRIBE.from) n.nodeValue = SUBSCRIBE.to;
+  }
+  // the live summaries start in the no-coupon state, and Redeem can only ever lead back to it
+  var SUMMARY = ".bg-white.rounded-2xl.shadow-sm.border.border-gray-100.overflow-hidden";
+  function startWithoutCoupon(doc) {
+    var removed = doc.getElementById("co-summary-removed"), applied = doc.getElementById("co-summary-applied");
+    if (!removed) return;
+    if (applied) applied.innerHTML = removed.innerHTML;
+    Array.prototype.forEach.call(doc.querySelectorAll(SUMMARY), function (card) { card.outerHTML = removed.innerHTML; });
   }
 
   // NAD+ offer mode: the parts that are more than a text swap
@@ -198,7 +235,7 @@
     }
   }
 
-  var api = { summaryFor: summaryFor, pick: pick, replacements: replacements, TERM_PLAN: TERM_PLAN };
+  var api = { summaryFor: summaryFor, pick: pick, replacements: replacements, TERM_PLAN: TERM_PLAN, SUBSCRIBE: SUBSCRIBE };
   root.ChimeCheckoutPlan = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 
@@ -209,7 +246,8 @@
   var s = summaryFor(root.CHIME_CHOOSE_TREATMENT, choice.med, choice.term) ||
           summaryFor(root.CHIME_CHOOSE_TREATMENT, DEFAULT.med, DEFAULT.term);
   document.documentElement.setAttribute("data-co-plan", s.med + "-" + s.term);
-  root.CHIME_COUPON_CODE = s.code.toUpperCase();   // what "Redeem" accepts (js/checkout.js)
+  root.CHIME_COUPON_CODE = s.subscription ? "\u0000" : s.code.toUpperCase();   // what "Redeem" accepts (js/checkout.js); monthly: nothing
   fill(document.body, s);
   Array.prototype.forEach.call(document.querySelectorAll("template"), function (t) { fill(t.content, s); });
+  if (s.subscription) startWithoutCoupon(document);
 })(typeof window !== "undefined" ? window : globalThis);
