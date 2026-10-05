@@ -23,6 +23,8 @@ Client, 2026-10-05: "Landing Page Only" (an influencer-campaign link to www.coll
   Chime mark everywhere it appears and painted out of the phone How it Works photo, LegitScript → Chime's mark
   (unlinked), hello@chimehealth.com, every CTA → `../chimeAssessment.html`, Login and their HSA/FSA link → #, Privacy /
   Terms / Your Privacy Choices → Chime's pages, social links removed.
+- **CTAs in Chime blue** (Luis, 2026-10-05): every pill button (`.chime-cta`) is Chime blue-800 `#324563`, hover
+  blue-900 `#26354D`; the override sits at the end of `css/lander.css`. Their coral stays everywhere else.
 - **Founder section kept as theirs (Luis, 2026-10-05: "Keep it the founder, we will change it later"):** Gunnar Lovelace,
   his photos and first-person story, and the hero pill "Brought to you by the founder of Thrive Market", renamed like the
   rest of the page, so it currently names a real person as Chime Health's CEO. Replace before the page takes real traffic.

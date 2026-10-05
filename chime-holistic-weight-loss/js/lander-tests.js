@@ -50,7 +50,7 @@ eq('common noun kept', (body.match(/collective buying power/g) || []).length, 5)
 eq('chart label', (body.match(/md:uppercase">Chime<\/p>/g) || []).length, 1);
 eq('no half-renamed brand elsewhere', /Chime(?! Health)/.test(body.replace('md:uppercase">Chime</p>', '')), false);
 eq('no remote hosts', /collective\.org|legitscript\.com|posthog|oursprivacy|dashfi|revoffers|katalys|clerk|bronco|instagram\.com|tiktok\.com|x\.com\//.test(body), false);
-eq('only our scripts', (page.match(/<script\b[^>]*>/g) || []), ['<script src="js/lenis.min.js?v=20260982">', '<script src="js/lander.js?v=20260982">']);
+eq('only our scripts', (page.match(/<script\b[^>]*>/g) || []), ['<script src="js/lenis.min.js?v=20260983">', '<script src="js/lander.js?v=20260983">']);
 eq('no Next runtime', /\/_next\/|__next_f|self\.__next/.test(page), false);
 eq('every CTA to the assessment', (page.match(/href="\.\.\/chimeAssessment\.html"/g) || []).length, 13);
 eq('no pre-qualification links', /pre-qualification/.test(page), false);
@@ -59,7 +59,7 @@ eq('support e-mail', /mailto:hello@chimehealth\.com/.test(page), true);
 eq('Chime mark, unlinked', /<img alt="Chime Health"[^>]*src="images\/chime-mark\.webp">/.test(page) && !/legitscript/i.test(body), true);
 eq('legal links', ['../privacy-policy.html', '../terms-conditions.html'].every(function (h) { return page.indexOf('href="' + h + '"') > -1; }), true);
 eq('noindex', /<meta name="robots" content="noindex">/.test(page), true);
-eq('?v= on css and js', (page.match(/\?v=20260982/g) || []).length, 3);
+eq('?v= on css and js', (page.match(/\?v=20260983/g) || []).length, 3);
 eq('their study links kept', /doi\.org\/10\.1016\/j\.obpill\.2025\.100236/.test(page), true);
 // every local asset the page references exists
 var refs = (page.match(/(?:src|href|srcset)="((?:images|css|js|fonts)\/[^"?]+)/g) || []).map(function (s) { return s.replace(/^[a-z]+="/, ''); });
@@ -78,6 +78,10 @@ eq('4 savings costs', (page.match(/data-sv-cost/g) || []).length, 4);
 ['.is-visible', 'grid-rows-\\[1fr\\]', 'rotate-180', 'max-\\[359px\\]\\:hidden', 'bg-\\[\\#423531\\]', 'hover\\:bg-\\[\\#FFF0EB\\]'].forEach(function (c) {
   eq('css ' + c, css.indexOf(c) > -1, true);
 });
+
+// Chime blue CTAs (Luis, 2026-10-05)
+eq('16 CTAs tagged + template Login', (page.match(/class="chime-cta /g) || []).length, 17);
+eq('CTA override is Chime blue-800 / 900', css.indexOf('.chime-cta{--color-brand:#324563;--color-brand-hover:#26354D') > -1, true);
 
 console.log(pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);
