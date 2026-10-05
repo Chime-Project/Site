@@ -1,0 +1,134 @@
+/* Chime Health — post-purchase upsell offers (chime-upsell-offers/). The reference's layout (TrimRx), dressed in
+   choose-treatment-original's look, measured off that page with getComputedStyle: Outfit, #F9FAFB page, white cards
+   with a 2px #E5E7EB border and 16px radius, #41362A titles, #B8922E 900-weight prices, #26AF59 savings and ticks,
+   #C19F68 gold, #7B95A9 slate, the blue #EFF6FF / #2563EB selected box with its 4px glow. Header and step bar reuse
+   ../choose-treatment/css/checkout.css markup as is. */
+:root {
+  --uo-ink: #111827; --uo-title: #41362A; --uo-muted: #4B5563; --uo-soft: #6B7280; --uo-line: #E5E7EB;
+  --uo-gold: #B8922E; --uo-green: #26AF59; --uo-green-ink: #15803D; --uo-slate: #7B95A9;
+  --uo-blue: #2563EB; --uo-blue-bg: #EFF6FF; --uo-red: #B91C1C;
+  /* button colour per offer: NAD+ = the navy of its label, Sermorelin = the page's title brown, Zofran = green */
+  --uo-nad: #324563; --uo-sermorelin: #41362A; --uo-zofran: #15803D;
+}
+.uo-main { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; display: grid; gap: 14px; }
+
+/* "Thank you for your order!" */
+.uo-order { display: flex; align-items: center; gap: 12px; background: #fff; border: 2px solid var(--uo-line); border-radius: 16px; padding: 14px 16px; }
+.uo-order svg { width: 26px; height: 26px; color: var(--uo-green); flex: none; }
+.uo-order p { margin: 0; font-size: 14px; color: var(--uo-muted); line-height: 1.35; }
+.uo-order .uo-order__plan { font-size: 16px; font-weight: 700; color: var(--uo-title); }
+
+/* the ask: a coloured box per state, as theirs (green / peach / pink / yellow / lavender) */
+.uo-banner { border: 2px solid; border-radius: 16px; padding: 18px 18px 16px; text-align: center; }
+.uo-banner h1 { margin: 0 0 8px; font-size: 21px; line-height: 1.3; font-weight: 800; letter-spacing: -0.01em; }
+.uo-banner p { margin: 0; font-size: 15px; line-height: 1.45; }
+.uo-banner__icon { display: inline-block; width: 22px; height: 22px; vertical-align: -3px; margin-right: 6px; }
+.uo-banner__icon svg { width: 100%; height: 100%; display: block; }
+.uo-tone-green    { background: #EAF8EE; border-color: #26AF59; } .uo-tone-green h1    { color: #166534; } .uo-tone-green p    { color: var(--uo-muted); }
+.uo-tone-peach    { background: #FBEFE3; border-color: #C2410C; } .uo-tone-peach h1    { color: #8A5A13; } .uo-tone-peach p    { color: #C2410C; }
+.uo-tone-pink     { background: #FDE8EC; border-color: #E11D48; } .uo-tone-pink h1     { color: #9F1239; } .uo-tone-pink p     { color: #BE123C; }
+.uo-tone-yellow   { background: #FEF3C7; border-color: #D9A400; } .uo-tone-yellow h1   { color: var(--uo-title); } .uo-tone-yellow p   { color: #6B5A2E; }
+.uo-tone-lavender { background: #EEE9FC; border-color: #7C5CD6; } .uo-tone-lavender h1 { color: #4C1D95; } .uo-tone-lavender p { color: #5B4A8A; }
+
+/* countdown: the page's gradient urgency strip */
+.uo-timer { margin: 0; padding: 10px 12px; border-radius: 12px; text-align: center; font-size: 13px; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--uo-title); background: linear-gradient(90deg, #FFDFAD, #e5eaee, #d1fae5); border: 1px solid rgba(0,0,0,.05); }
+.uo-timer b { color: var(--uo-red); font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums; margin-left: 2px; }
+
+/* the offer */
+.uo-card { background: #fff; border: 2px solid var(--uo-line); border-radius: 16px; overflow: hidden; }
+.uo-progress { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #F3F4F6;
+  font-size: 12px; color: var(--uo-soft); }
+.uo-bars { display: inline-flex; gap: 4px; }
+.uo-bar { width: 22px; height: 5px; border-radius: 9999px; background: #E5E7EB; }
+.uo-bar.is-on { background: var(--uo-gold); }
+.uo-media { display: flex; justify-content: center; align-items: center; padding: 18px 16px 6px; background: linear-gradient(180deg, #EEF4FB 0%, #fff 100%); }
+.uo-media img { height: 220px; width: auto; display: block; }
+.uo-media--zofran img { height: auto; width: 220px; border-radius: 14px; }
+.uo-body { padding: 8px 20px 22px; }
+.uo-name { margin: 6px 0 6px; font-size: 26px; font-weight: 800; color: var(--uo-title); line-height: 1.15; }
+.uo-pitch { margin: 0 0 12px; font-size: 15px; line-height: 1.5; color: var(--uo-muted); }
+.uo-price { margin: 0; display: flex; align-items: baseline; gap: 6px; }
+.uo-price b { font-size: 42px; font-weight: 900; color: var(--uo-gold); line-height: 1; }
+.uo-price span { font-size: 15px; color: var(--uo-soft); }
+.uo-was { margin: 2px 0 12px; font-size: 14px; color: #9CA3AF; }
+.uo-saving { margin: 0 0 12px; padding: 10px; text-align: center; border: 2px dashed #86D9A4; border-radius: 12px; background: #F0FDF4;
+  color: var(--uo-green-ink); font-weight: 600; font-size: 15px; }
+.uo-lifetime { margin: 0 0 10px; color: var(--uo-green); font-weight: 900; font-size: 17px; }
+.uo-benefits { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 8px; }
+.uo-benefits li { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; font-weight: 600; color: var(--uo-green-ink); line-height: 1.4; }
+.uo-benefits svg { width: 18px; height: 18px; flex: none; color: var(--uo-green); margin-top: 1px; }
+.uo-choose { margin: 0; font-size: 19px; font-weight: 800; color: var(--uo-title); }
+.uo-choose__sub { margin: 2px 0 12px; font-size: 13px; color: var(--uo-soft); }
+
+/* plan picker */
+.uo-plans { display: grid; gap: 10px; margin-bottom: 18px; }
+.uo-plan { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 2px solid var(--uo-line);
+  border-radius: 12px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s, background-color .15s; }
+.uo-plan input { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; margin: 2px 0 0; flex: none; border-radius: 50%;
+  border: 2px solid #9CA3AF; background: #fff; display: grid; place-items: center; cursor: pointer; }
+.uo-plan input::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--uo-blue); transform: scale(0); transition: transform .15s; }
+.uo-plan input:checked { border-color: var(--uo-blue); }
+.uo-plan input:checked::after { transform: scale(1); }
+.uo-plan input:focus-visible { outline: 2px solid var(--uo-blue); outline-offset: 2px; }
+.uo-plan.is-selected { border-color: var(--uo-blue); background: var(--uo-blue-bg); box-shadow: 0 0 0 4px rgba(37, 99, 235, .15); }
+.uo-plan__body { display: grid; gap: 2px; }
+.uo-plan__name { font-size: 16px; font-weight: 700; color: var(--uo-ink); }
+.uo-plan__price { font-size: 16px; font-weight: 700; color: var(--uo-ink); }
+.uo-plan__price s { font-weight: 400; color: #9CA3AF; font-size: 14px; }
+.uo-plan__save { font-size: 14px; color: var(--uo-green-ink); }
+
+/* yes / no */
+.uo-cta { width: 100%; min-height: 60px; border: 0; border-radius: 9999px; padding: 12px 26px; display: flex; align-items: center;
+  justify-content: space-between; gap: 12px; color: #fff; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer;
+  background: var(--uo-btn, var(--uo-slate)); box-shadow: 0 6px 16px rgba(17, 24, 39, .15); transition: filter .15s, transform .1s; }
+.uo-cta:hover { filter: brightness(1.08); }
+.uo-cta:active { transform: translateY(1px); }
+.uo-cta:focus-visible { outline: 3px solid var(--uo-blue); outline-offset: 3px; }
+.uo-cta__label { display: inline-flex; align-items: center; gap: 8px; text-align: left; }
+.uo-cta__label svg { width: 20px; height: 20px; flex: none; background: rgba(255,255,255,.22); border-radius: 6px; padding: 2px; }
+.uo-cta__price { white-space: nowrap; font-size: 18px; }
+.uo-cta__price s { font-weight: 400; font-size: 14px; opacity: .65; margin-right: 4px; }
+.uo-accent-nad { --uo-btn: var(--uo-nad); } .uo-accent-sermorelin { --uo-btn: var(--uo-sermorelin); } .uo-accent-zofran { --uo-btn: var(--uo-zofran); }
+.uo-no { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 44px; margin-top: 10px; border: 0; background: none;
+  font: inherit; font-size: 14px; color: var(--uo-soft); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.uo-no span { text-align: center; }
+.uo-no svg { width: 16px; height: 16px; flex: none; color: #DC2626; }
+.uo-no:focus-visible { outline: 2px solid var(--uo-blue); outline-offset: 2px; border-radius: 8px; }
+
+/* done.html: their portal welcome, in this look */
+.uo-welcome { border-radius: 16px; padding: 24px 22px; color: #fff; background: linear-gradient(135deg, #324563 0%, #5B7DA6 60%, #8FB3DB 100%); }
+.uo-welcome h1 { margin: 0 0 8px; font-size: 26px; font-weight: 800; line-height: 1.2; }
+.uo-welcome p { margin: 0; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,.88); }
+.uo-tiles { display: grid; gap: 10px; }
+.uo-tile { display: flex; gap: 12px; align-items: center; background: #fff; border: 2px solid var(--uo-line); border-left: 4px solid var(--uo-tile, var(--uo-slate)); border-radius: 12px; padding: 14px 16px; }
+.uo-tile svg { width: 34px; height: 34px; flex: none; padding: 7px; border-radius: 10px; background: #F3F4F6; color: var(--uo-tile); }
+.uo-tile b { display: block; font-size: 15px; color: var(--uo-ink); }
+.uo-tile span { font-size: 13px; color: var(--uo-soft); }
+.uo-tile--orders { --uo-tile: #3B82F6; } .uo-tile--plans { --uo-tile: #22C55E; } .uo-tile--messages { --uo-tile: #A855F7; }
+.uo-summary { background: #fff; border: 2px solid var(--uo-line); border-radius: 16px; padding: 18px 20px; }
+.uo-summary h2 { margin: 0 0 4px; font-size: 20px; font-weight: 800; color: var(--uo-title); }
+.uo-summary__date { margin: 0 0 12px; font-size: 14px; color: var(--uo-soft); }
+.uo-items { list-style: none; margin: 0; padding: 0; display: grid; }
+.uo-items li { display: grid; gap: 2px; padding: 10px 0; border-top: 1px solid #F3F4F6; }
+.uo-item__name { font-weight: 700; color: var(--uo-ink); }
+.uo-item__note { font-size: 14px; color: var(--uo-green-ink); }
+
+/* footer: legal links + the chimehealth.com LegitScript seal (Asana 1218871555785832) */
+.uo-foot { max-width: 560px; margin: 0 auto; padding: 8px 16px 40px; text-align: center; font-size: 12px; color: var(--uo-soft); }
+.uo-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; margin-bottom: 14px; }
+.uo-foot nav a { color: var(--uo-soft); text-decoration: underline; text-underline-offset: 2px; }
+.uo-foot__seal { display: inline-block; margin-bottom: 10px; }
+.uo-foot__seal img { display: block; }
+.uo-foot p { margin: 0; }
+
+/* confetti layer (GSAP Physics2D pieces) */
+.uo-confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 60; perspective: 600px; }
+.uo-confetti i { position: absolute; left: 0; top: 0; display: block; will-change: transform; }
+
+@media (min-width: 768px) {
+  .uo-main { padding-top: 28px; }
+  .uo-banner h1 { font-size: 24px; }
+  .uo-media img { height: 260px; }
+  .uo-media--zofran img { width: 250px; }
+}

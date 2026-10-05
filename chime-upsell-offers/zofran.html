@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Add Zofran to your plan | Chime Health</title>
+    <meta name="description" content="A one-time offer to add Zofran to your Chime Health plan." />
+    <meta name="robots" content="noindex" />
+    <!-- Chime Health — post-purchase upsell offers (chime-upsell-offers/), offer 3 of 3 (Zofran).
+         Client, 2026-10-05: a screen recording of TrimRx's three one-click offers after checkout (NAD+ -> Sermorelin ->
+         Zofran; the reference URL is lost), "same text format … but using the style of
+         choose-treatment-original … all the crap they have: animation, countdown timer, decline price decrease etc"
+         (plan UPSELL-OFFERS-PLAN.md, untracked). Their copy, prices and mechanics, on their timings: a 10-minute
+         countdown restarted on every ask, "Declining..." -> the after-decline ask at 50% off (instead of 30%) with a
+         confetti burst (GSAP Physics2D), a second decline -> the next offer, then done.html (their patient-portal
+         welcome). choose-treatment-original's look (header, step bar, cards, colours, Outfit); Chime's own amber vials
+         and tablet photo. One page per offer: the markup is rendered by js/upsell.js from js/offers.js (ONE place for
+         copy and prices); this file only names its offer (data-offer). "Pay" on ../choose-treatment-original/checkout/
+         comes here with ?med&term and the first name in sessionStorage. Nothing is charged (no payment backend).
+         FLAGGED, carried from the reference: TrimRx's prices (NAD+ $299/$209/$149, Sermorelin $259/$181/$129, Zofran
+         $99/$69/$49) and their unreconciled "saving" figures; the invented scarcity ("selected as today's winner",
+         "randomly chosen", "only given to a single customer each day", "93% / 92% of patients", the resetting timer,
+         "the cheapest you can buy Zofran on the market"); the claims ("Turns back the clock at the cellular level",
+         "Kills nausea fast — works in minutes", "the same anti-nausea med hospitals trust", "wake up feeling years
+         younger", "Tighter skin"); "One Click. No extra payment info needed" (needs a stored card); the portal on
+         done.html (Chime has none: the tiles are not links). Left out: their "English" language switch. noindex. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" />
+    <link rel="stylesheet" href="../choose-treatment/css/checkout.css?v=20260941" />
+    <link rel="stylesheet" href="css/upsell.css?v=20260985" />
+  </head>
+  <body class="font-sans antialiased">
+    <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <header class="bg-white border-b border-gray-100 sticky top-0 z-40" data-screen-label="UO Header">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <img alt="Chime Health" width="222" height="28" class="h-7 w-auto site-logo" src="../choose-treatment/images/logo-chime.svg" />
+          <div class="flex items-center gap-1.5 text-sm">
+            <svg class="w-3.5 h-3.5 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+            <span class="text-gray-600 text-xs font-medium">Secure Checkout</span>
+          </div>
+        </div>
+      </header>
+      <div class="w-full flex items-center justify-center py-4 bg-white border-b border-gray-100" data-screen-label="UO Steps">
+        <div class="flex items-center gap-3 sm:gap-6">
+          <div class="flex gap-2 sm:gap-2.5 items-center">
+            <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 bg-[#7b95a9] border-[#7b95a9]">
+              <svg class="w-2.5 h-2.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="font-medium text-xs sm:text-base transition-colors duration-200 text-secondary-500">Quiz</span>
+          </div>
+          <div class="flex-1 w-8 sm:w-16 rounded-full h-0.5 transition-colors duration-200 bg-[#7b95a9]"></div>
+          <div class="flex gap-2 sm:gap-2.5 items-center">
+            <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 bg-[#7b95a9] border-[#7b95a9]">
+              <svg class="w-2.5 h-2.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="font-medium text-xs sm:text-base transition-colors duration-200 text-secondary-500">Shipping</span>
+          </div>
+          <div class="flex-1 w-8 sm:w-16 rounded-full h-0.5 transition-colors duration-200 bg-[#7b95a9]"></div>
+          <div class="flex gap-2 sm:gap-2.5 items-center">
+            <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 bg-[#7b95a9] border-[#7b95a9]">
+              <svg class="w-2.5 h-2.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="font-medium text-xs sm:text-base transition-colors duration-200 text-secondary-500">Payment</span>
+          </div>
+        </div>
+      </div>
+      <main id="uo-app" class="uo-main" data-offer="zofran">
+        <noscript><p>This offer needs JavaScript. <a href="done.html">Continue</a></p></noscript>
+      </main>
+
+      <footer class="uo-foot" data-screen-label="UO Footer">
+        <nav aria-label="Legal"><a href="../privacy-policy.html">Privacy Policy</a><a href="../hipaa-notice.html">HIPAA Notice of Privacy Practices</a><a href="../consumer-health-data-privacy-policy.html">Consumer Health Data Privacy Policy</a><a href="../telehealth-consent.html">Telehealth Consent</a><a href="../shipping-policy.html">Shipping Policy</a><a href="../return-refund-policy.html">Return &amp; Refund Policy</a><a href="../terms-conditions.html">Terms &amp; Conditions</a><a href="../faq.html#jurisdictions">Service Availability</a></nav>
+        <a class="uo-foot__seal" href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com" target="_blank" title="Verify LegitScript Approval for www.chimehealth.com"><img src="https://static.legitscript.com/seals/51605690.png" alt="Verify Approval for www.chimehealth.com" width="73" height="79" /></a>
+        <p>&copy; 2026 Chime Health</p>
+      </footer>
+    </div>
+    <script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.13.0/dist/Physics2DPlugin.min.js"></script>
+    <script src="js/offers.js?v=20260985"></script>
+    <script src="js/upsell.js?v=20260985"></script>
+  </body>
+</html>
