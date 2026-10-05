@@ -75,5 +75,24 @@ eq('no root-absolute paths', /["'(]\/assets\//.test(page), false);
 refs.forEach(function (r) { eq('asset ' + r, fs.existsSync(path.normalize(path.join(__dirname, '..', r))), true); });
 eq('scoped rules kept', /\[data-v-2d6b9e33\]/.test(css) && /\.faq-panel\[data-v-cb465815\]/.test(css), true);
 
+// 4. the $49 and $59 versions (client 2026-10-04): the same page with every "$99" changed, assets from ../chime-offer-v9/
+var body = function (h) { return h.slice(h.indexOf('-->') + 3); };
+['49', '59'].forEach(function (price) {
+  var dir = path.join(__dirname, '..', '..', 'chime-offer-v9-' + price), v = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
+  eq(price + ' title', (v.match(/<title>([^<]*)/) || [])[1], 'GLP-1 Weight Loss from $' + price + '/mo | Chime Health');
+  eq(price + ' no $99 left', body(v).indexOf('$99'), -1);
+  eq(price + ' five price mentions', (body(v).match(new RegExp('\\$' + price + '(?!\\d)', 'g')) || []).length, 5);
+  eq(price + ' offer bar', (body(v).match(new RegExp('STARTING at GLP-1: \\$' + price + ' \\| GLP-1 \\+ GIP: \\$149\\.', 'g')) || []).length, 3);
+  eq(price + ' closing line', body(v).indexOf('Only $' + price + '/month') > -1, true);
+  eq(price + ' was $299 kept', body(v).indexOf('$299') > -1, true);
+  // identical to chime-offer-v9 apart from the price and the asset paths
+  var norm = function (h) { return body(h).split('../chime-offer-v9/').join(''); };
+  eq(price + ' same page otherwise', norm(v).split('$' + price).join('$99'), body(page));
+  var r = (v.match(/(?:src|href|srcset)="(?!https?:|#|mailto:|\.\.\/chimeAssessment|\.\.\/index|\.\.\/(?:privacy|hipaa|consumer|telehealth|shipping|return|terms|faq))([^"?#]+)/g) || []).map(function (m) { return m.replace(/^\w+="/, ''); });
+  (v.match(/url\('([^']+)'\)/g) || []).forEach(function (u) { r.push(u.slice(5, -2)); });
+  eq(price + ' assets found', r.length > 30, true);
+  r.forEach(function (x) { eq(price + ' asset ' + x, fs.existsSync(path.normalize(path.join(dir, x))), true); });
+});
+
 console.log(pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);
