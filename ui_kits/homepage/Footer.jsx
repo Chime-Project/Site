@@ -124,12 +124,13 @@ function ChimeFooter() {
           &copy; 2026 Chime Health. All rights reserved.
         </p>
 
-        {/* LegitScript seal issued to chimehealth.com (seal 51605690, self-hosted
-            copy of static.legitscript.com/seals/51605690.png), as on the live site. */}
+        {/* LegitScript seal issued to chimehealth.com (seal 51605690), the code LegitScript
+            issued, as Nick posted it on Asana 1218871555785832: their hosted image, linked
+            to the checker. */}
         <a href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com" target="_blank" rel="noopener noreferrer"
           title="Verify LegitScript Approval for www.chimehealth.com"
           style={{ display: "inline-block", marginTop: "var(--spacing-6)" }}>
-          <img src={FOOTER_ASSETS + "/legitscript-chimehealth.png"} alt="Verify Approval for www.chimehealth.com" width="73" height="79" loading="lazy" style={{ display: "block" }} />
+          <img src="https://static.legitscript.com/seals/51605690.png" alt="Verify Approval for www.chimehealth.com" width="73" height="79" loading="lazy" style={{ display: "block" }} />
         </a>
       </div>
     </footer>

@@ -11,6 +11,11 @@ var html = fs.readFileSync(path.join(DIR, "index.html"), "utf8");
 var css = fs.readFileSync(path.join(DIR, "css", "lp.css"), "utf8");
 var js = fs.readFileSync(path.join(__dirname, "lp.js"), "utf8");
 var page = html.replace(/<!--[\s\S]*?-->/g, ""); // what ships to the browser, minus build notes
+// The chimehealth.com LegitScript seal as Nick posted it on Asana 1218871555785832: linked to the checker,
+// LegitScript's hosted image. It is the one external link/image allowed; strip it before the "nothing remote" checks.
+var SEAL_HREF = 'href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com"';
+var SEAL_SRC = 'src="https://static.legitscript.com/seals/51605690.png"';
+var pageNoSeal = page.split(SEAL_HREF).join("").split(SEAL_SRC).join("");
 var cssBody = css.replace(/\/\*[\s\S]*?\*\//g, "");
 var jsBody = js.replace(/\/\*[\s\S]*?\*\//g, "");
 
@@ -54,9 +59,10 @@ eq((page.match(/data-cta="quiz"/g) || []).length, 2, "two scroll-to-quiz CTAs (h
 ["aspen", "Aspen"].forEach(function (w) { eq(page.indexOf(w), -1, "no '" + w + "' in page markup"); });
 ["startaspen", "googletagmanager", "gtag(", "G-P7VNMMCSSH", "clarity", "facebook-domain-verification",
  "legitscript.com", "fonts.googleapis", "fonts.gstatic", "/intake/"].forEach(function (w) {
-  eq(page.indexOf(w) + jsBody.indexOf(w) + cssBody.indexOf(w), -3, "no '" + w + "' anywhere");
+  eq(pageNoSeal.indexOf(w) + jsBody.indexOf(w) + cssBody.indexOf(w), -3, "no '" + w + "' anywhere");
 });
-eq(/(src|href)="https?:/.test(page), false, "no external src/href");
+eq(/(src|href)="https?:/.test(pageNoSeal), false, "no external src/href but the LegitScript seal");
+eq([page.split(SEAL_HREF).length - 1, page.split(SEAL_SRC).length - 1], [1, 1], "chimehealth.com LegitScript seal, linked");
 eq(/@import/.test(cssBody), false, "no @import in the sheet");
 
 // Branding: Chime logo and name, no Aspen green left in the brand slots
@@ -69,7 +75,7 @@ eq(/noindex/.test(page), true, "noindex");
 
 // Every local asset resolves
 var refs = [];
-page.replace(/(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g, function (_, u) { refs.push(u); });
+pageNoSeal.replace(/(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g, function (_, u) { refs.push(u); });
 css.replace(/url\(([^)]+)\)/g, function (_, u) { refs.push(path.join("css", u)); });
 refs.forEach(function (u) { eq(fs.existsSync(path.join(DIR, u)), true, "asset exists: " + u); });
 

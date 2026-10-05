@@ -46,7 +46,10 @@ eq('no Trinity left', /trinity/i.test(page.replace(/<!--[\s\S]*?-->/g, '')), fal
 eq('How Chime Health Works', page.indexOf('>How Chime<span class="font-v9tmDisplay italic text-v9tm-orange"> Health Works.</span>') > -1, true);
 eq('no half-renamed brand', /Chime(?! Health| does not)/.test(page.replace(/<!--[\s\S]*?-->/g, '').replace('>How Chime<span', '')), false);
 eq('no OpenLoop', /openloop/i.test(page.replace(/<!--[\s\S]*?-->/g, '')), false);
-eq('no remote media', /imagekit|trinitymeds\.com|dmca\.com|legitscript\.com/.test(page.replace(/<!--[\s\S]*?-->/g, '')), false);
+// the one remote image/link: the chimehealth.com LegitScript seal as Nick posted it (Asana 1218871555785832)
+var SEAL = /<a href="https:\/\/www\.legitscript\.com\/websites\/\?checker_keywords=chimehealth\.com" target="_blank" title="Verify LegitScript Approval for www\.chimehealth\.com"><img src="https:\/\/static\.legitscript\.com\/seals\/51605690\.png" alt="Verify Approval for www\.chimehealth\.com"/g;
+eq('chimehealth.com LegitScript seal, linked', (page.match(SEAL) || []).length, 1);
+eq('no remote media', /imagekit|trinitymeds\.com|dmca\.com|legitscript\.com/.test(page.replace(/<!--[\s\S]*?-->/g, '').replace(SEAL, '')), false);
 eq('no trackers', /clarity|northbeam|funnelytics|googletagmanager|attn\.tv|cptn/.test(page.replace(/<!--[\s\S]*?-->/g, '')), false);
 eq('no scripts but ours', (page.match(/<script\b/g) || []).length, 1);
 eq('every CTA to the assessment', (page.match(/href="\.\.\/chimeAssessment\.html"/g) || []).length >= 7, true);

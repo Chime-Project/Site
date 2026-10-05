@@ -14,7 +14,7 @@ team can study the page as it runs; the copy team rewrites it later.
 - the logos, header and footer
 - the brand name in copy, alt text, the disclaimers and the copyright line
 - the logo on the vial label (the pricing photo, and the sticky-bar thumbnail, which is a 200px copy of it)
-- the LegitScript seal, now self-hosted and unlinked (their certificate is for their domain)
+- the LegitScript seal: the chimehealth.com LegitScript seal, linked to the checker (theirs is for their domain)
 - the phone number, now a `1-XXX-XXX-XXXX` placeholder, and the support email, now support@chimehealth.com
 - every CTA, now `../chimeAssessment.html`; "Home" → `../index.html`; the legal links → Chime's pages; "Articles" and "Read the full science" → `#` (no Chime page yet)
 - title, favicon, `noindex`; their Blotout EdgeTag tracking removed

@@ -17,7 +17,7 @@ and ask before any other change. The gold and navy are the reference's own, on p
 - the logos
 - the brand name wherever it appears
 - the Chime wordmark on the gold "Weight Loss Warranty" seal (in two cards and inside the hero art), the delivery van and the doctor's coat
-- the LegitScript seal, now Chime's mark
+- the LegitScript seal: the chimehealth.com LegitScript seal, linked to the checker
 - the phone number, now a `1-XXX-XXX-XXXX` placeholder
 - every CTA, first to `../chimeAssessment.html`, now to the microdose plans (see below)
 - the footer and legal links, now Chime's pages ("GLP-1 Safety Information" goes to `#`, since Chime has no such page yet)

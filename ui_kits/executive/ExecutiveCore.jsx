@@ -147,6 +147,13 @@ function ExecFooter({ ground = "var(--accent-default)" } = {}) {
             ))}
           </nav>
         </div>
+        {/* LegitScript seal issued to chimehealth.com (Asana 1218871555785832), as on the site footer. */}
+        <a href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com" target="_blank"
+          title="Verify LegitScript Approval for www.chimehealth.com"
+          style={{ display: "inline-block", marginTop: "var(--spacing-6)" }}>
+          <img src="https://static.legitscript.com/seals/51605690.png" alt="Verify Approval for www.chimehealth.com"
+            width="73" height="79" loading="lazy" style={{ display: "block" }} />
+        </a>
       </div>
     </footer>
   );

@@ -20,8 +20,8 @@ Client, 2026-10-05: "Landing Page Only" (an influencer-campaign link to www.coll
   tirzepatide 23 %, semaglutide 18 %, 100–400 lb.
 - **Changed:** logos, the brand name ("collective buying power", the common noun, left as written; the savings chart
   label is "Chime", one word like theirs, because "Chime Health" wraps in that grid), their dotted mark redrawn as the
-  Chime mark everywhere it appears and painted out of the phone How it Works photo, LegitScript → Chime's mark
-  (unlinked), hello@chimehealth.com, every CTA → `../chimeAssessment.html`, Login and their HSA/FSA link → #, Privacy /
+  Chime mark everywhere it appears and painted out of the phone How it Works photo, LegitScript → the chimehealth.com LegitScript seal, linked to the checker
+  (Asana 1218871555785832), hello@chimehealth.com, every CTA → `../chimeAssessment.html`, Login and their HSA/FSA link → #, Privacy /
   Terms / Your Privacy Choices → Chime's pages, social links removed.
 - **CTAs in Chime blue** (Luis, 2026-10-05): every pill button (`.chime-cta`) is Chime blue-800 `#324563`, hover
   blue-900 `#26354D`; the override sits at the end of `css/lander.css`. Their coral stays everywhere else.

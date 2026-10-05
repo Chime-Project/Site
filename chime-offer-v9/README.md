@@ -16,7 +16,7 @@ switched, everything else theirs. Plan: `TRINITY-OFFER-V9-LANDER-PLAN.md` (untra
 - **The offer never ends:** their bar date and countdown are one rolling deadline, the next 5-day mark after
   2026-09-15T03:00Z, shown in New York time ("October 4th at Midnight", then "October 9th", …). 03:00Z is 11 pm New York
   time (10 pm after DST ends); kept as theirs.
-- **Changed:** logo, brand name, the box print and the monitor logo in two photos, LegitScript → Chime's mark, DMCA badge
+- **Changed:** logo, brand name, the box print and the monitor logo in two photos, LegitScript → the chimehealth.com LegitScript seal, linked to the checker, DMCA badge
   removed, support e-mail and phone, every CTA → `../chimeAssessment.html`, footer links → Chime's pages, the FAQ
   pharmacy answer and the legal block → Chime's text, member videos → four Chime stand-in stills.
 - **Flagged, theirs:** $99 / $149, Was $299, "Save Big this FALL", 4.4 rating, 125,000+, the press strip, "up to $200

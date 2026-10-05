@@ -12,6 +12,11 @@ var html = fs.readFileSync(path.join(DIR, "index.html"), "utf8");
 var css = fs.readFileSync(path.join(DIR, "css", "lander.css"), "utf8");
 var js = fs.readFileSync(path.join(__dirname, "lander.js"), "utf8");
 var page = html.replace(/<!--[\s\S]*?-->/g, "");
+// The chimehealth.com LegitScript seal as Nick posted it on Asana 1218871555785832: linked to the checker,
+// LegitScript's hosted image. It is the one external link/image allowed; strip it before the "nothing remote" checks.
+var SEAL_HREF = 'href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com"';
+var SEAL_SRC = 'src="https://static.legitscript.com/seals/51605690.png"';
+var pageNoSeal = page.split(SEAL_HREF).join("").split(SEAL_SRC).join("");
 // visible surface: text nodes + alt/title/href/src/onclick values (class names are not visible)
 var visible = page.replace(/\sclass="[^"]*"/g, "");
 
@@ -31,19 +36,20 @@ eq(visible.indexOf("© 2026 Chime Health") > -1, true, "copyright line");
 eq(visible.indexOf("Is Chime Health legitimate?") > -1, true, "FAQ question renamed");
 eq(/<title>[^<]*\| Chime Health<\/title>/.test(page), true, "title");
 ["images/logo-header.webp", "images/logo-footer.webp", "images/warranty-badge.webp", "images/hero-glp-nad-2.webp",
- "images/refills-van.webp", "images/clinician-phone.webp", "images/legitscript.webp"].forEach(function (f) {
+ "images/refills-van.webp", "images/clinician-phone.webp"].forEach(function (f) {
   eq(page.indexOf('src="' + f + '"') > -1, true, "brand-swapped art used: " + f);
 });
+eq([count(/checker_keywords=chimehealth\.com" target="_blank"/g, page), count(/static\.legitscript\.com\/seals\/51605690\.png/g, page)], [2, 2], "chimehealth.com LegitScript seal, linked, in both places");
 eq(count(/src="images\/warranty-badge\.webp"/g, page), 2, "warranty seal in both gold cards (the third is inside the hero art)");
 
 // Their links, phone and certificate are gone; CTAs go to the product selection, version 1 (v4.html)
-eq(count(/intake\.wellmedr|legitscript\.com|tel:/g, page), 0, "no intake, LegitScript checker or tel: link");
+eq(count(/intake\.wellmedr|legitscript\.com|tel:/g, pageNoSeal), 0, "no intake, their LegitScript checker or tel: link");
 eq(count(/1-888-397-6905/g, page), 0, "their phone number removed");
 eq(count(/1-XXX-XXX-XXXX/g, visible), 2, "phone placeholder in the footer pill and the legal block");
 eq(count(/href="\.\.\/choose-treatment\/v4\.html"/g, page), 3, "anchor CTAs → the plans (header, hero, phone bar)");
 eq(count(/window\.location\.href='\.\.\/choose-treatment\/v4\.html'/g, page), 6, "button CTAs → the plans");
 eq(/(href="|href=')[^"']*chimeAssessment/.test(page), false, "no link to the assessment");
-eq(/(src|href)="https?:/.test(page), false, "no external src/href");
+eq(/(src|href)="https?:/.test(pageNoSeal), false, "no external src/href but the LegitScript seal");
 eq(fs.existsSync(path.join(DIR, "..", "choose-treatment", "v4.html")), true, "the plan page exists with exact case");
 
 // The GLP + NAD+ version (client doc, 2026-09-28)
@@ -88,7 +94,7 @@ eq(/\.faq-question/.test(js) && /steps-line-top/.test(js), true, "FAQ accordion 
 
 // Every local asset resolves
 var refs = [];
-page.replace(/(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g, function (_, u) { if (!/^\.\.\//.test(u)) refs.push(u); });
+pageNoSeal.replace(/(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g, function (_, u) { if (!/^\.\.\//.test(u)) refs.push(u); });
 css.replace(/url\(["']?([^"')]+)["']?\)/g, function (_, u) { refs.push(path.join("css", u)); });
 refs.forEach(function (u) { eq(fs.existsSync(path.join(DIR, u)), true, "asset exists: " + u); });
 var up = [];

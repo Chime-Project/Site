@@ -7,6 +7,8 @@ var L = require('./lander.js');
 var page = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 var css = fs.readFileSync(path.join(__dirname, '..', 'css', 'lander.css'), 'utf8');
 var body = page.replace(/<!--[\s\S]*?-->/g, '');
+// the one remote image/link: the chimehealth.com LegitScript seal as Nick posted it (Asana 1218871555785832)
+var SEAL = /<a href="https:\/\/www\.legitscript\.com\/websites\/\?checker_keywords=chimehealth\.com" target="_blank" title="Verify LegitScript Approval for www\.chimehealth\.com"><img alt="Verify Approval for www\.chimehealth\.com"[^>]*src="https:\/\/static\.legitscript\.com\/seals\/51605690\.png"><\/a>/g;
 
 var pass = 0, fail = 0;
 function eq(name, got, want) {
@@ -49,14 +51,14 @@ eq('no Collective left', /collective(?! buying power)/i.test(body), false);
 eq('common noun kept', (body.match(/collective buying power/g) || []).length, 5);
 eq('chart label', (body.match(/md:uppercase">Chime<\/p>/g) || []).length, 1);
 eq('no half-renamed brand elsewhere', /Chime(?! Health)/.test(body.replace('md:uppercase">Chime</p>', '')), false);
-eq('no remote hosts', /collective\.org|legitscript\.com|posthog|oursprivacy|dashfi|revoffers|katalys|clerk|bronco|instagram\.com|tiktok\.com|x\.com\//.test(body), false);
+eq('no remote hosts', /collective\.org|legitscript\.com|posthog|oursprivacy|dashfi|revoffers|katalys|clerk|bronco|instagram\.com|tiktok\.com|x\.com\//.test(body.replace(SEAL, '')), false);
 eq('only our scripts', (page.match(/<script\b[^>]*>/g) || []), ['<script src="js/lenis.min.js?v=20260983">', '<script src="js/lander.js?v=20260983">']);
 eq('no Next runtime', /\/_next\/|__next_f|self\.__next/.test(page), false);
 eq('every CTA to the assessment', (page.match(/href="\.\.\/chimeAssessment\.html"/g) || []).length, 13);
 eq('no pre-qualification links', /pre-qualification/.test(page), false);
 eq('Chime logos', /src="images\/logo\.svg"/.test(page) && /src="images\/logo-footer\.svg"/.test(page), true);
 eq('support e-mail', /mailto:hello@chimehealth\.com/.test(page), true);
-eq('Chime mark, unlinked', /<img alt="Chime Health"[^>]*src="images\/chime-mark\.webp">/.test(page) && !/legitscript/i.test(body), true);
+eq('chimehealth.com LegitScript seal, linked', (body.match(SEAL) || []).length, 1);
 eq('legal links', ['../privacy-policy.html', '../terms-conditions.html'].every(function (h) { return page.indexOf('href="' + h + '"') > -1; }), true);
 eq('noindex', /<meta name="robots" content="noindex">/.test(page), true);
 eq('?v= on css and js', (page.match(/\?v=20260983/g) || []).length, 3);
