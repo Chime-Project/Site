@@ -13,7 +13,7 @@
     var term = ({ 1: 1, 3: 3, 6: 6, 12: 12 })[q.get('term')] || 1;
     try {
       sessionStorage.setItem('chime:upsell', JSON.stringify({
-        name: first ? first.value.trim().split(/\s+/)[0] : '', med: med, term: term, items: [], declined: [], celebrate: 0
+        name: first ? first.value.trim().split(/\s+/)[0] : '', med: med, term: term, items: [], declined: []
       }));
     } catch (err) { /* private mode: the offers fall back to the no-name copy */ }
     window.location.href = '../../chime-upsell-offers/?med=' + med + '&term=' + term;

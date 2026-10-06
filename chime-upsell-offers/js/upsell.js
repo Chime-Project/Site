@@ -4,7 +4,9 @@
    - "No thanks…" -> the link reads "Declining..." for ~1.1 s -> the page jumps to the top (no smooth scroll) and the
      after-decline ask replaces the first one in one frame: new banner, 30% -> 50% off on the card, the plan picker and
      the button, the timer back at 10:00 -> a confetti burst 0.5 s later, ~4.5 s long.
-   - A second "No thanks…" -> "Declining..." -> the next offer (confetti again). After offer 3 -> done.html.
+   - A second "No thanks…" -> "Declining..." -> the next offer. After offer 3 -> done.html.
+   - Confetti also pops 0.5 s after every page loads, offers and done.html alike (client 2026-10-05: "can we make it
+     pop when the page loads?"), so a direct visit gets it too.
    - "Yes! Add to my plan!" records the offer and plan and goes to the next offer. Nothing is charged: there is no
      payment backend (as the checkouts).
    Confetti: GSAP 3.13 + Physics2DPlugin (the site's GSAP, from unpkg like the other pages): ~150 pieces (squares,
@@ -166,7 +168,6 @@
         var p = offer[stage].plans[sel];
         S.items = (S.items || []).filter(function (it) { return it.key !== offer.key; });
         S.items.push({ key: offer.key, name: offer.name, plan: p.label, months: p.months, perMonth: p.now, pct: offer[stage].pct });
-        S.celebrate = 1;
         save(S);
         win.location.href = nextHref(D, offer.key);
         return;
@@ -183,7 +184,6 @@
           busy = false;
         } else {
           S.declined = (S.declined || []).filter(function (k) { return k !== offer.key; }).concat(offer.key);
-          S.celebrate = 1;
           save(S);
           win.location.href = nextHref(D, offer.key);
         }
@@ -192,7 +192,7 @@
 
     render();
     startTimer();
-    if (S.celebrate) { S.celebrate = 0; save(S); celebrate(); }
+    celebrate();   // every offer pops as it loads (client 2026-10-05: "can we make it pop when the page loads?")
   }
 
   function initDone(doc, D) {
@@ -205,7 +205,7 @@
     app.querySelector('[data-uo-items]').innerHTML = rows.map(function (r) {
       return '<li><span class="uo-item__name">' + esc(r.name) + '</span><span class="uo-item__note">' + esc(r.note) + '</span></li>';
     }).join('');
-    if (S.celebrate) { S.celebrate = 0; save(S); doc.defaultView.setTimeout(function () { confetti(doc); }, D.confettiDelayMs); }
+    doc.defaultView.setTimeout(function () { confetti(doc); }, D.confettiDelayMs);   // and the end screen
   }
 
   function init(doc) {
