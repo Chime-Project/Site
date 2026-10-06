@@ -7,8 +7,8 @@
   --uo-ink: #111827; --uo-title: #41362A; --uo-muted: #4B5563; --uo-soft: #6B7280; --uo-line: #E5E7EB;
   --uo-gold: #B8922E; --uo-green: #26AF59; --uo-green-ink: #15803D; --uo-slate: #7B95A9;
   --uo-blue: #2563EB; --uo-blue-bg: #EFF6FF; --uo-red: #B91C1C;
-  /* button colour per offer: NAD+ = the navy of its label, Sermorelin = the page's title brown, Zofran = green */
-  --uo-nad: #324563; --uo-sermorelin: #41362A; --uo-zofran: #15803D;
+  /* button colour per offer: NAD+ and Tesamorelin = the navy of their labels (sampled #243A59 / #1E3451), Zofran = green */
+  --uo-nad: #324563; --uo-tesamorelin: #1E3451; --uo-zofran: #15803D;
 }
 .uo-main { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; display: grid; gap: 14px; }
 
@@ -51,6 +51,7 @@
 .uo-price { margin: 0; display: flex; align-items: baseline; gap: 6px; }
 .uo-price b { font-size: 42px; font-weight: 900; color: var(--uo-gold); line-height: 1; }
 .uo-price span { font-size: 15px; color: var(--uo-soft); }
+.uo-price--solo { margin-bottom: 14px; }   /* no Reg price (Zofran): nothing crossed out under it */
 .uo-was { margin: 2px 0 12px; font-size: 14px; color: #9CA3AF; }
 .uo-saving { margin: 0 0 12px; padding: 10px; text-align: center; border: 2px dashed #86D9A4; border-radius: 12px; background: #F0FDF4;
   color: var(--uo-green-ink); font-weight: 600; font-size: 15px; }
@@ -89,7 +90,7 @@
 .uo-cta__label svg { width: 20px; height: 20px; flex: none; background: rgba(255,255,255,.22); border-radius: 6px; padding: 2px; }
 .uo-cta__price { white-space: nowrap; font-size: 18px; }
 .uo-cta__price s { font-weight: 400; font-size: 14px; opacity: .65; margin-right: 4px; }
-.uo-accent-nad { --uo-btn: var(--uo-nad); } .uo-accent-sermorelin { --uo-btn: var(--uo-sermorelin); } .uo-accent-zofran { --uo-btn: var(--uo-zofran); }
+.uo-accent-nad { --uo-btn: var(--uo-nad); } .uo-accent-tesamorelin { --uo-btn: var(--uo-tesamorelin); } .uo-accent-zofran { --uo-btn: var(--uo-zofran); }
 .uo-no { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 44px; margin-top: 10px; border: 0; background: none;
   font: inherit; font-size: 14px; color: var(--uo-soft); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .uo-no span { text-align: center; }

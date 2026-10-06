@@ -1,10 +1,11 @@
 /* Chime Health — post-purchase upsell offers: the engine (chime-upsell-offers/).
    What the reference does, on its timings (UPSELL-OFFERS-PLAN.md §1, stepped through at 10 fps):
    - "This offer expires in 10:00", ticking every second, restarted on every new ask; it stops at 0:00.
-   - "No thanks…" -> the link reads "Declining..." for ~1.1 s -> the page jumps to the top (no smooth scroll) and the
-     after-decline ask replaces the first one in one frame: new banner, 30% -> 50% off on the card, the plan picker and
-     the button, the timer back at 10:00 -> a confetti burst 0.5 s later, ~4.5 s long.
-   - A second "No thanks…" -> "Declining..." -> the next offer. After offer 3 -> done.html.
+   - "No thanks…" -> the link reads "Declining..." for ~1.1 s -> the next offer. After offer 3 -> done.html.
+     (The reference's two-step decline is still here behind D.declineDrop: the page jumps to the top (no smooth scroll)
+     and the after-decline ask replaces the first one in one frame: new banner, lower prices on the card, the plan picker
+     and the button, the timer back at 10:00, a confetti burst 0.5 s later; a second "No thanks…" -> the next offer.
+     It is off while the client's prices (2026-10-06) have one price per plan.)
    - Confetti also pops 0.5 s after every page loads, offers and done.html alike (client 2026-10-05: "can we make it
      pop when the page loads?"), so a direct visit gets it too.
    - "Yes! Add to my plan!" records the offer and plan and goes to the next offer. Nothing is charged: there is no
@@ -47,8 +48,12 @@
     return i > -1 && i < D.offers.length - 1 ? D.offers[i + 1].href : D.doneHref;
   }
   function ctaPrice(plan) {      // the button shows the per-month figure, like the plan card (plan §4.5)
-    return { was: money(plan.was), now: money(plan.now) + (plan.months > 1 ? '/mo' : '') };
+    return { was: plan.was ? money(plan.was) : '', now: money(plan.now) + (plan.months > 1 ? '/mo' : '') };
   }
+  function lifetimePct(offer, plan) {   // "Lifetime X% Off": the Monthly plan's discount off Reg, rounded down (never overstated)
+    return offer.full && plan.was ? Math.floor((offer.full - plan.now) / offer.full * 100) : 0;
+  }
+  function hasSecondAsk(D, offer) { return !!(D.declineDrop && offer.second && offer.second.plans); }
 
   // ---------- session ----------
   function load() {
@@ -109,14 +114,14 @@
     var stage = 'first', sel = 0, left = D.timerSeconds, timer = null, busy = false;
 
     function render() {
-      var ask = offer[stage], plan = ask.plans[sel], monthly = ask.plans[0], cta = ctaPrice(plan);
+      var ask = offer[stage], plan = ask.plans[sel], monthly = ask.plans[0], cta = ctaPrice(plan), pct = lifetimePct(offer, monthly);
       var bars = D.offers.map(function (o, i) { return '<span class="uo-bar' + (i <= idx ? ' is-on' : '') + '"></span>'; }).join('');
       var plansHtml = ask.plans.map(function (p, i) {
         return '<label class="uo-plan' + (i === sel ? ' is-selected' : '') + '">' +
           '<input type="radio" name="uo-plan" value="' + i + '"' + (i === sel ? ' checked' : '') + ' />' +
           '<span class="uo-plan__body"><span class="uo-plan__name">' + esc(p.label) + '</span>' +
-          '<span class="uo-plan__price"><s>' + money(p.was) + '/mo</s> ' + money(p.now) + '/mo</span>' +
-          '<span class="uo-plan__save">You are saving <b>' + money(p.save) + '</b></span></span></label>';
+          '<span class="uo-plan__price">' + (p.was ? '<s>' + money(p.was) + '/mo</s> ' : '') + money(p.now) + '/mo</span>' +
+          (p.save ? '<span class="uo-plan__save">You are saving <b>' + money(p.save) + '</b></span>' : '') + '</span></label>';
       }).join('');
       app.innerHTML =
         '<section class="uo-order" data-screen-label="UO Order">' + ICONS.check +
@@ -130,14 +135,15 @@
           '<div class="uo-media uo-media--' + offer.key + '"><img src="' + offer.image + '" alt="' + esc(offer.imageAlt) + '" width="' + offer.imageW + '" height="' + offer.imageH + '" /></div>' +
           '<div class="uo-body">' +
             '<h2 class="uo-name">' + esc(offer.name) + '</h2><p class="uo-pitch">' + esc(offer.pitch) + '</p>' +
-            '<p class="uo-price"><b>' + money(monthly.now) + '</b><span>/every 1 month</span></p><p class="uo-was"><s>' + money(offer.full) + '</s></p>' +
-            '<p class="uo-saving">You are saving <b>' + money(monthly.save) + '</b></p>' +
-            '<p class="uo-lifetime">Lifetime ' + ask.pct + '% Off Applied.</p>' +
+            '<p class="uo-price' + (offer.full ? '' : ' uo-price--solo') + '"><b>' + money(monthly.now) + '</b><span>/every 1 month</span></p>' +
+            (offer.full ? '<p class="uo-was"><s>' + money(offer.full) + '</s></p>' : '') +
+            (monthly.save ? '<p class="uo-saving">You are saving <b>' + money(monthly.save) + '</b></p>' : '') +
+            (pct ? '<p class="uo-lifetime">Lifetime ' + pct + '% Off Applied.</p>' : '') +
             '<ul class="uo-benefits">' + offer.benefits.map(function (b) { return '<li>' + ICONS.check + esc(b) + '</li>'; }).join('') + '</ul>' +
             '<h3 class="uo-choose">Choose your plan</h3><p class="uo-choose__sub">Longer plans = lower monthly costs!</p>' +
             '<div class="uo-plans" role="radiogroup" aria-label="Choose your plan">' + plansHtml + '</div>' +
             '<button type="button" class="uo-cta" data-uo-yes><span class="uo-cta__label">' + ICONS.box + 'Yes! Add to my plan!</span>' +
-              '<span class="uo-cta__price"><s>' + cta.was + '</s> ' + cta.now + '</span></button>' +
+              '<span class="uo-cta__price">' + (cta.was ? '<s>' + cta.was + '</s> ' : '') + cta.now + '</span></button>' +
             '<button type="button" class="uo-no" data-uo-no>' + ICONS.no + '<span>' + esc(ask.decline) + '</span></button>' +
           '</div></article>';
     }
@@ -167,7 +173,7 @@
       if (yes) {
         var p = offer[stage].plans[sel];
         S.items = (S.items || []).filter(function (it) { return it.key !== offer.key; });
-        S.items.push({ key: offer.key, name: offer.name, plan: p.label, months: p.months, perMonth: p.now, pct: offer[stage].pct });
+        S.items.push({ key: offer.key, name: offer.name, plan: p.label, months: p.months, perMonth: p.now, save: p.save || 0 });
         save(S);
         win.location.href = nextHref(D, offer.key);
         return;
@@ -175,7 +181,7 @@
       busy = true;
       no.querySelector('span').textContent = 'Declining...';
       win.setTimeout(function () {
-        if (stage === 'first') {
+        if (stage === 'first' && hasSecondAsk(D, offer)) {
           stage = 'second'; sel = 0;
           startTimer();          // before render(), so the new ask shows 10:00, not the old count
           render();
@@ -199,7 +205,7 @@
     var app = doc.getElementById('uo-app'), S = load();
     var date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     var rows = [{ name: orderLabel(D, S.med, S.term), note: 'Your GLP-1 plan' }].concat((S.items || []).map(function (it) {
-      return { name: it.name + ' - ' + it.plan, note: money(it.perMonth) + (it.months > 1 ? '/mo' : '/month') + ' · Lifetime ' + it.pct + '% Off' };
+      return { name: it.name + ' - ' + it.plan, note: money(it.perMonth) + (it.months > 1 ? '/mo' : '/month') + (it.save ? ' · You save ' + money(it.save) : '') };
     }));
     app.querySelector('[data-uo-date]').textContent = 'Order from ' + date;
     app.querySelector('[data-uo-items]').innerHTML = rows.map(function (r) {
@@ -219,5 +225,5 @@
   }
 
   return { money: money, clock: clock, banner: banner, cleanName: cleanName, orderLabel: orderLabel, offerIndex: offerIndex,
-           nextHref: nextHref, ctaPrice: ctaPrice, KEY: KEY };
+           nextHref: nextHref, ctaPrice: ctaPrice, lifetimePct: lifetimePct, hasSecondAsk: hasSecondAsk, KEY: KEY };
 }));

@@ -1,10 +1,10 @@
-/* node chime-upsell-offers/js/upsell-tests.js — the upsell offers against the client's recording (2026-10-05):
-   every price in both asks, the banners with and without a name, the order line, the routing, the pages' wiring,
-   and the checkout hand-off. No DOM. */
+/* node chime-upsell-offers/js/upsell-tests.js — the upsell offers against the client's recording (2026-10-05) and the
+   client's prices + Tesamorelin rename (2026-10-06): every price, the banners with and without a name, the order line,
+   the routing, the pages' wiring, the old sermorelin.html forward, and the checkout hand-off. No DOM. */
 'use strict';
 var fs = require('fs'), path = require('path');
 var D = require('./offers.js'), U = require('./upsell.js');
-var DIR = path.join(__dirname, '..'), V = '20260985';
+var DIR = path.join(__dirname, '..'), V = '20260986';
 var pass = 0, fail = 0;
 function eq(name, got, want) {
   if (JSON.stringify(got) === JSON.stringify(want)) pass++;
@@ -12,17 +12,25 @@ function eq(name, got, want) {
 }
 function grid(ask) { return ask.plans.map(function (p) { return [p.label, p.was, p.now, p.save]; }); }
 
-// 1. the recording's ladders, both asks (frames 0-88 s)
-var nad = D.offers[0], ser = D.offers[1], zof = D.offers[2];
-eq('order of offers', D.offers.map(function (o) { return o.key; }), ['nad', 'sermorelin', 'zofran']);
-eq('NAD+ 30%', grid(nad.first), [['Monthly Plan', 299, 209, 89], ['3-Month Plan', 253, 177, 227], ['6-Month Plan', 241, 169, 434], ['1-Year Plan', 233, 163, 839]]);
-eq('NAD+ 50%', grid(nad.second), [['Monthly Plan', 299, 149, 149], ['3-Month Plan', 253, 126, 379], ['6-Month Plan', 241, 120, 724], ['1-Year Plan', 233, 116, 1399]]);
-eq('Sermorelin 30%', grid(ser.first), [['Monthly Plan', 259, 181, 77], ['3-Month Plan', 216, 151, 194], ['6-Month Plan', 199, 139, 359], ['1-Year Plan', 183, 128, 659]]);
-eq('Sermorelin 50%', grid(ser.second), [['Monthly Plan', 259, 129, 129], ['3-Month Plan', 216, 108, 324], ['6-Month Plan', 199, 99, 599], ['1-Year Plan', 183, 91, 1099]]);
-eq('Zofran 30%', grid(zof.first), [['Monthly Plan', 99, 69, 29]]);
-eq('Zofran 50%', grid(zof.second), [['Monthly Plan', 99, 49, 49]]);
-eq('full prices', D.offers.map(function (o) { return o.full; }), [299, 259, 99]);
-eq('percentages', D.offers.map(function (o) { return [o.first.pct, o.second.pct]; }), [[30, 50], [30, 50], [30, 50]]);
+// 1. the client's prices (2026-10-06): Monthly / 3-Month / 6-Month, [label, Reg per month, price per month, You Save]
+var nad = D.offers[0], tes = D.offers[1], zof = D.offers[2];
+eq('order of offers', D.offers.map(function (o) { return o.key; }), ['nad', 'tesamorelin', 'zofran']);
+eq('names', D.offers.map(function (o) { return o.name; }), ['NAD+', 'Tesamorelin', 'Zofran (Ondansetron)']);
+eq('NAD+', grid(nad.first), [['Monthly Plan', 269, 149, 120], ['3-Month Plan', 269, 119, 450], ['6-Month Plan', 269, 89, 1080]]);
+eq('Tesamorelin', grid(tes.first), [['Monthly Plan', 299, 169, 130], ['3-Month Plan', 299, 139, 480], ['6-Month Plan', 299, 119, 1080]]);
+eq('Zofran: $59, no Reg', grid(zof.first), [['Monthly Plan', null, 59, null]]);
+eq('Reg (full) prices', D.offers.map(function (o) { return o.full; }), [269, 299, null]);
+eq('months', D.offers.map(function (o) { return o.first.plans.map(function (p) { return p.months; }); }), [[1, 3, 6], [1, 3, 6], [1]]);
+D.offers.forEach(function (o) {
+  o.first.plans.forEach(function (p) {
+    if (p.was) eq(o.key + ' ' + p.label + ': You Save = (Reg - price) x months', p.save, (p.was - p.now) * p.months);
+    eq(o.key + ' ' + p.label + ': Reg = the offer Reg', p.was, o.full);
+  });
+});
+eq('Lifetime % off (Monthly, rounded down)', D.offers.map(function (o) { return U.lifetimePct(o, o.first.plans[0]); }), [44, 43, 0]);
+eq('decline price drop off (one price per plan)', [D.declineDrop, D.offers.map(function (o) { return U.hasSecondAsk(D, o); })], [false, [false, false, false]]);
+eq('second asks parked without prices', D.offers.map(function (o) { return o.second.plans; }), [null, null, null]);
+eq('drop switches back on once second-ask prices exist', U.hasSecondAsk({ declineDrop: true }, { second: { plans: [{}] } }), true);
 eq('banner tones', D.offers.map(function (o) { return [o.first.tone, o.second.tone]; }), [['green', 'peach'], ['green', 'pink'], ['yellow', 'lavender']]);
 eq('decline wording', D.offers.map(function (o) { return [o.first.decline, o.second.decline]; }),
    [['No thanks, the next customer can have my offer', 'No thanks, the next customer can have my offer'],
@@ -34,7 +42,7 @@ eq('timings', [D.timerSeconds, D.decliningMs, D.confettiDelayMs], [600, 1100, 50
 // 2. banners: with the first name, without it, and no placeholder ever leaks
 eq('NAD+ first, named', U.banner(nad.first, 'yvonne'), "Wait yvonne! You were just selected as today's winner! 93% of patients add this to their plan!");
 eq('NAD+ second, named', U.banner(nad.second, 'yvonne'), 'Wait! yvonne are you sure? We just increased your personal discount.');
-eq('Sermorelin second, named', U.banner(ser.second, 'yvonne'), 'Are you sure yvonne? We just increased the offer discount for you');
+eq('Tesamorelin second, named', U.banner(tes.second, 'yvonne'), 'Are you sure yvonne? We just increased the offer discount for you');
 eq('Zofran first, named', U.banner(zof.first, 'yvonne'), "yvonne - It's normal to experience nausea while taking GLP-1's");
 eq('Zofran second, named', U.banner(zof.second, 'yvonne'), 'We just lowered the price just for you yvonne - This is the cheapest you can buy Zofran on the market!');
 eq('first word only, as typed', U.banner(nad.first, '  Yvonne  Smith '), "Wait Yvonne! You were just selected as today's winner! 93% of patients add this to their plan!");
@@ -47,15 +55,15 @@ D.offers.forEach(function (o) {
 
 // 3. helpers
 eq('clock', [U.clock(600), U.clock(599), U.clock(61), U.clock(0), U.clock(-5)], ['10:00', '9:59', '1:01', '0:00', '0:00']);
-eq('money', [U.money(1399), U.money(49)], ['$1,399', '$49']);
+eq('money', [U.money(1080), U.money(59)], ['$1,080', '$59']);
 eq('order label', [U.orderLabel(D, 'sema', 1), U.orderLabel(D, 'tirz', 12), U.orderLabel(D, 'x', 7)],
    ['Semaglutide - 1 month plan', 'Tirzepatide - 12 month plan', 'Semaglutide - 1 month plan']);
-eq('routing', [U.nextHref(D, 'nad'), U.nextHref(D, 'sermorelin'), U.nextHref(D, 'zofran')], ['sermorelin.html', 'zofran.html', 'done.html']);
-eq('CTA price monthly / longer', [U.ctaPrice(nad.first.plans[0]), U.ctaPrice(nad.first.plans[1])],
-   [{ was: '$299', now: '$209' }, { was: '$253', now: '$177/mo' }]);
+eq('routing', [U.nextHref(D, 'nad'), U.nextHref(D, 'tesamorelin'), U.nextHref(D, 'zofran')], ['tesamorelin.html', 'zofran.html', 'done.html']);
+eq('CTA price monthly / longer / no Reg', [U.ctaPrice(nad.first.plans[0]), U.ctaPrice(tes.first.plans[1]), U.ctaPrice(zof.first.plans[0])],
+   [{ was: '$269', now: '$149' }, { was: '$299', now: '$139/mo' }, { was: '', now: '$59' }]);
 
 // 4. the pages
-var pages = { 'index.html': 'nad', 'sermorelin.html': 'sermorelin', 'zofran.html': 'zofran', 'done.html': null };
+var pages = { 'index.html': 'nad', 'tesamorelin.html': 'tesamorelin', 'zofran.html': 'zofran', 'done.html': null };
 Object.keys(pages).forEach(function (f) {
   var html = fs.readFileSync(path.join(DIR, f), 'utf8'), body = html.replace(/<!--[\s\S]*?-->/g, '');
   eq(f + ' offer', (body.match(/data-offer="([^"]+)"/) || [])[1] || null, pages[f]);
@@ -74,6 +82,11 @@ Object.keys(pages).forEach(function (f) {
   eq(f + ' local refs resolve', refs.filter(function (r) { return !fs.existsSync(path.join(DIR, r)); }), []);
 });
 D.offers.forEach(function (o) { eq(o.key + ' image exists', fs.existsSync(path.join(DIR, o.image)), true); });
+var stub = fs.readFileSync(path.join(DIR, 'sermorelin.html'), 'utf8');
+eq('old sermorelin.html forwards to tesamorelin.html with the query', [/location\.replace\('tesamorelin\.html' \+ location\.search/.test(stub), /url=tesamorelin\.html/.test(stub), /noindex/.test(stub)], [true, true, true]);
+eq('no Sermorelin left on the offers or data', ['index.html', 'tesamorelin.html', 'zofran.html', 'done.html', 'js/offers.js', 'css/upsell.css'].filter(function (f) {
+  return /sermorelin/i.test(fs.readFileSync(path.join(DIR, f), 'utf8').replace(/<!--[\s\S]*?-->/g, '').replace(/\/\*[\s\S]*?\*\//g, ''));
+}), []);
 eq('done page: their three tiles, not links', (function (h) { return [(h.match(/class="uo-tile /g) || []).length, /<a[^>]*uo-tile/.test(h)]; })(fs.readFileSync(path.join(DIR, 'done.html'), 'utf8')), [3, false]);
 
 // 5. the checkout hand-off (../choose-treatment-original/)

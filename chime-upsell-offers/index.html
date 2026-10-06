@@ -8,17 +8,18 @@
     <meta name="robots" content="noindex" />
     <!-- Chime Health — post-purchase upsell offers (chime-upsell-offers/), offer 1 of 3 (NAD+).
          Client, 2026-10-05: a screen recording of TrimRx's three one-click offers after checkout (NAD+ -> Sermorelin ->
-         Zofran; the reference URL is lost), "same text format … but using the style of
+         Zofran; the reference URL is lost; client 2026-10-06: Sermorelin renamed Tesamorelin), "same text format … but using the style of
          choose-treatment-original … all the crap they have: animation, countdown timer, decline price decrease etc"
-         (plan UPSELL-OFFERS-PLAN.md, untracked). Their copy, prices and mechanics, on their timings: a 10-minute
-         countdown restarted on every ask, "Declining..." -> the after-decline ask at 50% off (instead of 30%) with a
-         confetti burst (GSAP Physics2D), a second decline -> the next offer, then done.html (their patient-portal
+         (plan UPSELL-OFFERS-PLAN.md, untracked). Their copy and mechanics, on their timings: a 10-minute
+         countdown, confetti (GSAP Physics2D) as each page loads, "Declining..." -> the next offer, then done.html (their patient-portal
          welcome). choose-treatment-original's look (header, step bar, cards, colours, Outfit); Chime's own amber vials
          and tablet photo. One page per offer: the markup is rendered by js/upsell.js from js/offers.js (ONE place for
          copy and prices); this file only names its offer (data-offer). "Pay" on ../choose-treatment-original/checkout/
          comes here with ?med&term and the first name in sessionStorage. Nothing is charged (no payment backend).
-         FLAGGED, carried from the reference: TrimRx's prices (NAD+ $299/$209/$149, Sermorelin $259/$181/$129, Zofran
-         $99/$69/$49) and their unreconciled "saving" figures; the invented scarcity ("selected as today's winner",
+         PRICES: the client's, 2026-10-06 (UPSELL-OFFERS-PRICING-PLAN.md): NAD+ Reg $269 -> $149 / $119 / $89 a
+         month, Tesamorelin Reg $299 -> $169 / $139 / $119, Zofran $59 (no Reg); one price per plan, so the reference's
+         after-decline price drop is off (js/offers.js declineDrop) until the client sends second-ask prices.
+         FLAGGED, carried from the reference: the invented scarcity ("selected as today's winner",
          "randomly chosen", "only given to a single customer each day", "93% / 92% of patients", the resetting timer,
          "the cheapest you can buy Zofran on the market"); the claims ("Turns back the clock at the cellular level",
          "Kills nausea fast — works in minutes", "the same anti-nausea med hospitals trust", "wake up feeling years
@@ -28,7 +29,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" />
     <link rel="stylesheet" href="../choose-treatment/css/checkout.css?v=20260941" />
-    <link rel="stylesheet" href="css/upsell.css?v=20260985" />
+    <link rel="stylesheet" href="css/upsell.css?v=20260986" />
   </head>
   <body class="font-sans antialiased">
     <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -66,7 +67,7 @@
         </div>
       </div>
       <main id="uo-app" class="uo-main" data-offer="nad">
-        <noscript><p>This offer needs JavaScript. <a href="sermorelin.html">Continue</a></p></noscript>
+        <noscript><p>This offer needs JavaScript. <a href="tesamorelin.html">Continue</a></p></noscript>
       </main>
 
       <footer class="uo-foot" data-screen-label="UO Footer">
@@ -77,7 +78,7 @@
     </div>
     <script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3.13.0/dist/Physics2DPlugin.min.js"></script>
-    <script src="js/offers.js?v=20260985"></script>
-    <script src="js/upsell.js?v=20260985"></script>
+    <script src="js/offers.js?v=20260986"></script>
+    <script src="js/upsell.js?v=20260986"></script>
   </body>
 </html>
