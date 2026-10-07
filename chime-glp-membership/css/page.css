@@ -131,7 +131,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .price__note { font-size: 12px; color: var(--muted); }
 .price__memb { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 14px; color: var(--body); }
 .price__memb b { color: var(--ink); font-weight: var(--w-bold); }
-.price__memb .tag { margin-left: auto; }
+.price__memb .tag { margin-left: 0; }
 .tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: var(--pill); background: var(--green-50); color: var(--green-700); font-size: 12px; font-weight: var(--w-bold); white-space: nowrap; }
 
 .ticks { display: grid; gap: 10px; margin-top: 20px; }

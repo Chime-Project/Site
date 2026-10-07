@@ -34,6 +34,8 @@ then http://localhost:8791/chime-glp-membership/
 | GLPM Close | purple band with the prices restated | new |
 | — | phone sticky price bar (after the hero, hidden over the closing band) | new |
 
+**Membership less prominent (Luis, 2026-10-06, phone mark-ups):** the "$17/mo membership" line is gone from the hero price card (only the "21 days free" tag stays), both price cards, the phone sticky bar and the tab title; it is still disclosed in the pricing intro, why-so-low, savings, how it works, the FAQ, the closing band and the fine print.
+
 **Left out on the client's instruction:** V2's providers grid (screenshot 06) and every "choose your
 provider" claim; "no markups" wording. Client screenshots: `uploads/glp-membership-ref/` (untracked).
 

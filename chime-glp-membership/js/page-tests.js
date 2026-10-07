@@ -48,19 +48,23 @@ ok(new RegExp('value="' + api.DEFAULT_MONTH + '"').test(html), "slider default =
 var prices = visible.match(/\$\d+(?=\/mo| \/mo|\s*\/mo)/g) || [];
 ok((visible.match(/\$59/g) || []).length >= 5, "$59 shown in hero, card, close, sticky, FAQ");
 ok((visible.match(/\$69/g) || []).length >= 5, "$69 shown in hero, card, close, FAQ, anchor");
-ok((visible.match(/\$17/g) || []).length >= 8, "$17 membership shown throughout");
+ok((visible.match(/\$17/g) || []).length >= 6, "$17 membership still disclosed lower on the page (pricing intro, why, savings, how, FAQ, close)");
 ok(!/\$(149|299|1,086|25)\b/.test(visible), "no V2 (Sesame) prices left");
 ok(/\$199/.test(visible) && /21-day/.test(visible), "annual billing + trial disclosed");
 
 /* ---------- price first, membership below ---------- */
 var hero = html.slice(html.indexOf('class="hero"'), html.indexOf('class="trust"'));
-ok(hero.indexOf("price__meds") > -1 && hero.indexOf("price__meds") < hero.indexOf("price__memb"), "hero: medication prices come before the membership line");
+ok(hero.indexOf("price__meds") > -1 && !/\$17/.test(hero), "hero: medication prices only, no $17 membership line (Luis 2026-10-06 mark-up)");
+ok(/class="price__memb"><span class="tag">21 days free<\/span>/.test(hero), "hero: the 21 days free tag sits where the membership line was");
 ok(/<h1>[^<]*<b>\$59\/month<\/b><\/h1>/.test(hero), "hero h1 is the medication price");
 var cards = html.match(/<article class="pcard[\s\S]*?<\/article>/g) || [];
 ok(cards.length === 2, "two GLP-1 price cards (semaglutide, tirzepatide)");
 cards.forEach(function (c, i) {
-  ok(c.indexOf("pcard__price") > -1 && c.indexOf("pcard__price") < c.indexOf("pcard__memb"), "card " + i + ": med price before membership");
+  ok(c.indexOf("pcard__price") > -1 && c.indexOf("pcard__memb") === -1 && !/membership from/.test(c.replace(/<dl[\s\S]*<\/dl>/, "")), "card " + i + ": med price, no membership line under it");
 });
+var sticky = html.slice(html.indexOf('data-sticky'), html.indexOf('</div>', html.indexOf('sticky__in')) + 6);
+ok(/GLP&#8209;1s from \$59\/mo/.test(sticky) && !/\$17|membership/.test(sticky), "sticky bar: price only, no membership line");
+ok(/<title>GLP-1s from \$59\/month \| Chime Health<\/title>/.test(html), "tab title without the membership price");
 ok(/pcard__price"><b>\$59</.test(html) && /pcard__price"><b>\$69</.test(html), "card prices = PRICES.sema / PRICES.tirz");
 ok(P.sema === 59 && P.tirz === 69 && P.membershipYear === 199, "PRICES constants");
 
@@ -85,7 +89,7 @@ ok(labels.filter(function (l) { return l === "See my price"; }).length >= 8, "on
 
 /* ---------- house rules ---------- */
 ok(/<meta name="robots" content="noindex"/.test(html), "noindex");
-ok(/css\/page\.css\?v=20260995/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned ?v=20260995");
+ok(/css\/page\.css\?v=20260999/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned (css 20260999, js 20260995)");
 ok(!/eyebrow/.test(html), "no eyebrow labels");
 ok(!/sesame|collective\.org|Thrive Market|Gunnar/i.test(text), "no competitor names in visible markup");
 ok(fs.existsSync(path.join(__dirname, "..", "images", "hero-800.webp")), "hero image present");
