@@ -90,7 +90,24 @@ var body = function (h) { return h.slice(h.indexOf('-->') + 3); };
   eq(price + ' was $299 kept', body(v).indexOf('$299') > -1, true);
   // identical to chime-offer-v9 apart from the price and the asset paths
   var norm = function (h) { return body(h).split('../chime-offer-v9/').join(''); };
-  eq(price + ' same page otherwise', norm(v).split('$' + price).join('$99'), body(page));
+  if (price !== '49') eq(price + ' same page otherwise', norm(v).split('$' + price).join('$99'), body(page));
+  else {
+    // Luis 2026-10-06, "dont put any text over titles": the $49 page moves every label above a heading to just below it
+    // (uploads/trinity-offer-v9-ref/no_eyebrows.py), so it is the same page re-ordered: the same text, label by label
+    var texts = function (h) { return h.split(/<[^>]+>/).map(function (t) { return t.trim(); }).filter(Boolean).sort(); };
+    eq('49 same text otherwise', texts(norm(v).split('$49').join('$99')), texts(body(page)));
+    [['h1', 'Honest Weight Loss', '>(4.4) Based on member-reported'], ['h2', 'Ready To Reach', '>Your potential<'],
+     ['h2', 'How Chime', '>How it works<'], ['h3', 'Start Your', '>Step 1<'], ['h3', 'Get Prescribed', '>Step 2<'],
+     ['h3', 'Receive', '>Step 3<'], ['h2', 'Why we', '>The Chime Health difference<'], ['h2', 'Get Started For', '>Feel confident in your skin<']
+    ].forEach(function (c) {
+      var b_ = body(v), h = b_.indexOf('>' + c[1], b_.search(new RegExp('<' + c[0] + '[ >][^]*?' + c[1].replace(/[()]/g, '\\$&'))));
+      var close = b_.indexOf('</' + c[0] + '>', h), lab = b_.indexOf(c[2], close), between = b_.slice(close + 5, lab + 1);
+      eq('49 "' + c[2].replace(/[<>]/g, '') + '" sits right below its ' + c[0], h > -1 && lab > close && !/<h[1-6][ >]/.test(between) &&
+         !between.replace(/<[^>]+>/g, '').trim(), true);   // nothing but markup between the heading and its label
+      var open_ = b_.lastIndexOf('<' + c[0], h), above = b_.slice(Math.max(0, open_ - 400), open_).replace(/<[^>]+>/g, '').trim();
+      eq('49 nothing above the ' + c[0] + ' "' + c[1] + '"', above.indexOf(c[2].replace(/[<>]/g, '')), -1);
+    });
+  }
   var r = (v.match(/(?:src|href|srcset)="(?!https?:|#|mailto:|\.\.\/chimeAssessment|\.\.\/index|\.\.\/(?:privacy|hipaa|consumer|telehealth|shipping|return|terms|faq))([^"?#]+)/g) || []).map(function (m) { return m.replace(/^\w+="/, ''); });
   (v.match(/url\('([^']+)'\)/g) || []).forEach(function (u) { r.push(u.slice(5, -2)); });
   eq(price + ' assets found', r.length > 30, true);
