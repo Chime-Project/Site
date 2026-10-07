@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>GLP-1s from $59/month, membership from $17/month | Chime Health</title>
+    <meta name="description" content="Doctor-prescribed compounded semaglutide from $59/month and tirzepatide from $69/month, the same price at every dose. Membership as low as $17/month." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#ffffff" />
+    <!-- Chime Health: GLP membership page (client sheet, 2026-10-06).
+         Devin: "combine elements of #1 & #2 together in a clean marketing
+         package ... I like the sesame style better, but I want the initial
+         focus to be on the lower prices and then the cost of membership."
+         Luis: Sesame V2 design as the base, "membership as low as $17/month",
+         pricing as the focal point, the medication price in bold with the
+         membership below it, Collective's content (why so low, savings, how it
+         works, benefits) designed for conversion with a regular CTA. GLP-1
+         first; a broader version follows (it becomes ../chime-membership/).
+
+         CLIENT MARK-UPS APPLIED: no providers grid; no "Provider choice" row
+         and no provider-choice claim anywhere; medication is "discounted",
+         never "no markups".
+
+         STAND-INS, NOT CLIENT-APPROVED (all figures live in js/page.js PRICES):
+         - $59 semaglutide / $69 tirzepatide per month, any dose, and the $199
+           annual membership with a 21-day free trial: Collective's figures,
+           used because this page sells "lower prices" (D-A1, D-A2).
+         - "As low as $17/month" = $199 / 12 = $16.58, rounded up. Annual
+           billing; no monthly membership option is claimed.
+         - Savings calculator: Collective's formula and its public competitor
+           pricing (tirzepatide, August 2026), shown as the AVERAGE of three
+           named online providers rather than by name (D-A4). $435/mo, "save
+           over $4,000 a year" and "up to 80%" all come from that average.
+         - 23% / 18% average weight loss: the two real-world studies Collective
+           cites (DOIs in the results note).
+         - The 2-day cold shipping, unlimited messaging and dietitian claims are
+           Collective's; reviews are FICTIONAL names written for layout.
+         - "Licensed clinicians in 38 states" is the V2 page's stand-in line.
+         noindex. -->
+    <link rel="preload" as="image" href="images/hero-800.webp" imagesrcset="images/hero-800.webp 600w, images/hero-1600.webp 926w" imagesizes="(min-width: 1024px) 463px, 100vw" />
+    <link rel="stylesheet" href="css/page.css?v=20260991" />
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 7" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7" /></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" /><path d="M9 12l2 2 4-4" /></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L15 9V3" /><path d="M8 3h8M7.5 14h9" /></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" /></symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7" /><circle cx="7" cy="17.5" r="1.8" /><circle cx="17" cy="17.5" r="1.8" /></symbol>
+      <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 11V4h7l11 11-7 7L3 11z" /><circle cx="7.5" cy="7.5" r="1.4" /></symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15" /><path d="M5 19l7-7" /></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9L12 2.5z" /></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="hdr" data-screen-label="GLPM Header">
+      <div class="wrap hdr__in">
+        <a class="hdr__logo" href="../index.html"><img src="images/logo-slate.png" alt="Chime Health" width="132" height="60" /></a>
+        <nav class="hdr__nav" aria-label="Main">
+          <a href="#pricing">Pricing</a>
+          <a href="#savings">Savings</a>
+          <a href="#how">How it works</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <a class="hdr__login" href="../chimeAssessment.html">Log in</a>
+        <a class="btn hdr__cta" href="../chimeAssessment.html">See my price</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" data-screen-label="GLPM Hero">
+        <div class="wrap hero__in">
+          <div class="hero__copy">
+            <h1>Get GLP&#8209;1s from <b>$59/month</b></h1>
+            <p class="rating"><img src="images/legitscript.png" alt="" width="22" height="24" /><b>LegitScript certified</b><span>Licensed clinicians in 38 states</span></p>
+            <div class="price" aria-label="Pricing">
+              <div class="price__meds">
+                <p class="price__med"><span class="price__name">Semaglutide</span><span class="price__fig"><b>$59</b><i>/mo</i></span><span class="price__note">any dose</span></p>
+                <p class="price__med"><span class="price__name">Tirzepatide</span><span class="price__fig"><b>$69</b><i>/mo</i></span><span class="price__note">any dose</span></p>
+              </div>
+              <p class="price__memb"><span>+ Membership as low as <b>$17/mo</b></span><span class="tag">21 days free</span></p>
+            </div>
+            <ul class="ticks">
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>Same price at every dose, every month</span></li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>No multi-month plan required. Cancel anytime</span></li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg><span>Doctor-prescribed, cold-shipped to your door</span></li>
+            </ul>
+            <div class="hero__act">
+              <a class="btn" href="../chimeAssessment.html">See my price<svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+              <a class="btn btn--ghost" href="../chimeAssessment.html">See if you qualify</a>
+            </div>
+            <p class="fine">Takes about 2 minutes. Compounded medication, if prescribed. Membership is $199 billed once a year (about $16.58/mo), after a 21-day free trial.</p>
+          </div>
+          <figure class="hero__media">
+            <img src="images/hero-800.webp" srcset="images/hero-800.webp 600w, images/hero-1600.webp 926w" sizes="(min-width: 1024px) 463px, 100vw" alt="Chime compounded semaglutide and tirzepatide vials" width="600" height="600" fetchpriority="high" />
+            <figcaption class="hero__badge"><span>Save vs. typical online programs</span><b>up to 80%</b></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <div class="trust" data-screen-label="GLPM Trust">
+        <div class="trust__track">
+          <ul>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg>Same price, any dose</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-shield" /></svg>US-licensed pharmacies</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-flask" /></svg>3rd-party tested</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-chat" /></svg>Unlimited doctor messaging</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-truck" /></svg>2-day cold shipping</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-leaf" /></svg>Nutrition + lifestyle support</li>
+          </ul>
+          <ul aria-hidden="true">
+            <li><svg class="ico" aria-hidden="true"><use href="#i-tag" /></svg>Same price, any dose</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-shield" /></svg>US-licensed pharmacies</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-flask" /></svg>3rd-party tested</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-chat" /></svg>Unlimited doctor messaging</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-truck" /></svg>2-day cold shipping</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-leaf" /></svg>Nutrition + lifestyle support</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="sec sec--band" id="pricing" data-screen-label="GLPM Pricing">
+        <div class="wrap">
+          <div class="sec__head">
+            <h2>Doctor-prescribed GLP&#8209;1s at a radically lower price</h2>
+            <p>Pick your medication. The price you see is the price you pay at every dose. Membership is extra, and it&rsquo;s as low as $17 a month.</p>
+          </div>
+          <div class="pcards">
+            <article class="pcard">
+              <div class="pcard__body">
+                <h3>Compounded Semaglutide</h3>
+                <p class="pcard__mol">Weekly injection &middot; the GLP&#8209;1 most people know</p>
+                <p class="pcard__pills"><span class="pill pill--new">Lowest price</span></p>
+                <p class="pcard__price"><b>$59</b><i>/mo</i></p>
+                <p class="pcard__memb">+ membership from <b>$17/mo</b></p>
+              </div>
+              <img class="pcard__img" src="images/vial-semaglutide.webp" alt="Compounded semaglutide vial" width="614" height="1200" loading="lazy" />
+              <ul class="pcard__list">
+                <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>Same price at every dose</li>
+                <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>About 18% average body weight lost in a real-world study</li>
+                <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>Optional twice-weekly dosing for fewer side effects</li>
+              </ul>
+              <p class="pcard__act">
+                <a class="btn" href="../chimeAssessment.html">See my price</a>
+                <button class="pcard__more" type="button" aria-expanded="false" aria-controls="more-sema"><span>Learn more</span><svg class="ico" aria-hidden="true"><use href="#i-down" /></svg></button>
+              </p>
+              <dl class="pcard__detail" id="more-sema" hidden>
+                <dt>What is semaglutide?</dt>
+                <dd>A GLP-1 medication that reduces hunger, helps you feel full sooner and supports weight loss. In clinical studies, people lost about 15% of their body weight on average alongside diet and lifestyle changes.</dd>
+                <dt>What does it cost?</dt>
+                <dd>$59 a month at any dose, plus a membership that works out to about $17 a month ($199 billed once a year). Your first 21 days of membership are free.</dd>
+                <dt>What about side effects?</dt>
+                <dd>Your doctor can split your dose into two smaller injections a week, which smooths out the nausea some people feel with once-a-week dosing.</dd>
+              </dl>
+            </article>
+            <article class="pcard pcard--pick">
+              <div class="pcard__body">
+                <h3>Compounded Tirzepatide</h3>
+                <p class="pcard__mol">Weekly injection &middot; dual-action GLP&#8209;1 + GIP</p>
+                <p class="pcard__pills"><span class="pill pill--pick">Most popular</span><span class="pill pill--alt">Highest average weight loss</span></p>
+                <p class="pcard__price"><b>$69</b><i>/mo</i><s>$435</s></p>
+                <p class="pcard__memb">+ membership from <b>$17/mo</b></p>
+              </div>
+              <img class="pcard__img" src="images/vial-tirzepatide.webp" alt="Compounded tirzepatide vial" width="622" height="1200" loading="lazy" />
+              <ul class="pcard__list">
+                <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>Same price at every dose</li>
+                <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>About 23% average body weight lost in a real-world study</li>
+                <li><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>Only $10 more than semaglutide, not double</li>
+              </ul>
+              <p class="pcard__act">
+                <a class="btn" href="../chimeAssessment.html">See my price</a>
+                <button class="pcard__more" type="button" aria-expanded="false" aria-controls="more-tirz"><span>Learn more</span><svg class="ico" aria-hidden="true"><use href="#i-down" /></svg></button>
+              </p>
+              <dl class="pcard__detail" id="more-tirz" hidden>
+                <dt>What is tirzepatide?</dt>
+                <dd>A dual-action medication that activates both GLP-1 and GIP receptors to regulate appetite, metabolism and blood sugar. In clinical studies, people lost about 20&ndash;22% of their body weight on average alongside diet and lifestyle changes.</dd>
+                <dt>Why isn&rsquo;t it more expensive?</dt>
+                <dd>Many programs charge nearly double for tirzepatide. It costs us only slightly more, so it costs you only slightly more: $69 a month at any dose, plus a membership from $17 a month.</dd>
+                <dt>What about side effects?</dt>
+                <dd>Twice-weekly dosing is available here too, personalised by your doctor to keep side effects down.</dd>
+              </dl>
+            </article>
+          </div>
+          <p class="anchor">Other online programs average <s>$435/mo</s> for tirzepatide. <span class="tag">You pay $69</span></p>
+          <p class="cite">Compounded medications are prescribed only if a licensed clinician decides they are right for you; they are not FDA-approved. Competitor average from publicly listed standard monthly pricing of three online GLP-1 programs, August 2026; may change.</p>
+        </div>
+      </section>
+
+      <section class="sec" data-screen-label="GLPM Why">
+        <div class="wrap why__in">
+          <figure class="why__media"><img src="images/why-800.webp" srcset="images/why-800.webp 800w, images/why-1200.webp 1200w" sizes="(min-width: 768px) 600px, 100vw" alt="Two people running on a ridge at sunrise" width="800" height="600" loading="lazy" /></figure>
+          <div class="why__card">
+            <h2>Why is the price so low? What&rsquo;s the catch?</h2>
+            <p>Most healthcare companies hide their profit in the price of your medication or in expensive monthly memberships.</p>
+            <p>We use our members&rsquo; combined buying power and a <b>low $199 annual membership</b>, <em>as low as $17 a month</em>, to negotiate discounted pricing from regulated, 3rd-party tested US pharmacy partners. That&rsquo;s how members get high-quality medication for less.</p>
+            <p>Try membership free for 21 days (you only pay for your medication). If you don&rsquo;t love it, cancelling takes one click and you&rsquo;ll never be charged again.</p>
+            <p>Good health shouldn&rsquo;t be only for people who can afford to overpay. <span class="why__sign">Medicine for the people.</span></p>
+            <a class="btn btn--light" href="../chimeAssessment.html">See my price</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec sec--band" id="savings" data-screen-label="GLPM Savings">
+        <div class="wrap save__in">
+          <div class="save__copy">
+            <h2>See how the savings add up</h2>
+            <p>Chime membership can save you up to 80% over a year compared with typical online GLP&#8209;1 programs. At about $17 a month, your membership usually pays for itself in the first month or two.</p>
+            <a class="btn" href="../chimeAssessment.html">Start saving</a>
+          </div>
+          <div class="calc" data-savings>
+            <p class="calc__lbl">Total spent by month <span data-out="month">6</span></p>
+            <div class="calc__cols">
+              <p class="calc__col calc__col--us"><span>Chime</span><b data-out="ours">$613</b></p>
+              <p class="calc__col calc__col--them"><span>Typical program</span><b data-out="theirs">$2,475</b></p>
+            </div>
+            <div class="bars" aria-hidden="true">
+              <div class="bar bar--us"><i data-bar="ours" style="width:25%"></i></div>
+              <div class="bar bar--them"><i></i></div>
+            </div>
+            <p class="calc__slide"><label for="months">Month <span data-out="month2">6</span></label><input id="months" type="range" min="1" max="12" step="1" value="6" aria-valuetext="Month 6" /></p>
+            <p class="calc__save"><span>By month <span data-out="month3">6</span>, you could save</span><b data-out="save">$1,862</b><span><span data-out="pct">75%</span> less than a typical program</span></p>
+            <p class="calc__paid" data-out="paid"><svg class="ico" aria-hidden="true"><use href="#i-check" /></svg>Your membership has already paid for itself.</p>
+            <p class="fine">Tirzepatide at $69/mo plus the $199 annual membership (charged after the 21-day free trial), against the average standard monthly price of three online GLP-1 programs with no promotional or prepay discounts. Competitor pricing from publicly available information as of August 2026; may change.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec how" id="how" data-screen-label="GLPM How">
+        <div class="wrap how__in">
+          <figure class="how__media">
+            <img src="images/how-600.webp" srcset="images/how-600.webp 600w, images/how-1000.webp 1000w" sizes="(min-width: 1024px) 440px, 100vw" alt="Smiling woman carrying a yoga mat at home" width="600" height="750" loading="lazy" />
+            <figcaption class="how__bubble"><b>$4,000+</b>saved a year on GLP&#8209;1s compared with typical programs</figcaption>
+          </figure>
+          <div>
+            <h2>How it works</h2>
+            <ol class="steps">
+              <li><h3>Choose your medication</h3><p>Compounded semaglutide or tirzepatide, at one low price for every dose.</p></li>
+              <li><h3>Unlock member pricing</h3><p>Start with a 21-day free trial. Membership is as low as $17 a month after that.</p></li>
+              <li><h3>Complete a quick health review</h3><p>A licensed doctor reviews your answers and tailors a plan to you.</p></li>
+              <li><h3>Start losing weight</h3><p>Your medication is cold-shipped by 2-day express to your door.</p></li>
+              <li><h3>Get ongoing care</h3><p>Unlimited doctor messaging plus health and nutrition support.</p></li>
+            </ol>
+            <a class="btn" href="../chimeAssessment.html">See my price<svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec sec--band" data-screen-label="GLPM Results">
+        <div class="wrap">
+          <div class="sec__head">
+            <h2>Real results, at a price you can keep paying</h2>
+            <p>The best GLP&#8209;1 plan is the one you can afford to stay on.</p>
+          </div>
+          <div class="results">
+            <div class="result"><b>23%</b><p>average body weight lost on compounded tirzepatide over 12 months in a real-world study</p></div>
+            <div class="result"><b>18%</b><p>average body weight lost on compounded semaglutide over about a year in a real-world study</p></div>
+            <div class="result"><b>$4,060</b><p>saved in a year on tirzepatide, compared with the average typical online program</p></div>
+          </div>
+          <p class="cite">Averages, not a prediction of your results; outcomes vary with health, lifestyle and adherence. Studies: <a href="https://doi.org/10.1016/j.obpill.2025.100236" target="_blank" rel="noopener">tirzepatide</a>, <a href="https://doi.org/10.46889/JCMR.2025.6310" target="_blank" rel="noopener">semaglutide</a>. A doctor decides what&rsquo;s right for you.</p>
+        </div>
+      </section>
+
+      <section class="sec revs sec--band" data-screen-label="GLPM Reviews" style="padding-top:0">
+        <div class="wrap">
+          <div class="sec__head">
+            <h2>What members say about the price</h2>
+          </div>
+          <div class="rail" data-rail>
+            <ul class="quotes" data-track>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>&ldquo;I was paying over $400 a month somewhere else. Same medication, and now it&rsquo;s $69. I wish I&rsquo;d switched sooner.&rdquo;</blockquote><p class="quote__by">Jenna R.<span>Tirzepatide member</span></p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>&ldquo;The price didn&rsquo;t jump when my dose went up. That alone made me trust them.&rdquo;</blockquote><p class="quote__by">Marcus T.<span>Semaglutide member</span></p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>&ldquo;Messaging my doctor is easy and the vials showed up cold in two days. Down 31 pounds.&rdquo;</blockquote><p class="quote__by">Dana K.<span>Tirzepatide member</span></p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>&ldquo;No six-month contract, no surprise fees. The membership costs less than my streaming apps.&rdquo;</blockquote><p class="quote__by">Priya S.<span>Semaglutide member</span></p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>&ldquo;Twice-weekly dosing fixed my nausea. I finally stuck with it long enough to see results.&rdquo;</blockquote><p class="quote__by">Laura M.<span>Tirzepatide member</span></p></li>
+              <li class="quote"><p class="stars" aria-label="5 out of 5"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></p><blockquote>&ldquo;I did the math with their calculator. I&rsquo;m saving more than $300 every single month.&rdquo;</blockquote><p class="quote__by">Chris B.<span>Tirzepatide member</span></p></li>
+            </ul>
+          </div>
+          <div class="rail__ctl">
+            <ul class="dots" data-dots aria-label="Review pages"></ul>
+            <div class="arrows">
+              <button class="arw" type="button" data-prev aria-label="Previous reviews"><svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+              <button class="arw" type="button" data-next aria-label="More reviews"><svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec benefits" data-screen-label="GLPM Benefits">
+        <div class="wrap sec__head">
+          <h2>Weight loss is only the beginning</h2>
+          <p>Ask your doctor how GLP&#8209;1s may have far-reaching effects on every part of your life.</p>
+        </div>
+        <div class="mq"><div class="mq__track"><ul><li>Blood pressure</li><li>Inflammation</li><li>Cravings</li><li>Blood sugar</li><li>Heart health</li><li>Metabolic health</li></ul><ul aria-hidden="true"><li>Blood pressure</li><li>Inflammation</li><li>Cravings</li><li>Blood sugar</li><li>Heart health</li><li>Metabolic health</li></ul></div></div>
+        <div class="mq mq--rev"><div class="mq__track"><ul><li>Diabetes</li><li>Liver function</li><li>Food noise</li><li>Cholesterol</li><li>Kidney health</li><li>Sleep apnea</li><li>Arthritis</li></ul><ul aria-hidden="true"><li>Diabetes</li><li>Liver function</li><li>Food noise</li><li>Cholesterol</li><li>Kidney health</li><li>Sleep apnea</li><li>Arthritis</li></ul></div></div>
+        <div class="mq mq--slow"><div class="mq__track"><ul><li>Energy</li><li>Joint pain</li><li>Mobility</li><li>Confidence</li><li>Emotional eating</li><li>Protect neurons</li></ul><ul aria-hidden="true"><li>Energy</li><li>Joint pain</li><li>Mobility</li><li>Confidence</li><li>Emotional eating</li><li>Protect neurons</li></ul></div></div>
+      </section>
+
+      <section class="sec sec--band" data-screen-label="GLPM Compare">
+        <div class="wrap">
+          <div class="sec__head"><h2>See why Chime is the future of online weight loss care.</h2></div>
+          <div class="cmp__scroll">
+            <table class="cmp">
+              <caption class="sr-only">Chime compared with other weight loss services</caption>
+              <thead><tr><td></td><th scope="col" class="cmp__us"><img src="images/logo-slate.png" alt="Chime Health" width="108" height="49" /></th><th scope="col">Other weight loss services</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Provider availability</th><td class="y">See a provider as soon as today</td><td class="n">Wait days, weeks, or months for a visit</td></tr>
+                <tr><th scope="row">Easy scheduling</th><td class="y">Choose any time that works for you</td><td class="n">Inconvenient appointment hours</td></tr>
+                <tr><th scope="row">Pricing</th><td class="y">Transparent, upfront pricing</td><td class="n">Co-pays, hidden fees and surprise bills</td></tr>
+                <tr><th scope="row">Cost of medication</th><td class="y">Discounted medication</td><td class="n">Higher-priced medication</td></tr>
+                <tr><th scope="row">Communication</th><td class="y">Video visits and unlimited chat</td><td class="n">Limited time with your provider</td></tr>
+                <tr><th scope="row">Convenience</th><td class="y">Virtual visits any time, anywhere</td><td class="n">Spend hours of your day on a doctor's visit</td></tr>
+                <tr><th scope="row">Insurance criteria</th><td class="y">No insurance required</td><td class="n">Insurance required</td></tr>
+                <tr><th scope="row">Comprehensive care</th><td class="y">Personalized treatment for you</td><td class="n">Cookie-cutter treatment plans</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mid-cta"><a class="btn" href="../chimeAssessment.html">See my price</a></p>
+        </div>
+      </section>
+
+      <section class="sec faq" id="faq" data-screen-label="GLPM FAQ">
+        <div class="wrap faq__in">
+          <h2>Questions, answered honestly</h2>
+          <ul class="acc" data-acc>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>How much does it cost?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Compounded semaglutide is <strong>$59 a month</strong> and compounded tirzepatide is <strong>$69 a month</strong>, the same price at any dose. Membership is <strong>$199 a year</strong>, which works out to about $17 a month, and your first 21 days are free.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Why is it so much cheaper than other GLP-1 programs?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Many programs make their money on the medication. We keep medication discounted and charge one low annual membership instead, and we use our members&rsquo; combined buying power to negotiate better prices from licensed US pharmacies.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>What does the membership include?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><ul><li>Your doctor&rsquo;s review and prescription, if appropriate</li><li>Unlimited messaging with your care team</li><li>Dose adjustments as you progress</li><li>Health, nutrition and lifestyle support</li></ul></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>How does the free trial work, and can I cancel?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Your first 21 days of membership are free; you only pay for your medication. Cancel before the trial ends and you won&rsquo;t be charged the membership. After that, cancelling is one click and there is no multi-month plan to finish.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Does the price go up when my dose goes up?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>No. Your monthly medication price is the same at every dose your doctor prescribes.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Is compounded medication safe and legitimate?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Every prescription is written by a US-licensed clinician and filled by a state-licensed US pharmacy, and batches are third-party tested for purity and potency. Compounded medications are not FDA-approved; your clinician decides whether one is right for you.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Do I need insurance?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>No. Chime doesn&rsquo;t bill insurance, so there are no co-pays, prior authorisations or surprise bills. The price you see is what you pay.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Who is a good candidate?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>Generally adults with a BMI of 30 or higher, or 27 or higher with a weight-related condition such as high blood pressure or type 2 diabetes. GLP-1s aren&rsquo;t right for everyone, including people with a history of pancreatitis or a personal or family history of medullary thyroid cancer. The assessment takes about 2 minutes and a doctor makes the final call.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Where is Chime available?</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>See <a href="../faq.html#jurisdictions">Service Availability</a> for the current list of states.</p></div>
+            </li>
+            <li>
+              <button type="button" class="acc__q" aria-expanded="false"><span>Important safety information</span><svg class="ico" aria-hidden="true"><use href="#i-plus" /></svg></button>
+              <div class="acc__a" hidden><p>GLP-1 medications such as semaglutide and tirzepatide may increase the risk of thyroid C-cell tumours, including medullary thyroid carcinoma, seen in animal studies. Do not use them if you or a family member has had MTC or Multiple Endocrine Neoplasia syndrome type 2. Common side effects include nausea, vomiting, diarrhoea, constipation and stomach pain. Tell your clinician about all your medical conditions and medications.</p></div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="close" data-screen-label="GLPM Close">
+        <div class="wrap">
+          <div class="close__in">
+            <div class="close__copy">
+              <h2>Get results you can afford to keep</h2>
+              <p class="close__price"><b>$59</b><i>/mo semaglutide</i></p>
+              <p class="close__memb">Tirzepatide <b>$69/mo</b> &middot; + membership as low as <b>$17/mo</b></p>
+              <a class="btn btn--light" href="../chimeAssessment.html">See my price<svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+              <p class="fine">21 days of membership free. Cancel anytime.</p>
+            </div>
+            <figure class="close__media"><img src="images/close-800.webp" alt="Smiling woman in a cream top and blue cardigan" width="800" height="1000" loading="lazy" /></figure>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot" data-screen-label="GLPM Footer">
+      <div class="wrap foot__in">
+        <div class="foot__brand">
+          <img src="images/logo-white.png" alt="Chime Health" width="128" height="58" />
+          <a href="https://www.legitscript.com/websites/?checker_keywords=chimehealth.com" target="_blank" title="Verify LegitScript Approval for www.chimehealth.com"><img class="foot__seal" src="https://static.legitscript.com/seals/51605690.png" alt="Verify Approval for www.chimehealth.com" width="44" height="48" /></a>
+        </div>
+        <nav class="foot__links" aria-label="Legal">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+          <a href="../hipaa-notice.html">HIPAA Notice of Privacy Practices</a>
+          <a href="../consumer-health-data-privacy-policy.html">Consumer Health Data Privacy Policy</a>
+          <a href="../telehealth-consent.html">Telehealth Consent</a>
+          <a href="../shipping-policy.html">Shipping Policy</a>
+          <a href="../return-refund-policy.html">Return &amp; Refund Policy</a>
+          <a href="../terms-conditions.html">Terms &amp; Conditions</a>
+          <a href="../faq.html#jurisdictions">Service Availability</a>
+          <a href="../faq.html">FAQ</a>
+        </nav>
+      </div>
+      <p class="foot__fine">Compounded medications are prescribed only when a licensed clinician determines they are appropriate and are not FDA-approved. Prices shown are monthly medication prices plus an annual membership billed once a year; competitor comparisons use publicly available standard pricing as of August 2026. &copy; 2026 Chime Health. All rights reserved.</p>
+    </footer>
+
+    <div class="sticky" data-sticky aria-hidden="true">
+      <div class="sticky__in">
+        <p class="sticky__txt"><b>GLP&#8209;1s from $59/mo</b><span>+ membership as low as $17/mo</span></p>
+        <a class="btn" href="../chimeAssessment.html" tabindex="-1">See my price</a>
+      </div>
+    </div>
+
+    <script src="js/page.js?v=20260991" defer></script>
+  </body>
+</html>
