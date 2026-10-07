@@ -104,6 +104,53 @@
     [['ul.u10-rail[data-v-7d1af2bd]', 3.5], ['ul.u10-stories-rail', 6], ['ul.u10-rail[data-v-f3c64244]', 3.5], ['ol.u10-rail[data-v-bf9f88e5]', 3.8]]
       .forEach(function (r) { var el = $(r[0]); if (el) autoRail(el, r[1]); });
 
+    // 8. "Why Chime Health Is Becoming the Choice for Better Care" (Luis 2026-10-06: animate it): when the section
+    //    scrolls in, the heading rises, the four stat cards stagger up and their figures count up to the printed
+    //    values (19%, 9/10, up to 6.4", 92%), then the disclaimer and the button follow. Runs once. Elements are only
+    //    hidden here, by script, so no-JS and reduced-motion visitors get the section exactly as before.
+    var statsH = $$('h2').filter(function (h) { return /Becoming the Choice/.test(h.textContent); })[0];
+    var statsSec = statsH && statsH.closest('section');
+    if (statsSec && 'IntersectionObserver' in window && !reduced() && Element.prototype.animate) {
+      var statsHead = statsH.parentNode;
+      var statItems = $$('ul > li', statsSec);                       // includes the phone rail's aria-hidden copies
+      var statsTail = [$('ul + p', statsSec), $('a[href="consultation/"]', statsSec)].filter(Boolean);
+      [statsHead].concat(statItems, statsTail).forEach(function (el) { el.style.opacity = '0'; });
+      var figs = statItems.map(function (li) {
+        var p = li.querySelector('p');
+        var tn = p && Array.prototype.filter.call(p.childNodes, function (n) { return n.nodeType === 3 && /\d/.test(n.nodeValue); })[0];
+        var m = tn && tn.nodeValue.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/);
+        return m ? { node: tn, p: p, pre: m[1], to: parseFloat(m[2]), dec: (m[2].split('.')[1] || '').length, post: m[3], text: tn.nodeValue } : null;
+      });
+      var runStats = function () {
+        var ease = 'cubic-bezier(.2,.7,.2,1)';
+        statsHead.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 700, easing: ease, fill: 'forwards' });
+        statItems.forEach(function (li, i) {
+          li.animate([{ opacity: 0, transform: 'translateY(28px) scale(.96)' }, { opacity: 1, transform: 'none' }],
+            { duration: 650, delay: 150 + (i % 4) * 110, easing: ease, fill: 'forwards' });
+        });
+        statsTail.forEach(function (el, i) {
+          el.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 600, delay: 700 + i * 120, easing: ease, fill: 'forwards' });
+        });
+        figs.forEach(function (f, i) {
+          if (!f) return;
+          var t0 = null, dur = 1300, delay = 250 + (i % 4) * 110;
+          f.p.style.fontVariantNumeric = 'tabular-nums';
+          f.node.nodeValue = f.pre + (0).toFixed(f.dec) + f.post;
+          var tick = function (t) {
+            if (t0 === null) t0 = t + delay;
+            var k = Math.min(1, Math.max(0, (t - t0) / dur)), e = 1 - Math.pow(1 - k, 3);
+            if (k < 1) { f.node.nodeValue = f.pre + (f.to * e).toFixed(f.dec) + f.post; requestAnimationFrame(tick); }
+            else { f.node.nodeValue = f.text; f.p.style.fontVariantNumeric = ''; }   // ends on the printed text, exactly
+          };
+          requestAnimationFrame(tick);
+        });
+      };
+      var statsIO = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { statsIO.disconnect(); runStats(); }
+      }, { threshold: 0.25 });
+      statsIO.observe(statsSec);
+    }
+
     // 7. Real Stories loops (Chime stand-in selfie clips, no sound; added by the build's stories_video.py).
     //    Runs after the rails so the phone rail's aria-hidden copies get their clips too. A clip plays only while
     //    its card is on screen; its still fades out once frames are flowing. Reduced motion keeps the stills.

@@ -25,7 +25,7 @@ pages.forEach(function (f) {
   ok(/<meta name="robots" content="noindex">/.test(s), 'noindex: ' + rel);
   ok(/<title>[^<]*Chime Health<\/title>/.test(s), 'title: ' + rel);
   (s.match(/<(?:link|script)\b[^>]*(?:href|src)="([^"]+\.(?:css|js)[^"]*)"/g) || []).forEach(function (t) {
-    ok(t.indexOf('?v=' + V) > 0 || t.indexOf('?v=20260997') > 0, 'versioned asset in ' + rel + ': ' + t.slice(0, 90));   // 20260997: Real Stories loops
+    ok(t.indexOf('?v=' + V) > 0 || /\?v=2026099[78]/.test(t), 'versioned asset in ' + rel + ': ' + t.slice(0, 90));   // 20260997: Real Stories loops
   });
   var urls = []; s.replace(/\s(?:href|src|srcset)="([^"]+)"/g, function (_, u) { urls.push(u); });
   s.replace(/url\(['"]?([^'")]+)/g, function (_, u) { urls.push(u); });
@@ -63,6 +63,22 @@ ok(!/<form\b/.test(co), 'checkout has no form');
   t(!/aria-label="(Unmute|Mute) /.test(html), 'no mute buttons (the clips are silent)');
   t(/video\.u10-story-video/.test(fs2.readFileSync(p2.join(__dirname, 'lander.js'), 'utf8')), 'lander.js plays the story loops');
   console.log('stories: ' + r.pass + ' passed, ' + r.fail + ' failed');
+  if (r.fail) process.exitCode = 1;
+})();
+
+// ---- stats section animation (Luis 2026-10-06): script-only hiding, count-up ends on the printed text ----
+(function () {
+  var fs3 = require('fs'), p3 = require('path');
+  var js = fs3.readFileSync(p3.join(__dirname, 'lander.js'), 'utf8');
+  var html = fs3.readFileSync(p3.join(__dirname, '..', 'index.html'), 'utf8');
+  var r = { pass: 0, fail: 0 };
+  function t(c, n) { if (c) r.pass++; else { r.fail++; console.log('FAIL ' + n); } }
+  t(/Becoming the Choice/.test(js) && /runStats/.test(js), 'lander.js animates the stats section');
+  t(/!reduced\(\) && Element\.prototype\.animate/.test(js), 'stats animation skipped under reduced motion / no WAAPI');
+  t(/f\.node\.nodeValue = f\.text/.test(js), 'count-up ends on the exact printed figure');
+  ['>19%<', '>9/10<', '6.4\u201d<', '>92%<'].forEach(function (f) { t(html.indexOf(f) > -1, 'printed figure kept in the markup: ' + f); });
+  t(!/style="opacity: ?0/.test(html), 'nothing hidden in the markup itself (no-JS shows the section)');
+  console.log('stats: ' + r.pass + ' passed, ' + r.fail + ' failed');
   if (r.fail) process.exitCode = 1;
 })();
 
