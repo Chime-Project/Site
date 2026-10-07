@@ -72,7 +72,7 @@ PAGES.forEach(function (p) {
   (h.match(/(?:src|href)="([^"#]+)"/g) || []).map(function (m) { return m.replace(/^(src|href)="/, "").replace(/"$/, ""); })
     .filter(function (u) { return !/^https?:/.test(u); }).forEach(function (u) {
       eq(fs.existsSync(path.join(base, u.split("?")[0])), true, p + " → " + u + " exists");
-      if (/\.(css|js)(\?|$)/.test(u)) eq(/\?v=20260992$/.test(u), true, p + " → " + u + " carries ?v=20260992");
+      if (/\.(css|js)(\?|$)/.test(u)) eq(/\?v=2026099[23]$/.test(u), true, p + " → " + u + " carries ?v=20260992 (intake.js 20260993: member-4 photo swap)");
     });
 });
 var cssUrls = (read("css/base.css").match(/url\(([^)]+)\)/g) || []).map(function (m) { return m.slice(4, -1).replace(/["']/g, ""); }).filter(function (u) { return !/^data:/.test(u); });

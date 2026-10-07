@@ -191,7 +191,7 @@
     return '<article class="f9-sc-rev"><h3 class="f9-sc-rev__title">' + esc(r.title) + '</h3><header class="f9-sc-rev__head"><img class="f9-sc-rev__avatar" alt="" width="42" height="42" src="' + r.image + '"><span class="f9-sc-rev__who"><span class="f9-sc-rev__name">' + esc(r.author) + '</span><span class="f9-sc-rev__badge">Verified GLP-1 user</span></span><span class="f9-sc-rev__stars" aria-label="5 out of 5">' + STAR + STAR + STAR + STAR + STAR + '</span></header><p class="f9-sc-rev__body">' + esc(r.body) + '</p>' + (r.date ? '<p class="f9-sc-rev__date">' + esc(r.date) + '</p>' : "") + '</article>';
   }
   function lane(dir) {
-    var items = LANES[dir].map(function (x) { return "review" in x ? review(REVIEWS[x.review]) : '<span class="f9-sc-shot"><img src="' + RESULTS + x.shot + '.webp" alt=""></span>'; }).join("");
+    var items = LANES[dir].map(function (x) { return "review" in x ? review(REVIEWS[x.review]) : '<span class="f9-sc-shot"><img src="' + RESULTS + x.shot + '.webp?v=20260993" alt=""></span>'; }).join("");
     return '<div class="f9-sc-lane"><div class="f9-sc-lane__track f9-sc-lane__track--' + dir + '">' + items + '<span aria-hidden="true" class="f9-sc-lane__dupe">' + items + '</span></div></div>';
   }
   var ba = 50;
