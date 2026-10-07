@@ -23,7 +23,7 @@ then http://localhost:8791/chime-glp-membership/
 | GLPM Hero | h1 = "Get GLP-1s from $59/month"; price card with semaglutide $59 / tirzepatide $69 large, "+ Membership as low as $17/mo" underneath; ticks; See my price + See if you qualify | Sesame V2 hero, price hierarchy flipped (client screenshot 07) |
 | GLPM Trust | scrolling strip: same price any dose, pharmacies, testing, messaging, shipping, nutrition | Collective marquee |
 | GLPM Pricing | two price cards, med price as the hero figure, membership below, $435 anchor struck through on tirzepatide, Learn more panels | Sesame V2 cards (screenshot 07) + Collective products |
-| GLPM Why | "Why is the price so low? What's the catch?" | Collective (screenshot 01) |
+| GLPM Why | "Why is the price so low? What's the catch?" beside a **4.5 s seamless loop video** of the running couple (`images/why-loop.mp4`, 916 KB, H.264, muted autoplay; Higgsfield wan3_0 first = last frame from the still; poster `why-poster.webp`; reduced motion shows the still and pauses the video) | Collective (screenshot 01) |
 | GLPM Savings | month slider 1–12, Chime vs typical program totals and bars, saving, paid-back pill | Collective calculator (screenshot 02) |
 | GLPM How | five steps + "$4,000+ saved a year" bubble | Collective How it Works (screenshot 04) on V2's journey |
 | GLPM Results | three green result cards (23 %, 18 %, $4,060) with the study links | V2 result cards |

@@ -7,6 +7,7 @@
      3. rail      the reviews carousel (the V2 rail, same paging maths)
      4. accordion the FAQ
      5. sticky    the price bar that slides up once the hero has scrolled away
+     6. loop      pauses the Why section's loop video under reduced motion
 
    TAP HANDLING: every control is a real <button> or <input type=range>, so a tap
    fires a plain click/input. Nothing branches on a click event's detail, which
@@ -214,7 +215,16 @@
     sync();
   }
 
+  // The Why loop is hidden by CSS under reduced motion; stop it decoding too.
+  function setupLoopVideo() {
+    var v = document.querySelector(".why__video");
+    if (!v || !window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.removeAttribute("autoplay");
+    v.pause();
+  }
+
   function init() {
+    setupLoopVideo();
     setupSavings();
     setupExpand();
     var rail = document.querySelector(".revs [data-rail]");

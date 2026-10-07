@@ -38,7 +38,7 @@
          - "Licensed clinicians in 38 states" is the V2 page's stand-in line.
          noindex. -->
     <link rel="preload" as="image" href="images/hero-800.webp" imagesrcset="images/hero-800.webp 600w, images/hero-1600.webp 926w" imagesizes="(min-width: 1024px) 463px, 100vw" />
-    <link rel="stylesheet" href="css/page.css?v=20260991" />
+    <link rel="stylesheet" href="css/page.css?v=20260995" />
   </head>
   <body>
     <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +192,14 @@
 
       <section class="sec" data-screen-label="GLPM Why">
         <div class="wrap why__in">
-          <figure class="why__media"><img src="images/why-800.webp" srcset="images/why-800.webp 800w, images/why-1200.webp 1200w" sizes="(min-width: 768px) 600px, 100vw" alt="Two people running on a ridge at sunrise" width="800" height="600" loading="lazy" /></figure>
+          <figure class="why__media">
+            <!-- Seamless 4.5 s loop (Higgsfield wan3_0 job 1c1e9f7e, first frame = last frame = the still below; the model snapped the background back in its last 3 frames, so the loop ends at frame 146 and blends 0.4 s into frame 12 (scratchpad seam check: seam 4.6 vs 3.6 avg step)).
+                 Muted + playsinline so phones autoplay it; the still is the poster and the reduced-motion fallback. -->
+            <video class="why__video" autoplay muted loop playsinline preload="metadata" poster="images/why-poster.webp?v=20260995" width="1000" height="750" aria-hidden="true">
+              <source src="images/why-loop.mp4?v=20260995" type="video/mp4" />
+            </video>
+            <img class="why__still" src="images/why-800.webp" srcset="images/why-800.webp 800w, images/why-1200.webp 1200w" sizes="(min-width: 768px) 600px, 100vw" alt="Two people running on a ridge at sunrise" width="800" height="600" loading="lazy" />
+          </figure>
           <div class="why__card">
             <h2>Why is the price so low? What&rsquo;s the catch?</h2>
             <p>Most healthcare companies hide their profit in the price of your medication or in expensive monthly memberships.</p>
@@ -414,6 +421,6 @@
       </div>
     </div>
 
-    <script src="js/page.js?v=20260991" defer></script>
+    <script src="js/page.js?v=20260995" defer></script>
   </body>
 </html>

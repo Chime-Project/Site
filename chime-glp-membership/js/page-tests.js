@@ -85,7 +85,7 @@ ok(labels.filter(function (l) { return l === "See my price"; }).length >= 8, "on
 
 /* ---------- house rules ---------- */
 ok(/<meta name="robots" content="noindex"/.test(html), "noindex");
-ok(/css\/page\.css\?v=20260991/.test(html) && /js\/page\.js\?v=20260991/.test(html), "assets versioned ?v=20260991");
+ok(/css\/page\.css\?v=20260995/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned ?v=20260995");
 ok(!/eyebrow/.test(html), "no eyebrow labels");
 ok(!/sesame|collective\.org|Thrive Market|Gunnar/i.test(text), "no competitor names in visible markup");
 ok(fs.existsSync(path.join(__dirname, "..", "images", "hero-800.webp")), "hero image present");
