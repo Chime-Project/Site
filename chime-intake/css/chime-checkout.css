@@ -1,0 +1,18 @@
+/* Chime layer for the checkout: inert look-alikes of their Stripe Link button and card Payment Element (cross-origin
+   iframes we can't and don't load), sized and coloured after the captured page. Nothing here takes input. */
+.ch-link{width:100%;height:44px;border:0;border-radius:6px;background:#00d66f;color:#011e0f;display:flex;align-items:center;justify-content:center;gap:6px;
+  font:400 17px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;letter-spacing:0;cursor:pointer}
+.ch-link:hover{background:#00c564}
+.ch-link__mark{width:20px;height:20px;flex:none}
+.ch-link__word{font-weight:700;font-size:21px;letter-spacing:-.6px;margin-left:-2px;line-height:1}
+.ch-stripe{container-type:inline-size;display:flex;flex-direction:column;gap:12px;margin:4px 0 -8px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif}
+.ch-stripe__field{display:flex;flex-direction:column;gap:4px}
+.ch-stripe__label{color:#30313d;font-size:14.88px;line-height:1.15}
+.ch-stripe__input{position:relative;display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 12px;background:#fff;
+  border:1px solid #e6e6e6;border-radius:5px;box-shadow:0 1px 1px #00000008,0 3px 6px #00000005;cursor:not-allowed}
+.ch-stripe__ph{color:#757680;font-size:16px}
+.ch-stripe__brands{display:none;gap:4px}
+.ch-stripe__brands img,.ch-stripe__brands svg,.ch-stripe__brand-one img{width:24px;height:16px;object-fit:contain;border-radius:2px;display:block}
+.ch-stripe__brand-one{display:flex;background:#1a1a1a;border-radius:3px;padding:2px 3px}
+@container (min-width:380px){.ch-stripe__brands{display:flex}.ch-stripe__brand-one{display:none}}
