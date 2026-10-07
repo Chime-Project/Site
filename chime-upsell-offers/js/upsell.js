@@ -119,8 +119,8 @@
       var plansHtml = ask.plans.map(function (p, i) {
         return '<label class="uo-plan' + (i === sel ? ' is-selected' : '') + '">' +
           '<input type="radio" name="uo-plan" value="' + i + '"' + (i === sel ? ' checked' : '') + ' />' +
-          '<span class="uo-plan__body"><span class="uo-plan__name">' + esc(p.label) + '</span>' +
-          '<span class="uo-plan__price">' + (p.was ? '<s>' + money(p.was) + '/mo</s> ' : '') + money(p.now) + '/mo</span>' +
+          '<span class="uo-plan__body">' + (p.label ? '<span class="uo-plan__name">' + esc(p.label) + '</span>' : '') +
+          '<span class="uo-plan__price">' + (p.was ? '<s>' + money(p.was) + '/mo</s> ' : '') + money(p.now) + (offer.oneTime ? '' : '/mo') + '</span>' +
           (p.save ? '<span class="uo-plan__save">You are saving <b>' + money(p.save) + '</b></span>' : '') + '</span></label>';
       }).join('');
       app.innerHTML =
@@ -135,7 +135,7 @@
           '<div class="uo-media uo-media--' + offer.key + '"><img src="' + offer.image + '" alt="' + esc(offer.imageAlt) + '" width="' + offer.imageW + '" height="' + offer.imageH + '" /></div>' +
           '<div class="uo-body">' +
             '<h2 class="uo-name">' + esc(offer.name) + '</h2><p class="uo-pitch">' + esc(offer.pitch) + '</p>' +
-            '<p class="uo-price' + (offer.full ? '' : ' uo-price--solo') + '"><b>' + money(monthly.now) + '</b><span>/every 1 month</span></p>' +
+            '<p class="uo-price' + (offer.full ? '' : ' uo-price--solo') + '"><b>' + money(monthly.now) + '</b>' + (offer.oneTime ? '' : '<span>/every 1 month</span>') + '</p>' +
             (offer.full ? '<p class="uo-was"><s>' + money(offer.full) + '</s></p>' : '') +
             (monthly.save ? '<p class="uo-saving">You are saving <b>' + money(monthly.save) + '</b></p>' : '') +
             (pct ? '<p class="uo-lifetime">Lifetime ' + pct + '% Off Applied.</p>' : '') +
@@ -173,7 +173,7 @@
       if (yes) {
         var p = offer[stage].plans[sel];
         S.items = (S.items || []).filter(function (it) { return it.key !== offer.key; });
-        S.items.push({ key: offer.key, name: offer.name, plan: p.label, months: p.months, perMonth: p.now, save: p.save || 0 });
+        S.items.push({ key: offer.key, name: offer.name, plan: p.label, months: p.months, perMonth: p.now, save: p.save || 0, oneTime: !!offer.oneTime });
         save(S);
         win.location.href = nextHref(D, offer.key);
         return;
@@ -205,7 +205,8 @@
     var app = doc.getElementById('uo-app'), S = load();
     var date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     var rows = [{ name: orderLabel(D, S.med, S.term), note: 'Your GLP-1 plan' }].concat((S.items || []).map(function (it) {
-      return { name: it.name + ' - ' + it.plan, note: money(it.perMonth) + (it.months > 1 ? '/mo' : '/month') + (it.save ? ' · You save ' + money(it.save) : '') };
+      return { name: it.name + (it.plan ? ' - ' + it.plan : ''),
+               note: it.oneTime ? money(it.perMonth) + ' one-time' : money(it.perMonth) + (it.months > 1 ? '/mo' : '/month') + (it.save ? ' · You save ' + money(it.save) : '') };
     }));
     app.querySelector('[data-uo-date]').textContent = 'Order from ' + date;
     app.querySelector('[data-uo-items]').innerHTML = rows.map(function (r) {

@@ -7,7 +7,7 @@ copy and timings read off the recording frame by frame.
 
 **Client, 2026-10-06** (plan `UPSELL-OFFERS-PRICING-PLAN.md`, untracked): Chime's own prices, and offer 2 renamed
 Sermorelin → **Tesamorelin**. NAD+ Reg $269 → $149 / $119 / $89 a month (save $120 / $450 / $1,080); Tesamorelin Reg $299 →
-$169 / $139 / $119 (save $130 / $480 / $1,080); Zofran $59 (no Reg price, so nothing is crossed out). Monthly, 3-Month and
+$169 / $139 / $119 (save $130 / $480 / $1,080); Zofran $59 as a one-time charge (no Reg price, so nothing is crossed out; no plan name, no "/every 1 month" or "/mo" — client 2026-10-06). Monthly, 3-Month and
 6-Month only (the 1-Year plan is gone). `sermorelin.html` is now a forward to `tesamorelin.html` (keeps `?med&term`).
 
 | File | What it is |

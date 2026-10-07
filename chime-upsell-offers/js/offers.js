@@ -97,13 +97,14 @@
         benefits: ['Kills nausea fast — works in minutes', 'Eat normally while your GLP-1 does its job',
                    'No more skipping doses because you feel sick', 'Doctor-trusted, clinically proven relief'],
         full: null,             // the client gave no Reg price for Zofran: $59, nothing crossed out
+        oneTime: true,          // client 2026-10-06: "get rid of monthly plan this is a one time charge" (no plan name, no /mo)
         first: {
           tone: 'yellow',
           head: "{name} - It's normal to experience nausea while taking GLP-1's",
           noName: "It's normal to experience nausea while taking GLP-1's",
           sub: '92% of patients choose to also add Zofran to their plan',
           decline: "No thanks, I won't experience nausea",
-          plans: plans([['Monthly Plan', 1, null, 59, null]])
+          plans: plans([['', 1, null, 59, null]])
         },
         second: {
           tone: 'lavender',

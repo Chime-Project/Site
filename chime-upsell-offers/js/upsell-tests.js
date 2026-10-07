@@ -4,7 +4,7 @@
 'use strict';
 var fs = require('fs'), path = require('path');
 var D = require('./offers.js'), U = require('./upsell.js');
-var DIR = path.join(__dirname, '..'), V = '20260986';
+var DIR = path.join(__dirname, '..'), V = '20260988';
 var pass = 0, fail = 0;
 function eq(name, got, want) {
   if (JSON.stringify(got) === JSON.stringify(want)) pass++;
@@ -18,7 +18,7 @@ eq('order of offers', D.offers.map(function (o) { return o.key; }), ['nad', 'tes
 eq('names', D.offers.map(function (o) { return o.name; }), ['NAD+', 'Tesamorelin', 'Zofran (Ondansetron)']);
 eq('NAD+', grid(nad.first), [['Monthly Plan', 269, 149, 120], ['3-Month Plan', 269, 119, 450], ['6-Month Plan', 269, 89, 1080]]);
 eq('Tesamorelin', grid(tes.first), [['Monthly Plan', 299, 169, 130], ['3-Month Plan', 299, 139, 480], ['6-Month Plan', 299, 119, 1080]]);
-eq('Zofran: $59, no Reg', grid(zof.first), [['Monthly Plan', null, 59, null]]);
+eq('Zofran: $59 one-time, no Reg, no plan name', [grid(zof.first), zof.oneTime, !!nad.oneTime, !!tes.oneTime], [[['', null, 59, null]], true, false, false]);
 eq('Reg (full) prices', D.offers.map(function (o) { return o.full; }), [269, 299, null]);
 eq('months', D.offers.map(function (o) { return o.first.plans.map(function (p) { return p.months; }); }), [[1, 3, 6], [1, 3, 6], [1]]);
 D.offers.forEach(function (o) {
