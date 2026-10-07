@@ -20,7 +20,7 @@ then http://localhost:8791/chime-glp-membership/
 
 | Label | What it is | Source |
 |---|---|---|
-| GLPM Hero | h1 = "Get GLP-1s from $59/month"; price card with semaglutide $59 / tirzepatide $69 large, "+ Membership as low as $17/mo" underneath; ticks; See my price + See if you qualify | Sesame V2 hero, price hierarchy flipped (client screenshot 07) |
+| GLPM Hero | h1 = "Get GLP-1s from $59/month"; **four benefits first** (23 % avg loss*, cravings, blood sugar / BP / energy, doctor + cold shipping; Luis 2026-10-06 "really emphasizing the benefits top of fold"); price card with semaglutide $59 / tirzepatide $69 large, "21 days free" + no multi-month plan; See my price + See if you qualify (first phone screen) | Sesame V2 hero, price hierarchy flipped (client screenshot 07) |
 | GLPM Trust | scrolling strip: same price any dose, pharmacies, testing, messaging, shipping, nutrition | Collective marquee |
 | GLPM Pricing | two price cards, med price as the hero figure, membership below, $435 anchor struck through on tirzepatide, Learn more panels | Sesame V2 cards (screenshot 07) + Collective products |
 | GLPM Why | "Why is the price so low? What's the catch?" beside a **4.5 s seamless loop video** of the running couple (`images/why-loop.mp4`, 916 KB, H.264, muted autoplay; Higgsfield wan3_0 first = last frame from the still; poster `why-poster.webp`; reduced motion shows the still and pauses the video) | Collective (screenshot 01) |
@@ -34,7 +34,7 @@ then http://localhost:8791/chime-glp-membership/
 | GLPM Close | purple band with the prices restated | new |
 | — | phone sticky price bar (after the hero, hidden over the closing band) | new |
 
-**Membership less prominent (Luis, 2026-10-06, phone mark-ups):** the "$17/mo membership" line is gone from the hero price card (only the "21 days free" tag stays), both price cards, the phone sticky bar and the tab title; it is still disclosed in the pricing intro, why-so-low, savings, how it works, the FAQ, the closing band and the fine print.
+**Membership less prominent (Luis, 2026-10-06, phone mark-ups):** the "$17/mo membership" line is gone from the hero price card (only the "21 days free" tag stays), both price cards, the phone sticky bar and the tab title; later also out of the pricing intro; "leaving it alone here" = it stays in why-so-low, savings, how it works, the FAQ, the closing band and the fine print.
 
 **Left out on the client's instruction:** V2's providers grid (screenshot 06) and every "choose your
 provider" claim; "no markups" wording. Client screenshots: `uploads/glp-membership-ref/` (untracked).

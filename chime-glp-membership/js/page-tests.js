@@ -56,6 +56,13 @@ ok(/\$199/.test(visible) && /21-day/.test(visible), "annual billing + trial disc
 var hero = html.slice(html.indexOf('class="hero"'), html.indexOf('class="trust"'));
 ok(hero.indexOf("price__meds") > -1 && !/\$17/.test(hero), "hero: medication prices only, no $17 membership line (Luis 2026-10-06 mark-up)");
 ok(/class="price__memb"><span class="tag">21 days free<\/span>/.test(hero), "hero: the 21 days free tag sits where the membership line was");
+ok(hero.indexOf('class="perks"') > -1 && hero.indexOf('class="perks"') < hero.indexOf('class="price"'), "hero: benefits come before the price card (benefits top of fold)");
+ok((hero.match(/<li><span class="perks__ico">/g) || []).length === 4, "hero: four benefits");
+ok(/\*Average body-weight loss with compounded tirzepatide/.test(hero), "hero: the 23% benefit is footnoted to its study");
+var pricingIntro = html.slice(html.indexOf('id="pricing"'), html.indexOf('class="pcards"'));
+ok(!/\$17/.test(pricingIntro), "pricing intro: no $17 membership line");
+var why = html.slice(html.indexOf('data-screen-label="GLPM Why"'), html.indexOf('data-screen-label="GLPM Savings"'));
+ok(/as low as \$17 a month/.test(why), "why-so-low keeps the membership explanation (Luis: leave it here)");
 ok(/<h1>[^<]*<b>\$59\/month<\/b><\/h1>/.test(hero), "hero h1 is the medication price");
 var cards = html.match(/<article class="pcard[\s\S]*?<\/article>/g) || [];
 ok(cards.length === 2, "two GLP-1 price cards (semaglutide, tirzepatide)");
@@ -89,7 +96,7 @@ ok(labels.filter(function (l) { return l === "See my price"; }).length >= 8, "on
 
 /* ---------- house rules ---------- */
 ok(/<meta name="robots" content="noindex"/.test(html), "noindex");
-ok(/css\/page\.css\?v=20260999/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned (css 20260999, js 20260995)");
+ok(/css\/page\.css\?v=20261000/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned (css 20260999, js 20260995)");
 ok(!/eyebrow/.test(html), "no eyebrow labels");
 ok(!/sesame|collective\.org|Thrive Market|Gunnar/i.test(text), "no competitor names in visible markup");
 ok(fs.existsSync(path.join(__dirname, "..", "images", "hero-800.webp")), "hero image present");
