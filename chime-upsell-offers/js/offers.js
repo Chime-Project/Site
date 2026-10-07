@@ -96,7 +96,7 @@
         pitch: 'Zero nausea, zero excuses. The same anti-nausea med hospitals trust — so nothing slows down your weight loss journey.',
         benefits: ['Kills nausea fast — works in minutes', 'Eat normally while your GLP-1 does its job',
                    'No more skipping doses because you feel sick', 'Doctor-trusted, clinically proven relief'],
-        full: null,             // the client gave no Reg price for Zofran: $59, nothing crossed out
+        full: null,             // the client gave no Reg price for Zofran: $49 one-time (client 2026-10-06, was $59), nothing crossed out
         oneTime: true,          // client 2026-10-06: "get rid of monthly plan this is a one time charge" (no plan name, no /mo)
         first: {
           tone: 'yellow',
@@ -104,7 +104,7 @@
           noName: "It's normal to experience nausea while taking GLP-1's",
           sub: '92% of patients choose to also add Zofran to their plan',
           decline: "No thanks, I won't experience nausea",
-          plans: plans([['', 1, null, 59, null]])
+          plans: plans([['', 1, null, 49, null]])
         },
         second: {
           tone: 'lavender',
