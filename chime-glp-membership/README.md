@@ -56,7 +56,8 @@ Generated once from `index.html` (one-off script, not kept), then ordinary hand-
 they are index.html re-priced: the calculator reads `<html data-sema data-tirz>` (js/page.js), so month 6 =
 $733 vs $2,475 and a year saves $3,820 (75 %); "$3,800+" / "$3,820" / "up to 75%" replace the $69-era
 figures. Hero-only styles in `css/versions.css`, the slider + countdown in `js/versions.js`. `index.html`
-itself is unchanged ($59 / $69). "Cancel anytime" is kept on all three; check it against the multi-month plans.
+itself is unchanged ($59 / $69) and stays as is, and "Cancel anytime" stays on all three (Luis 2026-10-07: "leave the original
+page as is, keep cancel anytime").
 
 ## Figures (all in `js/page.js` → `PRICES`, flagged stand-ins in the head comment)
 
