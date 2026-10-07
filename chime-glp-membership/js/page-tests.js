@@ -107,5 +107,38 @@ ok(fs.existsSync(path.join(__dirname, "..", "images", "hero-800.webp")), "hero i
 var imgs = html.match(/src="images\/[^"?]+/g) || [];
 imgs.forEach(function (s) { ok(fs.existsSync(path.join(__dirname, "..", s.slice(5))), "image exists: " + s.slice(5)); });
 
+/* ---------- hero versions (client 2026-10-07: sheet options 2, 4, 6 at $49 / $89) ---------- */
+var vapi = require("./versions.js");
+ok(vapi.lbsLost(220) === 51 && vapi.lbsLost(300) === 69, "estimate: 23% of 220 = 51 lbs, of 300 = 69 lbs");
+ok(vapi.clock(900) === "15:00" && vapi.clock(59) === "0:59" && vapi.clock(-3) === "0:00", "lock clock formats");
+var P0 = { sema: P.sema, tirz: P.tirz };
+P.sema = 49; P.tirz = 89;
+var v6 = api.savings(6), v12 = api.savings(12);
+ok(v6.ours === 733 && v6.save === 1742 && v6.pct === 70 && v6.oursBar === 30, "at $89: month 6 = $733, saves $1,742 (70%)");
+ok(v12.save === 3820 && v12.pct === 75, "at $89: a year saves $3,820 (75%)");
+P.sema = P0.sema; P.tirz = P0.tirz;
+["weight-calculator.html", "price-card.html", "price-lock.html"].forEach(function (f) {
+  var h = fs.readFileSync(path.join(__dirname, "..", f), "utf8");
+  var t = h.replace(/<!--[\s\S]*?-->/g, "").replace(/<script[\s\S]*?<\/script>/g, "");
+  var vis = t.replace(/<[^>]+>/g, " ").replace(/&nbsp;|&#8209;/g, " ").replace(/\s+/g, " ");
+  ok(/<html lang="en" dir="ltr" data-sema="49" data-tirz="89">/.test(h), f + ": prices on <html> for the calculator");
+  ok(!/multi-month|six-month/i.test(vis), f + ": no multi-month wording (client needs multi-month plans)");
+  ok(!/\$59|\$69\b|\$613|\$1,862|\$4,060|\$4,000|80%</.test(vis), f + ": no $59/$69-era figures left");
+  ok((vis.match(/\$49/g) || []).length >= 4 && (vis.match(/\$89/g) || []).length >= 4, f + ": $49 and $89 quoted throughout");
+  ok(/data-out="ours">\$733</.test(h) && /data-out="save">\$1,742</.test(h) && /\$3,820/.test(vis) && /\$3,800\+/.test(vis), f + ": savings figures at $89");
+  var hrefs = (h.match(/<a class="btn[^"]*"[^>]*href="([^"]+)"/g) || []).map(function (a) { return a.match(/href="([^"]+)"/)[1]; });
+  ok(hrefs.length >= 10 && hrefs.every(function (x) { return x === "../chimeAssessment.html"; }), f + ": every CTA opens ../chimeAssessment.html");
+  ok(/<meta name="robots" content="noindex"/.test(h) && /js\/versions\.js\?v=/.test(h) && /css\/versions\.css\?v=/.test(h), f + ": noindex + versions assets");
+  var hh = h.slice(h.indexOf('data-screen-label="GLPM Hero"'), h.indexOf('class="trust"'));
+  ok(!/membership|21[- ]day|\$199/i.test(hh.replace(/<[^>]+>/g, " ")), f + ": no membership above the fold");
+  ok(/<section class="hero[^"]*" data-screen-label="GLPM Hero">\s*<div class="wrap hero__in">\s*<div class="hero__copy">\s*<h1>/.test(h), f + ": the h1 is the first text of the hero");
+});
+var vCalc = fs.readFileSync(path.join(__dirname, "..", "weight-calculator.html"), "utf8");
+ok(vCalc.indexOf("est__fig") < vCalc.indexOf('class="hero__act"', vCalc.indexOf("data-estimate")) && vCalc.indexOf('class="hero__act"', vCalc.indexOf("data-estimate")) < vCalc.indexOf("price price--plain"), "version 2: estimate, then the button, then option 3's price boxes");
+var vCard = fs.readFileSync(path.join(__dirname, "..", "price-card.html"), "utf8");
+ok(!/hero-800|hero-1600|preload/.test(vCard.slice(0, vCard.indexOf('class="trust"'))), "version 4: no background / hero photo");
+var vLock = fs.readFileSync(path.join(__dirname, "..", "price-lock.html"), "utf8");
+ok(/class="lock"/.test(vLock) && !/class="offer"/.test(vLock) && vLock.indexOf('class="lock"') < vLock.indexOf('class="hdr"'), "version 6: price-lock bar replaces the offer marquee above the header");
+
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

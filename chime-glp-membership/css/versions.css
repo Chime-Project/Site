@@ -1,0 +1,93 @@
+/* Chime Health: GLP membership page, hero versions (client 2026-10-07).
+   Loaded after page.css by weight-calculator.html (sheet option 2), price-card.html (option 4)
+   and price-lock.html (option 6). Only the hero and the price-lock bar differ from index.html;
+   everything below the hero uses page.css unchanged. */
+
+.hero__sub { margin-top: 12px; max-width: 520px; font-size: 17px; line-height: 1.45; color: var(--body); }
+.hero__sub b { color: var(--ink); font-weight: var(--w-bold); }
+
+/* Option 3's price boxes, without the dashed terms row */
+.price--plain { box-shadow: none; }
+
+/* ---------- Version 2: weight-loss estimator up top ---------- */
+.est { margin-top: 20px; max-width: 520px; padding: 20px 18px 16px; border: 1px solid var(--line); border-radius: var(--r-xl); background: var(--white); box-shadow: 0 12px 32px rgba(0, 0, 0, .06); }
+.est__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.est__row label { font-size: 15px; font-weight: var(--w-bold); color: var(--ink); }
+.est__row output { font-size: 22px; font-weight: 800; letter-spacing: -.5px; color: var(--ink); }
+.est input[type=range] {
+  --fill: 30.8%;
+  display: block; width: 100%; height: 28px; margin: 10px 0 0; background: transparent; cursor: pointer;
+  -webkit-appearance: none; appearance: none; touch-action: pan-y;
+}
+.est input[type=range]::-webkit-slider-runnable-track { height: 8px; border-radius: var(--pill); background: linear-gradient(to right, var(--purple) var(--fill), #e4e4e8 var(--fill)); }
+.est input[type=range]::-moz-range-track { height: 8px; border-radius: var(--pill); background: linear-gradient(to right, var(--purple) var(--fill), #e4e4e8 var(--fill)); }
+.est input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -10px; border-radius: 50%; background: var(--white); border: 3px solid var(--purple); box-shadow: 0 2px 8px rgba(89, 33, 207, .3); }
+.est input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--white); border: 3px solid var(--purple); }
+.est__lbl { margin-top: 14px; font-size: 15px; color: var(--body); }
+.est__fig { display: flex; align-items: flex-start; gap: 2px; margin-top: 2px; color: var(--green); }
+.est__fig b { font-size: 56px; line-height: 1; font-weight: 800; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+.est__fig span { font-size: 28px; font-weight: 800; line-height: 1; }
+.est .hero__act { margin-top: 18px; }
+.est .price { margin-top: 14px; max-width: none; }
+.est .fine { margin-top: 12px; }
+
+/* ---------- Version 4: price card, no photo, the headline does the work ---------- */
+.hero--card { background: linear-gradient(180deg, var(--purple-50) 0%, #f7f4fd 55%, var(--white) 100%); }
+.hero--card h1 { max-width: 640px; font-size: 42px; line-height: 1.04; letter-spacing: -1.4px; }
+.hero--card h1 b { display: block; margin-top: 4px; white-space: normal; }
+.hero--card .hero__sub { margin-top: 14px; font-size: 18px; }
+.ocard { max-width: 520px; padding: 20px 18px 18px; border-radius: var(--r-xl); background: var(--white); box-shadow: 0 2px 4px rgba(42, 15, 99, .04), 0 18px 44px rgba(42, 15, 99, .12); }
+.ocard__top { display: flex; align-items: center; gap: 16px; }
+.ocard__vials { display: flex; flex: none; }
+.ocard__vials img { width: 34px; height: auto; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .16)); }
+.ocard__vials img + img { margin-left: -6px; }
+.ocard__price { display: flex; align-items: baseline; gap: 2px; color: var(--purple); }
+.ocard__price b { font-size: 56px; line-height: 1; font-weight: 800; letter-spacing: -2px; }
+.ocard__price i { font-style: normal; font-size: 18px; font-weight: var(--w-bold); color: var(--ink); }
+.ocard__note { margin-top: 4px; font-size: 14px; color: var(--body); }
+.ocard__ticks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.ocard__ticks li { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: var(--w-med); color: var(--ink); }
+.ocard__ticks .ico { width: 15px; height: 15px; color: var(--green); stroke-width: 2.6; }
+.ocard .hero__act { margin-top: 16px; }
+.ocard__alt { margin-top: 12px; text-align: center; font-size: 14px; color: var(--body); }
+.ocard__alt b { color: var(--ink); font-weight: var(--w-bold); }
+.hero__trust { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.hero__trust li { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: var(--w-bold); color: var(--ink); }
+.hero__trust img { width: 18px; height: 20px; }
+.hero__trust .ico { width: 18px; height: 18px; color: var(--green); }
+.hero--card .fine { margin-top: -12px; }
+
+/* ---------- Version 6: price-lock bar in place of the offer marquee ---------- */
+.lock { background: #c8322b; color: var(--white); }
+.lock p { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 6px var(--gutter); font-size: 14px; font-weight: var(--w-bold); text-align: center; }
+.lock .ico { width: 16px; height: 16px; stroke-width: 2.4; }
+.lock b { display: inline-block; min-width: 3.1em; font-variant-numeric: tabular-nums; text-align: left; }
+
+@media (max-width: 767px) {
+  .hero--calc h1 { font-size: 32px; }
+  .hero__sub { font-size: 16px; margin-top: 10px; }
+  .est { margin-top: 16px; padding: 16px 16px 14px; }
+  .est__fig b { font-size: 48px; }
+  .hero--card { padding-bottom: 36px; }
+  .hero--card .hero__in { gap: 22px; }
+  .hero--card h1 { font-size: 40px; }
+  .hero--card .hero__sub { font-size: 16px; }
+  .lock p { font-size: 13px; }
+}
+
+@media (min-width: 768px) {
+  .hero--card h1 { font-size: 60px; letter-spacing: -2px; }
+}
+
+@media (min-width: 1024px) {
+  .hero--card { padding: 72px 0 80px; }
+  .hero--card .hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, 440px); grid-template-areas: "copy card" "trust card" "fine card"; align-items: start; gap: 0 64px; }
+  .hero--card .hero__copy { grid-area: copy; align-self: end; }
+  .hero--card .ocard { grid-area: card; align-self: center; padding: 26px 24px 22px; }
+  .hero--card .hero__trust { grid-area: trust; margin-top: 28px; }
+  .hero--card .fine { grid-area: fine; margin-top: 14px; align-self: start; }
+  .hero--card h1 { font-size: 72px; line-height: 1.02; letter-spacing: -2.6px; }
+  .hero--card .hero__sub { font-size: 20px; max-width: 540px; }
+  .ocard__vials img { width: 42px; }
+  .ocard__price b { font-size: 64px; }
+}

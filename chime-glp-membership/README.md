@@ -41,6 +41,23 @@ then http://localhost:8791/chime-glp-membership/
 **Left out on the client's instruction:** V2's providers grid (screenshot 06) and every "choose your
 provider" claim; "no markups" wording. Client screenshots: `uploads/glp-membership-ref/` (untracked).
 
+## Hero versions (client 2026-10-07)
+
+From the 8-option hero sheet the client picked 2, 4 and 6, at **$49 semaglutide / $89 tirzepatide**, and nothing may
+say "no multi-month plan" (they need multi-month plans): gone from the offer bar, hero terms, FAQ and reviews.
+
+| Page | Sheet option | Hero |
+|---|---|---|
+| `weight-calculator.html` | 2 + option 3's price boxes | "How much weight could you lose?", weight slider 140–400 lbs → "you could lose about N lbs" (23 %, footnoted), See my price, then the semaglutide / tirzepatide price boxes **below the button** |
+| `price-card.html` | 4 | background photo removed; two-line headline "Lose the weight. **Feel like yourself again.**" (42 → 72px), $49/month card with both vials, ticks, "Start my 2-minute visit", trust row |
+| `price-lock.html` | 6 | the live hero (benefits first, both prices) under a red "Today's $49 price is reserved for 15:00" bar in place of the marquee; the countdown is kept per tab (sessionStorage) and at 0:00 asks to lock the price in rather than claiming it expired |
+
+Generated once from `index.html` (one-off script, not kept), then ordinary hand-edited pages. Below the hero
+they are index.html re-priced: the calculator reads `<html data-sema data-tirz>` (js/page.js), so month 6 =
+$733 vs $2,475 and a year saves $3,820 (75 %); "$3,800+" / "$3,820" / "up to 75%" replace the $69-era
+figures. Hero-only styles in `css/versions.css`, the slider + countdown in `js/versions.js`. `index.html`
+itself is unchanged ($59 / $69). "Cancel anytime" is kept on all three; check it against the multi-month plans.
+
 ## Figures (all in `js/page.js` → `PRICES`, flagged stand-ins in the head comment)
 
 $59 semaglutide, $69 tirzepatide (any dose), $199/year membership (= $16.58, shown as "as low as $17"),
@@ -52,6 +69,6 @@ program"): month 6 = $613 vs $2,475, month 12 saves $4,060 (80 %); typical month
 
     node chime-glp-membership/js/page-tests.js
 
-82 checks: savings maths month 1–12, every price on the page matching `PRICES`, medication price before
-membership in the hero and on both cards, all CTAs → `../chimeAssessment.html`, the client exclusions,
+128 checks: savings maths month 1–12, every price on the page matching `PRICES`, medication price before
+membership in the hero and on both cards, all CTAs → `../chimeAssessment.html`, the client exclusions, the three hero versions ($49 / $89, no multi-month wording),
 noindex, asset versions, images present.

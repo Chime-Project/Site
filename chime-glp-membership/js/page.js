@@ -102,6 +102,14 @@
 
   if (typeof document === "undefined") return api;
 
+  // The hero versions (weight-calculator / price-card / price-lock.html, client
+  // 2026-10-07) sell at their own prices, carried on <html data-sema data-tirz>.
+  var de = document.documentElement;
+  if (de.hasAttribute("data-tirz")) {
+    PRICES.sema = +de.getAttribute("data-sema");
+    PRICES.tirz = +de.getAttribute("data-tirz");
+  }
+
   /* ---------- DOM ---------- */
 
   function each(sel, fn, scope) { Array.prototype.forEach.call((scope || document).querySelectorAll(sel), fn); }
