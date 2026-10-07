@@ -21,7 +21,7 @@ every screen with their network calls blocked). Edit the build, not the output. 
 **Swapped:** logo (Chime logo in their logo canvases), their name in copy / alt / legal, their partner medical group →
 "our partner medical group", named pharmacies → "licensed US pharmacies", support e-mail → hello@chimehealth.com, phone →
 1-XXX-XXX-XXXX, LegitScript → the chimehealth.com seal, legal + company links → Chime pages, login and blog cards → `#`,
-vials / box / app art → Chime vials and wordmark, people + member videos → Chime-owned stills (Higgsfield).
+vials / box / app art → Chime vials and wordmark, people → Chime-owned stills (Higgsfield); member videos → four silent Chime selfie loops (`images/story-1..4.mp4`, AI-generated stand-in testimonials, posters `member-1..4.webp`, captions on cards 01 and 04; added by the build's `stories_video.py`, Luis 2026-10-06).
 
 **No request leaves the pages** except LegitScript's hosted seal image (compliance code). No trackers, no Stripe, no
 backend: the payment fields are a look-alike and nothing is sent. Fonts are self-hosted.

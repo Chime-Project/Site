@@ -104,6 +104,26 @@
     [['ul.u10-rail[data-v-7d1af2bd]', 3.5], ['ul.u10-stories-rail', 6], ['ul.u10-rail[data-v-f3c64244]', 3.5], ['ol.u10-rail[data-v-bf9f88e5]', 3.8]]
       .forEach(function (r) { var el = $(r[0]); if (el) autoRail(el, r[1]); });
 
+    // 7. Real Stories loops (Chime stand-in selfie clips, no sound; added by the build's stories_video.py).
+    //    Runs after the rails so the phone rail's aria-hidden copies get their clips too. A clip plays only while
+    //    its card is on screen; its still fades out once frames are flowing. Reduced motion keeps the stills.
+    var storyVids = $$('video.u10-story-video');
+    if (storyVids.length && 'IntersectionObserver' in window && !reduced()) {
+      var storyIO = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var v = e.target;
+          if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+        });
+      }, { threshold: 0.35 });
+      storyVids.forEach(function (v) {
+        v.addEventListener('playing', function () {
+          var still = v.parentNode.querySelector('.u10-story-still');
+          if (still) { still.style.transition = 'opacity .4s ease'; still.style.opacity = '0'; }
+        });
+        storyIO.observe(v);
+      });
+    }
+
     // 5. weight slider
     var range = $('input[type="range"][min="140"]');
     if (range) {
