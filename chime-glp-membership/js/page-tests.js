@@ -55,7 +55,11 @@ ok(/\$199/.test(visible) && /21-day/.test(visible), "annual billing + trial disc
 /* ---------- price first, membership below ---------- */
 var hero = html.slice(html.indexOf('class="hero"'), html.indexOf('class="trust"'));
 ok(hero.indexOf("price__meds") > -1 && !/\$17/.test(hero), "hero: medication prices only, no $17 membership line (Luis 2026-10-06 mark-up)");
-ok(/class="price__memb"><span class="tag">21 days free<\/span>/.test(hero), "hero: the 21 days free tag sits where the membership line was");
+ok(!/membership|21[- ]day|days free|\$199|\$16/i.test(hero.replace(/<[^>]+>/g, " ")), "hero: no membership / trial mention above the fold (client 2026-10-06, as on collective.org)");
+ok(/class="hero__time">Takes less than 2 minutes</.test(hero), "hero: 'Takes less than 2 minutes' under the CTA");
+ok(/class="offer"/.test(html) && html.indexOf('class="offer"') < html.indexOf('class="hdr"'), "offer marquee above the header");
+var pricingCite = html.slice(html.indexOf('class="anchor"'), html.indexOf('data-screen-label="GLPM Why"'));
+ok(/Chime membership required\. Includes a 21-day free trial; after that, membership is \$199\/year/.test(pricingCite), "membership disclosed in the fine print under the price cards");
 ok(hero.indexOf('class="perks"') > -1 && hero.indexOf('class="perks"') < hero.indexOf('class="price"'), "hero: benefits come before the price card (benefits top of fold)");
 ok((hero.match(/<li><span class="perks__ico">/g) || []).length === 4, "hero: four benefits");
 ok(/\*Average body-weight loss with compounded tirzepatide/.test(hero), "hero: the 23% benefit is footnoted to its study");
@@ -96,7 +100,7 @@ ok(labels.filter(function (l) { return l === "See my price"; }).length >= 8, "on
 
 /* ---------- house rules ---------- */
 ok(/<meta name="robots" content="noindex"/.test(html), "noindex");
-ok(/css\/page\.css\?v=20261000/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned (css 20260999, js 20260995)");
+ok(/css\/page\.css\?v=20261001/.test(html) && /js\/page\.js\?v=20260995/.test(html), "assets versioned (css 20260999, js 20260995)");
 ok(!/eyebrow/.test(html), "no eyebrow labels");
 ok(!/sesame|collective\.org|Thrive Market|Gunnar/i.test(text), "no competitor names in visible markup");
 ok(fs.existsSync(path.join(__dirname, "..", "images", "hero-800.webp")), "hero image present");

@@ -36,6 +36,8 @@ then http://localhost:8791/chime-glp-membership/
 
 **Membership less prominent (Luis, 2026-10-06, phone mark-ups):** the "$17/mo membership" line is gone from the hero price card (only the "21 days free" tag stays), both price cards, the phone sticky bar and the tab title; later also out of the pricing intro; "leaving it alone here" = it stays in why-so-low, savings, how it works, the FAQ, the closing band and the fine print.
 
+**Top of fold = no membership (client + Luis 2026-10-06):** like collective.org, nothing above the fold mentions membership or the trial; the first mention is the fine print under the price cards ("Chime membership required. Includes a 21-day free trial; after that, $199/year…"), then why-so-low. Conversion elements borrowed, kept Chime (logo, vials, purple): offer marquee on top (Trinity / NextMeds) and "Takes less than 2 minutes" under the CTA (Collective).
+
 **Left out on the client's instruction:** V2's providers grid (screenshot 06) and every "choose your
 provider" claim; "no markups" wording. Client screenshots: `uploads/glp-membership-ref/` (untracked).
 

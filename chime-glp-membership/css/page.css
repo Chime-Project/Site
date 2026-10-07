@@ -98,6 +98,12 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .sec__head { max-width: 760px; margin: 0 auto; text-align: center; }
 .sec__head p { margin-top: 12px; font-size: 16px; line-height: 1.55; }
 
+/* ---------- Offer marquee (Trinity / NextMeds pattern, Chime purple) ---------- */
+.offer { overflow: hidden; background: var(--purple-900); color: rgba(255, 255, 255, .92); }
+.offer__track { display: flex; width: max-content; animation: slide 30s linear infinite; }
+.offer p { position: relative; padding: 8px 18px; font-size: 12px; font-weight: var(--w-bold); letter-spacing: .3px; text-transform: uppercase; white-space: nowrap; }
+.offer p::after { content: ""; position: absolute; right: -2px; top: 50%; width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: #7fe0ae; }
+
 /* ---------- Header (V2) + a header CTA ---------- */
 .hdr { border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .94); backdrop-filter: saturate(180%) blur(12px); -webkit-backdrop-filter: saturate(180%) blur(12px); position: sticky; top: 0; z-index: 40; }
 .hdr__in { display: flex; align-items: center; gap: 20px; min-height: 64px; }
@@ -146,7 +152,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .ticks .ico { color: var(--green); width: 20px; height: 20px; stroke-width: 2.4; margin-top: 0; }
 .hero__act { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .hero__act .btn { flex: 1 1 auto; }
-.hero .fine { margin-top: 14px; max-width: 520px; }
+.hero__time { margin-top: 10px; font-size: 13px; color: var(--body); }
+.hero .fine { margin-top: 10px; max-width: 520px; }
 .hero__media { position: relative; }
 .hero__media img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--r-lg); background: var(--lilac); }
 .hero__badge {
@@ -435,6 +442,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .offer__track { animation: none; width: auto; justify-content: center; flex-wrap: wrap; }
+  .offer__track p[aria-hidden] { display: none; }
   .why__media .why__video { display: none; }
   .why__media .why__still { display: block !important; }
   .trust__track, .mq__track { animation: none; }
